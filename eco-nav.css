@@ -1,0 +1,135 @@
+/* ──────────────────────────────────────────────────────────────
+   Rideekanda Ecosystem Navigation  ·  eco-nav.css
+   A shared, self-contained navigation layer dropped onto every
+   page of the OneSite ecosystem. Every class is namespaced `.eco-`
+   so it never collides with a host page's own styles. Colours
+   follow the family palette (paper / night) and adapt to the host
+   site's theme: it honours `prefers-color-scheme` AND a dark class
+   (`body.dark` / `html.dark` / `.night` / `[data-theme=dark]`) if
+   the host site sets one.
+   ────────────────────────────────────────────────────────────── */
+
+.eco-root, .eco-root * { box-sizing: border-box; }
+
+:root {
+  --eco-bg: #f4ede0;
+  --eco-card: #fdfbf6;
+  --eco-ink: #1f1a14;
+  --eco-ink-dim: #4a4034;
+  --eco-faint: #8a7d68;
+  --eco-line: #e6dcc6;
+  --eco-accent: #2d4a32;
+  --eco-gold: #c08a3e;
+  --eco-shadow: 0 16px 40px -18px rgba(57,44,22,0.40), 0 2px 6px -2px rgba(57,44,22,0.12), 0 0 0 1px rgba(57,44,22,0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --eco-bg: #1f1a14; --eco-card: #2a241c; --eco-ink: #f3ecdb;
+    --eco-ink-dim: #d8ccb4; --eco-faint: #9d8d72; --eco-line: #3a3025;
+    --eco-accent: #c08a3e; --eco-gold: #e0b76a;
+    --eco-shadow: 0 18px 44px -18px rgba(0,0,0,0.75), 0 2px 6px -2px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,235,200,0.06);
+  }
+}
+body.dark, html.dark, body.night, html.night, html[data-theme="dark"], body[data-theme="dark"] {
+  --eco-bg: #1f1a14; --eco-card: #2a241c; --eco-ink: #f3ecdb;
+  --eco-ink-dim: #d8ccb4; --eco-faint: #9d8d72; --eco-line: #3a3025;
+  --eco-accent: #c08a3e; --eco-gold: #e0b76a;
+  --eco-shadow: 0 18px 44px -18px rgba(0,0,0,0.75), 0 2px 6px -2px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,235,200,0.06);
+}
+
+/* ── Launcher pill ─────────────────────────────────────────── */
+.eco-launch {
+  position: fixed; top: 14px; left: 14px; z-index: 99000;
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 7px 14px 7px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--eco-line);
+  background: color-mix(in srgb, var(--eco-card) 80%, transparent);
+  color: var(--eco-ink-dim);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  box-shadow: 0 6px 18px -10px rgba(57,44,22,0.35), 0 0 0 1px rgba(57,44,22,0.04);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  cursor: pointer;
+  transition: transform .25s ease, box-shadow .3s ease, background .3s ease, color .3s ease;
+}
+.eco-launch:hover { transform: translateY(-1px); color: var(--eco-ink); }
+.eco-launch:active { transform: translateY(0); }
+.eco-launch .eco-mark { width: 18px; height: 18px; flex: 0 0 auto; color: var(--eco-accent); }
+.eco-launch .eco-mark svg { width: 100%; height: 100%; display: block; }
+.eco-launch .eco-launch-label { white-space: nowrap; }
+@media (max-width: 560px) {
+  .eco-launch { padding: 8px; gap: 0; }
+  .eco-launch .eco-launch-label { display: none; }
+}
+
+/* ── Overlay + panel ───────────────────────────────────────── */
+.eco-overlay {
+  position: fixed; inset: 0; z-index: 99001;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 84px 18px 32px;
+  background: color-mix(in srgb, var(--eco-bg) 55%, rgba(0,0,0,0.45));
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  opacity: 0; pointer-events: none; transition: opacity .28s ease;
+  overflow-y: auto;
+}
+.eco-overlay.is-open { opacity: 1; pointer-events: auto; }
+
+.eco-panel {
+  width: 100%; max-width: 720px;
+  background: var(--eco-card);
+  border: 1px solid var(--eco-line);
+  border-radius: 22px;
+  box-shadow: var(--eco-shadow);
+  padding: 26px 26px 30px;
+  transform: translateY(-10px) scale(0.985); opacity: 0;
+  transition: transform .3s cubic-bezier(.2,.9,.3,1), opacity .3s ease;
+}
+.eco-overlay.is-open .eco-panel { transform: translateY(0) scale(1); opacity: 1; }
+
+.eco-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
+.eco-head .eco-title { font-family: 'Cormorant', Georgia, serif; font-weight: 500; font-size: 26px; line-height: 1.1; color: var(--eco-ink); margin: 0; }
+.eco-head .eco-title small { display: block; margin-top: 2px; font-family: 'Noto Serif Sinhala', serif; font-size: 13px; color: var(--eco-faint); font-weight: 400; }
+.eco-close {
+  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+  display: grid; place-items: center;
+  border: 1px solid var(--eco-line); background: transparent; color: var(--eco-ink-dim);
+  cursor: pointer; font-size: 17px; line-height: 1;
+  transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+.eco-close:hover { background: color-mix(in srgb, var(--eco-accent) 12%, transparent); color: var(--eco-ink); transform: rotate(90deg); }
+
+.eco-sec-label { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--eco-faint); margin: 22px 2px 10px; }
+
+.eco-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+
+.eco-link {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-radius: 14px;
+  border: 1px solid var(--eco-line);
+  background: color-mix(in srgb, var(--eco-bg) 40%, transparent);
+  color: var(--eco-ink); text-decoration: none;
+  transition: transform .2s ease, border-color .25s ease, background .25s ease, box-shadow .25s ease;
+}
+.eco-link:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--eco-accent) 45%, var(--eco-line));
+  background: color-mix(in srgb, var(--eco-accent) 8%, var(--eco-card));
+  box-shadow: 0 10px 22px -14px rgba(57,44,22,0.45);
+}
+.eco-link.is-current { border-color: color-mix(in srgb, var(--eco-accent) 55%, transparent); background: color-mix(in srgb, var(--eco-accent) 12%, var(--eco-card)); cursor: default; }
+.eco-link.is-current:hover { transform: none; }
+
+.eco-dot { flex: 0 0 auto; width: 8px; height: 8px; border-radius: 50%; background: var(--eco-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--eco-accent) 18%, transparent); }
+.eco-link.is-current .eco-dot { background: var(--eco-gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--eco-gold) 22%, transparent); }
+
+.eco-text { display: flex; flex-direction: column; min-width: 0; }
+.eco-en { font-family: 'Manrope', system-ui, sans-serif; font-size: 14px; font-weight: 600; line-height: 1.2; color: var(--eco-ink); }
+.eco-si { font-family: 'Noto Serif Sinhala', serif; font-size: 11px; color: var(--eco-faint); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.eco-foot { margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--eco-line); text-align: center; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--eco-faint); }
+
+@media (prefers-reduced-motion: reduce) {
+  .eco-launch, .eco-overlay, .eco-panel, .eco-link, .eco-close { transition: none; }
+}

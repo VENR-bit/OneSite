@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Three-Story Building — Rideekanda Forest Monastery</title>
+  <meta name="description" content="Support the expansion of Rideekanda Forest Monastery with a three-story building for meditation, monastic life, and spiritual growth.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <style>
+    :root {
+      --paper:       #FAF6EC;
+      --paper-2:     #F1E9D2;
+      --ink:         #1A1612;
+      --ink-2:       #2F2820;
+      --ink-soft:    #6B6354;
+      --ink-faint:   #C9BEA0;
+      --green:       #2F4F3A;
+      --green-light: #3A6348;
+      --accent:      #B3502A;
+      --accent-warm: #E0A645;
+      --hand:        "Cormorant Garamond", Georgia, serif;
+      --sans:        "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono:        "JetBrains Mono", ui-monospace, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--sans); line-height: 1.6; }
+
+    /* ---- NAV ---- */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 48px;
+      background: rgba(250,246,236,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+    .nav-logo img { height: 40px; width: auto; }
+    .nav-logo-text { display: flex; flex-direction: column; line-height: 1.2; }
+    .nav-logo-text strong { font-family: var(--hand); font-size: 18px; font-weight: 700; }
+    .nav-logo-text small { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); }
+    .nav-links {
+      display: flex; align-items: center; gap: 28px;
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .nav-links a { text-decoration: none; color: var(--ink-soft); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.active { color: var(--ink); font-weight: 700; }
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 22px;
+      background: var(--green); color: #fff;
+      font-family: var(--sans); font-size: 14px; font-weight: 600;
+      border: none; border-radius: 999px;
+      text-decoration: none; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--green-light); }
+    .hamburger { display: none; background: none; border: none; cursor: pointer; font-size: 24px; color: var(--ink); }
+
+    /* ---- HERO ---- */
+    .hero {
+      text-align: center;
+      padding: 80px 48px 60px;
+      max-width: 860px; margin: 0 auto;
+    }
+    .hero-logo { height: 64px; margin-bottom: 20px; }
+    .hero-label {
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: var(--hand); font-size: 72px; font-weight: 400;
+      line-height: 1.05; letter-spacing: -0.01em;
+      color: var(--ink); margin-bottom: 24px;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero-sub {
+      font-family: var(--hand); font-size: 20px; font-style: italic;
+      color: var(--ink-soft); line-height: 1.5;
+      max-width: 600px; margin: 0 auto 36px;
+    }
+    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px;
+      background: var(--green); color: #fff;
+      font-family: var(--sans); font-size: 15px; font-weight: 600;
+      border: none; border-radius: 999px;
+      text-decoration: none; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--green-light); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px;
+      background: transparent; color: var(--ink);
+      font-family: var(--sans); font-size: 15px; font-weight: 600;
+      border: 1.5px solid var(--ink-faint); border-radius: 999px;
+      text-decoration: none; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--ink); background: rgba(0,0,0,0.02); }
+
+    /* ---- HERO IMAGE ---- */
+    .hero-image {
+      max-width: 1060px; margin: 0 auto;
+      padding: 0 48px;
+    }
+    .hero-image-card {
+      position: relative;
+      background: var(--paper-2); border-radius: 16px;
+      overflow: hidden; border: 1px solid var(--ink-faint);
+    }
+    .hero-image-card img { width: 100%; height: auto; display: block; }
+    .hero-image-badge {
+      position: absolute; bottom: 20px; left: 20px;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px;
+      background: #fff; border-radius: 999px;
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .hero-image-badge::before {
+      content: ''; width: 8px; height: 8px;
+      background: var(--green); border-radius: 50%;
+    }
+
+    /* ---- SECTION HEADERS (centered) ---- */
+    .section-header {
+      text-align: center;
+      max-width: 700px; margin: 0 auto 48px;
+    }
+    .section-label {
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 16px;
+    }
+    .section-header h2 {
+      font-family: var(--hand); font-size: 48px; font-weight: 400;
+      line-height: 1.1; color: var(--ink); margin-bottom: 16px;
+    }
+    .section-header h2 em { font-style: italic; color: var(--accent); }
+    .section-header p {
+      font-family: var(--hand); font-size: 18px; font-style: italic;
+      color: var(--ink-soft); line-height: 1.5;
+    }
+
+    /* ---- VISION SECTION ---- */
+    .vision { padding: 100px 48px; }
+    .vision-content {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: start;
+      max-width: 1060px; margin: 0 auto;
+    }
+    .vision-text h2 {
+      font-family: var(--hand); font-size: 44px; font-weight: 400;
+      line-height: 1.1; margin-bottom: 24px;
+    }
+    .vision-text h2 em { font-style: italic; color: var(--accent); }
+    .vision-text p {
+      font-family: var(--hand); font-size: 17px; font-style: italic;
+      color: var(--ink-soft); line-height: 1.6; margin-bottom: 16px;
+    }
+    .vision-cards {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    }
+    .vision-card {
+      padding: 28px;
+      background: rgba(250,246,236,0.6);
+      border: 1px solid var(--ink-faint);
+      border-radius: 14px;
+    }
+    .vision-card-icon {
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--paper); border: 1px solid var(--ink-faint);
+      border-radius: 10px; margin-bottom: 14px;
+      font-size: 20px; color: var(--ink-soft);
+    }
+    .vision-card h3 {
+      font-family: var(--hand); font-size: 20px; font-weight: 400;
+      font-style: italic; margin-bottom: 8px;
+    }
+    .vision-card p { font-size: 14px; color: var(--ink-soft); line-height: 1.5; }
+
+    /* ---- 3D MODEL ---- */
+    .model-section { padding: 100px 48px; }
+    .model-card {
+      max-width: 1060px; margin: 0 auto;
+      background: var(--ink); border-radius: 16px; overflow: hidden;
+      border: 1px solid rgba(250,246,236,0.1);
+      position: relative;
+    }
+    .model-card model-viewer {
+      width: 100%; height: 520px; display: block;
+      --poster-color: #1A1612;
+    }
+    .model-badge {
+      position: absolute; top: 16px; left: 16px;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px;
+      background: rgba(250,246,236,0.1);
+      border: 1px solid rgba(250,246,236,0.15);
+      border-radius: 999px;
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(250,246,236,0.7);
+      z-index: 2;
+    }
+    .model-badge::before {
+      content: ''; width: 7px; height: 7px;
+      background: #4ade80; border-radius: 50%;
+    }
+    .model-hints {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0; max-width: 1060px; margin: 20px auto 0;
+    }
+    .model-hint { padding: 16px 0; }
+    .model-hint-label {
+      font-family: var(--mono); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 4px;
+    }
+    .model-hint h4 { font-family: var(--hand); font-size: 18px; font-style: italic; margin-bottom: 2px; }
+    .model-hint p { font-size: 13px; color: var(--ink-soft); font-style: italic; font-family: var(--hand); }
+
+    /* ---- GALLERY ---- */
+    .gallery { padding: 100px 48px; }
+    .gallery-grid {
+      display: grid; gap: 14px;
+      max-width: 1060px; margin: 0 auto;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .gallery-item {
+      position: relative; overflow: hidden;
+      border-radius: 12px; cursor: pointer;
+      transition: transform 0.25s;
+    }
+    .gallery-item:hover { transform: scale(1.015); }
+    .gallery-item img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .gallery-item-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 20px;
+      background: linear-gradient(transparent, rgba(26,22,18,0.7));
+      color: #fff;
+    }
+    .gallery-item-overlay .num {
+      font-family: var(--mono); font-size: 9px; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6); margin-bottom: 4px; display: block;
+    }
+    .gallery-item-overlay .caption {
+      font-family: var(--hand); font-size: 18px; font-style: italic; color: #fff;
+    }
+
+    /* ---- VIDEO ---- */
+    .video-section { padding: 100px 48px; }
+    .video-card {
+      max-width: 1060px; margin: 0 auto;
+      border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--ink-faint);
+      background: var(--ink);
+    }
+    .video-card iframe { width: 100%; aspect-ratio: 16/9; display: block; border: none; }
+
+    /* ---- PROGRESS ---- */
+    .progress { padding: 100px 48px; }
+    .progress-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 14px; max-width: 1060px; margin: 0 auto 40px;
+    }
+    .floor-card {
+      padding: 32px;
+      background: var(--paper-2); border-radius: 14px;
+      border: 1px solid var(--ink-faint);
+    }
+    .floor-num {
+      font-family: var(--hand); font-size: 64px; line-height: 1;
+      font-style: italic; margin-bottom: 8px;
+    }
+    .floor-num.done { color: var(--accent-warm); }
+    .floor-num.active-num { color: var(--green); }
+    .floor-num.dim { color: var(--ink-faint); }
+    .floor-label {
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--ink-soft); margin-bottom: 6px; display: block;
+    }
+    .floor-card h3 {
+      font-family: var(--hand); font-size: 24px; font-weight: 400;
+      font-style: italic; margin-bottom: 8px;
+    }
+    .floor-card p { font-size: 14px; color: var(--ink-soft); line-height: 1.5; }
+    .floor-bar { margin-top: 20px; height: 4px; background: rgba(0,0,0,0.06); border-radius: 2px; overflow: hidden; }
+    .floor-bar-fill { height: 100%; border-radius: 2px; }
+    .floor-bar-fill.done { background: var(--accent-warm); }
+    .floor-bar-fill.active { background: var(--green); }
+    .floor-status {
+      display: block; margin-top: 10px;
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase;
+    }
+    .floor-status.status-done { color: var(--accent-warm); }
+    .floor-status.status-active { color: var(--green); }
+    .floor-status.status-dim { color: var(--ink-soft); }
+
+    /* Estimate card */
+    .estimate-card {
+      max-width: 1060px; margin: 0 auto;
+      padding: 40px;
+      background: var(--ink); border-radius: 16px;
+      display: grid; grid-template-columns: 1.2fr 1fr;
+      gap: 40px; align-items: center;
+      color: var(--paper);
+    }
+    .estimate-card .label {
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(250,246,236,0.5);
+    }
+    .estimate-card h3 {
+      font-family: var(--hand); font-size: 26px; font-weight: 400;
+      font-style: italic; margin-top: 10px; color: var(--paper);
+    }
+    .estimate-amount { text-align: right; }
+    .estimate-amount .big {
+      font-family: var(--hand); font-size: 72px; font-weight: 400;
+      line-height: 1; color: var(--accent-warm);
+    }
+    .estimate-amount .big .unit { font-size: 32px; opacity: 0.6; }
+    .estimate-amount .big .currency { font-size: 20px; vertical-align: top; opacity: 0.6; }
+
+    /* ---- DONATE / SUPPORT ---- */
+    .support {
+      padding: 100px 48px;
+      text-align: center;
+    }
+    .support-inner {
+      max-width: 700px; margin: 0 auto;
+    }
+    .support h2 {
+      font-family: var(--hand); font-size: 48px; font-weight: 400;
+      line-height: 1.1; margin-bottom: 20px;
+    }
+    .support h2 em { font-style: italic; color: var(--accent); }
+    .support > .support-inner > p {
+      font-family: var(--hand); font-size: 18px; font-style: italic;
+      color: var(--ink-soft); line-height: 1.5;
+      margin-bottom: 36px;
+    }
+    .support-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
+    .support-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; max-width: 560px; margin: 0 auto;
+      padding-top: 40px;
+      border-top: 1px solid var(--ink-faint);
+    }
+    .support-stat-num {
+      font-family: var(--hand); font-size: 36px; font-weight: 400;
+      color: var(--ink); margin-bottom: 4px;
+    }
+    .support-stat-label {
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    /* ---- SINHALA ---- */
+    .sinhala {
+      padding: 80px 48px;
+      background: var(--paper-2); text-align: center;
+    }
+    .sinhala-label {
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.2em; color: var(--ink-soft);
+    }
+    .sinhala h2 {
+      font-family: var(--hand); font-size: 40px; font-weight: 400;
+      margin-top: 16px; line-height: 1.3;
+    }
+    .sinhala-body {
+      max-width: 680px; margin: 28px auto 0; text-align: left;
+      font-size: 15px; line-height: 1.9; color: var(--ink-2);
+    }
+
+    /* ---- FOOTER ---- */
+    .footer {
+      padding: 48px 48px 32px;
+      text-align: center;
+    }
+    .footer-brand {
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--ink-soft); margin-bottom: 12px;
+    }
+    .footer-quote {
+      font-family: var(--hand); font-size: 18px; font-style: italic;
+      color: var(--ink-soft); margin-bottom: 20px;
+    }
+    .footer-copy {
+      font-family: var(--sans); font-size: 13px;
+      color: var(--ink-faint);
+    }
+
+    /* ---- LIGHTBOX ---- */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(26,22,18,0.92);
+      align-items: center; justify-content: center;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img {
+      max-width: 90vw; max-height: 85vh; object-fit: contain;
+      border-radius: 12px;
+    }
+    .lightbox-close {
+      position: absolute; top: 24px; right: 24px;
+      background: rgba(250,246,236,0.1); border: 1px solid rgba(250,246,236,0.2);
+      color: var(--paper); width: 44px; height: 44px;
+      border-radius: 50%; font-size: 22px; cursor: pointer;
+      font-family: var(--sans); display: flex; align-items: center; justify-content: center;
+    }
+    .lightbox-close:hover { background: rgba(250,246,236,0.2); }
+    .lightbox-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(250,246,236,0.1); border: 1px solid rgba(250,246,236,0.2);
+      color: var(--paper); width: 44px; height: 44px;
+      border-radius: 50%; font-size: 22px; cursor: pointer;
+      font-family: var(--mono); display: flex; align-items: center; justify-content: center;
+    }
+    .lightbox-nav:hover { background: rgba(250,246,236,0.2); }
+    .lightbox-prev { left: 24px; }
+    .lightbox-next { right: 24px; }
+    .lightbox-counter {
+      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+      font-family: var(--mono); font-size: 12px; letter-spacing: 0.2em;
+      color: rgba(250,246,236,0.5);
+    }
+
+    /* ---- FADE-IN ---- */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 900px) {
+      .nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column; gap: 14px;
+        position: absolute; top: 100%; left: 0; right: 0;
+        background: var(--paper); padding: 24px 20px;
+        border-bottom: 1px solid var(--ink-faint);
+        z-index: 99;
+      }
+      .nav-links.open .nav-cta { align-self: flex-start; }
+      .hamburger { display: block; }
+      .hero { padding: 48px 20px 40px; }
+      .hero h1 { font-size: 36px; }
+      .hero-sub { font-size: 16px; }
+      .hero-logo { height: 48px; }
+      .hero-image { padding: 0 20px; }
+      .vision { padding: 60px 20px; }
+      .vision-content { grid-template-columns: 1fr; gap: 32px; }
+      .vision-text h2 { font-size: 32px; }
+      .vision-cards { grid-template-columns: 1fr; }
+      .section-header { padding: 0 20px; }
+      .section-header h2 { font-size: 32px; }
+      .model-section, .gallery, .video-section, .progress, .support, .sinhala { padding: 60px 20px; }
+      .model-card model-viewer { height: 320px; }
+      .model-hints { grid-template-columns: 1fr; gap: 8px; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-item { grid-column: span 1 !important; height: 200px; }
+      .progress-grid { grid-template-columns: 1fr; }
+      .estimate-card { grid-template-columns: 1fr; text-align: center; padding: 28px; }
+      .estimate-amount { text-align: center; }
+      .estimate-amount .big { font-size: 48px; }
+      .support h2 { font-size: 32px; }
+      .support-stats { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .support-stat-num { font-size: 28px; }
+      .footer { padding: 40px 20px 24px; }
+      .sinhala h2 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="top">
+    <a href="#top" class="nav-logo">
+      <img src="images/logo.png" alt="Rideekanda Logo">
+      <div class="nav-logo-text">
+        <strong>Rideekanda</strong>
+        <small>Forest Monastery</small>
+      </div>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="../../index.html" class="active">&larr; Home</a>
+      <a href="#vision">Vision</a>
+      <a href="#model">3D Model</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#video">Film</a>
+      <a href="#progress">Progress</a>
+      <a href="#donate">Support</a>
+    </div>
+    <a href="../../donate/" target="_blank" rel="noopener" class="nav-cta">Support &rarr;</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">&#9776;</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero fade-in">
+    <img src="images/logo.png" alt="" class="hero-logo">
+    <div class="hero-label">A Sanctuary for Practice &amp; Community</div>
+    <h1>A three-story building<br>in the <em>forest.</em></h1>
+    <p class="hero-sub">
+      A serene space for meditation, monastic life, and spiritual growth &mdash; nestled in the forest at Rideekanda Monastery. Your generous support brings this vision to life.
+    </p>
+    <div class="hero-btns">
+      <a href="#progress" class="btn-primary">View building progress &rarr;</a>
+      <a href="#vision" class="btn-outline">Explore the design</a>
+    </div>
+  </section>
+
+  <!-- HERO IMAGE -->
+  <div class="hero-image fade-in">
+    <div class="hero-image-card">
+      <img src="images/building-4.png" alt="Three-story building architectural concept">
+    </div>
+  </div>
+
+  <!-- VISION -->
+  <section class="vision fade-in" id="vision">
+    <div class="section-label" style="text-align:left;max-width:1060px;margin:0 auto 12px;">THE VISION</div>
+    <div class="vision-content">
+      <div class="vision-text">
+        <h2>A forest sanctuary for <em>mindful living.</em></h2>
+        <p>
+          Embraced by the Rideekanda forest, our new three-story building is taking shape. Rather than disrupting the wilderness, this space is designed to sit quietly among the trees &mdash; offering a serene, secluded sanctuary where monks and practitioners can commit fully to intensive meditation and monastic life.
+        </p>
+        <p>
+          The design thoughtfully integrates living quarters, a meditation hall, and communal spaces &mdash; letting the architecture serve the practice with quiet dignity.
+        </p>
+      </div>
+      <div class="vision-cards">
+        <div class="vision-card">
+          <div class="vision-card-icon">&#x1F3DB;</div>
+          <h3>Main Hall</h3>
+          <p>Meditation, teachings, and gathering on the upper floor.</p>
+        </div>
+        <div class="vision-card">
+          <div class="vision-card-icon">&#x1F6CF;</div>
+          <h3>Accommodation</h3>
+          <p>Quarters for monks and visiting practitioners on the middle floor.</p>
+        </div>
+        <div class="vision-card">
+          <div class="vision-card-icon">&#x1F372;</div>
+          <h3>Alms Hall &amp; Kitchen</h3>
+          <p>Dining and food preparation on the ground floor.</p>
+        </div>
+        <div class="vision-card">
+          <div class="vision-card-icon">&#x2728;</div>
+          <h3>Contemplation</h3>
+          <p>Natural light, gentle silence, room to sit with the breath.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3D MODEL -->
+  <section class="model-section fade-in" id="model">
+    <div class="section-header">
+      <div class="section-label">Interactive Experience</div>
+      <h2>Explore the <em>3D design</em></h2>
+      <p>Rotate, zoom, and look around the full architectural model &mdash; every wall, every window, every line of the building.</p>
+    </div>
+    <div class="model-card">
+      <div class="model-badge">Live &middot; 3D Model</div>
+      <model-viewer
+        src="building-2-compressed.glb"
+        alt="Interactive 3D model of the three-story monastery building"
+        camera-controls
+        touch-action="pan-y"
+        auto-rotate
+        auto-rotate-delay="2000"
+        shadow-intensity="1"
+        exposure="0.8"
+        camera-orbit="45deg 65deg auto"
+        poster="images/building-6.png"
+        loading="lazy"
+        style="background-color: #1A1612;"
+      ></model-viewer>
+    </div>
+    <div class="model-hints">
+      <div class="model-hint">
+        <div class="model-hint-label">Drag</div>
+        <h4>Orbit around the building</h4>
+        <p>See every facade.</p>
+      </div>
+      <div class="model-hint">
+        <div class="model-hint-label">Pinch</div>
+        <h4>Zoom into details</h4>
+        <p>From window frame to roofline.</p>
+      </div>
+      <div class="model-hint">
+        <div class="model-hint-label">Tap</div>
+        <h4>Inspect every angle</h4>
+        <p>Walk around the entire structure.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery fade-in" id="gallery">
+    <div class="section-header">
+      <div class="section-label">Design Views</div>
+      <h2>Architectural <em>perspectives</em></h2>
+      <p>Explore the building from every angle &mdash; 3D renders, elevations, and detailed views of each space.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item" style="grid-column:span 7;height:280px;" onclick="openLightbox(0)">
+        <img src="images/building-4.png" alt="Full design perspective" loading="lazy">
+        <div class="gallery-item-overlay">
+          <span class="num">No. 01</span>
+          <span class="caption">Full Design &mdash; Perspective</span>
+        </div>
+      </div>
+      <div class="gallery-item" style="grid-column:span 5;height:280px;" onclick="openLightbox(1)">
+        <img src="images/building-2.png" alt="Front elevation" loading="lazy">
+        <div class="gallery-item-overlay">
+          <span class="num">No. 02</span>
+          <span class="caption">Front Elevation</span>
+        </div>
+      </div>
+      <div class="gallery-item" style="grid-column:span 4;height:240px;" onclick="openLightbox(2)">
+        <img src="images/building-1.png" alt="Entrance facade" loading="lazy">
+        <div class="gallery-item-overlay">
+          <span class="num">No. 03</span>
+          <span class="caption">Entrance Facade</span>
+        </div>
+      </div>
+      <div class="gallery-item" style="grid-column:span 4;height:240px;" onclick="openLightbox(3)">
+        <img src="images/building-3.png" alt="Side view" loading="lazy">
+        <div class="gallery-item-overlay">
+          <span class="num">No. 04</span>
+          <span class="caption">Side &mdash; 3D View</span>
+        </div>
+      </div>
+      <div class="gallery-item" style="grid-column:span 4;height:240px;" onclick="openLightbox(4)">
+        <img src="images/building-5.png" alt="Rear elevation" loading="lazy">
+        <div class="gallery-item-overlay">
+          <span class="num">No. 05</span>
+          <span class="caption">Rear Elevation</span>
+        </div>
+      </div>
+      <div class="gallery-item" style="grid-column:span 6;height:260px;" onclick="openLightbox(5)">
+        <img src="images/building-6.png" alt="Aerial perspective" loading="lazy">
+        <div class="gallery-item-overlay">
+          <span class="num">No. 06</span>
+          <span class="caption">Aerial 3D Perspective</span>
+        </div>
+      </div>
+      <div class="gallery-item" style="grid-column:span 6;height:260px;" onclick="openLightbox(6)">
+        <img src="images/building-7.png" alt="Long facade with porch" loading="lazy">
+        <div class="gallery-item-overlay">
+          <span class="num">No. 07</span>
+          <span class="caption">Long Facade with Porch</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <section class="video-section fade-in" id="video">
+    <div class="section-header">
+      <div class="section-label">Watch</div>
+      <h2>The vision, <em>in motion.</em></h2>
+      <p>A short video walkthrough of the building &mdash; how it sits in the forest, and how it will be used.</p>
+    </div>
+    <div class="video-card">
+      <iframe
+        src="https://www.youtube.com/embed/6lkENh9GOd0"
+        title="ThreeStory Building 3D Walkthrough"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section class="progress fade-in" id="progress">
+    <div class="section-header">
+      <div class="section-label">Latest Update</div>
+      <h2>Where we are <em>today.</em></h2>
+      <p>The ground floor is complete and in daily use. Now we turn our attention upward.</p>
+    </div>
+    <div class="progress-grid">
+      <div class="floor-card">
+        <div class="floor-num done">00</div>
+        <span class="floor-label">Ground Floor</span>
+        <h3>Complete &amp; in use.</h3>
+        <p>Dining hall, kitchen, common bathrooms &mdash; built, finished, operating.</p>
+        <div class="floor-bar"><div class="floor-bar-fill done" style="width:100%;"></div></div>
+        <span class="floor-status status-done">&bull; Functioning</span>
+      </div>
+      <div class="floor-card">
+        <div class="floor-num active-num">01</div>
+        <span class="floor-label">First Floor</span>
+        <h3>In progress.</h3>
+        <p>Next milestone: the 3,000 ft&sup2; concrete slab.</p>
+        <div class="floor-bar"><div class="floor-bar-fill active" style="width:14%;"></div></div>
+        <span class="floor-status status-active">&bull; Slab Pending</span>
+      </div>
+      <div class="floor-card">
+        <div class="floor-num dim">02</div>
+        <span class="floor-label">Second Floor</span>
+        <h3>Awaiting Floor 01.</h3>
+        <p>The Main Hall will rise above the accommodation level.</p>
+        <div class="floor-bar"><div class="floor-bar-fill" style="width:0%;"></div></div>
+        <span class="floor-status status-dim">&bull; Planned</span>
+      </div>
+    </div>
+    <div class="estimate-card">
+      <div>
+        <span class="label">Immediate Need &middot; Floor 01 Slab</span>
+        <h3>3,000 ft&sup2; of structural concrete &mdash; the next thing we build.</h3>
+      </div>
+      <div class="estimate-amount">
+        <span class="label">Estimate</span>
+        <div class="big">5<span class="unit"> M</span><span class="currency"> LKR</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUPPORT / DONATE -->
+  <section class="support fade-in" id="donate">
+    <div class="support-inner">
+      <div class="section-label">Support This Place</div>
+      <h2>An act of generosity,<br>an act of <em>practice.</em></h2>
+      <p>Whether you fund a single slab or the entire floor, every contribution &mdash; large or small &mdash; helps build a lasting space for meditation, peace, and community at Rideekanda.</p>
+      <div class="support-btns">
+        <a href="../../donate/" target="_blank" rel="noopener" class="btn-primary">Make a donation</a>
+        <a href="#progress" class="btn-outline">See building progress</a>
+      </div>
+      <div class="support-stats">
+        <div>
+          <div class="support-stat-num">3</div>
+          <div class="support-stat-label">Stories</div>
+        </div>
+        <div>
+          <div class="support-stat-num">3,000</div>
+          <div class="support-stat-label">sq ft per floor</div>
+        </div>
+        <div>
+          <div class="support-stat-num">&infin;</div>
+          <div class="support-stat-label">Beings Helped</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SINHALA -->
+  <section class="sinhala fade-in">
+    <span class="sinhala-label">&#3523;&#3538;&#3458;&#3524; &#3517;</span>
+    <h2>&#3512;&#3535;&#3501;&#3517;&#3546; &#3467;&#3497;&#3523;&#3530;&#3484;&#3538;&#3515;&#3538;&#3514;<br>&#3515;&#3538;&#3503;&#3539;&#3482;&#3505;&#3530;&#3503; &#3463;&#3515;&#3499;&#3530;&#8205;&#3514; &#3523;&#3546;&#3505;&#3535;&#3523;&#3505;&#3514;</h2>
+    <div class="sinhala-body">
+      <p>
+        &#3512;&#3535;&#3501;&#3517;&#3546; &#3467;&#3497;&#3523;&#3530;&#3484;&#3538;&#3515;&#3538;&#3514; &#3515;&#3538;&#3503;&#3539;&#3482;&#3505;&#3530;&#3503; &#3463;&#3515;&#3499;&#3530;&#8205;&#3514; &#3523;&#3546;&#3505;&#3535;&#3523;&#3505;&#3514; &#3505;&#3538;&#3515;&#3530;&#3520;&#3535;&#3499; &#3512;&#3535;&#3515;&#3530;&#3484;&#3514; &#3523;&#3549;&#3514;&#3505; &#3511;&#3535;&#3520;&#3505;&#3535;&#3514;&#3549;&#3484;&#3539;&#3505;&#3530; &#3523;&#3507;&#3524;&#3535;
+        &#3512;&#3505;&#3535; &#3501;&#3549;&#3501;&#3536;&#3505;&#3530;&#3505;&#3482;&#3530; &#3520;&#3505; &#3461;&#3501;&#3515; &#3524;&#3540;&#3503;&#3546;&#3482;&#3517;&#3535;&#3520; &#3463;&#3515;&#3499;&#3530;&#8205;&#3514; &#3508;&#3536;&#3520;&#3538;&#3503;&#3538;&#3490;&#3539;&#3520;&#3538;&#3501;&#3514; &#3523;&#3507;&#3524;&#3535; &#3503; &#3505;&#3538;&#3520;&#3524;&#3505;&#3482;&#3538;. &#3508;&#3536;&#3512;&#3538;&#3499;&#3546;&#3505; &#3503;&#3546;&#3523;&#3530;&#3520;&#3538;&#3503;&#3546;&#3523;&#3530;
+        &#3511;&#3535;&#3520;&#3505;&#3535;&#3514;&#3549;&#3484;&#3539;&#3505;&#3530;&#3495; &#3461;&#3520;&#3521;&#3530;&#8205;&#3514; &#3508;&#3524;&#3523;&#3540;&#3482;&#3512;&#3530; &#3523;&#3536;&#3508;&#3514;&#3539;&#3512;&#3501;&#3530;, &#3501;&#3535;&#3520;&#3482;&#3535;&#3517;&#3538;&#3482; &#3508;&#3536;&#3520;&#3503;&#3538;&#3508;&#3540;&#3524;&#3540;&#3499;&#3540;&#3520;&#3536;&#3497;&#3523;&#3495;&#3524;&#3505;&#3530; &#3501;&#3520;&#3503;&#3540;&#3515;&#3495;&#3501;&#3530; &#3508;&#3540;&#3525;&#3540;&#3517;&#3530;
+        &#3482;&#3538;&#3515;&#3539;&#3512;&#3495;&#3501;&#3530; &#3461;&#3520;&#3521;&#3530;&#8205;&#3514; &#3508;&#3515;&#3538;&#3523;&#3515;&#3514;&#3482;&#3530; &#3505;&#3538;&#3515;&#3530;&#3512;&#3535;&#3499;&#3514; &#3482;&#3538;&#3515;&#3539;&#3512;&#3546; &#3461;&#3503;&#3524;&#3523;&#3538;&#3505;&#3530;, &#3463;&#3515;&#3499;&#3530;&#8205;&#3514;&#3514;&#3546; &#3508;&#3524;&#3523;&#3540;&#3482;&#3512;&#3530; &#3508;&#3540;&#3525;&#3540;&#3517;&#3530; &#3482;&#3515;&#3505; &#3523;&#3524; &#3461;&#3508;&#3484;&#3546;
+        &#3523;&#3546;&#3520;&#3535; &#3524;&#3536;&#3482;&#3538;&#3514;&#3535;&#3520; &#3520;&#3536;&#3497;&#3538;&#3482;&#3515;&#3505; &#3501;&#3546;&#3512;&#3524;&#3517;&#3530; &#3484;&#3549;&#3497;&#3505;&#3536;&#3484;&#3538;&#3517;&#3530;&#3517;&#3482;&#3530; &#3465;&#3503;&#3538;&#3482;&#3538;&#3515;&#3539;&#3512;&#3546; &#3461;&#3511;&#3538;&#3517;&#3535;&#3522;&#3482;&#3535;&#3512;&#3539; &#3520;&#3530;&#8205;&#3514;&#3535;&#3508;&#3542;&#3501;&#3538;&#3514;&#3482;&#3530; &#3463;&#3515;&#3512;&#3530;&#3511;
+        &#3482;&#3515;&#3512;&#3540;.
+      </p>
+      <p style="margin-top:20px;">
+        &#3473;&#3512; &#3484;&#3549;&#3497;&#3505;&#3536;&#3484;&#3538;&#3517;&#3530;&#3517;&#3546; &#3508;&#3524;&#3501; &#3508;&#3524;&#3523;&#3540;&#3482;&#3512;&#3530; &#3523;&#3524;&#3538;&#3501;&#3520; &#3484;&#3549;&#3497;&#3505;&#3536;&#3484;&#3539;&#3512;&#3495; &#3510;&#3517;&#3535;&#3508;&#3549;&#3515;&#3549;&#3501;&#3530;&#3501;&#3540; &#3520;&#3546;&#3512;&#3540;.
+      </p>
+      <ul style="margin-top:12px;padding-left:20px;list-style:disc;">
+        <li><strong>&#3508;&#3530;&#8205;&#3515;&#3504;&#3535;&#3505; &#3521;&#3535;&#3517;&#3535;&#3520;:</strong> &#3511;&#3535;&#3520;&#3505;&#3535; &#3520;&#3536;&#3497;&#3523;&#3495;&#3524;&#3505;&#3530;, &#3465;&#3484;&#3536;&#3505;&#3530;&#3520;&#3539;&#3512;&#3530; &#3523;&#3538;&#3503;&#3540;&#3482;&#3538;&#3515;&#3539;&#3512;&#3495;</li>
+        <li><strong>&#3505;&#3520;&#3535;&#3501;&#3536;&#3505;&#3530; &#3508;&#3524;&#3523;&#3540;&#3482;&#3512;&#3530;:</strong> &#3508;&#3540;&#3524;&#3540;&#3499;&#3540; &#3511;&#3538;&#3482;&#3530;&#3522;&#3542;&#3505;&#3530; &#3520;&#3524;&#3505;&#3530;&#3523;&#3546;&#3517;&#3535;&#3495; &#3523;&#3524; &#3511;&#3535;&#3520;&#3505;&#3535; &#3514;&#3549;&#3484;&#3539;&#3505;&#3530; &#3523;&#3507;&#3524;&#3535; &#3505;&#3520;&#3535;&#3501;&#3536;&#3505;&#3530; &#3508;&#3524;&#3523;&#3540;&#3482;&#3512;&#3530;.</li>
+        <li><strong>&#3503;&#3535;&#3505; &#3521;&#3535;&#3517;&#3535;&#3520; &#3523;&#3524; &#3512;&#3540;&#3525;&#3540;&#3501;&#3536;&#3505;&#3530;&#3484;&#3546;&#3514;:</strong> &#3463;&#3524;&#3535;&#3515; &#3508;&#3538;&#3525;&#3538;&#3514;&#3546;&#3517; &#3482;&#3538;&#3515;&#3539;&#3512; &#3523;&#3507;&#3524;&#3535; &#3505;&#3520;&#3539;&#3505; &#3508;&#3524;&#3523;&#3540;&#3482;&#3512;&#3530;.</li>
+        <li><strong>&#3520;&#3536;&#3523;&#3538;&#3482;&#3538;&#3525;&#3538; &#3508;&#3503;&#3530;&#3504;&#3501;&#3538;&#3514;:</strong> &#3520;&#3536;&#3523;&#3538;&#3482;&#3538;&#3525;&#3538; &#3523;&#3524; &#3523;&#3505;&#3539;&#3508;&#3535;&#3515;&#3482;&#3530;&#3522;&#3535;&#3520; &#3523;&#3507;&#3524;&#3535; &#3461;&#3501;&#3530;&#8205;&#3514;&#3520;&#3521;&#3530;&#8205;&#3514; &#3508;&#3524;&#3523;&#3540;&#3482;&#3512;&#3530;.</li>
+      </ul>
+      <p style="margin-top:20px;">
+        &#3512;&#3546;&#3512; &#3467;&#3501;&#3540;&#3512;&#3530; &#3520;&#3530;&#8205;&#3514;&#3535;&#3508;&#3542;&#3501;&#3538;&#3514; &#3523;&#3535;&#3515;&#3530;&#3502;&#3482; &#3482;&#3515;&#3484;&#3536;&#3505;&#3539;&#3512;&#3495; &#3503;&#3535;&#3514;&#3482; &#3520;&#3546;&#3512;&#3538;&#3505;&#3530; &#3473;&#3512; &#3482;&#3540;&#3523;&#3517; &#3521;&#3482;&#3530;&#3501;&#3538;&#3514;&#3546; &#3510;&#3517;&#3512;&#3524;&#3538;&#3512;&#3514;&#3546;&#3505;&#3530; &#3476;&#3510;&#3495;&#3501;&#3530; &#3505;&#3538;&#3515;&#3530;&#3520;&#3535;&#3505;
+        &#3461;&#3520;&#3510;&#3549;&#3504;&#3514; &#3508;&#3538;&#3499;&#3538;&#3523; &#3503;&#3523; &#3508;&#3535;&#3515;&#3512;&#3538;&#3501;&#3535; &#3508;&#3542;&#3515;&#3530;&#3499;&#3514; &#3520;&#3539;&#3512; &#3508;&#3538;&#3499;&#3538;&#3523; &#3524;&#3546;&#3501;&#3540; &#3520;&#3535;&#3523;&#3505;&#3535; &#3520;&#3546;&#3520;&#3535;&#3514;&#3538; &#3461;&#3508; &#3508;&#3515;&#3530;&#3502;&#3505;&#3535; &#3482;&#3515;&#3512;&#3540;.
+      </p>
+      <p style="margin-top:24px;text-align:center;">
+        <strong>&#3515;&#3538;&#3503;&#3539;&#3482;&#3505;&#3530;&#3503; &#3463;&#3515;&#3499;&#3530;&#8205;&#3514; &#3523;&#3546;&#3505;&#3535;&#3523;&#3505;&#3514;.</strong><br>
+        &#3467;&#3497;&#3523;&#3530;&#3484;&#3538;&#3515;&#3538;&#3514;<br>
+        &#3512;&#3535;&#3501;&#3517;&#3546;
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-brand">Rideekanda Forest Monastery</div>
+    <p class="footer-quote">May all beings be free from suffering.</p>
+    <p class="footer-copy">Three-Story Building Project &middot; &copy; 2026 &middot; Built with mindfulness and care.</p>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)">&lsaquo;</button>
+    <img id="lightboxImg" src="" alt="Gallery image">
+    <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)">&rsaquo;</button>
+    <div class="lightbox-counter" id="lightboxCounter"></div>
+  </div>
+
+  <script>
+    // Mobile menu
+    document.getElementById('hamburger').addEventListener('click', function() {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+    document.querySelectorAll('.nav-links a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        document.getElementById('navLinks').classList.remove('open');
+      });
+    });
+
+    // Lightbox
+    var images = [
+      'images/building-4.png','images/building-2.png','images/building-1.png',
+      'images/building-3.png','images/building-5.png','images/building-6.png',
+      'images/building-7.png'
+    ];
+    var currentIdx = 0;
+    function openLightbox(idx) {
+      currentIdx = idx;
+      document.getElementById('lightboxImg').src = images[idx];
+      document.getElementById('lightboxCounter').textContent = (idx+1) + ' / ' + images.length;
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    function navLightbox(dir) {
+      currentIdx = (currentIdx + dir + images.length) % images.length;
+      document.getElementById('lightboxImg').src = images[currentIdx];
+      document.getElementById('lightboxCounter').textContent = (currentIdx+1) + ' / ' + images.length;
+    }
+    document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+    document.addEventListener('keydown', function(e) {
+      if (!document.getElementById('lightbox').classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navLightbox(-1);
+      if (e.key === 'ArrowRight') navLightbox(1);
+    });
+
+    // Fade-in on scroll
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+  </script>
+<!-- eco-nav -->
+  <link rel="stylesheet" href="../../eco-nav.css">
+  <script id="eco-nav" src="../../eco-nav.js" data-root="../../" data-current="threestory" defer></script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Rideekanda Forest Monastery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+Sinhala:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ─────────────────────────────────────────────────────────
+       Palette — paper (light default) / night (dark).
+       Lifted from new appearance to match the family look.
+       ───────────────────────────────────────────────────────── */
+    :root {
+      --bg: #f4ede0;
+      --bg-deep: #ece3d1;
+      --card: #fdfbf6;
+      --ink: #1f1a14;
+      --ink-dim: #4a4034;
+      --ink-faint: #8a7d68;
+      --muted: #8a7d68;
+      --line: #e6dcc6;
+      --accent: #2d4a32;
+      --accent-soft: #5b7a5f;
+      --gold: #c08a3e;
+      --saffron: #c08a3e;
+      --halo: rgba(45, 74, 50, 0.22);
+      --shadow-sm: 0 1px 2px rgba(57, 44, 22, 0.05), 0 0 0 1px rgba(57, 44, 22, 0.04);
+      --shadow-md: 0 12px 32px -16px rgba(57, 44, 22, 0.22), 0 2px 6px -2px rgba(57, 44, 22, 0.08), 0 0 0 1px rgba(57, 44, 22, 0.05);
+    }
+    body.dark {
+      --bg: #1f1a14;
+      --bg-deep: #16120d;
+      --card: #2a241c;
+      --ink: #f3ecdb;
+      --ink-dim: #d8ccb4;
+      --ink-faint: #9d8d72;
+      --muted: #9d8d72;
+      --line: #3a3025;
+      --accent: #c08a3e;
+      --accent-soft: #d8a85a;
+      --gold: #e0b76a;
+      --saffron: #e0b76a;
+      --halo: rgba(224, 183, 106, 0.28);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,235,200,0.04);
+      --shadow-md: 0 16px 40px -18px rgba(0,0,0,0.7), 0 2px 6px -2px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,235,200,0.05);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Manrope', system-ui, sans-serif;
+      overflow: hidden;
+      overscroll-behavior: none;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.6s ease, color 0.6s ease;
+    }
+    #root { width: 100%; height: 100%; }
+
+    /* Backdrop — paper texture: two faint radial washes (gold + forest) */
+    .backdrop {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 48%),
+        radial-gradient(circle at 82% 88%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 50%),
+        radial-gradient(ellipse 60% 55% at 50% 46%, color-mix(in srgb, var(--card) 55%, transparent), transparent 72%);
+      transition: background 0.6s ease;
+    }
+    /* Very subtle paper grain */
+    .grain {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      opacity: 0.5;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='220' height='220' filter='url(%23n)' opacity='0.025'/></svg>");
+    }
+    body.dark .grain { mix-blend-mode: screen; opacity: 0.4; }
+    /* Decorative mountain wash at bottom — sumi-e silhouette */
+    .horizon {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      height: 30vh;
+      pointer-events: none;
+      opacity: 0.08;
+      background:
+        radial-gradient(ellipse 80% 100% at 30% 100%, rgba(45,74,50,0.15) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 90% at 70% 100%, rgba(45,74,50,0.1) 0%, transparent 50%);
+      transition: opacity 0.6s ease;
+    }
+    body.dark .horizon { opacity: 0.18; }
+
+    /* Header */
+    .chrome {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; justify-content: center; align-items: center;
+      padding: 46px 32px 16px;
+      pointer-events: none;
+      z-index: 500;
+    }
+    .chrome > * { pointer-events: auto; }
+    .brand {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .brand .name {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-align: center;
+      transition: color 0.6s ease;
+    }
+
+    /* Stage: where tiles live */
+    .stage {
+      position: absolute; inset: 0;
+      cursor: grab;
+      touch-action: none;
+    }
+    .stage.dragging { cursor: grabbing; }
+
+    /* Each tile is absolutely positioned — shifted down to leave room for header */
+    .tile {
+      position: absolute;
+      left: 50%; top: 50%;
+      border-radius: 9999px;
+      display: grid; place-items: center;
+      will-change: transform, opacity;
+      transition: filter 0.4s ease, box-shadow 0.5s ease;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .tile-inner {
+      position: absolute; inset: 0;
+      border-radius: 9999px;
+      display: grid; place-items: center;
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.45s ease, border-color 0.45s ease, background 0.6s ease;
+    }
+    .tile.focal .tile-inner {
+      box-shadow:
+        var(--shadow-md),
+        0 0 0 1.5px color-mix(in srgb, var(--accent) 38%, transparent),
+        0 0 44px -6px var(--halo);
+      border-color: transparent;
+    }
+    /* Home tile: forest-green (paper) / espresso-gold (night) medallion */
+    .tile--home .tile-inner {
+      background:
+        radial-gradient(circle at 34% 28%, color-mix(in srgb, var(--accent) 82%, #fff 18%), var(--accent) 78%);
+      border-color: transparent;
+      box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255,255,255,0.14);
+    }
+    .tile--home.focal .tile-inner {
+      box-shadow:
+        var(--shadow-md),
+        0 0 0 2px color-mix(in srgb, var(--accent) 55%, transparent),
+        0 0 54px -4px var(--halo),
+        inset 0 1px 0 rgba(255,255,255,0.16);
+    }
+    body.dark .tile--home .tile-inner {
+      background: radial-gradient(circle at 34% 28%, #3a3026, #211c15 80%);
+      box-shadow: var(--shadow-md), 0 0 0 1.5px color-mix(in srgb, var(--gold) 45%, transparent), inset 0 1px 0 rgba(255,235,200,0.06);
+    }
+    /* Soft top sheen */
+    .tile-rim {
+      position: absolute; inset: 0;
+      border-radius: 9999px;
+      pointer-events: none;
+      background: radial-gradient(circle at 32% 22%, rgba(255,255,255,0.5), transparent 46%);
+      opacity: 0.5;
+    }
+    body.dark .tile-rim { background: radial-gradient(circle at 32% 22%, rgba(255,240,210,0.08), transparent 46%); opacity: 1; }
+    .tile--home .tile-rim { background: radial-gradient(circle at 34% 24%, rgba(255,255,255,0.22), transparent 50%); opacity: 1; }
+    /* Icon */
+    .tile-icon {
+      position: relative;
+      z-index: 2;
+      color: var(--accent);
+      transition: color 0.45s ease;
+    }
+    .tile--home .tile-icon { color: #f4ede0; }
+    body.dark .tile--home .tile-icon { color: #f4ede0; }
+    /* Mask-based SVG icons inherit currentColor via backgroundColor */
+    /* Tile label beneath */
+    .tile-label {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      opacity: 0.7;
+      pointer-events: none;
+      transition: opacity 0.3s ease, color 0.6s ease;
+    }
+    .tile.focal .tile-label { opacity: 1; }
+
+    /* Focal readout — just above hint */
+    .focal-bar {
+      position: fixed;
+      bottom: 12px; left: 0; right: 0;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      z-index: 500;
+      pointer-events: none;
+      transition: color 0.6s ease;
+    }
+    .focal-sep { margin: 0 4px; }
+
+    /* Hint bottom center */
+    .hint {
+      position: fixed;
+      bottom: 22px; left: 0; right: 0;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      z-index: 500;
+      pointer-events: none;
+      opacity: 0.7;
+      transition: color 0.6s ease;
+    }
+    .hint .key {
+      display: inline-block;
+      padding: 2px 6px;
+      border: 1px solid var(--muted);
+      border-radius: 4px;
+      margin: 0 2px;
+      font-size: 9px;
+    }
+
+    /* Compass — centered above focal readout */
+    .compass {
+      position: fixed; left: 0; right: 0; bottom: 42px;
+      margin: 0 auto;
+      width: 48px; height: 48px;
+      z-index: 500;
+      pointer-events: auto;
+      cursor: pointer;
+      opacity: 0.7;
+    }
+    .compass-ring {
+      stroke: var(--muted);
+      stroke-width: 0.5;
+      fill: none;
+    }
+    .compass-dot { fill: var(--accent); }
+    .compass-tick { stroke: var(--muted); stroke-width: 0.5; }
+
+    /* Sun/Moon toggle pill */
+    .theme-toggle {
+      position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 500;
+      display: inline-flex; align-items: center; gap: 2px;
+      padding: 3px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--card) 70%, transparent);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: pointer;
+      font: inherit;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    /* Track */
+    .theme-toggle .knob {
+      position: relative;
+      width: 40px; height: 20px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #e7f0ea 0%, #d2e2d6 100%);
+      transition: background 0.5s ease;
+      overflow: hidden;
+    }
+    body.dark .theme-toggle .knob {
+      background: linear-gradient(180deg, #211b13 0%, #14100b 100%);
+    }
+    /* Disc (sun ↔ moon) */
+    .theme-toggle .knob .indicator {
+      position: absolute; top: 2px; left: 2px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%,
+                  #fff3cf 0%, #f0c24e 60%, #c0892e 100%);
+      box-shadow:
+        0 1px 2px rgba(120,90,20,0.3),
+        0 0 12px rgba(240,200,90,0.6);
+      transform: translateX(20px);
+      transition:
+        transform 0.45s cubic-bezier(.4, 1.4, .5, 1),
+        background 0.5s ease,
+        box-shadow 0.5s ease;
+    }
+    body.dark .theme-toggle .knob .indicator {
+      transform: translateX(0);
+      background: radial-gradient(circle at 35% 30%,
+                  #f7f0dc 0%, #d8cba8 60%, #9d8c6e 100%);
+      box-shadow:
+        0 1px 2px rgba(0,0,0,0.4),
+        0 0 10px rgba(220,200,160,0.4);
+    }
+    /* Stars (night only) */
+    .theme-toggle .knob .stars {
+      position: absolute; inset: 0;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    body.dark .theme-toggle .knob .stars { opacity: 1; }
+    .theme-toggle .knob .stars i {
+      position: absolute;
+      width: 1px; height: 1px;
+      border-radius: 50%;
+      background: #e8dcbc;
+      opacity: 0.85;
+    }
+    .theme-toggle .knob .stars i:nth-child(1) { top: 5px;  left: 23px; }
+    .theme-toggle .knob .stars i:nth-child(2) { top: 10px; left: 29px; }
+    .theme-toggle .knob .stars i:nth-child(3) { top: 14px; left: 26px; }
+    .theme-toggle .knob .stars i:nth-child(4) { top: 6px;  left: 33px; }
+    /* Label */
+    .theme-toggle .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0 8px 0 5px;
+      color: var(--muted);
+      white-space: nowrap;
+      transition: color 0.4s ease;
+    }
+    @media (max-width: 600px) {
+      .theme-toggle { top: 6px; }
+    }
+
+    /* When tile is loading or initial */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .chrome, .hint, .compass, .focal-bar { animation: fadeUp 0.8s ease 0.2s both; }
+  </style>
+</head>
+<body>
+  <div class="backdrop" id="backdrop"></div>
+  <div class="grain"></div>
+  <div class="horizon"></div>
+
+  <div id="root"></div>
+
+  <div class="chrome">
+    <div class="brand">
+      <span class="name">Rideekanda Forest Monastery</span>
+      <span class="name">රිදීකන්ද ආරණ්‍ය සේනාසනය</span>
+    </div>
+  </div>
+
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+    <div class="knob">
+      <div class="stars"><i></i><i></i><i></i><i></i></div>
+      <div class="indicator"></div>
+    </div>
+    <span class="label">Night</span>
+  </button>
+
+  <svg class="compass" viewBox="-32 -32 64 64">
+    <circle class="compass-ring" r="26"></circle>
+    <circle class="compass-ring" r="14"></circle>
+    <circle class="compass-ring" r="4"></circle>
+    <line class="compass-tick" x1="0" y1="-30" x2="0" y2="-26"></line>
+    <line class="compass-tick" x1="0" y1="26" x2="0" y2="30"></line>
+    <line class="compass-tick" x1="-30" y1="0" x2="-26" y2="0"></line>
+    <line class="compass-tick" x1="26" y1="0" x2="30" y2="0"></line>
+    <circle class="compass-dot" id="compass-dot" cx="0" cy="0" r="1.6"></circle>
+  </svg>
+
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="image-slot.js"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="icons.jsx"></script>
+  <script type="text/babel" src="admin-panel.jsx"></script>
+  <script type="text/babel" src="app.jsx"></script>
+<!-- eco-nav -->
+  <link rel="stylesheet" href="eco-nav.css">
+  <script id="eco-nav" src="eco-nav.js" data-root="" data-current="home" defer></script>
+</body>
+</html>
