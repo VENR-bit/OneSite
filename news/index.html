@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=2" />
+<link rel="stylesheet" href="styles.css?v=3" />
 </head>
 <body>
 <main id="top">
@@ -98,8 +98,23 @@
 
 </main>
 
+<!-- Reader modal (full post text, on-site — no external links) -->
+<div class="reader" id="reader" aria-hidden="true">
+  <div class="reader-overlay" data-close></div>
+  <article class="reader-panel" role="dialog" aria-modal="true" aria-labelledby="reader-title">
+    <button class="reader-close" type="button" aria-label="Close" data-close>&times;</button>
+    <div class="reader-media" id="reader-media"></div>
+    <div class="reader-body">
+      <div class="kicker"><span class="tag" id="reader-tag"></span><span class="date" id="reader-date"></span></div>
+      <h2 id="reader-title"></h2>
+      <p class="when" id="reader-when" hidden></p>
+      <div class="reader-text" id="reader-text"></div>
+    </div>
+  </article>
+</div>
+
 <!-- News data + render -->
-<script src="posts.js?v=2"></script>
+<script src="posts.js?v=3"></script>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -115,6 +130,11 @@
       return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
     }
     function esc(s) { return (s || '').replace(/[&<>"]/g, function (c) { return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; }); }
+    function paras(t) {
+      return (t || '').split(/\n{2,}|\r\n\r\n/).map(function (b) {
+        return '<p>' + esc(b.trim()).replace(/\n/g, '<br>') + '</p>';
+      }).join('');
+    }
 
     var featureMount = document.getElementById('feature-mount');
     var gridMount = document.getElementById('grid-mount');
@@ -124,12 +144,39 @@
       return;
     }
 
+    // ---- Reader modal ----
+    var reader = document.getElementById('reader');
+    var rMedia = document.getElementById('reader-media');
+    var rTag = document.getElementById('reader-tag');
+    var rDate = document.getElementById('reader-date');
+    var rTitle = document.getElementById('reader-title');
+    var rWhen = document.getElementById('reader-when');
+    var rText = document.getElementById('reader-text');
+
+    function openReader(p) {
+      rMedia.innerHTML = p.image ? '<img src="assets/' + esc(p.image) + '" alt="' + esc(p.title) + '">' : '';
+      rMedia.style.display = p.image ? '' : 'none';
+      rTag.textContent = p.type || 'News';
+      rDate.textContent = fmtDate(p.date);
+      rTitle.textContent = p.title;
+      if (p.when) { rWhen.innerHTML = '<span>When</span> ' + esc(p.when); rWhen.hidden = false; }
+      else { rWhen.hidden = true; }
+      rText.innerHTML = paras(p.body || p.excerpt);
+      reader.classList.add('is-open');
+      reader.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeReader() {
+      reader.classList.remove('is-open');
+      reader.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+    reader.addEventListener('click', function (e) { if (e.target.hasAttribute('data-close')) closeReader(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeReader(); });
+
     // Featured = newest post
     var f = posts[0];
-    var fLink = f.link || '#';
-    var fMedia = f.image
-      ? '<div class="feature-media"><img src="assets/' + esc(f.image) + '" alt="' + esc(f.title) + '"></div>'
-      : '';
+    var fMedia = f.image ? '<div class="feature-media"><img src="assets/' + esc(f.image) + '" alt="' + esc(f.title) + '"></div>' : '';
     featureMount.className = 'feature reveal';
     featureMount.style.setProperty('--reveal-delay', '120ms');
     featureMount.innerHTML =
@@ -139,7 +186,7 @@
         '<h2>' + esc(f.title) + '</h2>' +
         (f.when ? '<p class="when"><span>When</span> ' + esc(f.when) + '</p>' : '') +
         '<p>' + esc(f.excerpt) + '</p>' +
-        (fLink && fLink !== '#' ? '<a class="readmore" href="' + esc(fLink) + '" target="_blank" rel="noopener">Read more <span class="arr">&rarr;</span></a>' : '') +
+        '<button class="readmore" type="button" data-idx="0">Read more <span class="arr">&rarr;</span></button>' +
       '</div>';
 
     // Grid = the rest
@@ -148,23 +195,28 @@
       document.getElementById('more').style.display = 'none';
     } else {
       gridMount.innerHTML = rest.map(function (p, i) {
-        var link = p.link || '#';
-        var isLink = link && link !== '#';
-        var tag = '<a class="card reveal" style="--reveal-delay:' + (i * 80) + 'ms" href="' + esc(link) + '" target="_blank" rel="noopener">';
-        var openClose = isLink ? [tag, '</a>'] : ['<article class="card reveal" style="--reveal-delay:' + (i * 80) + 'ms">', '</article>'];
+        var idx = i + 1;
         var thumb = p.image ? '<div class="thumb"><img src="assets/' + esc(p.image) + '" alt="' + esc(p.title) + '"></div>' : '';
-        return openClose[0] +
+        return '<button class="card reveal" type="button" data-idx="' + idx + '" style="--reveal-delay:' + (i * 80) + 'ms">' +
           thumb +
           '<div class="body">' +
             '<div class="meta"><span class="tag">' + esc(p.type || 'News') + '</span><span class="date">' + fmtDate(p.date) + '</span></div>' +
             '<h3>' + esc(p.title) + '</h3>' +
             (p.when ? '<p class="when"><span>When</span> ' + esc(p.when) + '</p>' : '') +
             '<p>' + esc(p.excerpt) + '</p>' +
-            (isLink ? '<span class="readmore">Read more <span class="arr">&rarr;</span></span>' : '') +
+            '<span class="readmore">Read more <span class="arr">&rarr;</span></span>' +
           '</div>' +
-          openClose[1];
+        '</button>';
       }).join('');
     }
+
+    // open reader on any element carrying data-idx
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-idx]');
+      if (!t) return;
+      var p = posts[parseInt(t.getAttribute('data-idx'), 10)];
+      if (p) openReader(p);
+    });
 
     // reveal-on-scroll (same behaviour as the other pages)
     var reveals = [].slice.call(document.querySelectorAll('.reveal'));
