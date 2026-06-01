@@ -293,7 +293,7 @@
 
     /* Sun/Moon toggle pill */
     .theme-toggle {
-      position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 500;
+      position: fixed; top: auto; bottom: 50px; left: calc(50% + 42px); transform: none; z-index: 500;
       display: inline-flex; align-items: center; gap: 2px;
       padding: 3px;
       border-radius: 999px;
@@ -371,7 +371,7 @@
       transition: color 0.4s ease;
     }
     @media (max-width: 600px) {
-      .theme-toggle { top: 6px; }
+      .theme-toggle { bottom: 48px; }
     }
 
     /* When tile is loading or initial */
@@ -380,6 +380,20 @@
       to { opacity: 1; transform: translateY(0); }
     }
     .chrome, .hint, .compass, .focal-bar { animation: fadeUp 0.8s ease 0.2s both; }
+
+    /* Dashboard only: move the shared Explore launcher down to flank the
+       compass (radar) at the bottom — to the left of it, mirroring the
+       day/night toggle on the right. Higher specificity (body …) so it
+       overrides the top-left default in eco-nav.css. */
+    body .eco-launch {
+      top: auto;
+      bottom: 44px;
+      left: auto;
+      right: calc(50% + 42px);
+    }
+    @media (max-width: 560px) {
+      body .eco-launch { bottom: 42px; }
+    }
   </style>
 </head>
 <body>
