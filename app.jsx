@@ -27,7 +27,7 @@ const DEFAULT_TILES = [
     bg: 'radial-gradient(circle at 30% 25%, #5a4020 0%, #2a1c0c 85%)',
     halo: 'rgba(200, 160, 80, 0.32)', fg: '#f0ddb8', icon: 'threeStory' },
 
-  { id: 'requirements', label: 'Requirement Lists', sub: 'Necessary Items needed for Rideekanda',
+  { id: 'requirements', label: 'Monastery Requirements', sub: 'Necessary Items needed for Rideekanda',
     url: 'requirements/', size: 132, ring: 1,
     bg: 'radial-gradient(circle at 30% 25%, #6a4e26 0%, #2e1f0c 85%)',
     halo: 'rgba(204, 160, 92, 0.32)', fg: '#f0e0bd', icon: 'list' },
