@@ -293,7 +293,7 @@
 
     /* Sun/Moon toggle pill */
     .theme-toggle {
-      position: fixed; top: auto; bottom: 50px; left: calc(50% + 42px); transform: none; z-index: 500;
+      position: fixed; top: auto; bottom: 49px; left: calc(50% + 42px); transform: none; z-index: 500;
       display: inline-flex; align-items: center; gap: 2px;
       padding: 6px;   /* matches the Explore launcher's 34px height */
       border-radius: 999px;
@@ -371,7 +371,7 @@
       transition: color 0.4s ease;
     }
     @media (max-width: 600px) {
-      .theme-toggle { bottom: 48px; }
+      .theme-toggle { bottom: 49px; }
     }
 
     /* When tile is loading or initial */
@@ -387,12 +387,14 @@
        overrides the top-left default in eco-nav.css. */
     body .eco-launch {
       top: auto;
-      bottom: 44px;
+      bottom: 49px;   /* centre aligns with the 48px compass (bottom:42px) */
       left: auto;
       right: calc(50% + 42px);
     }
     @media (max-width: 560px) {
-      body .eco-launch { bottom: 42px; }
+      /* Explore is icon-only (~36px) here, so nudge up 1px to stay centred. */
+      body .eco-launch { bottom: 48px; }
+      .theme-toggle { bottom: 49px; }
     }
   </style>
 </head>
