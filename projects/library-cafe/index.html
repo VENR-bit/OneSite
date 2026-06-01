@@ -20,22 +20,6 @@ section[id]{scroll-margin-top:92px}
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s ease}
 .reveal.in{opacity:1;transform:translateY(0)}
 
-/* NAV */
-.nav{position:sticky;top:0;z-index:40;background:transparent;border-bottom:1px solid transparent;transition:background .35s,border-color .35s,backdrop-filter .35s}
-.nav.scrolled{background:rgba(244,237,224,.86);backdrop-filter:blur(14px) saturate(1.05);-webkit-backdrop-filter:blur(14px) saturate(1.05);border-bottom-color:var(--line)}
-.nav-inner{max-width:1280px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.nav-logo{display:flex;align-items:center;gap:12px}
-.nav-logo img{width:49px;height:32px;opacity:.95}
-.nav-logo-name{font-family:var(--serif);font-size:18px;font-weight:500;letter-spacing:-.005em}
-.nav-logo-sub{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-top:1px}
-.nav-links{display:flex;gap:28px;list-style:none}
-.nav-links a{font-size:13px;font-weight:500;letter-spacing:.4px;color:var(--ink-soft);text-transform:uppercase;transition:color .2s}
-.nav-links a:hover{color:var(--accent)}
-.nav-home-link{color:var(--accent)!important;font-weight:600!important}
-.nav-right{display:flex;align-items:center;gap:10px}
-.btn-support{display:inline-flex;align-items:center;gap:8px;padding:9px 18px 9px 20px;background:var(--accent);color:#fdfbf6;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.3px;box-shadow:0 6px 16px -8px rgba(45,74,50,.5);transition:transform .2s,box-shadow .2s}
-.btn-support:hover{transform:translateY(-1px);box-shadow:0 10px 24px -8px rgba(45,74,50,.6)}
-.hamburger{display:none;width:40px;height:40px;border-radius:999px;background:var(--card);border:1px solid var(--line);cursor:pointer;align-items:center;justify-content:center}
 .eyebrow{font-family:var(--sans);font-size:11.5px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-weight:600}
 
 /* HERO */
@@ -199,14 +183,6 @@ section[id]{scroll-margin-top:92px}
 
 /* MOBILE */
 @media(max-width:719px){
-.nav-inner{padding:14px 18px}
-.nav-links{display:none!important}
-.btn-support-desktop{display:none!important}
-.hamburger{display:flex!important}
-.mobile-menu{padding:8px 18px 22px;border-top:1px solid var(--line);background:rgba(244,237,224,.95);backdrop-filter:blur(14px)}
-.mobile-menu ul{display:flex;flex-direction:column;gap:4px;list-style:none}
-.mobile-menu a{display:block;padding:12px 0;font-family:var(--serif);font-size:22px;border-bottom:1px solid var(--line)}
-.mobile-menu .support-link{color:var(--accent);font-style:italic;border:none}
 .hero{padding:48px 18px 28px}
 .hero h1{font-size:56px}
 .hero-kicker{font-size:19px}
@@ -406,11 +382,6 @@ section[id]{scroll-margin-top:92px}
 </footer>
 
 <script>
-var nav=document.getElementById('mainNav');if(nav){
-window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>24)},{passive:true});}
-var menuBtn=document.getElementById('menuBtn'),mobileMenu=document.getElementById('mobileMenu'),menuIcon=document.getElementById('menuIcon'),menuOpen=false;if(menuBtn&&mobileMenu&&menuIcon){
-menuBtn.addEventListener('click',function(){menuOpen=!menuOpen;mobileMenu.style.display=menuOpen?'block':'none';menuIcon.setAttribute('d',menuOpen?'M3 3l12 8M3 11l12-8':'M2 2h14M2 7h14M2 12h14')});}
-function closeMenu(){menuOpen=false;mobileMenu.style.display='none';menuIcon.setAttribute('d','M2 2h14M2 7h14M2 12h14')}
 var revealEls=document.querySelectorAll('.reveal');
 if('IntersectionObserver' in window){var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:0.08});revealEls.forEach(function(el){var r=el.getBoundingClientRect();if(r.top<window.innerHeight*0.92)el.classList.add('in');else io.observe(el)});setTimeout(function(){revealEls.forEach(function(el){el.classList.add('in')})},4000)}else{revealEls.forEach(function(el){el.classList.add('in')})}
 var galleryItems=[{src:"Project%20Angle.png",title:"Full Design — Perspective",desc:"Complete layout with indoor space, veranda, and outdoor deck."},{src:"Project%20Left%203d.png",title:"Left Side — 3D View",desc:"Interior with bar seating, book racks, and pantry."},{src:"Project%20Front.png",title:"Front Elevation",desc:"Building facade with veranda chairs and deck."},{src:"Project%20Inside%20Right%20Side%20Angle.png",title:"Interior — Right Angle",desc:"Reading area with table, chairs, and book shelves."},{src:"Project%20Inside%20Front.png",title:"Interior — Front View",desc:"Dining table with chairs, pantry cupboard, and shelving."},{src:"Project%20inside%20left.png",title:"Interior — Left View",desc:"Window seating, reading table, and sofa area."},{src:"Project%20Top.png",title:"Top View — Floor Plan",desc:"Full layout with furniture placement from above."},{src:"Project%20Side%203d.png",title:"Side — 3D View",desc:"Side profile showing veranda table and deck."},{src:"Deck%20out%20door.png",title:"Outdoor Timber Deck",desc:"Raised deck platform with railings extending into the forest."}];
