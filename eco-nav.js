@@ -29,8 +29,7 @@
     { id: "gallery",     href: "gallery/",              en: "Gallery",             si: "ඡායාරූප" },
     { id: "reviews",     href: "reviews/",              en: "Reviews",             si: "ඇගයීම්" },
     { id: "donate",      href: "donate/",               en: "Donate",              si: "පරිත්‍යාග" },
-    { id: "requirements",      href: "requirements/",      en: "Sangha Requirements", si: "සංඝ අවශ්‍යතා" },
-    { id: "requirements-list", href: "requirements-list/", en: "Requirements List",   si: "අවශ්‍යතා ලැයිස්තුව" }
+    { id: "requirements",      href: "requirements/",      en: "Sangha Requirements", si: "සංඝ අවශ්‍යතා" }
   ];
   var PROJECTS = [
     { id: "projects",     href: "projects/",                en: "All Projects",  si: "ව්‍යාපෘති" },

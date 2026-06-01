@@ -106,9 +106,6 @@ const DEFAULT_TILES = [
     url: 'projects/', size: 132, ring: 1,
     bg: 'radial-gradient(circle at 30% 25%, #4a5a30 0%, #1e2812 85%)',
     halo: 'rgba(160, 180, 100, 0.32)', fg: '#e8e6c8', icon: 'tree' },
-  { id: 'requirements-list', label: 'අවශ්‍යතා ලැයිස්තුව', sub: 'Requirements List (Sinhala)',
-    url: 'requirements-list/', size: 82, ring: 2,
-    bg: '#3a3018', fg: '#e6d4a8', icon: 'list' },
 ];
 window.DEFAULT_TILES = DEFAULT_TILES;
 
