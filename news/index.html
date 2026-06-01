@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#1f1a14" />
+<title>News &amp; Events — Rideekanda Forest Monastery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=1" />
+</head>
+<body>
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-bg"><img src="assets/news-hero.jpg" alt="" aria-hidden="true" /></div>
+    <div class="hero-veil"></div>
+    <div class="hero-inner">
+      <img class="lotus-mark reveal" src="assets/lotus-logo.png" alt="Rideekanda Forest Monastery" />
+      <h1 class="reveal" style="--reveal-delay:120ms">News &amp; <em>Events</em></h1>
+      <p class="tagline reveal" style="--reveal-delay:260ms">Rideekanda&nbsp;&middot;&nbsp;Buddhist Forest Meditation Monastery</p>
+      <p class="place reveal" style="--reveal-delay:360ms">Happenings, observances, and announcements from the hillside</p>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED (latest) ============ -->
+  <section class="section" id="latest">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Latest</p>
+        <h2 class="section-title">What is happening<br>at the monastery</h2>
+      </div>
+      <div id="feature-mount" class="reveal" style="--reveal-delay:120ms"></div>
+    </div>
+  </section>
+
+  <!-- ============ MORE ============ -->
+  <section class="section" id="more" style="padding-top:0">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">More</p>
+        <h2 class="section-title">News &amp; announcements</h2>
+      </div>
+      <div id="grid-mount" class="grid"></div>
+    </div>
+  </section>
+
+  <!-- ============ STAY UPDATED ============ -->
+  <section class="section dark" id="subscribe">
+    <div class="container">
+      <div class="subscribe reveal">
+        <p class="eyebrow">Stay in touch</p>
+        <p class="lead">Receive news of upcoming retreats, observances, and events at Rideekanda.</p>
+        <p class="subnote">Follow the monastery online, or contact us to be added to our announcements.</p>
+        <a class="btn" href="https://www.facebook.com/rideekandaforest" target="_blank" rel="noopener">Follow on Facebook <span>&#8599;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="fbrand">
+            <img src="assets/lotus-logo.png" alt="" aria-hidden="true" />
+            <span><span class="name">Rideekanda</span><span class="sub">Forest Monastery</span></span>
+          </div>
+          <p class="fblurb">A Buddhist forest meditation monastery on Silver Hill, devoted to preserving the true teaching of the Buddha and guiding seekers along the noble path.</p>
+        </div>
+        <div>
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="../monastery/">The Monastery</a></li>
+            <li><a href="../retreat/">Residential Retreat</a></li>
+            <li><a href="../gallery/">Gallery</a></li>
+            <li><a href="../projects/">Projects</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Find Us</h4>
+          <ul>
+            <li>Yatawatta, Matale District</li>
+            <li>Sri Lanka</li>
+            <li><a href="../booking/">Book your stay</a></li>
+            <li><a href="../donate/">Dāna · Donation</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-base">
+        <span>© <span id="year"></span> Rideekanda Forest Monastery</span>
+        <span>Sabbadānaṃ dhammadānaṃ jināti — the gift of dhamma surpasses all gifts</span>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- News data + render -->
+<script src="posts.js?v=1"></script>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  (function () {
+    var posts = (window.NEWS_POSTS || []).slice().sort(function (a, b) {
+      return (b.date || '').localeCompare(a.date || '');
+    });
+
+    function fmtDate(iso) {
+      if (!iso) return '';
+      var d = new Date(iso + 'T00:00:00');
+      if (isNaN(d)) return iso;
+      return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+    function esc(s) { return (s || '').replace(/[&<>"]/g, function (c) { return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; }); }
+
+    var featureMount = document.getElementById('feature-mount');
+    var gridMount = document.getElementById('grid-mount');
+
+    if (!posts.length) {
+      featureMount.innerHTML = '<p class="empty">No news or events to show just yet — please check back soon.</p>';
+      return;
+    }
+
+    // Featured = newest post
+    var f = posts[0];
+    var fLink = f.link || '#';
+    var fMedia = f.image
+      ? '<div class="feature-media"><img src="assets/' + esc(f.image) + '" alt="' + esc(f.title) + '"></div>'
+      : '';
+    featureMount.className = 'feature reveal';
+    featureMount.style.setProperty('--reveal-delay', '120ms');
+    featureMount.innerHTML =
+      fMedia +
+      '<div class="feature-body">' +
+        '<div class="kicker"><span class="tag">' + esc(f.type || 'News') + '</span><span class="date">' + fmtDate(f.date) + '</span></div>' +
+        '<h2>' + esc(f.title) + '</h2>' +
+        '<p>' + esc(f.excerpt) + '</p>' +
+        (fLink && fLink !== '#' ? '<a class="readmore" href="' + esc(fLink) + '">Read more <span class="arr">&rarr;</span></a>' : '') +
+      '</div>';
+
+    // Grid = the rest
+    var rest = posts.slice(1);
+    if (!rest.length) {
+      document.getElementById('more').style.display = 'none';
+    } else {
+      gridMount.innerHTML = rest.map(function (p, i) {
+        var link = p.link || '#';
+        var isLink = link && link !== '#';
+        var tag = '<a class="card reveal" style="--reveal-delay:' + (i * 80) + 'ms" href="' + esc(link) + '">';
+        var openClose = isLink ? [tag, '</a>'] : ['<article class="card reveal" style="--reveal-delay:' + (i * 80) + 'ms">', '</article>'];
+        var thumb = p.image ? '<div class="thumb"><img src="assets/' + esc(p.image) + '" alt="' + esc(p.title) + '"></div>' : '';
+        return openClose[0] +
+          thumb +
+          '<div class="body">' +
+            '<div class="meta"><span class="tag">' + esc(p.type || 'News') + '</span><span class="date">' + fmtDate(p.date) + '</span></div>' +
+            '<h3>' + esc(p.title) + '</h3>' +
+            '<p>' + esc(p.excerpt) + '</p>' +
+            (isLink ? '<span class="readmore">Read more <span class="arr">&rarr;</span></span>' : '') +
+          '</div>' +
+          openClose[1];
+      }).join('');
+    }
+
+    // reveal-on-scroll (same behaviour as the other pages)
+    var reveals = [].slice.call(document.querySelectorAll('.reveal'));
+    var ticking = false;
+    function sweep() {
+      ticking = false;
+      var trigger = window.innerHeight * 0.92;
+      for (var i = reveals.length - 1; i >= 0; i--) {
+        if (reveals[i].getBoundingClientRect().top < trigger) {
+          reveals[i].classList.add('in');
+          reveals.splice(i, 1);
+        }
+      }
+    }
+    function onReveal() { if (!ticking) { ticking = true; requestAnimationFrame(sweep); } }
+    window.addEventListener('scroll', onReveal, { passive: true });
+    window.addEventListener('resize', onReveal, { passive: true });
+    sweep();
+  })();
+</script>
+
+<!-- eco-header -->
+  <link rel="stylesheet" href="../eco-header.css?v=2">
+  <script id="eco-header" src="../eco-header.js?v=2" data-root="../" data-links='[{"label":"Latest","href":"#latest"},{"label":"News","href":"#more"},{"label":"Subscribe","href":"#subscribe"}]' data-pad="true" defer></script>
+<!-- eco-nav -->
+  <link rel="stylesheet" href="../eco-nav.css">
+  <script id="eco-nav" src="../eco-nav.js?v=3" data-root="../" data-current="news" defer></script>
+</body>
+</html>
