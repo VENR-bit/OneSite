@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Rideekanda Forest Monastery</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,9 +47,26 @@
       --shadow-md: 0 16px 40px -18px rgba(0,0,0,0.7), 0 2px 6px -2px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,235,200,0.05);
     }
     * { box-sizing: border-box; }
+    html {
+      /* Paint the page background on the root element too, so any strip
+         iOS Safari exposes as its toolbar collapses shows the palette
+         colour instead of white. Default = paper. */
+      background: #f4ede0;
+      transition: background 0.6s ease;
+    }
+    /* Night theme: the .dark class lives on <body>, so mirror its
+       background onto <html> too, otherwise the Safari toolbar strip
+       would show the light paper colour in night mode. */
+    html:has(body.dark) { background: #1f1a14; }
     html, body {
       margin: 0; padding: 0;
-      width: 100%; height: 100%;
+      width: 100%;
+      /* Fallbacks first, then dynamic viewport height (dvh) which tracks
+         iOS Safari's collapsing toolbar — this removes the white margin
+         at the bottom that 100% / 100vh leaves behind. */
+      height: 100%;
+      height: 100vh;
+      height: 100dvh;
       background: var(--bg);
       color: var(--ink);
       font-family: 'Manrope', system-ui, sans-serif;
@@ -59,7 +76,12 @@
       -webkit-tap-highlight-color: transparent;
       transition: background 0.6s ease, color 0.6s ease;
     }
-    #root { width: 100%; height: 100%; }
+    #root {
+      width: 100%;
+      height: 100%;
+      height: 100vh;
+      height: 100dvh;
+    }
 
     /* Backdrop — paper texture: two faint radial washes (gold + forest) */
     .backdrop {
@@ -395,11 +417,11 @@
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-  <script src="image-slot.js"></script>
-  <script type="text/babel" src="tweaks-panel.jsx"></script>
-  <script type="text/babel" src="icons.jsx"></script>
-  <script type="text/babel" src="admin-panel.jsx"></script>
-  <script type="text/babel" src="app.jsx"></script>
+  <script src="image-slot.js?v=9"></script>
+  <script type="text/babel" src="tweaks-panel.jsx?v=9"></script>
+  <script type="text/babel" src="icons.jsx?v=9"></script>
+  <script type="text/babel" src="admin-panel.jsx?v=9"></script>
+  <script type="text/babel" src="app.jsx?v=9"></script>
 <!-- eco-nav -->
   <link rel="stylesheet" href="eco-nav.css">
   <script id="eco-nav" src="eco-nav.js" data-root="" data-current="home" defer></script>

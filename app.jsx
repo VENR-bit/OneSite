@@ -557,6 +557,10 @@ function App() {
   useEffect(() => {
     const isDark = t.palette === 'night';
     document.body.classList.toggle('dark', isDark);
+    // Mirror the theme background onto <html> so any strip iOS Safari
+    // exposes (collapsing toolbar / safe area) matches the palette
+    // instead of showing white.
+    document.documentElement.style.background = isDark ? '#1f1a14' : '#f4ede0';
     const toggleEl = document.getElementById('theme-toggle');
     if (toggleEl) {
       toggleEl.querySelector('.label').textContent = isDark ? 'Night' : 'Day';
