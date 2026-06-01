@@ -109,20 +109,11 @@ const DEFAULT_TILES = [
 ];
 window.DEFAULT_TILES = DEFAULT_TILES;
 
-// Responsive UI scale — enlarges the whole cluster (tiles + spacing)
-// on large displays (e.g. big portrait tablets / kiosks) while leaving
-// phones and laptops at the original size. Never scales below 1.
-function getUiScale() {
-  if (typeof window === 'undefined') return 1;
-  const m = Math.min(window.innerWidth, window.innerHeight);
-  return Math.max(1, Math.min(1.5, m / 900));
-}
-
-function buildLayout(tilesData, density, scale = 1) {
-  const R1 = 240 * density * scale;
-  const R2 = 410 * density * scale;
-  const R3 = 540 * density * scale;
-  const tiles = tilesData.map(t => ({ ...t, x: 0, y: 0, size: (t.size || 100) * scale }));
+function buildLayout(tilesData, density) {
+  const R1 = 240 * density;
+  const R2 = 410 * density;
+  const R3 = 540 * density;
+  const tiles = tilesData.map(t => ({ ...t, x: 0, y: 0 }));
   const ring1 = tiles.filter(t => t.ring === 1);
   const ring2 = tiles.filter(t => t.ring === 2);
   const ring3 = tiles.filter(t => t.ring === 3);
@@ -150,7 +141,7 @@ const lerp = (a, b, t) => a + (b - a) * t;
 // Hook: lerped pan position. setTarget moves the cluster toward
 // (x, y); the actual pan eases toward it every frame.
 // ──────────────────────────────────────────────────────────────
-function useLerpedPan(stiffness = 0.16, clampRef = null) {
+function useLerpedPan(stiffness = 0.16) {
   const targetRef = useRef({ x: 0, y: 0 });
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const panRef = useRef(pan);
@@ -159,16 +150,6 @@ function useLerpedPan(stiffness = 0.16, clampRef = null) {
   useEffect(() => {
     let rafId;
     const tick = () => {
-      // Clamp the target to the allowed pan bounds (set by the cluster
-      // extent) so dragging/momentum/wheel can't fling tiles into empty
-      // space — this is the single chokepoint every pan path flows through.
-      if (clampRef && clampRef.current) {
-        targetRef.current = clampRef.current(targetRef.current.x, targetRef.current.y);
-        // Also clamp the live pan — during an active drag onMove pushes
-        // panRef directly, so this gives a hard stop at the edge instead
-        // of an overshoot-and-rubber-band.
-        panRef.current = clampRef.current(panRef.current.x, panRef.current.y);
-      }
       const tx = targetRef.current.x;
       const ty = targetRef.current.y;
       const cur = panRef.current;
@@ -183,7 +164,7 @@ function useLerpedPan(stiffness = 0.16, clampRef = null) {
     };
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
-  }, [stiffness, clampRef]);
+  }, [stiffness]);
 
   const setTarget = useCallback((x, y) => {
     targetRef.current = { x, y };
@@ -243,66 +224,8 @@ const Tile = React.memo(function Tile({ tile, x, y, scale, opacity, isFocal, onP
 // ──────────────────────────────────────────────────────────────
 function Honeycomb({ tweaks, tilesData, onAdminToggle, onFocalChange }) {
   const stageRef = useRef(null);
-  const [uiScale, setUiScale] = useState(getUiScale);
-  useEffect(() => {
-    const onResize = () => setUiScale(getUiScale());
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
-  const tiles = useMemo(() => buildLayout(tilesData, tweaks.density, uiScale), [tilesData, tweaks.density, uiScale]);
-
-  // Pan-bounds clamp: a RADIAL limit on the pan vector. The pan can move
-  // the cluster until its farthest tile reaches the viewport centre, but no
-  // further — so you can always bring any tile to the middle to tap it, yet
-  // can never drag past the outermost ring into empty background. Radial
-  // (not a bounding box) means no empty corners on diagonal drags. This is a
-  // pure function applied at EVERY pan write-site (drag, momentum, wheel,
-  // keyboard, tick) so nothing can push the pan back outside the limit.
-  const clampRef = useRef(null);
-  useEffect(() => {
-    // Cluster extent (tile centres incl. their radius) relative to origin.
-    let minX = 0, maxX = 0, minY = 0, maxY = 0;
-    for (const t of tiles) {
-      const r = (t.size || 0) / 2;
-      if (t.x - r < minX) minX = t.x - r;
-      if (t.x + r > maxX) maxX = t.x + r;
-      if (t.y - r < minY) minY = t.y - r;
-      if (t.y + r > maxY) maxY = t.y + r;
-    }
-    clampRef.current = (px, py) => {
-      // Per-axis clamp: keep the cluster covering the viewport so the empty
-      // background never shows through. A tile at cluster-coord c appears at
-      // screen = viewportCentre + (c + pan). We require the cluster to span
-      // past each edge (minus a small margin); if the cluster is smaller than
-      // the viewport on an axis, lock that axis to centre. Asymmetric extent
-      // (more tiles below the lotus) is handled because min/max are independent.
-      const vw = window.innerWidth, vh = window.innerHeight;
-      // A tile at cluster-coord c sits at screen = half + (c + pan), where
-      // half = viewport centre. To keep the cluster covering both edges:
-      //   cover far edge (2·half):  half + maxC + pan ≥ 2·half → pan ≥ half - maxC
-      //   cover near edge (0):      half + minC + pan ≤ 0      → pan ≤ -half - minC
-      // So the cluster's bounding box always reaches every viewport edge and
-      // the empty background can never show through. If the cluster is smaller
-      // than the viewport on an axis, lo > hi → lock that axis to centre.
-      // Overshoot: edge tiles are pulled inward + scaled down by the fisheye,
-      // so they render short of their raw coords. Require the cluster to
-      // extend OVER px past each edge to absorb that and leave no empty band.
-      const OVER = 120;
-      const axis = (mn, mx, view, p) => {
-        const half = view / 2;
-        const lo = (half + OVER) - mx;     // most negative pan
-        const hi = (-half - OVER) - mn;    // most positive pan
-        if (lo > hi) return (lo + hi) / 2; // cluster smaller than viewport → centre
-        return Math.max(lo, Math.min(hi, p));
-      };
-      return {
-        x: axis(minX, maxX, vw, px),
-        y: axis(minY, maxY, vh, py),
-      };
-    };
-  }, [tiles]);
-
-  const { pan, setTarget, nudgeTarget, snapTo, panRef, targetRef } = useLerpedPan(0.16, clampRef);
+  const tiles = useMemo(() => buildLayout(tilesData, tweaks.density), [tilesData, tweaks.density]);
+  const { pan, setTarget, nudgeTarget, snapTo, panRef, targetRef } = useLerpedPan(0.16);
   const [dragging, setDragging] = useState(false);
 
   // Auto-snap to a tile id ('home' on first load)
@@ -517,7 +440,7 @@ function Honeycomb({ tweaks, tilesData, onAdminToggle, onFocalChange }) {
 
   // Compute per-frame transforms. Re-renders happen via pan state.
   const intensity = tweaks.intensity;
-  const maxDist = 540 * uiScale;
+  const maxDist = 540;
   const minScale = lerp(1, 0.25, intensity);
   const computed = tiles.map((t, i) => {
     const sx = t.x + pan.x;
