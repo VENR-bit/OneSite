@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=1" />
+<link rel="stylesheet" href="styles.css?v=2" />
 </head>
 <body>
 <main id="top">
@@ -99,7 +99,7 @@
 </main>
 
 <!-- News data + render -->
-<script src="posts.js?v=1"></script>
+<script src="posts.js?v=2"></script>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -137,8 +137,9 @@
       '<div class="feature-body">' +
         '<div class="kicker"><span class="tag">' + esc(f.type || 'News') + '</span><span class="date">' + fmtDate(f.date) + '</span></div>' +
         '<h2>' + esc(f.title) + '</h2>' +
+        (f.when ? '<p class="when"><span>When</span> ' + esc(f.when) + '</p>' : '') +
         '<p>' + esc(f.excerpt) + '</p>' +
-        (fLink && fLink !== '#' ? '<a class="readmore" href="' + esc(fLink) + '">Read more <span class="arr">&rarr;</span></a>' : '') +
+        (fLink && fLink !== '#' ? '<a class="readmore" href="' + esc(fLink) + '" target="_blank" rel="noopener">Read more <span class="arr">&rarr;</span></a>' : '') +
       '</div>';
 
     // Grid = the rest
@@ -149,7 +150,7 @@
       gridMount.innerHTML = rest.map(function (p, i) {
         var link = p.link || '#';
         var isLink = link && link !== '#';
-        var tag = '<a class="card reveal" style="--reveal-delay:' + (i * 80) + 'ms" href="' + esc(link) + '">';
+        var tag = '<a class="card reveal" style="--reveal-delay:' + (i * 80) + 'ms" href="' + esc(link) + '" target="_blank" rel="noopener">';
         var openClose = isLink ? [tag, '</a>'] : ['<article class="card reveal" style="--reveal-delay:' + (i * 80) + 'ms">', '</article>'];
         var thumb = p.image ? '<div class="thumb"><img src="assets/' + esc(p.image) + '" alt="' + esc(p.title) + '"></div>' : '';
         return openClose[0] +
@@ -157,6 +158,7 @@
           '<div class="body">' +
             '<div class="meta"><span class="tag">' + esc(p.type || 'News') + '</span><span class="date">' + fmtDate(p.date) + '</span></div>' +
             '<h3>' + esc(p.title) + '</h3>' +
+            (p.when ? '<p class="when"><span>When</span> ' + esc(p.when) + '</p>' : '') +
             '<p>' + esc(p.excerpt) + '</p>' +
             (isLink ? '<span class="readmore">Read more <span class="arr">&rarr;</span></span>' : '') +
           '</div>' +

@@ -130,6 +130,10 @@ img { max-width: 100%; display: block; }
   border-radius: 999px; padding: 5px 12px;
 }
 .date { font-family: var(--font-body); font-size: 0.8rem; letter-spacing: 0.06em; color: var(--muted); }
+.when { font-family: var(--font-body); font-size: 0.86rem; color: var(--ink-soft); margin: 0 0 0.9rem; }
+.when span { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-right: 0.5em; }
+.card .when { font-size: 0.78rem; margin: 0; }
+.card .when span { font-size: 0.55rem; }
 .feature h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.9rem, 3.4vw, 2.9rem); line-height: 1.08; margin: 0 0 1rem; }
 .feature p { color: var(--ink-soft); margin: 0 0 1.6rem; max-width: 54ch; }
 .readmore {
