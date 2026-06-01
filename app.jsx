@@ -109,11 +109,20 @@ const DEFAULT_TILES = [
 ];
 window.DEFAULT_TILES = DEFAULT_TILES;
 
-function buildLayout(tilesData, density) {
-  const R1 = 240 * density;
-  const R2 = 410 * density;
-  const R3 = 540 * density;
-  const tiles = tilesData.map(t => ({ ...t, x: 0, y: 0 }));
+// Responsive UI scale — enlarges the whole cluster (tiles + spacing)
+// on large displays (e.g. big portrait tablets / kiosks) while leaving
+// phones and laptops at the original size. Never scales below 1.
+function getUiScale() {
+  if (typeof window === 'undefined') return 1;
+  const m = Math.min(window.innerWidth, window.innerHeight);
+  return Math.max(1, Math.min(1.5, m / 900));
+}
+
+function buildLayout(tilesData, density, scale = 1) {
+  const R1 = 240 * density * scale;
+  const R2 = 410 * density * scale;
+  const R3 = 540 * density * scale;
+  const tiles = tilesData.map(t => ({ ...t, x: 0, y: 0, size: (t.size || 100) * scale }));
   const ring1 = tiles.filter(t => t.ring === 1);
   const ring2 = tiles.filter(t => t.ring === 2);
   const ring3 = tiles.filter(t => t.ring === 3);
@@ -224,7 +233,13 @@ const Tile = React.memo(function Tile({ tile, x, y, scale, opacity, isFocal, onP
 // ──────────────────────────────────────────────────────────────
 function Honeycomb({ tweaks, tilesData, onAdminToggle, onFocalChange }) {
   const stageRef = useRef(null);
-  const tiles = useMemo(() => buildLayout(tilesData, tweaks.density), [tilesData, tweaks.density]);
+  const [uiScale, setUiScale] = useState(getUiScale);
+  useEffect(() => {
+    const onResize = () => setUiScale(getUiScale());
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+  const tiles = useMemo(() => buildLayout(tilesData, tweaks.density, uiScale), [tilesData, tweaks.density, uiScale]);
   const { pan, setTarget, nudgeTarget, snapTo, panRef, targetRef } = useLerpedPan(0.16);
   const [dragging, setDragging] = useState(false);
 
@@ -440,7 +455,7 @@ function Honeycomb({ tweaks, tilesData, onAdminToggle, onFocalChange }) {
 
   // Compute per-frame transforms. Re-renders happen via pan state.
   const intensity = tweaks.intensity;
-  const maxDist = 540;
+  const maxDist = 540 * uiScale;
   const minScale = lerp(1, 0.25, intensity);
   const computed = tiles.map((t, i) => {
     const sx = t.x + pan.x;
