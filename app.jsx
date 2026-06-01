@@ -150,7 +150,7 @@ const lerp = (a, b, t) => a + (b - a) * t;
 // Hook: lerped pan position. setTarget moves the cluster toward
 // (x, y); the actual pan eases toward it every frame.
 // ──────────────────────────────────────────────────────────────
-function useLerpedPan(stiffness = 0.16) {
+function useLerpedPan(stiffness = 0.16, clampRef = null) {
   const targetRef = useRef({ x: 0, y: 0 });
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const panRef = useRef(pan);
@@ -159,6 +159,16 @@ function useLerpedPan(stiffness = 0.16) {
   useEffect(() => {
     let rafId;
     const tick = () => {
+      // Clamp the target to the allowed pan bounds (set by the cluster
+      // extent) so dragging/momentum/wheel can't fling tiles into empty
+      // space — this is the single chokepoint every pan path flows through.
+      if (clampRef && clampRef.current) {
+        targetRef.current = clampRef.current(targetRef.current.x, targetRef.current.y);
+        // Also clamp the live pan — during an active drag onMove pushes
+        // panRef directly, so this gives a hard stop at the edge instead
+        // of an overshoot-and-rubber-band.
+        panRef.current = clampRef.current(panRef.current.x, panRef.current.y);
+      }
       const tx = targetRef.current.x;
       const ty = targetRef.current.y;
       const cur = panRef.current;
@@ -173,7 +183,7 @@ function useLerpedPan(stiffness = 0.16) {
     };
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
-  }, [stiffness]);
+  }, [stiffness, clampRef]);
 
   const setTarget = useCallback((x, y) => {
     targetRef.current = { x, y };
@@ -240,7 +250,49 @@ function Honeycomb({ tweaks, tilesData, onAdminToggle, onFocalChange }) {
     return () => window.removeEventListener('resize', onResize);
   }, []);
   const tiles = useMemo(() => buildLayout(tilesData, tweaks.density, uiScale), [tilesData, tweaks.density, uiScale]);
-  const { pan, setTarget, nudgeTarget, snapTo, panRef, targetRef } = useLerpedPan(0.16);
+
+  // Pan-bounds clamp: keep the cluster's bounding box within the viewport
+  // (with a small margin) so it can never be dragged into empty space.
+  // pan brings tile at (x,y) to screen-centre offset (x+pan); the cluster
+  // spans [minX,maxX]×[minY,maxY], so allowed pan keeps that box covering
+  // the centre region. Recomputed whenever tiles/scale change.
+  const clampRef = useRef(null);
+  useEffect(() => {
+    clampRef.current = (px, py) => {
+      if (!tiles.length) return { x: px, y: py };
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (const t of tiles) {
+        const r = (t.size || 0) / 2;
+        if (t.x - r < minX) minX = t.x - r;
+        if (t.x + r > maxX) maxX = t.x + r;
+        if (t.y - r < minY) minY = t.y - r;
+        if (t.y + r > maxY) maxY = t.y + r;
+      }
+      const vw = window.innerWidth, vh = window.innerHeight;
+      const margin = 40; // breathing room at the edge
+      // Horizontal: pan range that keeps the cluster box overlapping centre.
+      // Screen position of a tile = centre(vw/2) + (t.x + px). We require the
+      // cluster's left edge ≤ centre and right edge ≥ centre, plus a margin,
+      // but if the cluster is smaller than the viewport just centre it (0).
+      const clampAxis = (mn, mx, view) => {
+        const half = view / 2;
+        // allowed pan p so that [mn+p, mx+p] stays anchored near centre:
+        // right edge not past +half-margin, left edge not past -half+margin
+        let lo = (half - margin) - mx;   // most negative pan (drag up/left)
+        let hi = (-half + margin) - mn;  // most positive pan (drag down/right)
+        if (lo > hi) { const m = (lo + hi) / 2; lo = hi = m; } // smaller than view → lock centre
+        return [lo, hi];
+      };
+      const [loX, hiX] = clampAxis(minX, maxX, vw);
+      const [loY, hiY] = clampAxis(minY, maxY, vh);
+      return {
+        x: Math.max(loX, Math.min(hiX, px)),
+        y: Math.max(loY, Math.min(hiY, py)),
+      };
+    };
+  }, [tiles]);
+
+  const { pan, setTarget, nudgeTarget, snapTo, panRef, targetRef } = useLerpedPan(0.16, clampRef);
   const [dragging, setDragging] = useState(false);
 
   // Auto-snap to a tile id ('home' on first load)
