@@ -43,9 +43,8 @@ const DEFAULT_TILES = [
     halo: 'rgba(217, 130, 74, 0.32)', fg: '#f0c8a8', icon: 'hands' },
 
   { id: 'news', label: 'News & Events', sub: 'Happenings, observances, and announcements from the monastery',
-    url: 'news/', size: 132, ring: 1,
-    bg: 'radial-gradient(circle at 30% 25%, #6a5226 0%, #2e2410 85%)',
-    halo: 'rgba(210, 175, 95, 0.32)', fg: '#f0e2bd', icon: 'feather' },
+    url: 'news/', size: 82, ring: 2,
+    bg: '#3a3018', fg: '#f0e2bd', icon: 'feather' },
 
   // RING 2 — secondary links
   { id: 'photos', label: 'Photo Gallery', sub: 'Photo Gallery from Google Maps',
