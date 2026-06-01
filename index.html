@@ -9,7 +9,7 @@
   <title>Rideekanda Forest Monastery</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+Sinhala:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+Sinhala:wght@400;600&family=Abhaya+Libre:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* ─────────────────────────────────────────────────────────
        Palette — paper (light default) / night (dark).
@@ -131,14 +131,32 @@
       display: flex; flex-direction: column; align-items: center; gap: 4px;
     }
     .brand .name {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 400;
-      font-size: 10px;
       color: var(--muted);
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
       text-align: center;
       transition: color 0.6s ease;
+    }
+    /* English title — Cormorant serif, larger */
+    .brand .name-en {
+      font-family: 'Cormorant', Georgia, serif;
+      font-weight: 600;
+      font-size: 30px;
+      letter-spacing: 0.04em;
+      color: var(--ink-dim);
+      line-height: 1.1;
+    }
+    /* Sinhala title — Abhaya Libre (elegant Sinhala serif), a touch larger */
+    .brand .name-si {
+      font-family: 'Abhaya Libre', 'Noto Serif Sinhala', serif;
+      font-weight: 500;
+      font-size: 19px;
+      letter-spacing: 0.01em;
+      color: var(--muted);
+      margin-top: 2px;
+      line-height: 1.2;
+    }
+    @media (max-width: 560px) {
+      .brand .name-en { font-size: 23px; }
+      .brand .name-si { font-size: 16px; }
     }
 
     /* Stage: where tiles live */
@@ -407,8 +425,8 @@
 
   <div class="chrome">
     <div class="brand">
-      <span class="name">Rideekanda Forest Monastery</span>
-      <span class="name">රිදීකන්ද ආරණ්‍ය සේනාසනය</span>
+      <span class="name name-en">Rideekanda Forest Monastery</span>
+      <span class="name name-si">රිදීකන්ද ආරණ්‍ය සේනාසනය</span>
     </div>
   </div>
 
