@@ -477,8 +477,8 @@ function Honeycomb({ tweaks, tilesData, onAdminToggle, onFocalChange }) {
     const dot = document.getElementById('compass-dot');
     if (!dot) return;
     const k = 0.06;
-    dot.setAttribute('cx', String(clamp(-pan.x * k, -22, 22)));
-    dot.setAttribute('cy', String(clamp(-pan.y * k, -22, 22)));
+    dot.setAttribute('cx', String(clamp(pan.x * k, -22, 22)));
+    dot.setAttribute('cy', String(clamp(pan.y * k, -22, 22)));
   }, [pan.x, pan.y]);
 
   useEffect(() => {
