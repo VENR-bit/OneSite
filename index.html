@@ -470,6 +470,27 @@
   <link rel="stylesheet" href="eco-nav.css">
   <script id="eco-nav" src="eco-nav.js?v=3" data-root="" data-current="home" defer></script>
 
+  <!-- Scale the Sinhala brand line so its width matches the English name. -->
+  <script>
+    (function () {
+      var en = document.querySelector('.brand .name-en');
+      var si = document.querySelector('.brand .name-si');
+      if (!en || !si) return;
+      function fit() {
+        si.style.fontSize = '';               // reset to CSS base before measuring
+        var enW = en.getBoundingClientRect().width;
+        var siW = si.getBoundingClientRect().width;
+        if (!enW || !siW) return;
+        var base = parseFloat(getComputedStyle(si).fontSize);
+        si.style.fontSize = (base * (enW / siW)).toFixed(2) + 'px';
+      }
+      if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fit); }
+      window.addEventListener('load', fit);
+      window.addEventListener('resize', fit);
+      fit();
+    })();
+  </script>
+
   <!-- Register the service worker so the site installs as a standalone
        (no URL bar) kiosk app and works through brief network drops. -->
   <script>
