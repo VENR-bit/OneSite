@@ -256,40 +256,6 @@ section[id]{scroll-margin-top:92px}
 <body>
 
 <!-- NAV -->
-<nav class="nav" id="mainNav">
-  <div class="nav-inner">
-    <a href="#top" class="nav-logo">
-      <img src="lotus.png" alt="">
-      <div><div class="nav-logo-name">Rideekanda</div><div class="nav-logo-sub">Forest Monastery</div></div>
-    </a>
-    <ul class="nav-links">
-      <li><a href="../../index.html" class="nav-home-link">← Home</a></li>
-      <li><a href="#about">Vision</a></li>
-      <li><a href="#model">3D Model</a></li>
-      <li><a href="#gallery">Gallery</a></li>
-      <li><a href="#furniture">Furnishings</a></li>
-      <li><a href="#video">Video</a></li>
-      <li><a href="#expenditure">Budget</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="../../donate/" target="_blank" rel="noopener noreferrer" class="btn-support btn-support-desktop">Support <span style="opacity:.75">→</span></a>
-      <button class="hamburger" id="menuBtn" aria-label="Menu"><svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round"><path id="menuIcon" d="M2 2h14M2 7h14M2 12h14"/></svg></button>
-    </div>
-  </div>
-  <div class="mobile-menu" id="mobileMenu" style="display:none">
-    <ul>
-      <li><a href="../../index.html" class="nav-home-link" onclick="closeMenu()">← Home</a></li>
-      <li><a href="#about" onclick="closeMenu()">Vision</a></li>
-      <li><a href="#model" onclick="closeMenu()">3D Model</a></li>
-      <li><a href="#gallery" onclick="closeMenu()">Gallery</a></li>
-      <li><a href="#furniture" onclick="closeMenu()">Furnishings</a></li>
-      <li><a href="#video" onclick="closeMenu()">Video</a></li>
-      <li><a href="#expenditure" onclick="closeMenu()">Budget</a></li>
-      <li><a href="../../donate/" target="_blank" rel="noopener noreferrer" class="support-link" onclick="closeMenu()">Support →</a></li>
-    </ul>
-  </div>
-</nav>
-
 <!-- HERO -->
 <section class="hero" id="top">
   <div class="reveal hero-top"><img src="lotus.png" alt=""><div class="eyebrow">A place of peace &amp; learning</div></div>
@@ -440,10 +406,10 @@ section[id]{scroll-margin-top:92px}
 </footer>
 
 <script>
-var nav=document.getElementById('mainNav');
-window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>24)},{passive:true});
-var menuBtn=document.getElementById('menuBtn'),mobileMenu=document.getElementById('mobileMenu'),menuIcon=document.getElementById('menuIcon'),menuOpen=false;
-menuBtn.addEventListener('click',function(){menuOpen=!menuOpen;mobileMenu.style.display=menuOpen?'block':'none';menuIcon.setAttribute('d',menuOpen?'M3 3l12 8M3 11l12-8':'M2 2h14M2 7h14M2 12h14')});
+var nav=document.getElementById('mainNav');if(nav){
+window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>24)},{passive:true});}
+var menuBtn=document.getElementById('menuBtn'),mobileMenu=document.getElementById('mobileMenu'),menuIcon=document.getElementById('menuIcon'),menuOpen=false;if(menuBtn&&mobileMenu&&menuIcon){
+menuBtn.addEventListener('click',function(){menuOpen=!menuOpen;mobileMenu.style.display=menuOpen?'block':'none';menuIcon.setAttribute('d',menuOpen?'M3 3l12 8M3 11l12-8':'M2 2h14M2 7h14M2 12h14')});}
 function closeMenu(){menuOpen=false;mobileMenu.style.display='none';menuIcon.setAttribute('d','M2 2h14M2 7h14M2 12h14')}
 var revealEls=document.querySelectorAll('.reveal');
 if('IntersectionObserver' in window){var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:0.08});revealEls.forEach(function(el){var r=el.getBoundingClientRect();if(r.top<window.innerHeight*0.92)el.classList.add('in');else io.observe(el)});setTimeout(function(){revealEls.forEach(function(el){el.classList.add('in')})},4000)}else{revealEls.forEach(function(el){el.classList.add('in')})}
@@ -547,6 +513,9 @@ function render(rows){
 fetch(SHEET_CSV).then(function(r){return r.text()}).then(function(csv){render(parseCSV(csv))}).catch(function(){container.innerHTML='<div class="exp-loading">Unable to load data. Please refresh the page.</div>'});
 })();
 </script>
+<!-- eco-header -->
+  <link rel="stylesheet" href="../../eco-header.css">
+  <script id="eco-header" src="../../eco-header.js" data-root="../../" data-links='[{"label": "Vision", "href": "#about"}, {"label": "3D Model", "href": "#model"}, {"label": "Gallery", "href": "#gallery"}, {"label": "Furnishings", "href": "#furniture"}, {"label": "Video", "href": "#video"}, {"label": "Budget", "href": "#expenditure"}, {"label": "Support", "href": "../../donate/", "cta": true, "external": true}]' defer></script>
 <!-- eco-nav -->
   <link rel="stylesheet" href="../../eco-nav.css">
   <script id="eco-nav" src="../../eco-nav.js" data-root="../../" data-current="library-cafe" defer></script>

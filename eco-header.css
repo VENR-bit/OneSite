@@ -1,0 +1,138 @@
+/* ──────────────────────────────────────────────────────────────
+   Rideekanda Ecosystem Header  ·  eco-header.css
+   One canonical top header bar shared by every sub-page. Namespaced
+   `.eco-h*` so it never collides with a host page's own styles.
+   Left padding clears the floating Explore launcher (eco-nav), so
+   the Explore pill reads as the header's left-most control.
+   ────────────────────────────────────────────────────────────── */
+
+:root {
+  --ech-bg: rgba(253, 251, 246, 0.82);
+  --ech-bg-solid: #fdfbf6;
+  --ech-ink: #1f1a14;
+  --ech-faint: #8a7d68;
+  --ech-line: #e6dcc6;
+  --ech-accent: #2d4a32;
+  --ech-gold: #c08a3e;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ech-bg: rgba(31, 26, 20, 0.82); --ech-bg-solid: #1f1a14;
+    --ech-ink: #f3ecdb; --ech-faint: #9d8d72; --ech-line: #3a3025;
+    --ech-accent: #c08a3e; --ech-gold: #e0b76a;
+  }
+}
+body.dark, html.dark, body.night, html.night, html[data-theme="dark"], body[data-theme="dark"] {
+  --ech-bg: rgba(31, 26, 20, 0.82); --ech-bg-solid: #1f1a14;
+  --ech-ink: #f3ecdb; --ech-faint: #9d8d72; --ech-line: #3a3025;
+  --ech-accent: #c08a3e; --ech-gold: #e0b76a;
+}
+
+html { scroll-padding-top: 84px; }
+
+/* Optional body offset for pages whose original header was in-flow
+   (so content isn't hidden behind the fixed bar). Toggled by
+   eco-header.js when the script tag sets data-pad="true". */
+body.eco-h-pad { padding-top: 64px; }
+@media (max-width: 860px) { body.eco-h-pad { padding-top: 56px; } }
+
+.eco-header, .eco-header * { box-sizing: border-box; }
+
+.eco-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9000;
+  background: var(--ech-bg);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .3s ease, background .3s ease, box-shadow .3s ease;
+}
+.eco-header.eco-h-scrolled {
+  border-bottom-color: var(--ech-line);
+  box-shadow: 0 6px 24px -18px rgba(57,44,22,0.5);
+}
+
+.eco-h-inner {
+  display: flex; align-items: center; gap: 18px;
+  max-width: 1280px; margin: 0 auto;
+  height: 64px;
+  padding: 0 24px 0 148px;   /* left pad clears the Explore launcher */
+}
+
+/* Brand (logo links home — not a labelled Home button) */
+.eco-h-brand {
+  display: inline-flex; align-items: center; gap: 11px;
+  text-decoration: none; color: var(--ech-ink);
+  flex: 0 0 auto;
+}
+.eco-h-brand .eco-h-mark { width: 30px; height: 30px; color: var(--ech-accent); flex: 0 0 auto; }
+.eco-h-brand .eco-h-mark svg { width: 100%; height: 100%; display: block; }
+.eco-h-brandtext { display: flex; flex-direction: column; line-height: 1.12; }
+.eco-h-brandtext b {
+  font-family: 'Cormorant', 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600; font-size: 19px; letter-spacing: 0.01em; color: var(--ech-ink);
+}
+.eco-h-brandtext small {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 8.5px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ech-faint); margin-top: 2px;
+}
+
+/* Desktop section links (right aligned) */
+.eco-h-links {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 22px;
+}
+.eco-h-links a {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 13.5px; font-weight: 500; letter-spacing: 0.01em;
+  color: var(--ech-ink); text-decoration: none; opacity: 0.82;
+  white-space: nowrap;
+  transition: opacity .2s ease, color .2s ease;
+}
+.eco-h-links a:hover { opacity: 1; color: var(--ech-accent); }
+.eco-h-links a.eco-h-cta {
+  opacity: 1;
+  padding: 8px 15px; border-radius: 999px;
+  background: var(--ech-accent); color: #f4ede0;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.eco-h-links a.eco-h-cta:hover { color: #fff; filter: brightness(1.08); }
+
+/* Hamburger (mobile) */
+.eco-h-burger {
+  display: none; margin-left: auto;
+  width: 38px; height: 38px; border-radius: 10px;
+  border: 1px solid var(--ech-line); background: transparent;
+  color: var(--ech-ink); cursor: pointer;
+  align-items: center; justify-content: center;
+}
+.eco-h-burger svg { width: 18px; height: 14px; display: block; }
+
+/* Mobile dropdown */
+.eco-h-mobile {
+  display: none;
+  border-top: 1px solid var(--ech-line);
+  background: var(--ech-bg-solid);
+  padding: 8px 18px 14px;
+}
+.eco-h-mobile a {
+  display: block; padding: 11px 4px;
+  border-bottom: 1px solid var(--ech-line);
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 15px; font-weight: 500; color: var(--ech-ink);
+  text-decoration: none;
+}
+.eco-h-mobile a:last-child { border-bottom: 0; }
+.eco-h-mobile a.eco-h-cta { color: var(--ech-accent); font-weight: 600; }
+.eco-header.eco-h-open .eco-h-mobile { display: block; }
+
+@media (max-width: 860px) {
+  .eco-h-inner { padding-left: 64px; height: 56px; gap: 10px; }
+  .eco-h-links { display: none; }
+  .eco-h-burger { display: inline-flex; }
+  .eco-h-brandtext b { font-size: 17px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eco-header, .eco-h-links a { transition: none; }
+}

@@ -639,7 +639,7 @@ function App() {
   return (
     <div className="page">
       <div className="frame">
-        <Header />
+        {/* Header removed — unified shared header (eco-header) is used instead */}
         <Hero />
       </div>
       <Give />

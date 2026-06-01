@@ -14,24 +14,6 @@
 <body>
 
 <!-- ============ NAV ============ -->
-<header class="nav" id="nav">
-  <a class="brand" href="#top" aria-label="Rideekanda Forest Monastery — Retreat Centre">
-    <img class="lotus" src="assets/lotus-logo.png" alt="" aria-hidden="true" />
-    <span class="brand-text">
-      <span class="name">Rideekanda</span>
-      <span class="sub">Residential Retreat</span>
-    </span>
-  </a>
-  <nav class="nav-links" aria-label="Primary">
-    <a href="#overview">Overview</a>
-    <a href="#life">Life Here</a>
-    <a href="#program">The Retreat</a>
-    <a href="#rhythm">Daily Rhythm</a>
-    <a href="#contact">Reserve</a>
-    <a href="index.html">The Monastery&nbsp;&#8599;</a>
-  </nav>
-</header>
-
 <main id="top">
 
 <!-- ============ HERO ============ -->
@@ -390,6 +372,9 @@
 <script type="text/babel" src="tweaks-panel.jsx"></script>
 <script type="text/babel" src="tweaks-app.jsx"></script>
 
+<!-- eco-header -->
+  <link rel="stylesheet" href="../eco-header.css">
+  <script id="eco-header" src="../eco-header.js" data-root="../" data-links='[{"label": "Overview", "href": "#overview"}, {"label": "Life Here", "href": "#life"}, {"label": "The Retreat", "href": "#program"}, {"label": "Daily Rhythm", "href": "#rhythm"}, {"label": "Reserve", "href": "#contact"}]' defer></script>
 <!-- eco-nav -->
   <link rel="stylesheet" href="../eco-nav.css">
   <script id="eco-nav" src="../eco-nav.js" data-root="../" data-current="retreat" defer></script>

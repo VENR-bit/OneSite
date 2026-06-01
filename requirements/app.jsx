@@ -231,12 +231,12 @@ function App() {
 
   return (
     <React.Fragment>
-      <Masthead />
+      {/* Masthead removed — unified shared header (eco-header) is used instead */}
 
       <section className="hero">
         <div className="hero-inner">
           <div>
-            <div className="hero-eyebrow"><a href="../index.html" className="home-link">← Home</a> Requirements · අවශ්‍යතා ලැයිස්තුව</div>
+            <div className="hero-eyebrow">Requirements · අවශ්‍යතා ලැයිස්තුව</div>
             <h1><span className="hl-red">Items needed</span><br />for the Monastery</h1>
             <div className="hero-si">රිදීකන්ද ආරණ්‍ය සේනාසනය සඳහා අවශ්‍ය දේවල්</div>
             <p className="lede">

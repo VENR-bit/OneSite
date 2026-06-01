@@ -56,33 +56,7 @@ function PageHeader({ stats, style, mobile }) {
         position: "relative",
       }}
     >
-      <a
-        href="../index.html"
-        style={{
-          position: "absolute",
-          top: mobile ? 12 : 24,
-          left: mobile ? 12 : 24,
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 6,
-          padding: "7px 14px 7px 10px",
-          background: "rgba(253, 251, 246, 0.7)",
-          border: "1px solid var(--line)",
-          borderRadius: 999,
-          fontFamily: "var(--sans)",
-          fontSize: 13,
-          fontWeight: 500,
-          color: "var(--accent)",
-          letterSpacing: 0.2,
-          backdropFilter: "blur(8px)",
-          textDecoration: "none",
-          transition: "background 0.2s, transform 0.2s",
-        }}
-        onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(253, 251, 246, 0.95)"; e.currentTarget.style.transform = "translateX(-2px)"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(253, 251, 246, 0.7)"; e.currentTarget.style.transform = "translateX(0)"; }}
-      >
-        <span style={{ fontSize: 15 }}>←</span> Home
-      </a>
+      {/* Home link removed — unified shared header (eco-header) + Explore launcher used instead */}
       <div style={{
         display: "flex",
         justifyContent: isCentered ? "center" : "flex-start",
