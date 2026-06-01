@@ -251,43 +251,53 @@ function Honeycomb({ tweaks, tilesData, onAdminToggle, onFocalChange }) {
   }, []);
   const tiles = useMemo(() => buildLayout(tilesData, tweaks.density, uiScale), [tilesData, tweaks.density, uiScale]);
 
-  // Pan-bounds clamp: keep the cluster's bounding box within the viewport
-  // (with a small margin) so it can never be dragged into empty space.
-  // pan brings tile at (x,y) to screen-centre offset (x+pan); the cluster
-  // spans [minX,maxX]×[minY,maxY], so allowed pan keeps that box covering
-  // the centre region. Recomputed whenever tiles/scale change.
+  // Pan-bounds clamp: a RADIAL limit on the pan vector. The pan can move
+  // the cluster until its farthest tile reaches the viewport centre, but no
+  // further — so you can always bring any tile to the middle to tap it, yet
+  // can never drag past the outermost ring into empty background. Radial
+  // (not a bounding box) means no empty corners on diagonal drags. This is a
+  // pure function applied at EVERY pan write-site (drag, momentum, wheel,
+  // keyboard, tick) so nothing can push the pan back outside the limit.
   const clampRef = useRef(null);
   useEffect(() => {
+    // Cluster extent (tile centres incl. their radius) relative to origin.
+    let minX = 0, maxX = 0, minY = 0, maxY = 0;
+    for (const t of tiles) {
+      const r = (t.size || 0) / 2;
+      if (t.x - r < minX) minX = t.x - r;
+      if (t.x + r > maxX) maxX = t.x + r;
+      if (t.y - r < minY) minY = t.y - r;
+      if (t.y + r > maxY) maxY = t.y + r;
+    }
     clampRef.current = (px, py) => {
-      if (!tiles.length) return { x: px, y: py };
-      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-      for (const t of tiles) {
-        const r = (t.size || 0) / 2;
-        if (t.x - r < minX) minX = t.x - r;
-        if (t.x + r > maxX) maxX = t.x + r;
-        if (t.y - r < minY) minY = t.y - r;
-        if (t.y + r > maxY) maxY = t.y + r;
-      }
+      // Per-axis clamp: keep the cluster covering the viewport so the empty
+      // background never shows through. A tile at cluster-coord c appears at
+      // screen = viewportCentre + (c + pan). We require the cluster to span
+      // past each edge (minus a small margin); if the cluster is smaller than
+      // the viewport on an axis, lock that axis to centre. Asymmetric extent
+      // (more tiles below the lotus) is handled because min/max are independent.
       const vw = window.innerWidth, vh = window.innerHeight;
-      const margin = 40; // breathing room at the edge
-      // Horizontal: pan range that keeps the cluster box overlapping centre.
-      // Screen position of a tile = centre(vw/2) + (t.x + px). We require the
-      // cluster's left edge ≤ centre and right edge ≥ centre, plus a margin,
-      // but if the cluster is smaller than the viewport just centre it (0).
-      const clampAxis = (mn, mx, view) => {
+      // A tile at cluster-coord c sits at screen = half + (c + pan), where
+      // half = viewport centre. To keep the cluster covering both edges:
+      //   cover far edge (2·half):  half + maxC + pan ≥ 2·half → pan ≥ half - maxC
+      //   cover near edge (0):      half + minC + pan ≤ 0      → pan ≤ -half - minC
+      // So the cluster's bounding box always reaches every viewport edge and
+      // the empty background can never show through. If the cluster is smaller
+      // than the viewport on an axis, lo > hi → lock that axis to centre.
+      // Overshoot: edge tiles are pulled inward + scaled down by the fisheye,
+      // so they render short of their raw coords. Require the cluster to
+      // extend OVER px past each edge to absorb that and leave no empty band.
+      const OVER = 120;
+      const axis = (mn, mx, view, p) => {
         const half = view / 2;
-        // allowed pan p so that [mn+p, mx+p] stays anchored near centre:
-        // right edge not past +half-margin, left edge not past -half+margin
-        let lo = (half - margin) - mx;   // most negative pan (drag up/left)
-        let hi = (-half + margin) - mn;  // most positive pan (drag down/right)
-        if (lo > hi) { const m = (lo + hi) / 2; lo = hi = m; } // smaller than view → lock centre
-        return [lo, hi];
+        const lo = (half + OVER) - mx;     // most negative pan
+        const hi = (-half - OVER) - mn;    // most positive pan
+        if (lo > hi) return (lo + hi) / 2; // cluster smaller than viewport → centre
+        return Math.max(lo, Math.min(hi, p));
       };
-      const [loX, hiX] = clampAxis(minX, maxX, vw);
-      const [loY, hiY] = clampAxis(minY, maxY, vh);
       return {
-        x: Math.max(loX, Math.min(hiX, px)),
-        y: Math.max(loY, Math.min(hiY, py)),
+        x: axis(minX, maxX, vw, px),
+        y: axis(minY, maxY, vh, py),
       };
     };
   }, [tiles]);
