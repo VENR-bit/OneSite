@@ -127,10 +127,17 @@ body.eco-h-pad { padding-top: 64px; }
 .eco-header.eco-h-open .eco-h-mobile { display: block; }
 
 @media (max-width: 860px) {
-  .eco-h-inner { padding-left: 64px; height: 56px; gap: 10px; }
+  /* Clear the FULL Explore launcher (icon + "EXPLORE" label, ~140px) so the
+     brand never sits under it. Below 560px the launcher collapses to an
+     icon-only pill (see eco-nav.css), so the offset is reduced to match. */
+  .eco-h-inner { padding-left: 152px; height: 56px; gap: 10px; }
   .eco-h-links { display: none; }
   .eco-h-burger { display: inline-flex; }
   .eco-h-brandtext b { font-size: 17px; }
+}
+@media (max-width: 560px) {
+  /* Launcher is icon-only here — less clearance needed. */
+  .eco-h-inner { padding-left: 60px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
