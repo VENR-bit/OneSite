@@ -340,10 +340,15 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  // Original header removed in favour of the shared eco-header, so guard
+  // against a missing #nav — otherwise this throws and halts the script,
+  // leaving the reveal text hidden.
   const nav = document.getElementById('nav');
-  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  if (nav) {
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
 
   // scroll reveal — position-based, robust to jumps and reload-mid-page
   const reveals = [...document.querySelectorAll('.reveal')];
