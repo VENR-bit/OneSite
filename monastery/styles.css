@@ -373,12 +373,13 @@ p:last-child { margin-bottom: 0; }
   gap: clamp(36px, 5vw, 76px);
   align-items: center;
 }
-@media (max-width: 880px) { .chief { grid-template-columns: 1fr; } }
 .chief.reverse { grid-template-columns: 1.15fr 0.85fr; margin-top: clamp(56px, 8vw, 110px); padding-top: clamp(48px, 7vw, 90px); border-top: 1px solid rgba(236,226,210,0.16); }
 .chief.reverse .frame-tag { left: auto; right: -14px; }
+/* Mobile keeps the exact 2-column desktop layout (portrait beside text,
+   second teacher reversed) — only the spacing/type is tightened so the
+   narrow columns stay readable. */
 @media (max-width: 880px) {
-  .chief.reverse { grid-template-columns: 1fr; }
-  .chief.reverse .chief-portrait { order: -1; }
+  .chief, .chief.reverse { gap: clamp(14px, 3.5vw, 36px); align-items: start; }
 }
 .chief .cred {
   font-size: 0.74rem;
@@ -394,8 +395,21 @@ p:last-child { margin-bottom: 0; }
   height: auto;
   min-height: 380px;
 }
+/* In the two-up mobile layout the portrait column is narrow, so let the
+   slot height follow the 3/4 ratio (no large min-height that would tower
+   over the text). */
 @media (max-width: 880px) {
-  .chief image-slot { min-height: 320px; }
+  .chief image-slot { min-height: 0; }
+}
+/* Phone tuning: smaller name, tighter labels, and a readable body size so
+   the two narrow columns don't feel cramped. */
+@media (max-width: 600px) {
+  .person-name { font-size: clamp(1.3rem, 6vw, 1.7rem); margin-bottom: 1rem; }
+  .chief .role { font-size: 0.6rem; letter-spacing: 0.16em; margin-bottom: 0.7rem; }
+  .chief .cred { font-size: 0.58rem; letter-spacing: 0.12em; margin: -0.5rem 0 1rem; }
+  .chief .prose p { font-size: 0.82rem; line-height: 1.55; margin-bottom: 0.8rem; }
+  .chief-portrait .frame-tag { font-size: 0.5rem; letter-spacing: 0.16em; padding: 6px 9px; left: -8px; }
+  .chief.reverse .frame-tag { right: -8px; left: auto; }
 }
 .chief-portrait {
   position: relative;
