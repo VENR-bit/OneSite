@@ -50,7 +50,8 @@ window.NEWS_POSTS = [
     when: "2025-11-02 to 2025-11-03",
     excerpt: "Katina robe offering ceremony and dedication of the new monastery building complex.",
     body: "The 2025 Katina Pooja Ceremony at Udasgiriya Rideekanda Forest Monastery, Matale, was held on 2–3 November 2025. During the ceremony, the newly built complex with the Dana Shala, kitchen, and residential facilities was formally offered to the Sangha.",
-    image: "post-36.jpeg"
+    image: "post-36a.jpg",
+    images: ["post-36a.jpg", "post-36b.jpg", "post-36c.jpg", "post-36d.jpg", "post-36e.jpg", "post-36f.jpg", "post-36g.jpg", "post-36h.jpg", "post-36i.jpg", "post-36.jpeg"]
   },
   {
     title: "Meditation Retreat at Toggenburg, Switzerland",
