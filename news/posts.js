@@ -1,10 +1,21 @@
 /* ──────────────────────────────────────────────────────────────
-   News & Events data — migrated from rideekanda.com.
-   Self-contained: full text lives here, no external links.
+   News & Events data.
    To publish: add an object to the TOP of this array.
-   Fields: title, date (YYYY-MM-DD), type, when (event date, optional),
-           excerpt (card summary), body (full text shown in the reader),
-           image (file in assets/).
+
+   Fields:
+     title   — headline (always shown on the card)
+     date    — "YYYY-MM-DD" (sorts newest first + shown)
+     type    — "Event" | "News" | "Notice" | "Dhamma"
+     when    — event date text (optional)
+     excerpt — short card summary
+     body    — full text shown in the reader (optional)
+     image   — file in assets/ (optional)
+     fb      — a Facebook post URL (optional). When set, the post is
+               embedded LIVE in the reader (its text + photos come from
+               Facebook), so you can publish an event just by pasting
+               the FB post link here — no need to retype the content.
+               Example:
+                 fb: "https://www.facebook.com/rideekandaforest/posts/123456789"
    ────────────────────────────────────────────────────────────── */
 window.NEWS_POSTS = [
   {

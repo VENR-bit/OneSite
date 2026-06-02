@@ -233,6 +233,9 @@ button.readmore { background: none; border: 0; cursor: pointer; padding: 0; font
 .reader-body h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.7rem, 3.4vw, 2.6rem); line-height: 1.1; margin: 0 0 0.8rem; }
 .reader-text { margin-top: 1.2rem; }
 .reader-text p { color: var(--ink-soft); margin: 0 0 1rem; line-height: 1.7; }
+/* Facebook embed inside the reader */
+.fb-embed { display: flex; justify-content: center; margin: 0.6rem 0 0.2rem; }
+.fb-embed iframe { max-width: 100%; border-radius: 8px; background: var(--card); }
 
 /* ---- Footer ---- */
 .footer { background: var(--dark-bg); color: var(--dark-ink); padding: clamp(56px,7vw,96px) 0 40px; }
