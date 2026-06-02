@@ -24,6 +24,16 @@
    ────────────────────────────────────────────────────────────── */
 window.NEWS_POSTS = [
   {
+    title: "7-Day Residential Retreat",
+    date: "2026-03-12",
+    type: "Event",
+    when: "Early March 2026 · 7 days",
+    excerpt: "A 7-day residential retreat on Concentration and Vipassana meditation at Rideekanda Forest Monastery — silence, simplicity, and deep practice in the forest.",
+    body: "In early March, a group of dedicated meditation practitioners came together at Rideekanda Forest Monastery for a 7-day residential retreat on Concentration and Vipassana Meditation.\n\nOver seven days, practitioners followed a progressive path — starting with breath meditation to calm and focus the mind, then moving into body contemplation, and finally developing direct insight into impermanence through Vipassana practice.\n\nFrom early morning sitting sessions to evening discussions, each day was spent in silence, simplicity, and deep practice — surrounded by ancient forest, golden sunsets, and the stillness of the mountains.\n\nThe retreat welcomed practitioners from all levels of experience — from complete beginners to those deepening an existing practice. What united everyone was sincerity and a willingness to look within.\n\nGrateful to every practitioner who walked this path with dedication, and to Rideekanda Forest Monastery for continuing to offer this sacred space in the Sri Lankan Forest Tradition.\n\n📍 Rideekanda Forest Monastery, Udasgiriya, Matale, Sri Lanka\n🌐 www.rideekanda.com\n📩 rideekanda@gmail.com\n📞 +94 74 225 2980\n\n🧘 Upcoming retreats — reach out to reserve your place.",
+    image: "post-38.jpg",
+    images: ["post-38.jpg", "post-38b.jpg", "post-38c.jpg", "post-38d.jpg", "post-38e.jpg", "post-38f.jpg", "post-38g.jpg", "post-38h.jpg"]
+  },
+  {
     title: "භාවනා කුටි සංකීර්ණය සඟසතු පූජාව",
     date: "2026-03-03",
     type: "Event",
