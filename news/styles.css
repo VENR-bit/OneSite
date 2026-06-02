@@ -236,6 +236,9 @@ button.readmore { background: none; border: 0; cursor: pointer; padding: 0; font
 /* Facebook embed inside the reader */
 .fb-embed { display: flex; justify-content: center; margin: 0.6rem 0 0.2rem; }
 .fb-embed iframe { max-width: 100%; border-radius: 8px; background: var(--card); }
+/* "From our Facebook" live page feed */
+.fb-feed { display: flex; justify-content: center; }
+.fb-feed iframe { max-width: 100%; border-radius: 12px; background: var(--card); box-shadow: 0 12px 32px -20px rgba(43,38,32,0.4); }
 
 /* ---- Footer ---- */
 .footer { background: var(--dark-bg); color: var(--dark-ink); padding: clamp(56px,7vw,96px) 0 40px; }
