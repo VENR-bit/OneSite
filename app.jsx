@@ -575,17 +575,42 @@ function App() {
     }
   }, [t.palette]);
 
-  // Theme toggle button
+  // ── Auto day/night with manual override ──────────────────────────
+  // The theme follows the time of day automatically. If someone taps the
+  // toggle, their choice is held for 60s, then auto-switching resumes.
+  const paletteRef = useRef(t.palette);
+  paletteRef.current = t.palette;
+  const manualUntilRef = useRef(0);   // timestamp; auto is paused until then
+
+  // Daytime 06:00–17:59 → 'paper' (Day); otherwise → 'night'.
+  const autoPalette = useCallback(() => {
+    const h = new Date().getHours();
+    return (h >= 6 && h < 18) ? 'paper' : 'night';
+  }, []);
+
+  // Toggle button → manual choice, hold for 60s.
   useEffect(() => {
     const toggleEl = document.getElementById('theme-toggle');
     if (!toggleEl) return;
     const onClick = () => {
-      const next = t.palette === 'night' ? 'paper' : 'night';
-      setTweak('palette', next);
+      manualUntilRef.current = Date.now() + 60000; // pause auto for 1 minute
+      setTweak('palette', paletteRef.current === 'night' ? 'paper' : 'night');
     };
     toggleEl.addEventListener('click', onClick);
     return () => toggleEl.removeEventListener('click', onClick);
-  }, [t.palette, setTweak]);
+  }, [setTweak]);
+
+  // Auto controller: align to the time of day on load, then keep checking.
+  useEffect(() => {
+    const apply = () => {
+      if (Date.now() < manualUntilRef.current) return;   // manual override active
+      const want = autoPalette();
+      if (paletteRef.current !== want) setTweak('palette', want);
+    };
+    apply(); // set correct theme immediately on first load
+    const id = setInterval(apply, 15000); // re-check every 15s
+    return () => clearInterval(id);
+  }, [autoPalette, setTweak]);
 
   return (
     <>
