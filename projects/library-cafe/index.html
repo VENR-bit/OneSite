@@ -122,6 +122,10 @@ section[id]{scroll-margin-top:92px}
 .pdfm-dl:hover{filter:brightness(1.08)}
 .pdfm-close{width:40px;height:40px;border-radius:999px;background:transparent;border:1px solid var(--line);color:var(--ink);font-size:22px;line-height:1;justify-content:center}
 .pdfm-close:hover{background:var(--bg-deep)}
+.pdfm-view{flex:1;position:relative;overflow:auto;background:var(--bg-deep);-webkit-overflow-scrolling:touch}
+.pdfm-loading{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--serif);font-style:italic;color:var(--muted);font-size:16px}
+.pdfm-pages{display:flex;flex-direction:column;align-items:center;gap:14px;padding:16px}
+.pdfm-pages canvas{max-width:100%;height:auto;box-shadow:0 6px 20px rgba(0,0,0,.25);background:#fff;border-radius:4px}
 .pdfm-frame{flex:1;width:100%;border:0;background:var(--bg-deep)}
 
 /* EXPENDITURE */
@@ -349,7 +353,11 @@ section[id]{scroll-margin-top:92px}
         <button class="pdfm-btn pdfm-close" id="pdfClose" type="button" aria-label="Close">×</button>
       </div>
     </div>
-    <iframe class="pdfm-frame" id="pdfFrame" title="PDF preview"></iframe>
+    <div class="pdfm-view" id="pdfView">
+      <div class="pdfm-loading" id="pdfLoading">Loading preview…</div>
+      <div class="pdfm-pages" id="pdfPages"></div>
+      <iframe class="pdfm-frame" id="pdfFrame" title="PDF preview" hidden></iframe>
+    </div>
   </div>
 </div>
 
@@ -414,26 +422,98 @@ section[id]{scroll-margin-top:92px}
 
 <script>
 /* PDF preview modal — intercept furniture PDF links so they PREVIEW
-   inline (works in the kiosk WebView, which otherwise downloads) and
-   offer an explicit Download button. */
+   in-page (never force a download) with an explicit Download button.
+   Primary renderer: PDF.js (canvas) which works in every WebView.
+   Fallback: the browser's native <iframe> PDF viewer if PDF.js can't
+   load (e.g. offline with no cached library). */
 (function(){
   var modal=document.getElementById('pdfModal'),
-      frame=document.getElementById('pdfFrame'),
       titleEl=document.getElementById('pdfTitle'),
       dl=document.getElementById('pdfDownload'),
-      closeBtn=document.getElementById('pdfClose');
+      closeBtn=document.getElementById('pdfClose'),
+      view=document.getElementById('pdfView'),
+      pages=document.getElementById('pdfPages'),
+      loading=document.getElementById('pdfLoading'),
+      frame=document.getElementById('pdfFrame');
   if(!modal) return;
+
+  var PDFJS_VER='3.11.174';
+  var PDFJS_SRC='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/'+PDFJS_VER+'/pdf.min.js';
+  var PDFJS_WORKER='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/'+PDFJS_VER+'/pdf.worker.min.js';
+  var pdfjsP=null, renderToken=0;
+
+  function loadPdfJs(){
+    if(window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+    if(pdfjsP) return pdfjsP;
+    pdfjsP=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src=PDFJS_SRC;
+      s.onload=function(){
+        if(window.pdfjsLib){ window.pdfjsLib.GlobalWorkerOptions.workerSrc=PDFJS_WORKER; resolve(window.pdfjsLib); }
+        else reject(new Error('pdfjs missing'));
+      };
+      s.onerror=function(){ reject(new Error('pdfjs load failed')); };
+      document.head.appendChild(s);
+    });
+    return pdfjsP;
+  }
+
+  function useFallback(url){
+    pages.innerHTML=''; pages.style.display='none';
+    frame.hidden=false; frame.src=url;
+    loading.style.display='none';
+  }
+
+  function renderWithPdfJs(url){
+    var token=++renderToken;
+    loading.style.display='grid'; loading.textContent='Loading preview…';
+    frame.hidden=true; frame.src='';
+    pages.style.display='flex'; pages.innerHTML='';
+    loadPdfJs().then(function(pdfjsLib){
+      return pdfjsLib.getDocument(url).promise;
+    }).then(function(pdf){
+      if(token!==renderToken) return;        // a newer open superseded this
+      loading.style.display='none';
+      var maxW=Math.min(view.clientWidth-32, 1000);
+      var dpr=Math.min(window.devicePixelRatio||1, 2);
+      var chain=Promise.resolve();
+      for(var n=1;n<=pdf.numPages;n++){
+        (function(num){
+          chain=chain.then(function(){
+            if(token!==renderToken) return;
+            return pdf.getPage(num).then(function(page){
+              var vp=page.getViewport({scale:1});
+              var scale=(maxW/vp.width);
+              var v=page.getViewport({scale:scale*dpr});
+              var canvas=document.createElement('canvas');
+              canvas.width=v.width; canvas.height=v.height;
+              canvas.style.width=(v.width/dpr)+'px';
+              var ctx=canvas.getContext('2d');
+              pages.appendChild(canvas);
+              return page.render({canvasContext:ctx, viewport:v}).promise;
+            });
+          });
+        })(n);
+      }
+      return chain;
+    }).catch(function(){
+      if(token!==renderToken) return;
+      useFallback(url);                       // PDF.js unavailable → native viewer
+    });
+  }
+
   function openPdf(url, name){
     titleEl.textContent=name||'Design';
-    frame.src=url;                 // inline render
-    dl.href=url;                   // download button uses same file
-    dl.setAttribute('download','');
+    dl.href=url; dl.setAttribute('download','');
     modal.classList.remove('hidden');
     document.body.style.overflow='hidden';
+    view.scrollTop=0;
+    renderWithPdfJs(url);
   }
   function closePdf(){
+    renderToken++;                            // cancel any in-flight render
     modal.classList.add('hidden');
-    frame.src='';                  // stop/unload the PDF
+    frame.src=''; pages.innerHTML='';
     document.body.style.overflow='';
   }
   // Intercept every furniture PDF link

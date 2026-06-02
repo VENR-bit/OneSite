@@ -8,7 +8,7 @@
        paint from cache, refreshed in the background.
    Bump CACHE_VERSION to force clients to drop old caches.
    ────────────────────────────────────────────────────────────── */
-var CACHE_VERSION = "rk-v1";
+var CACHE_VERSION = "rk-v2";
 var CACHE = "rideekanda-" + CACHE_VERSION;
 
 // Core shell to precache so the dashboard works offline on first launch.
@@ -81,7 +81,7 @@ self.addEventListener("fetch", function (e) {
     e.respondWith(
       caches.match(req).then(function (hit) {
         return hit || fetch(req).then(function (res) {
-          if (res && res.ok && (url.hostname.indexOf("fonts.g") !== -1 || url.hostname.indexOf("unpkg") !== -1)) {
+          if (res && res.ok && (url.hostname.indexOf("fonts.g") !== -1 || url.hostname.indexOf("unpkg") !== -1 || url.hostname.indexOf("cdnjs") !== -1)) {
             var copy = res.clone();
             caches.open(CACHE).then(function (c) { c.put(req, copy); });
           }
