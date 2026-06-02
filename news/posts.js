@@ -9,13 +9,18 @@
      when    — event date text (optional)
      excerpt — short card summary
      body    — full text shown in the reader (optional)
-     image   — file in assets/ (optional)
-     fb      — a Facebook post URL (optional). When set, the post is
-               embedded LIVE in the reader (its text + photos come from
-               Facebook), so you can publish an event just by pasting
-               the FB post link here — no need to retype the content.
+     image   — lead/thumbnail file in assets/ (optional)
+     images  — array of extra photo files in assets/ (optional). All photos
+               are shown in the on-site reader gallery, so the full post —
+               text + every photo — reads on the site itself (works on the
+               kiosk too, with no Facebook navigation).
                Example:
-                 fb: "https://www.facebook.com/rideekandaforest/posts/123456789"
+                 image: "post-40.jpg",
+                 images: ["post-40.jpg", "post-40b.jpg", "post-40c.jpg"]
+
+   To publish from a Facebook post: send the FB post link and its photos;
+   the text + images get saved here as hosted content (assets/). The live
+   "From our Facebook" wall on the page already mirrors the page feed.
    ────────────────────────────────────────────────────────────── */
 window.NEWS_POSTS = [
   {
