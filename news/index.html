@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=6" />
+<link rel="stylesheet" href="styles.css?v=7" />
 </head>
 <body>
 <main id="top">
@@ -47,17 +47,6 @@
     </div>
   </section>
 
-  <!-- ============ FROM FACEBOOK ============ -->
-  <section class="section" id="facebook" style="padding-top:0">
-    <div class="container">
-      <div class="section-head reveal">
-        <p class="eyebrow">From our Facebook</p>
-        <h2 class="section-title">Latest from the page</h2>
-        <p class="fb-note">A live look at our Facebook page. For the full story and photos of each event, open the news above.</p>
-      </div>
-      <div class="fb-feed reveal" id="fbFeedMount"></div>
-    </div>
-  </section>
 
   <!-- ============ STAY UPDATED ============ -->
   <section class="section dark" id="subscribe">
@@ -240,24 +229,6 @@
       var p = posts[parseInt(t.getAttribute('data-idx'), 10)];
       if (p) openReader(p);
     });
-
-    // ---- Live "From our Facebook" page feed ----
-    (function () {
-      var mount = document.getElementById('fbFeedMount');
-      if (!mount) return;
-      var PAGE = 'https://www.facebook.com/rideekandaforest';
-      function render() {
-        var w = Math.min(500, Math.max(320, (mount.clientWidth || 500)));
-        mount.innerHTML =
-          '<iframe title="Rideekanda on Facebook" ' +
-          'src="https://www.facebook.com/plugins/page.php?href=' + encodeURIComponent(PAGE) +
-          '&tabs=timeline&width=' + w + '&height=720&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true" ' +
-          'width="' + w + '" height="720" style="border:none;overflow:hidden" scrolling="no" frameborder="0" ' +
-          'allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>';
-      }
-      render();
-      var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(render, 300); });
-    })();
 
     // reveal-on-scroll (same behaviour as the other pages)
     var reveals = [].slice.call(document.querySelectorAll('.reveal'));
