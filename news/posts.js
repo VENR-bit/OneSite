@@ -10,6 +10,10 @@
      excerpt — short card summary
      body    — full text shown in the reader (optional)
      image   — lead/thumbnail file in assets/ (optional)
+     youtube — a YouTube link (optional). When set, the video plays inside the
+               on-site reader and its thumbnail (with a play badge) is used on
+               the card. Any of the usual link forms works, e.g.
+                 youtube: "https://youtu.be/VIDEOID"
      images  — array of extra photo files in assets/ (optional). All photos
                are shown in the on-site reader gallery, so the full post —
                text + every photo — reads on the site itself (works on the
@@ -121,7 +125,8 @@ window.NEWS_POSTS = [
     type: "Dhamma",
     excerpt: "Documentary short supporting the mission of Rideekanda Forest Monastery.",
     body: "Wisdom in Silence is a short documentary created as a donation to support Rideekanda Forest Monastery. The documentary features Bhante Rewatha, Bhante Sumedha, Dinesh Nandana Kumara, and international contributors who supported the film-making process.",
-    image: ""
+    image: "",
+    youtube: "https://youtu.be/toTmlQMYw-A"
   },
   {
     title: "07 days Vipassana Retreats @ Rideekanda",

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=7" />
+<link rel="stylesheet" href="styles.css?v=8" />
 </head>
 <body>
 <main id="top">
@@ -115,7 +115,7 @@
 </div>
 
 <!-- News data + render -->
-<script src="posts.js?v=9"></script>
+<script src="posts.js?v=10"></script>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -154,20 +154,43 @@
     var rWhen = document.getElementById('reader-when');
     var rText = document.getElementById('reader-text');
 
+    // Pull the 11-char video id out of any YouTube URL form.
+    function ytId(u) {
+      if (!u) return '';
+      var m = String(u).match(/(?:youtu\.be\/|[?&]v=|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/);
+      return m ? m[1] : '';
+    }
+    // Card/feature thumbnail: a hosted image, else the video's thumbnail.
+    function thumbSrc(p) {
+      if (p.image) return 'assets/' + esc(p.image);
+      var id = ytId(p.youtube);
+      return id ? 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg' : '';
+    }
+    function playBadge(p) { return ytId(p.youtube) ? '<span class="vplay" aria-hidden="true"></span>' : ''; }
+
     function openReader(p) {
       // All content is hosted on-site (text + photos we control), so it reads
       // fully everywhere — including the kiosk — with no Facebook navigation.
       var imgs = (p.images && p.images.length) ? p.images : (p.image ? [p.image] : []);
       var lead = imgs[0];
-      rMedia.innerHTML = lead ? '<img src="assets/' + esc(lead) + '" alt="' + esc(p.title) + '">' : '';
-      rMedia.style.display = lead ? '' : 'none';
+      var vid = ytId(p.youtube);
+      if (vid) {
+        rMedia.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + vid + '?rel=0" ' +
+          'title="' + esc(p.title) + '" frameborder="0" loading="lazy" ' +
+          'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ' +
+          'allowfullscreen></iframe>';
+        rMedia.style.display = '';
+      } else {
+        rMedia.innerHTML = lead ? '<img src="assets/' + esc(lead) + '" alt="' + esc(p.title) + '">' : '';
+        rMedia.style.display = lead ? '' : 'none';
+      }
       rTag.textContent = p.type || 'News';
       rDate.textContent = fmtDate(p.date);
       rTitle.textContent = p.title;
       if (p.when) { rWhen.innerHTML = '<span>When</span> ' + esc(p.when); rWhen.hidden = false; }
       else { rWhen.hidden = true; }
       var html = p.body ? paras(p.body) : paras(p.excerpt);
-      var more = imgs.slice(1);
+      var more = vid ? imgs : imgs.slice(1);
       if (more.length) {
         html += '<div class="reader-gallery">' + more.map(function (im) {
           return '<img src="assets/' + esc(im) + '" alt="' + esc(p.title) + '" loading="lazy">';
@@ -188,7 +211,8 @@
 
     // Featured = newest post
     var f = posts[0];
-    var fMedia = f.image ? '<div class="feature-media"><img src="assets/' + esc(f.image) + '" alt="' + esc(f.title) + '"></div>' : '';
+    var fSrc = thumbSrc(f);
+    var fMedia = fSrc ? '<div class="feature-media"><img src="' + fSrc + '" alt="' + esc(f.title) + '">' + playBadge(f) + '</div>' : '';
     featureMount.className = 'feature reveal';
     featureMount.style.setProperty('--reveal-delay', '120ms');
     featureMount.innerHTML =
@@ -208,7 +232,8 @@
     } else {
       gridMount.innerHTML = rest.map(function (p, i) {
         var idx = i + 1;
-        var thumb = p.image ? '<div class="thumb"><img src="assets/' + esc(p.image) + '" alt="' + esc(p.title) + '"></div>' : '';
+        var tSrc = thumbSrc(p);
+        var thumb = tSrc ? '<div class="thumb"><img src="' + tSrc + '" alt="' + esc(p.title) + '">' + playBadge(p) + '</div>' : '';
         return '<button class="card reveal" type="button" data-idx="' + idx + '" style="--reveal-delay:' + (i * 80) + 'ms">' +
           thumb +
           '<div class="body">' +
