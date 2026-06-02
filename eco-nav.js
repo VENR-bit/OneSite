@@ -30,6 +30,7 @@
     { id: "reviews",     href: "reviews/",              en: "Reviews",             si: "ඇගයීම්" },
     { id: "donate",      href: "donate/",               en: "Donate",              si: "පරිත්‍යාග" },
     { id: "news",        href: "news/",                 en: "News & Events",       si: "ප්‍රවෘත්ති සහ සිදුවීම්" },
+    { id: "videos",      href: "videos/",               en: "Video Gallery",       si: "වීඩියෝ" },
     { id: "requirements",      href: "requirements/",      en: "Monastery Requirements", si: "ආරණ්‍ය අවශ්‍යතා" },
     { id: "contact",     href: "contact/",              en: "Contact",             si: "සම්බන්ධ වන්න" }
   ];

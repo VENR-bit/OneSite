@@ -46,6 +46,10 @@ const DEFAULT_TILES = [
     url: 'news/', size: 82, ring: 2,
     bg: '#3a3018', fg: '#f0e2bd', icon: 'feather' },
 
+  { id: 'videos', label: 'Video Gallery', sub: 'Films, dhamma, and life from the hillside — watch in-page',
+    url: 'videos/', size: 82, ring: 2,
+    bg: '#3a2218', fg: '#f0cdbd', icon: 'play' },
+
   // RING 2 — secondary links
   { id: 'photos', label: 'Photo Gallery', sub: 'Photo Gallery from Google Maps',
     url: 'gallery/',

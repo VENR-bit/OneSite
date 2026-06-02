@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#1f1a14" />
+<title>Videos — Rideekanda Forest Monastery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+Sinhala:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=1" />
+</head>
+<body>
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-bg"><img src="assets/videos-hero.jpg" alt="" aria-hidden="true" /></div>
+    <div class="hero-veil"></div>
+    <div class="hero-inner">
+      <img class="lotus-mark reveal" src="assets/lotus-logo.png" alt="Rideekanda Forest Monastery" />
+      <h1 class="reveal" style="--reveal-delay:120ms">Watch &amp; <em>listen</em></h1>
+      <p class="tagline reveal" style="--reveal-delay:260ms">Rideekanda&nbsp;&middot;&nbsp;Buddhist Forest Meditation Monastery</p>
+      <p class="place reveal" style="--reveal-delay:360ms">Films, dhamma, and life from the hillside</p>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED ============ -->
+  <section class="section" id="featured">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Featured</p>
+        <h2 class="section-title">From the<br>Rideekanda channel</h2>
+      </div>
+      <div id="feature-mount" class="reveal" style="--reveal-delay:120ms"></div>
+    </div>
+  </section>
+
+  <!-- ============ ALL VIDEOS ============ -->
+  <section class="section" id="all" style="padding-top:0">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">More videos</p>
+        <h2 class="section-title">The video library</h2>
+      </div>
+      <div id="grid-mount" class="grid"></div>
+      <div class="more-row reveal">
+        <a class="btn" href="https://youtube.com/c/RideekandaForestMonastery" target="_blank" rel="noopener">Visit the channel <span>&#8599;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="fbrand">
+            <img src="assets/lotus-logo.png" alt="" aria-hidden="true" />
+            <span><span class="name">Rideekanda</span><span class="sub">Forest Monastery</span></span>
+          </div>
+          <p class="fblurb">A Buddhist forest meditation monastery on Silver Hill, devoted to preserving the true teaching of the Buddha and guiding seekers along the noble path.</p>
+        </div>
+        <div>
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="../monastery/">The Monastery</a></li>
+            <li><a href="../retreat/">Residential Retreat</a></li>
+            <li><a href="../news/">News &amp; Events</a></li>
+            <li><a href="../gallery/">Gallery</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Reach Us</h4>
+          <ul>
+            <li><a href="tel:+94742252980">+94 74 225 2980</a></li>
+            <li><a href="mailto:rideekanda@gmail.com">rideekanda@gmail.com</a></li>
+            <li>Udasgiriya, Matale</li>
+            <li>Sri Lanka — 21051</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-base">
+        <span>© <span id="year"></span> Rideekanda Forest Monastery</span>
+        <span>Sabbadānaṃ dhammadānaṃ jināti — the gift of dhamma surpasses all gifts</span>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- Player modal -->
+<div class="vm hidden" id="videoModal" aria-hidden="true">
+  <div class="vm-panel">
+    <div class="vm-bar">
+      <div class="vm-title" id="vmTitle"></div>
+      <button class="vm-close" id="vmClose" type="button" aria-label="Close">&times;</button>
+    </div>
+    <div class="vm-frame-wrap"><div id="vmFrame"></div></div>
+  </div>
+</div>
+
+<script src="videos.js?v=1"></script>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  (function () {
+    var vids = (window.RK_VIDEOS || []).slice();
+    function fmtDate(iso){ if(!iso) return ''; var d=new Date(iso+'T00:00:00'); return isNaN(d)?iso:d.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}); }
+    function esc(s){ return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+    function thumb(id){ return 'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg'; }
+    function embed(id){ return 'https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1'; }
+
+    var featureMount=document.getElementById('feature-mount');
+    var gridMount=document.getElementById('grid-mount');
+    if(!vids.length){ featureMount.innerHTML='<p style="font-family:var(--font-display);font-style:italic;color:var(--muted);text-align:center">Videos coming soon.</p>'; return; }
+
+    // ---- Player modal ----
+    var modal=document.getElementById('videoModal');
+    var vmTitle=document.getElementById('vmTitle');
+    var vmFrame=document.getElementById('vmFrame');
+    var vmClose=document.getElementById('vmClose');
+    function openVideo(v){
+      vmTitle.textContent=v.title||'';
+      vmFrame.innerHTML='<iframe src="'+embed(v.id)+'" title="'+esc(v.title)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+      modal.classList.remove('hidden'); modal.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+    }
+    function closeVideo(){
+      modal.classList.add('hidden'); modal.setAttribute('aria-hidden','true');
+      vmFrame.innerHTML='';                 // stop playback
+      document.body.style.overflow='';
+    }
+    vmClose.addEventListener('click', closeVideo);
+    modal.addEventListener('click', function(e){ if(e.target===modal) closeVideo(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !modal.classList.contains('hidden')) closeVideo(); });
+
+    // ---- Featured = first video, plays inline ----
+    var f=vids[0];
+    featureMount.className='feature reveal';
+    featureMount.style.setProperty('--reveal-delay','120ms');
+    featureMount.innerHTML =
+      '<div class="player"><iframe src="https://www.youtube-nocookie.com/embed/'+f.id+'?rel=0&modestbranding=1" title="'+esc(f.title)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>' +
+      '<div class="feature-body">' +
+        '<div class="date">'+fmtDate(f.date)+'</div>' +
+        '<h2>'+esc(f.title)+'</h2>' +
+        (f.desc ? '<p>'+esc(f.desc)+'</p>' : '') +
+      '</div>';
+
+    // ---- Grid = the rest ----
+    var rest=vids.slice(1);
+    gridMount.innerHTML = rest.map(function(v,i){
+      return '<button class="vcard reveal" type="button" data-idx="'+(i+1)+'" style="--reveal-delay:'+(i*70)+'ms">' +
+        '<div class="vthumb"><img src="'+thumb(v.id)+'" alt="'+esc(v.title)+'" loading="lazy"><span class="play"><span></span></span></div>' +
+        '<div class="vbody"><div class="date">'+fmtDate(v.date)+'</div><h3>'+esc(v.title)+'</h3></div>' +
+      '</button>';
+    }).join('');
+
+    document.addEventListener('click', function(e){
+      var t=e.target.closest('[data-idx]');
+      if(!t) return;
+      var v=vids[parseInt(t.getAttribute('data-idx'),10)];
+      if(v) openVideo(v);
+    });
+
+    // reveal-on-scroll
+    var reveals=[].slice.call(document.querySelectorAll('.reveal'));
+    var ticking=false;
+    function sweep(){ ticking=false; var trig=window.innerHeight*0.92; for(var i=reveals.length-1;i>=0;i--){ if(reveals[i].getBoundingClientRect().top<trig){ reveals[i].classList.add('in'); reveals.splice(i,1);} } }
+    function onR(){ if(!ticking){ ticking=true; requestAnimationFrame(sweep);} }
+    window.addEventListener('scroll',onR,{passive:true});
+    window.addEventListener('resize',onR,{passive:true});
+    sweep();
+  })();
+</script>
+
+<!-- eco-header -->
+  <link rel="stylesheet" href="../eco-header.css?v=2">
+  <script id="eco-header" src="../eco-header.js?v=2" data-root="../" data-links='[{"label":"Featured","href":"#featured"},{"label":"All Videos","href":"#all"}]' data-pad="true" defer></script>
+<!-- eco-nav -->
+  <link rel="stylesheet" href="../eco-nav.css">
+  <script id="eco-nav" src="../eco-nav.js?v=6" data-root="../" data-current="videos" defer></script>
+</body>
+</html>
