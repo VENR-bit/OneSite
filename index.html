@@ -126,6 +126,33 @@
     }
     body.dark .horizon { opacity: 0.18; }
 
+    /* Top & bottom scrims — a progressive blur + fade so tiles moving
+       behind the title (top) and the buttons (bottom) don't distract.
+       Sits above the tiles (z 2) but below the chrome (z 500). */
+    .scrim {
+      position: fixed; left: 0; right: 0; z-index: 100;
+      pointer-events: none;
+      -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
+    }
+    .scrim-top {
+      top: 0; height: 150px;
+      background: linear-gradient(to bottom,
+        var(--bg) 0%,
+        color-mix(in srgb, var(--bg) 68%, transparent) 38%,
+        transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 34%, transparent 100%);
+              mask-image: linear-gradient(to bottom, #000 0%, #000 34%, transparent 100%);
+    }
+    .scrim-bottom {
+      bottom: 0; height: 165px;
+      background: linear-gradient(to top,
+        var(--bg) 0%,
+        color-mix(in srgb, var(--bg) 68%, transparent) 38%,
+        transparent 100%);
+      -webkit-mask-image: linear-gradient(to top, #000 0%, #000 34%, transparent 100%);
+              mask-image: linear-gradient(to top, #000 0%, #000 34%, transparent 100%);
+    }
+
     /* Header */
     .chrome {
       position: fixed; top: 0; left: 0; right: 0;
@@ -485,6 +512,8 @@
   <div class="backdrop" id="backdrop"></div>
   <div class="grain"></div>
   <div class="horizon"></div>
+  <div class="scrim scrim-top"></div>
+  <div class="scrim scrim-bottom"></div>
 
   <div id="root"></div>
 
