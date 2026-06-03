@@ -453,6 +453,57 @@
     }
     @media (max-width: 560px) { .clock { bottom: 48px; font-size: 12px; padding: 0 12px; } }
 
+    /* Weather button — round, live icon, like the other chrome buttons */
+    .wx-btn {
+      position: fixed; bottom: 49px; right: calc(50% + 250px); z-index: 500;
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; padding: 0;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--card) 70%, transparent);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      color: var(--accent); cursor: pointer;
+      transition: transform 0.25s ease, border-color 0.3s ease;
+    }
+    .wx-btn:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    .wx-ico svg, .wx-now-ico svg, .wx-fc svg { display: block; }
+    .wx-ico svg { width: 19px; height: 19px; }
+    @media (max-width: 560px) { .wx-btn { bottom: 48px; } }
+
+    /* Weather popup */
+    .wx-modal { position: fixed; inset: 0; z-index: 99600; display: none; }
+    .wx-modal.is-open { display: block; }
+    .wx-overlay { position: absolute; inset: 0; background: color-mix(in srgb, var(--bg) 50%, rgba(0,0,0,0.5)); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+    .wx-panel {
+      position: absolute; left: 50%; bottom: 96px; transform: translateX(-50%);
+      width: min(320px, calc(100vw - 32px));
+      background: var(--card); color: var(--ink);
+      border: 1px solid var(--line); border-radius: 18px;
+      box-shadow: 0 40px 90px -30px rgba(0,0,0,0.55);
+      padding: 18px 20px 18px; text-align: center;
+      font-family: 'Manrope', system-ui, sans-serif;
+    }
+    .wx-x { position: absolute; top: 8px; right: 12px; width: 30px; height: 30px; border: 0; background: transparent; color: var(--muted); font-size: 22px; line-height: 1; cursor: pointer; border-radius: 50%; }
+    .wx-x:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink); }
+    .wx-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0; }
+    .wx-place { font-family: 'Cormorant', Georgia, serif; font-size: 1.35rem; margin: 2px 0 10px; color: var(--ink); }
+    .wx-now { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .wx-now-ico svg { width: 46px; height: 46px; color: var(--accent); }
+    .wx-now-temp { font-size: 2.6rem; font-weight: 300; line-height: 1; }
+    .wx-now-temp sup { font-size: 1rem; font-weight: 400; color: var(--muted); top: -1em; }
+    .wx-now-cond { font-size: 0.95rem; color: var(--ink-dim); margin-top: 2px; }
+    .wx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; margin: 14px 0 6px; }
+    .wx-grid div { display: flex; justify-content: space-between; font-size: 0.85rem; border-bottom: 1px solid var(--line); padding-bottom: 5px; }
+    .wx-grid span { color: var(--muted); }
+    .wx-grid b { color: var(--ink); font-weight: 600; }
+    .wx-fc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
+    .wx-fc .d { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .wx-fc .d .dn { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .wx-fc .d svg { width: 24px; height: 24px; color: var(--accent); }
+    .wx-fc .d .t { font-size: 0.82rem; color: var(--ink); }
+    .wx-fc .d .t small { color: var(--muted); }
+    .wx-foot { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 12px 0 0; }
+
     /* Calendar popup */
     .cal-modal { position: fixed; inset: 0; z-index: 99600; display: none; }
     .cal-modal.is-open { display: block; }
@@ -570,6 +621,34 @@
   <!-- Clock — placed beside the Explore button (left set in JS) -->
   <div class="clock" id="clock" aria-hidden="true"></div>
 
+  <!-- Weather button (live icon) — placed left of the clock (left set in JS) -->
+  <button class="wx-btn" id="wx-btn" aria-label="Weather" aria-haspopup="dialog">
+    <span class="wx-ico" id="wx-icon"></span>
+  </button>
+
+  <!-- Weather report popup -->
+  <div class="wx-modal" id="wx-modal" aria-hidden="true">
+    <div class="wx-overlay" data-wx-close></div>
+    <div class="wx-panel" role="dialog" aria-modal="true" aria-label="Weather report">
+      <button class="wx-x" type="button" aria-label="Close" data-wx-close>&times;</button>
+      <p class="wx-eyebrow">Weather</p>
+      <p class="wx-place">Rideekanda &middot; Matale</p>
+      <div class="wx-now">
+        <span class="wx-now-ico" id="wx-now-ico"></span>
+        <div class="wx-now-temp"><span id="wx-temp">–</span><sup>°C</sup></div>
+        <div class="wx-now-cond" id="wx-cond">—</div>
+      </div>
+      <div class="wx-grid">
+        <div><span>Feels like</span><b id="wx-feels">–</b></div>
+        <div><span>Humidity</span><b id="wx-hum">–</b></div>
+        <div><span>Wind</span><b id="wx-wind">–</b></div>
+        <div><span>Rain</span><b id="wx-rain">–</b></div>
+      </div>
+      <div class="wx-fc" id="wx-fc"></div>
+      <p class="wx-foot" id="wx-foot"></p>
+    </div>
+  </div>
+
   <svg class="compass" viewBox="-32 -32 64 64">
     <circle class="compass-ring" r="26"></circle>
     <circle class="compass-ring" r="14"></circle>
@@ -646,6 +725,12 @@
       var r = ex.getBoundingClientRect();
       if (!r.width) return false;
       clock.style.right = (window.innerWidth - r.left + 12) + 'px';
+      // Weather button sits just left of the clock.
+      var wx = document.getElementById('wx-btn');
+      if (wx) {
+        var cr = clock.getBoundingClientRect();
+        if (cr.width) wx.style.right = (window.innerWidth - cr.left + 10) + 'px';
+      }
       return true;
     }
     tick();
@@ -656,6 +741,90 @@
     var pin = setInterval(function () { if (place() || ++tries > 40) clearInterval(pin); }, 150);
     window.addEventListener('resize', place);
     window.addEventListener('load', place);
+  })();
+  </script>
+
+  <!-- Live weather (Open-Meteo, no API key) -->
+  <script>
+  (function () {
+    var LAT = 7.5348, LON = 80.5602;
+    var btn = document.getElementById('wx-btn');
+    var icoEl = document.getElementById('wx-icon');
+    var modal = document.getElementById('wx-modal');
+    if (!btn || !modal) return;
+
+    var ICONS = {
+      sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M3.5 3.5l1.8 1.8M18.7 18.7l1.8 1.8M2 12h2.5M19.5 12H22M3.5 20.5l1.8-1.8M18.7 5.3l1.8-1.8"/></svg>',
+      moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.2A8 8 0 1 1 9.8 4 6.4 6.4 0 0 0 20 14.2z"/></svg>',
+      partly: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="7.5" r="2.6"/><path d="M8 2.6v1.4M3.5 7.5H4.9M4.6 4.1l1 1"/><path d="M9 19h8.2a3 3 0 0 0 .3-6 4.3 4.3 0 0 0-8.1-1A3 3 0 0 0 9 19z"/></svg>',
+      cloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a3.4 3.4 0 0 0 .4-6.8 5 5 0 0 0-9.6-1.2A3.4 3.4 0 0 0 7 18z"/></svg>',
+      fog: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 9.5h12.3a3.2 3.2 0 0 0-.2-2.2 4.8 4.8 0 0 0-9-1.1"/><path d="M4 13.5h16M6 17.5h12"/></svg>',
+      rain: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15h9.2a3.3 3.3 0 0 0 .3-6.6 4.7 4.7 0 0 0-9-1.1A3.3 3.3 0 0 0 7 15z"/><path d="M9 18l-1 2.5M13 18l-1 2.5M17 18l-1 2.5"/></svg>',
+      snow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 14h9.2a3.3 3.3 0 0 0 .3-6.6 4.7 4.7 0 0 0-9-1.1A3.3 3.3 0 0 0 7 14z"/><path d="M9 18h.01M12.5 19.5h.01M16 18h.01M10.5 21h.01M14.5 21h.01"/></svg>',
+      thunder: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 14h9.2a3.3 3.3 0 0 0 .3-6.6 4.7 4.7 0 0 0-9-1.1A3.3 3.3 0 0 0 7 14z"/><path d="M13 13l-3 4h2.5l-1 3.5"/></svg>'
+    };
+    function keyFor(code, isDay) {
+      if (code === 0 || code === 1) return isDay ? 'sun' : 'moon';
+      if (code === 2) return 'partly';
+      if (code === 3) return 'cloud';
+      if (code === 45 || code === 48) return 'fog';
+      if ((code >= 71 && code <= 77) || code === 85 || code === 86) return 'snow';
+      if (code >= 95) return 'thunder';
+      if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return 'rain';
+      return 'cloud';
+    }
+    var TEXT = {0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Rime fog',51:'Light drizzle',53:'Drizzle',55:'Dense drizzle',56:'Freezing drizzle',57:'Freezing drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Freezing rain',71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',80:'Light showers',81:'Showers',82:'Heavy showers',85:'Snow showers',86:'Snow showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
+    var DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    var data = null;
+    function setIcon(el, key) { if (el) el.innerHTML = ICONS[key] || ICONS.cloud; }
+    function pad(n){ return (n<10?'0':'')+n; }
+
+    function render() {
+      if (!data || !data.current) return;
+      var c = data.current;
+      var k = keyFor(c.weather_code, c.is_day);
+      setIcon(icoEl, k);
+      setIcon(document.getElementById('wx-now-ico'), k);
+      document.getElementById('wx-temp').textContent = Math.round(c.temperature_2m);
+      document.getElementById('wx-cond').textContent = TEXT[c.weather_code] || '';
+      document.getElementById('wx-feels').textContent = Math.round(c.apparent_temperature) + '°';
+      document.getElementById('wx-hum').textContent = c.relative_humidity_2m + '%';
+      document.getElementById('wx-wind').textContent = Math.round(c.wind_speed_10m) + ' km/h';
+      document.getElementById('wx-rain').textContent = (c.precipitation || 0) + ' mm';
+      var d = data.daily, html = '';
+      for (var i = 0; i < Math.min(3, d.time.length); i++) {
+        var dt = new Date(d.time[i] + 'T00:00:00');
+        html += '<div class="d"><span class="dn">' + (i === 0 ? 'Today' : DOW[dt.getDay()]) + '</span>' +
+                ICONS[keyFor(d.weather_code[i], 1)] +
+                '<span class="t">' + Math.round(d.temperature_2m_max[i]) + '°<small> / ' + Math.round(d.temperature_2m_min[i]) + '°</small></span></div>';
+      }
+      document.getElementById('wx-fc').innerHTML = html;
+      var u = new Date();
+      document.getElementById('wx-foot').textContent = 'Updated ' + pad(u.getHours()) + ':' + pad(u.getMinutes()) + ' · open-meteo';
+    }
+
+    function load() {
+      var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT + '&longitude=' + LON +
+        '&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m' +
+        '&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=3';
+      fetch(url).then(function (r) { return r.json(); }).then(function (j) {
+        if (!j || !j.current) return;
+        data = j;
+        try { localStorage.setItem('rk_wx', JSON.stringify(j)); } catch (e) {}
+        render();
+      }).catch(function () {});
+    }
+
+    setIcon(icoEl, 'cloud'); // placeholder until data arrives
+    try { var cached = localStorage.getItem('rk_wx'); if (cached) { data = JSON.parse(cached); render(); } } catch (e) {}
+    load();
+    setInterval(load, 15 * 60 * 1000); // refresh every 15 min
+
+    function open() { render(); modal.classList.add('is-open'); modal.setAttribute('aria-hidden', 'false'); }
+    function close() { modal.classList.remove('is-open'); modal.setAttribute('aria-hidden', 'true'); }
+    btn.addEventListener('click', open);
+    modal.addEventListener('click', function (e) { if (e.target.hasAttribute('data-wx-close')) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
   })();
   </script>
 
