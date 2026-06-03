@@ -619,6 +619,11 @@ function App() {
   return (
     <>
       <Honeycomb tweaks={t} tilesData={tiles} onAdminToggle={handleAdminToggle} onFocalChange={handleFocalChange} />
+      {/* Strips live INSIDE #root so they sit above the tiles but below the
+          focal readout (bottom text). #root is its own stacking layer, so a
+          body-level strip would cover everything inside it instead. */}
+      <div className="strip strip-top" aria-hidden="true" />
+      <div className="strip strip-bottom" aria-hidden="true" />
       <FocalReadout tile={focal.tile} isCenter={focal.isCenter} />
       <AdminPanel open={adminMode} onClose={() => setAdminMode(false)}
                   tiles={tiles} actions={tileActions} />

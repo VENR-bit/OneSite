@@ -131,8 +131,9 @@
     .strip {
       position: fixed; left: 0; right: 0; z-index: 100;
       pointer-events: none;
-      background: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.5);   /* day: light strip (dark text stays legible) */
     }
+    body.dark .strip { background: rgba(0, 0, 0, 0.5); }  /* night: black strip */
     .strip-top { top: 0; height: 112px; }
     .strip-bottom { bottom: 0; height: 116px; }
 
@@ -511,8 +512,6 @@
   <div class="backdrop" id="backdrop"></div>
   <div class="grain"></div>
   <div class="horizon"></div>
-  <div class="strip strip-top"></div>
-  <div class="strip strip-bottom"></div>
 
   <div id="root"></div>
 
@@ -585,7 +584,7 @@
   <script type="text/babel" src="tweaks-panel.jsx?v=21"></script>
   <script type="text/babel" src="icons.jsx?v=21"></script>
   <script type="text/babel" src="admin-panel.jsx?v=21"></script>
-  <script type="text/babel" src="app.jsx?v=21"></script>
+  <script type="text/babel" src="app.jsx?v=22"></script>
 <!-- eco-nav -->
   <link rel="stylesheet" href="eco-nav.css">
   <script id="eco-nav" src="eco-nav.js?v=6" data-root="" data-current="home" defer></script>
