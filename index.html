@@ -432,8 +432,10 @@
       cursor: pointer;
       transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
     }
-    .cal-btn:hover { color: var(--accent); transform: translateY(-1px); }
-    .cal-btn svg { width: 17px; height: 17px; display: block; }
+    .cal-btn { flex-direction: column; line-height: 1; gap: 1px; }
+    .cal-btn:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    .cb-dow { font-family: 'JetBrains Mono', monospace; font-size: 6.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+    .cb-num { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; line-height: 1; color: var(--ink); }
 
     /* Clock beside the Explore button — pill styled like the chrome buttons */
     .clock {
@@ -539,12 +541,8 @@
 
   <!-- Calendar button (Poya days, holidays, retreat schedule) -->
   <button class="cal-btn" id="cal-btn" aria-label="Open calendar" aria-haspopup="dialog">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <rect x="3" y="4.5" width="18" height="16" rx="2.5"></rect>
-      <line x1="3" y1="9" x2="21" y2="9"></line>
-      <line x1="8" y1="2.5" x2="8" y2="6"></line>
-      <line x1="16" y1="2.5" x2="16" y2="6"></line>
-    </svg>
+    <span class="cb-dow" id="cb-dow">—</span>
+    <span class="cb-num" id="cb-num">–</span>
   </button>
 
   <!-- Calendar popup -->
@@ -631,11 +629,16 @@
   <script>
   (function () {
     var clock = document.getElementById('clock');
+    var dowEl = document.getElementById('cb-dow');
+    var numEl = document.getElementById('cb-num');
+    var DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     if (!clock) return;
     function tick() {
       var d = new Date();
       var h = d.getHours(), m = d.getMinutes();
       clock.textContent = (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
+      if (dowEl) dowEl.textContent = DOW[d.getDay()];
+      if (numEl) numEl.textContent = d.getDate();
     }
     function place() {
       var ex = document.querySelector('.eco-launch');
