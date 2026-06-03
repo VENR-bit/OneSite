@@ -129,7 +129,9 @@
     /* Top & bottom strips — translucent white bands behind the title and the
        bottom buttons. Above the tiles (z 2), below the chrome (z 500). */
     .strip {
-      position: fixed; left: 0; right: 0; z-index: 100;
+      /* z-index 400: above every tile (tiles are z ~200–300, focal +100) but
+         below the focal caption (z 500) and the body-level chrome. */
+      position: fixed; left: 0; right: 0; z-index: 400;
       pointer-events: none;
       background: rgba(255, 255, 255, 0.5);   /* day: light strip (dark text stays legible) */
     }
