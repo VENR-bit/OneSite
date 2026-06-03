@@ -566,6 +566,24 @@
       body .eco-launch { bottom: 48px; }
       .theme-toggle { bottom: 49px; }
     }
+
+    /* ── Bottom dock ──────────────────────────────────────────────
+       All bottom controls live in one centred flex row (assembled by JS).
+       This neutralises each control's individual fixed positioning so they
+       align evenly on any screen. Placed last so it wins the cascade. */
+    .dock {
+      position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%);
+      z-index: 500;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      max-width: calc(100vw - 18px);
+      pointer-events: none;
+    }
+    .dock > * {
+      position: static; inset: auto; margin: 0;
+      flex: 0 0 auto; pointer-events: auto;
+    }
+    .dock .eco-launch { position: static; inset: auto; }   /* beat eco-nav.css */
+    @media (max-width: 560px) { .dock { gap: 8px; bottom: 36px; } }
   </style>
 </head>
 <body>
@@ -574,6 +592,10 @@
   <div class="horizon"></div>
 
   <div id="root"></div>
+
+  <!-- Bottom dock — the chrome controls are moved in here (in order) by JS
+       so they sit in one evenly-spaced, centred row on every screen size. -->
+  <div class="dock" id="dock"></div>
 
   <div class="chrome">
     <div class="brand">
@@ -719,28 +741,27 @@
       if (dowEl) dowEl.textContent = DOW[d.getDay()];
       if (numEl) numEl.textContent = d.getDate();
     }
-    function place() {
-      var ex = document.querySelector('.eco-launch');
-      if (!ex) return false;
-      var r = ex.getBoundingClientRect();
-      if (!r.width) return false;
-      clock.style.right = (window.innerWidth - r.left + 12) + 'px';
-      // Weather button sits just left of the clock.
-      var wx = document.getElementById('wx-btn');
-      if (wx) {
-        var cr = clock.getBoundingClientRect();
-        if (cr.width) wx.style.right = (window.innerWidth - cr.left + 10) + 'px';
-      }
-      return true;
-    }
     tick();
     setInterval(tick, 10000);
-    // The Explore launcher is injected by eco-nav.js (deferred), so retry
-    // until it exists, then keep the clock pinned to its left edge.
+
+    // Assemble the bottom dock in order: weather · clock · Explore · radar ·
+    // day/night · date. The Explore launcher is injected by eco-nav.js
+    // (deferred), so retry until it appears, then enforce the final order.
+    var dock = document.getElementById('dock');
+    function buildDock() {
+      if (!dock) return true;
+      [ document.getElementById('wx-btn'),
+        document.getElementById('clock'),
+        document.querySelector('.eco-launch'),
+        document.querySelector('.compass'),
+        document.getElementById('theme-toggle'),
+        document.getElementById('cal-btn')
+      ].forEach(function (el) { if (el) dock.appendChild(el); });
+      return !!document.querySelector('.dock .eco-launch');
+    }
+    buildDock();
     var tries = 0;
-    var pin = setInterval(function () { if (place() || ++tries > 40) clearInterval(pin); }, 150);
-    window.addEventListener('resize', place);
-    window.addEventListener('load', place);
+    var pin = setInterval(function () { if (buildDock() || ++tries > 40) clearInterval(pin); }, 150);
   })();
   </script>
 
