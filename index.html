@@ -400,6 +400,72 @@
       .theme-toggle { bottom: 49px; }
     }
 
+    /* Calendar button — round icon button matching the chrome buttons.
+       Positioned to the right of the day/night toggle (left set in JS). */
+    .cal-btn {
+      position: fixed; bottom: 49px; left: calc(50% + 150px); z-index: 500;
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; padding: 0;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--card) 70%, transparent);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
+    }
+    .cal-btn:hover { color: var(--accent); transform: translateY(-1px); }
+    .cal-btn svg { width: 17px; height: 17px; display: block; }
+
+    /* Calendar popup */
+    .cal-modal { position: fixed; inset: 0; z-index: 99600; display: none; }
+    .cal-modal.is-open { display: block; }
+    .cal-overlay { position: absolute; inset: 0; background: color-mix(in srgb, var(--bg) 50%, rgba(0,0,0,0.5)); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+    .cal-panel {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      width: min(380px, calc(100vw - 32px)); max-height: calc(100vh - 48px); overflow-y: auto;
+      background: var(--card); color: var(--ink);
+      border: 1px solid var(--line); border-radius: 18px;
+      box-shadow: 0 40px 90px -30px rgba(0,0,0,0.55);
+      padding: 18px 18px 16px;
+      font-family: 'Spectral', Georgia, serif;
+    }
+    .cal-x { position: absolute; top: 10px; right: 12px; width: 30px; height: 30px; border: 0; background: transparent; color: var(--muted); font-size: 22px; line-height: 1; cursor: pointer; border-radius: 50%; }
+    .cal-x:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink); }
+    .cal-head { display: flex; align-items: center; justify-content: space-between; margin: 2px 28px 12px 0; }
+    .cal-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.5rem; font-weight: 500; letter-spacing: 0.01em; }
+    .cal-nav { width: 32px; height: 32px; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 50%; font-size: 18px; line-height: 1; cursor: pointer; transition: background .2s ease; }
+    .cal-nav:hover { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+    .cal-dow { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 4px; }
+    .cal-dow span { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 4px 0; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .cal-cell { position: relative; aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border-radius: 9px; font-size: 0.92rem; color: var(--ink); cursor: default; }
+    .cal-cell.empty { visibility: hidden; }
+    .cal-cell.in-retreat { background: color-mix(in srgb, #4a9d5b 16%, transparent); }
+    .cal-cell.is-today { outline: 2px solid var(--accent); outline-offset: -2px; font-weight: 700; }
+    .cal-cell.has-event { cursor: pointer; }
+    .cal-cell.has-event:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+    .cal-cell .dots { display: flex; gap: 2px; height: 5px; }
+    .cal-cell .dots i { width: 5px; height: 5px; border-radius: 50%; }
+    .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+    .dot.poya, .dots i.poya { background: #d9a521; }
+    .dot.holiday, .dots i.holiday { background: #c0552f; }
+    .dot.retreat, .dots i.retreat { background: #4a9d5b; }
+    .dot.today-dot { background: transparent; box-shadow: inset 0 0 0 2px var(--accent); }
+    .cal-detail { min-height: 1.2em; margin: 12px 2px 0; font-size: 0.86rem; color: var(--ink-soft, var(--muted)); text-align: center; }
+    .cal-detail b { color: var(--ink); font-weight: 600; }
+    .cal-legend { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 12px 0 4px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .cal-legend span { display: inline-flex; align-items: center; }
+    .cal-upcoming { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 12px; }
+    .cal-upcoming h4 { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+    .cal-upcoming ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+    .cal-upcoming li { display: flex; align-items: baseline; gap: 8px; font-size: 0.86rem; }
+    .cal-upcoming li .r-date { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--accent); white-space: nowrap; }
+    .cal-upcoming li .r-name { color: var(--ink-soft, var(--ink)); }
+    .cal-upcoming .none { font-size: 0.84rem; color: var(--muted); font-style: italic; }
+    .cal-book { display: inline-block; margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
+    .cal-book:hover { text-decoration: underline; }
+
     /* When tile is loading or initial */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(8px); }
@@ -445,6 +511,40 @@
     </div>
     <span class="label">Night</span>
   </button>
+
+  <!-- Calendar button (Poya days, holidays, retreat schedule) -->
+  <button class="cal-btn" id="cal-btn" aria-label="Open calendar" aria-haspopup="dialog">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="3" y="4.5" width="18" height="16" rx="2.5"></rect>
+      <line x1="3" y1="9" x2="21" y2="9"></line>
+      <line x1="8" y1="2.5" x2="8" y2="6"></line>
+      <line x1="16" y1="2.5" x2="16" y2="6"></line>
+    </svg>
+  </button>
+
+  <!-- Calendar popup -->
+  <div class="cal-modal" id="cal-modal" aria-hidden="true">
+    <div class="cal-overlay" data-cal-close></div>
+    <div class="cal-panel" role="dialog" aria-modal="true" aria-label="Monastery calendar">
+      <button class="cal-x" type="button" aria-label="Close" data-cal-close>&times;</button>
+      <div class="cal-head">
+        <button class="cal-nav" id="cal-prev" type="button" aria-label="Previous month">&#8249;</button>
+        <div class="cal-title" id="cal-title">Month</div>
+        <button class="cal-nav" id="cal-next" type="button" aria-label="Next month">&#8250;</button>
+      </div>
+      <div class="cal-dow"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="cal-detail" id="cal-detail"></div>
+      <div class="cal-legend">
+        <span><i class="dot poya"></i>Poya</span>
+        <span><i class="dot holiday"></i>Holiday</span>
+        <span><i class="dot retreat"></i>Retreat</span>
+        <span><i class="dot today-dot"></i>Today</span>
+      </div>
+      <div class="cal-upcoming" id="cal-upcoming"></div>
+      <a class="cal-book" id="cal-book" href="booking/">Book your stay &rarr;</a>
+    </div>
+  </div>
 
   <svg class="compass" viewBox="-32 -32 64 64">
     <circle class="compass-ring" r="26"></circle>
@@ -499,6 +599,113 @@
         navigator.serviceWorker.register('sw.js').catch(function () {});
       });
     }
+  </script>
+
+  <!-- Calendar: Poya days, Sri Lanka holidays, retreat schedule -->
+  <script src="calendar-data.js?v=21"></script>
+  <script>
+  (function () {
+    var DATA = window.RK_CALENDAR || { poya: [], holidays: [], retreats: [], bookingUrl: 'booking/' };
+    var btn = document.getElementById('cal-btn');
+    var modal = document.getElementById('cal-modal');
+    var grid = document.getElementById('cal-grid');
+    var titleEl = document.getElementById('cal-title');
+    var detailEl = document.getElementById('cal-detail');
+    var upcomingEl = document.getElementById('cal-upcoming');
+    var toggle = document.getElementById('theme-toggle');
+    if (!btn || !modal || !grid) return;
+
+    var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    function pad(n){ return (n < 10 ? '0' : '') + n; }
+    function iso(d){ return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()); }
+    function parse(s){ var p = s.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+    function fmtRange(s, e){
+      var a = parse(s), b = parse(e), mo = function (d){ return MONTHS[d.getMonth()].slice(0,3); };
+      return a.getMonth() === b.getMonth()
+        ? mo(a) + ' ' + a.getDate() + '–' + b.getDate()
+        : mo(a) + ' ' + a.getDate() + ' – ' + mo(b) + ' ' + b.getDate();
+    }
+
+    // Position the calendar button just right of the day/night toggle.
+    function placeBtn(){ if (toggle){ var r = toggle.getBoundingClientRect(); if (r.width) btn.style.left = (r.right + 10) + 'px'; } }
+    window.addEventListener('resize', placeBtn);
+    window.addEventListener('load', placeBtn);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeBtn);
+    if (toggle) toggle.addEventListener('click', function(){ setTimeout(placeBtn, 80); });
+    // The Day/Night label width changes (incl. on auto theme switches), so
+    // re-place the button whenever the toggle's contents change.
+    if (toggle && window.MutationObserver) new MutationObserver(placeBtn).observe(toggle, { subtree: true, childList: true, characterData: true });
+    placeBtn();
+
+    function eventsFor(di){
+      var ev = [];
+      DATA.poya.forEach(function (p){ if (p.date === di) ev.push({ type:'poya', name:p.name }); });
+      DATA.holidays.forEach(function (h){ if (h.date === di) ev.push({ type:'holiday', name:h.name }); });
+      DATA.retreats.forEach(function (r){ if (di >= r.start && di <= r.end) ev.push({ type:'retreat', name:r.name, start:r.start, end:r.end }); });
+      return ev;
+    }
+
+    var view = new Date(); view.setDate(1);
+    var todayIso = iso(new Date());
+
+    function render(){
+      titleEl.textContent = MONTHS[view.getMonth()] + ' ' + view.getFullYear();
+      grid.innerHTML = '';
+      var startDow = new Date(view.getFullYear(), view.getMonth(), 1).getDay();
+      var days = new Date(view.getFullYear(), view.getMonth()+1, 0).getDate();
+      for (var i = 0; i < startDow; i++){ var b = document.createElement('div'); b.className = 'cal-cell empty'; grid.appendChild(b); }
+      for (var d = 1; d <= days; d++){
+        var cd = new Date(view.getFullYear(), view.getMonth(), d), di = iso(cd), ev = eventsFor(di);
+        var cell = document.createElement('div');
+        cell.className = 'cal-cell';
+        if (ev.some(function (e){ return e.type === 'retreat'; })) cell.classList.add('in-retreat');
+        if (di === todayIso) cell.classList.add('is-today');
+        var num = document.createElement('span'); num.textContent = d; cell.appendChild(num);
+        var types = {}; ev.forEach(function (e){ types[e.type] = 1; });
+        var dots = document.createElement('div'); dots.className = 'dots';
+        ['poya','holiday','retreat'].forEach(function (t){ if (types[t]){ var s = document.createElement('i'); s.className = t; dots.appendChild(s); } });
+        cell.appendChild(dots);
+        if (ev.length){
+          cell.classList.add('has-event');
+          (function (evs, dd){ cell.addEventListener('click', function (){ showDetail(dd, evs); }); })(ev, cd);
+        }
+        grid.appendChild(cell);
+      }
+    }
+
+    function showDetail(dateObj, evs){
+      var label = MONTHS[dateObj.getMonth()].slice(0,3) + ' ' + dateObj.getDate();
+      var names = evs.map(function (e){ return e.type === 'retreat' ? e.name + ' (' + fmtRange(e.start, e.end) + ')' : e.name; });
+      detailEl.innerHTML = '<b>' + label + '</b> — ' + names.join(' · ');
+    }
+
+    function renderUpcoming(){
+      var up = DATA.retreats.filter(function (r){ return r.end >= todayIso; })
+                            .sort(function (a, b){ return a.start < b.start ? -1 : 1; }).slice(0, 4);
+      var html = '<h4>Upcoming retreats</h4>';
+      html += up.length
+        ? '<ul>' + up.map(function (r){ return '<li><span class="r-date">' + fmtRange(r.start, r.end) + '</span><span class="r-name">' + r.name + '</span></li>'; }).join('') + '</ul>'
+        : '<p class="none">No upcoming retreats listed.</p>';
+      upcomingEl.innerHTML = html;
+    }
+
+    function open(){
+      view = new Date(); view.setDate(1);
+      todayIso = iso(new Date());
+      render(); renderUpcoming();
+      var todayEv = eventsFor(todayIso);
+      if (todayEv.length) showDetail(new Date(), todayEv); else detailEl.textContent = '';
+      modal.classList.add('is-open'); modal.setAttribute('aria-hidden', 'false');
+    }
+    function close(){ modal.classList.remove('is-open'); modal.setAttribute('aria-hidden', 'true'); }
+
+    btn.addEventListener('click', open);
+    document.getElementById('cal-prev').addEventListener('click', function (){ view.setMonth(view.getMonth()-1); render(); });
+    document.getElementById('cal-next').addEventListener('click', function (){ view.setMonth(view.getMonth()+1); render(); });
+    modal.addEventListener('click', function (e){ if (e.target.hasAttribute('data-cal-close')) close(); });
+    document.addEventListener('keydown', function (e){ if (e.key === 'Escape') close(); });
+    var book = document.getElementById('cal-book'); if (book && DATA.bookingUrl) book.href = DATA.bookingUrl;
+  })();
   </script>
 </body>
 </html>
