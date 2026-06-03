@@ -126,6 +126,16 @@
     }
     body.dark .horizon { opacity: 0.18; }
 
+    /* Top & bottom strips — translucent white bands behind the title and the
+       bottom buttons. Above the tiles (z 2), below the chrome (z 500). */
+    .strip {
+      position: fixed; left: 0; right: 0; z-index: 100;
+      pointer-events: none;
+      background: rgba(255, 255, 255, 0.5);
+    }
+    .strip-top { top: 0; height: 112px; }
+    .strip-bottom { bottom: 0; height: 116px; }
+
     /* Header */
     .chrome {
       position: fixed; top: 0; left: 0; right: 0;
@@ -501,6 +511,8 @@
   <div class="backdrop" id="backdrop"></div>
   <div class="grain"></div>
   <div class="horizon"></div>
+  <div class="strip strip-top"></div>
+  <div class="strip strip-bottom"></div>
 
   <div id="root"></div>
 
