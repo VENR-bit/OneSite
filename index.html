@@ -132,25 +132,25 @@
     .scrim {
       position: fixed; left: 0; right: 0; z-index: 100;
       pointer-events: none;
-      -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(28px); backdrop-filter: blur(28px);
     }
     .scrim-top {
-      top: 0; height: 170px;
+      top: 0; height: 210px;
       background: linear-gradient(to bottom,
         var(--bg) 0%,
-        color-mix(in srgb, var(--bg) 50%, transparent) 48%,
+        color-mix(in srgb, var(--bg) 70%, transparent) 55%,
         transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 100%);
-              mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 60%, transparent 100%);
+              mask-image: linear-gradient(to bottom, #000 0%, #000 60%, transparent 100%);
     }
     .scrim-bottom {
-      bottom: 0; height: 185px;
+      bottom: 0; height: 225px;
       background: linear-gradient(to top,
         var(--bg) 0%,
-        color-mix(in srgb, var(--bg) 50%, transparent) 48%,
+        color-mix(in srgb, var(--bg) 70%, transparent) 55%,
         transparent 100%);
-      -webkit-mask-image: linear-gradient(to top, #000 0%, #000 50%, transparent 100%);
-              mask-image: linear-gradient(to top, #000 0%, #000 50%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to top, #000 0%, #000 60%, transparent 100%);
+              mask-image: linear-gradient(to top, #000 0%, #000 60%, transparent 100%);
     }
 
     /* Header */
