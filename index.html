@@ -744,18 +744,18 @@
     tick();
     setInterval(tick, 10000);
 
-    // Assemble the bottom dock in order: weather · clock · Explore · radar ·
-    // day/night · date. The Explore launcher is injected by eco-nav.js
+    // Assemble the bottom dock in order: weather · date · time · radar ·
+    // Explore · day/night. The Explore launcher is injected by eco-nav.js
     // (deferred), so retry until it appears, then enforce the final order.
     var dock = document.getElementById('dock');
     function buildDock() {
       if (!dock) return true;
       [ document.getElementById('wx-btn'),
+        document.getElementById('cal-btn'),
         document.getElementById('clock'),
-        document.querySelector('.eco-launch'),
         document.querySelector('.compass'),
-        document.getElementById('theme-toggle'),
-        document.getElementById('cal-btn')
+        document.querySelector('.eco-launch'),
+        document.getElementById('theme-toggle')
       ].forEach(function (el) { if (el) dock.appendChild(el); });
       return !!document.querySelector('.dock .eco-launch');
     }
