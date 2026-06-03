@@ -132,44 +132,30 @@
     /* Glassmorphism scrims — heavy diffuse blur + a translucent glass tint,
        so tiles bleed through softly (frosted) rather than being hidden.
        The tint colour adapts to the theme (light glass by day, dark by night). */
+    /* iOS Safari/WebKit silently drops `backdrop-filter` when `mask` is on
+       the SAME element. So split them: the wrapper carries the fade-mask,
+       an inner .scrim-glass layer carries the blur + glass tint. */
     .scrim {
       position: fixed; left: 0; right: 0; z-index: 100;
-      pointer-events: none;
-      -webkit-backdrop-filter: blur(90px) saturate(1.5);
-              backdrop-filter: blur(90px) saturate(1.5);
+      pointer-events: none; overflow: hidden;
     }
-    /* Day: light glass — keep alpha low (≤0.2) so it reads as glass, not plastic */
     .scrim-top {
       top: 0; height: 240px;
-      background: linear-gradient(to bottom,
-        rgba(255,255,255,0.18) 0%,
-        rgba(255,255,255,0.09) 52%,
-        rgba(255,255,255,0) 100%);
       -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
               mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
     }
     .scrim-bottom {
       bottom: 0; height: 255px;
-      background: linear-gradient(to top,
-        rgba(255,255,255,0.18) 0%,
-        rgba(255,255,255,0.09) 52%,
-        rgba(255,255,255,0) 100%);
       -webkit-mask-image: linear-gradient(to top, #000 0%, #000 62%, transparent 100%);
               mask-image: linear-gradient(to top, #000 0%, #000 62%, transparent 100%);
     }
-    /* Night: dark glass tint instead of white */
-    body.dark .scrim-top {
-      background: linear-gradient(to bottom,
-        rgba(0,0,0,0.30) 0%,
-        rgba(0,0,0,0.15) 52%,
-        rgba(0,0,0,0) 100%);
+    .scrim-glass {
+      position: absolute; inset: 0;
+      -webkit-backdrop-filter: blur(90px) saturate(1.5);
+              backdrop-filter: blur(90px) saturate(1.5);
+      background: rgba(255,255,255,0.14);   /* day: light glass, low alpha */
     }
-    body.dark .scrim-bottom {
-      background: linear-gradient(to top,
-        rgba(0,0,0,0.30) 0%,
-        rgba(0,0,0,0.15) 52%,
-        rgba(0,0,0,0) 100%);
-    }
+    body.dark .scrim-glass { background: rgba(0,0,0,0.30); }  /* night: dark tint */
 
     /* Header */
     .chrome {
@@ -530,8 +516,8 @@
   <div class="backdrop" id="backdrop"></div>
   <div class="grain"></div>
   <div class="horizon"></div>
-  <div class="scrim scrim-top"></div>
-  <div class="scrim scrim-bottom"></div>
+  <div class="scrim scrim-top"><div class="scrim-glass"></div></div>
+  <div class="scrim scrim-bottom"><div class="scrim-glass"></div></div>
 
   <div id="root"></div>
 
