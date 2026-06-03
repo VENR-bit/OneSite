@@ -417,6 +417,17 @@
     .cal-btn:hover { color: var(--accent); transform: translateY(-1px); }
     .cal-btn svg { width: 17px; height: 17px; display: block; }
 
+    /* Clock beside the Explore button */
+    .clock {
+      position: fixed; bottom: 49px; right: calc(50% + 200px); z-index: 500;
+      height: 34px; display: inline-flex; align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; letter-spacing: 0.14em; font-weight: 500;
+      color: var(--muted); pointer-events: none; white-space: nowrap;
+      transition: color 0.4s ease;
+    }
+    @media (max-width: 560px) { .clock { bottom: 48px; font-size: 12px; } }
+
     /* Calendar popup */
     .cal-modal { position: fixed; inset: 0; z-index: 99600; display: none; }
     .cal-modal.is-open { display: block; }
@@ -535,6 +546,9 @@
     </div>
   </div>
 
+  <!-- Clock — placed beside the Explore button (left set in JS) -->
+  <div class="clock" id="clock" aria-hidden="true"></div>
+
   <svg class="compass" viewBox="-32 -32 64 64">
     <circle class="compass-ring" r="26"></circle>
     <circle class="compass-ring" r="14"></circle>
@@ -588,6 +602,35 @@
         navigator.serviceWorker.register('sw.js').catch(function () {});
       });
     }
+  </script>
+
+  <!-- Clock beside the Explore launcher -->
+  <script>
+  (function () {
+    var clock = document.getElementById('clock');
+    if (!clock) return;
+    function tick() {
+      var d = new Date();
+      var h = d.getHours(), m = d.getMinutes();
+      clock.textContent = (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
+    }
+    function place() {
+      var ex = document.querySelector('.eco-launch');
+      if (!ex) return false;
+      var r = ex.getBoundingClientRect();
+      if (!r.width) return false;
+      clock.style.right = (window.innerWidth - r.left + 12) + 'px';
+      return true;
+    }
+    tick();
+    setInterval(tick, 10000);
+    // The Explore launcher is injected by eco-nav.js (deferred), so retry
+    // until it exists, then keep the clock pinned to its left edge.
+    var tries = 0;
+    var pin = setInterval(function () { if (place() || ++tries > 40) clearInterval(pin); }, 150);
+    window.addEventListener('resize', place);
+    window.addEventListener('load', place);
+  })();
   </script>
 
   <!-- Calendar: Poya days, Sri Lanka holidays, retreat schedule -->
