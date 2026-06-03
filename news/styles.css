@@ -153,6 +153,8 @@ img { max-width: 100%; display: block; }
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 2.6vw, 36px); }
 @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+.more-row { text-align: center; margin-top: clamp(32px, 5vw, 56px); }
+.more-row .btn { cursor: pointer; border: 0; }
 
 .card {
   display: flex; flex-direction: column;
