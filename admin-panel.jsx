@@ -12,7 +12,15 @@ function useTiles() {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length) return parsed;
+        if (Array.isArray(parsed) && parsed.length) {
+          // Migration: repoint the centre 'home' tile to the new homepage
+          // (older saved stores pointed it at the dashboard root / monastery).
+          const h = parsed.find((t) => t && t.id === 'home');
+          if (h && (h.url === 'monastery/' || h.url === 'index.html' || h.url === '' || h.url === '#')) {
+            h.url = 'home/';
+          }
+          return parsed;
+        }
       }
     } catch (e) {}
     return window.DEFAULT_TILES;

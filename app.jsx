@@ -12,7 +12,7 @@ const { useState, useEffect, useRef, useMemo, useCallback } = React;
 const DEFAULT_TILES = [
   // CENTER — Ring 0
   { id: 'home', label: 'Rideekanda WEB', sub: 'Official Website of the Rideekanda Forest Monastery',
-    url: 'monastery/', size: 178, ring: 0,
+    url: 'home/', size: 178, ring: 0,
     bg: 'radial-gradient(circle at 35% 30%, #4a2e16 0%, #1c100a 80%)',
     halo: 'rgba(224, 183, 106, 0.45)', fg: '#f4e1b8', icon: 'home' },
 
