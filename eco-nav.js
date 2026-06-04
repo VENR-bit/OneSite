@@ -25,23 +25,24 @@
     { id: "home",        href: "home/",                 en: "Home",                si: "මුල් පිටුව" },
     { id: "monastery",   href: "monastery/",            en: "Monastery",           si: "ආරණ්‍ය සේනාසනය" },
     { id: "retreat",     href: "retreat/",              en: "Retreat Program",     si: "භාවනා වැඩසටහන" },
-    { id: "booking",     href: "booking/",              en: "Book Your Stay",      si: "වෙන් කරවා ගැනීම" },
-    { id: "gallery",     href: "gallery/",              en: "Gallery",             si: "ඡායාරූප" },
     { id: "reviews",     href: "reviews/",              en: "Reviews",             si: "ඇගයීම්" },
-    { id: "donate",      href: "donate/",               en: "Donate",              si: "පරිත්‍යාග" },
     { id: "news",        href: "news/",                 en: "News & Events",       si: "ප්‍රවෘත්ති සහ සිදුවීම්" },
+    { id: "gallery",     href: "gallery/",              en: "Gallery",             si: "ඡායාරූප" },
     { id: "videos",      href: "videos/",               en: "Video Gallery",       si: "වීඩියෝ" },
-    { id: "requirements",      href: "requirements/",      en: "Monastery Requirements", si: "ආරණ්‍ය අවශ්‍යතා" },
+    { id: "donate",      href: "donate/",               en: "Donate",              si: "පරිත්‍යාග" },
     { id: "contact",     href: "contact/",              en: "Contact",             si: "සම්බන්ධ වන්න" }
-  ];
-  // Shown on its own at the bottom of the menu, under a divider.
-  var BOTTOM = [
-    { id: "dashboard",   href: "index.html",            en: "Dashboard",           si: "උපකරණ පුවරුව" }
   ];
   var PROJECTS = [
     { id: "projects",     href: "projects/",                en: "All Projects",  si: "ව්‍යාපෘති" },
     { id: "library-cafe", href: "projects/library-cafe/",   en: "Library Café",  si: "පුස්තකාල කැෆේ" },
     { id: "threestory",   href: "projects/threestory/",     en: "ThreeStory",    si: "තෙමහල් ගොඩනැගිල්ල" }
+  ];
+  // Each shown on its own at the bottom, under a divider line.
+  var REQUIREMENTS = [
+    { id: "requirements", href: "requirements/",         en: "Monastery Requirements", si: "ආරණ්‍ය අවශ්‍යතා" }
+  ];
+  var BOTTOM = [
+    { id: "dashboard",   href: "index.html",            en: "Dashboard",           si: "උපකරණ පුවරුව" }
   ];
 
   // Explore mark = the official Rideekanda logo, rendered via CSS mask so it
@@ -97,15 +98,23 @@
     close.type = "button"; close.setAttribute("aria-label", "Close menu");
     head.appendChild(close);
     panel.appendChild(head);
+    function divider() {
+      var d = el("div", "eco-divider");
+      d.style.cssText = "height:1px;background:var(--eco-line, rgba(255,255,255,0.18));margin:20px 0 16px;";
+      return d;
+    }
+    function buildGrid(items) {
+      var g = el("div", "eco-grid");
+      items.forEach(function (it) { g.appendChild(buildLink(it)); });
+      return g;
+    }
     panel.appendChild(buildSection("Explore the Monastery", MAIN));
     panel.appendChild(buildSection("Projects", PROJECTS));
-    // Divider + Dashboard pinned at the bottom
-    var divider = el("div", "eco-divider");
-    divider.style.cssText = "height:1px;background:var(--eco-line, rgba(255,255,255,0.18));margin:20px 0 16px;";
-    panel.appendChild(divider);
-    var bottomGrid = el("div", "eco-grid");
-    BOTTOM.forEach(function (it) { bottomGrid.appendChild(buildLink(it)); });
-    panel.appendChild(bottomGrid);
+    // Monastery Requirements, then Dashboard — each under its own divider line.
+    panel.appendChild(divider());
+    panel.appendChild(buildGrid(REQUIREMENTS));
+    panel.appendChild(divider());
+    panel.appendChild(buildGrid(BOTTOM));
     panel.appendChild(el("div", "eco-foot", "Rideekanda Forest Monastery · Matale, Sri Lanka"));
     overlay.appendChild(panel);
 
