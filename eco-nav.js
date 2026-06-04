@@ -22,7 +22,6 @@
   var CURRENT = (tag && tag.getAttribute("data-current")) || "";
 
   var MAIN = [
-    { id: "dashboard",   href: "index.html",            en: "Dashboard",           si: "උපකරණ පුවරුව" },
     { id: "home",        href: "home/",                 en: "Home",                si: "මුල් පිටුව" },
     { id: "monastery",   href: "monastery/",            en: "Monastery",           si: "ආරණ්‍ය සේනාසනය" },
     { id: "retreat",     href: "retreat/",              en: "Retreat Program",     si: "භාවනා වැඩසටහන" },
@@ -34,6 +33,10 @@
     { id: "videos",      href: "videos/",               en: "Video Gallery",       si: "වීඩියෝ" },
     { id: "requirements",      href: "requirements/",      en: "Monastery Requirements", si: "ආරණ්‍ය අවශ්‍යතා" },
     { id: "contact",     href: "contact/",              en: "Contact",             si: "සම්බන්ධ වන්න" }
+  ];
+  // Shown on its own at the bottom of the menu, under a divider.
+  var BOTTOM = [
+    { id: "dashboard",   href: "index.html",            en: "Dashboard",           si: "උපකරණ පුවරුව" }
   ];
   var PROJECTS = [
     { id: "projects",     href: "projects/",                en: "All Projects",  si: "ව්‍යාපෘති" },
@@ -96,6 +99,13 @@
     panel.appendChild(head);
     panel.appendChild(buildSection("Explore the Monastery", MAIN));
     panel.appendChild(buildSection("Projects", PROJECTS));
+    // Divider + Dashboard pinned at the bottom
+    var divider = el("div", "eco-divider");
+    divider.style.cssText = "height:1px;background:var(--eco-line, rgba(255,255,255,0.18));margin:20px 0 16px;";
+    panel.appendChild(divider);
+    var bottomGrid = el("div", "eco-grid");
+    BOTTOM.forEach(function (it) { bottomGrid.appendChild(buildLink(it)); });
+    panel.appendChild(bottomGrid);
     panel.appendChild(el("div", "eco-foot", "Rideekanda Forest Monastery · Matale, Sri Lanka"));
     overlay.appendChild(panel);
 
