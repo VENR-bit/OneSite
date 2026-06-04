@@ -45,8 +45,10 @@ img { max-width:100%; display:block; }
 .hero .tagline { font-size:clamp(0.78rem,1.4vw,0.95rem); letter-spacing:0.42em; text-transform:uppercase; color:var(--ink-soft); margin-top:1.8rem; }
 .hero .lead { margin-top:1.5rem; font-size:1.15rem; color:var(--ink-soft); font-style:italic; max-width:60ch; margin-inline:auto; }
 .hero-cta { margin-top:2.4rem; display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
-.scroll-cue { position:absolute; bottom:26px; left:50%; transform:translateX(-50%); z-index:2; color:var(--ink-soft); font-family:var(--font-body); font-size:0.7rem; letter-spacing:0.28em; text-transform:uppercase; opacity:0.8; }
+.scroll-cue { position:absolute; bottom:26px; left:50%; transform:translateX(-50%); z-index:2; color:var(--ink-soft); font-family:var(--font-body); font-size:0.7rem; letter-spacing:0.28em; text-transform:uppercase; opacity:0.85; text-align:center; animation:cueBob 2.2s ease-in-out infinite; }
 .scroll-cue::after { content:""; display:block; width:1px; height:34px; margin:10px auto 0; background:linear-gradient(var(--accent), transparent); }
+@keyframes cueBob { 0%,100% { transform:translateX(-50%) translateY(0); } 50% { transform:translateX(-50%) translateY(7px); } }
+@media (prefers-reduced-motion: reduce) { .scroll-cue { animation:none; } }
 
 /* ── Buttons ── */
 .btn { display:inline-flex; align-items:center; gap:9px; padding:14px 28px; background:var(--accent); color:#f7f1e6; border-radius:999px; text-decoration:none; font-family:var(--font-body); font-size:0.78rem; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; transition:filter .2s ease, transform .2s ease; border:0; cursor:pointer; }
