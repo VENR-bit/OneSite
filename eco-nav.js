@@ -22,8 +22,8 @@
   var CURRENT = (tag && tag.getAttribute("data-current")) || "";
 
   var MAIN = [
-    { id: "home",        href: "home/",                 en: "Home",                si: "මුල් පිටුව" },
     { id: "dashboard",   href: "index.html",            en: "Dashboard",           si: "උපකරණ පුවරුව" },
+    { id: "home",        href: "home/",                 en: "Home",                si: "මුල් පිටුව" },
     { id: "monastery",   href: "monastery/",            en: "Monastery",           si: "ආරණ්‍ය සේනාසනය" },
     { id: "retreat",     href: "retreat/",              en: "Retreat Program",     si: "භාවනා වැඩසටහන" },
     { id: "booking",     href: "booking/",              en: "Book Your Stay",      si: "වෙන් කරවා ගැනීම" },
