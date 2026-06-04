@@ -117,10 +117,3 @@ img { max-width:100%; display:block; }
 .footer ul a, .footer ul li { color:var(--dark-muted); font-size:0.95rem; text-decoration:none; transition:color .25s ease; }
 .footer ul a:hover { color:var(--dark-ink); }
 .footer-base { margin-top:clamp(40px,6vw,72px); padding-top:24px; border-top:1px solid rgba(255,235,200,0.12); display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; font-size:0.82rem; color:var(--dark-muted); }
-
-/* ── Homepage header: ONE full menu (hamburger on every screen), and the
-   Explore launcher is removed, so reset the left padding that cleared it. ── */
-.eco-h-inner { padding-left: clamp(18px, 4vw, 40px) !important; }
-.eco-h-links { display: none !important; }                 /* no inline desktop links */
-.eco-h-burger { display: inline-flex !important; margin-left: auto; }  /* always show menu button */
-.eco-h-mobile { max-height: calc(100vh - 60px); overflow-y: auto; }    /* full list scrolls if tall */
