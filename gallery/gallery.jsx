@@ -270,12 +270,13 @@ function Tile({ item, index, onOpen }) {
       onKeyDown={(e) => { if (e.key === 'Enter') onOpen(index); }}
     >
       <div className="ph" />
-      {hasSrc && (
+      {hasSrc && visible && (
         <img
           className={`tile-img ${imgLoaded ? 'loaded' : ''}`}
           src={item.thumbSrc || item.src}
           alt={item.caption}
           loading="lazy"
+          decoding="async"
           onLoad={() => setImgLoaded(true)}
           draggable="false"
         />
