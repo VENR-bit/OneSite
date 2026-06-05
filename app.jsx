@@ -2,7 +2,7 @@
 // Honeycomb cluster of circular tiles with proximity-based fisheye scaling.
 // Drag to wander · tap a satellite to bring it to center · tap the centered tile to open.
 
-const { useState, useEffect, useRef, useMemo, useCallback } = React;
+const { useState, useEffect, useLayoutEffect, useRef, useMemo, useCallback } = React;
 
 // ──────────────────────────────────────────────────────────────
 // Tile dataset. Positions are filled by buildLayout(). Colors are
@@ -535,7 +535,7 @@ function FocalReadout({ tile, isCenter }) {
 // ──────────────────────────────────────────────────────────────
 function App() {
   const [t, setTweak] = useTweaks(/*EDITMODE-BEGIN*/{
-    "palette": "night",
+    "palette": ((new Date().getHours() >= 6 && new Date().getHours() < 18) ? "paper" : "night"),
     "intensity": 0.7,
     "density": 0.78,
     "fisheye": true
@@ -561,7 +561,7 @@ function App() {
     }
   }, [adminMode]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const isDark = t.palette === 'night';
     const themeBg = isDark ? '#1f1a14' : '#f4ede0';
     document.body.classList.toggle('dark', isDark);
