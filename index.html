@@ -7,6 +7,21 @@
        bar to match so no white strip shows on load or refresh. -->
   <meta name="theme-color" content="#1f1a14">
   <title>Rideekanda Forest Monastery</title>
+  <!-- Match the very FIRST paint to the auto day/night theme so no light/dark
+       strip flashes in the safe-area / dynamic-viewport gap (iOS Safari) on
+       load or refresh. Runs synchronously before body paints; app.jsx keeps it
+       in sync afterwards. -->
+  <script>
+    (function () {
+      var h = new Date().getHours(), day = (h >= 6 && h < 18);
+      var bg = day ? '#f4ede0' : '#1f1a14';
+      var de = document.documentElement;
+      de.style.background = bg;
+      de.style.colorScheme = day ? 'light' : 'dark';
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute('content', bg);
+    })();
+  </script>
   <!-- PWA / kiosk install: standalone display = no browser URL bar -->
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/png" sizes="64x64" href="app/favicon-64.png">
