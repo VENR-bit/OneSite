@@ -151,8 +151,12 @@ function QRPanel({ url }) {
           <Lotus size={260} color="var(--accent)" />
         </div>
 
-        {/* QR */}
-        <div
+        {/* QR — also a tappable link to the Google review page */}
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open the review page on Google"
           style={{
             width: mobile ? 140 : 184,
             height: mobile ? 140 : 184,
@@ -163,6 +167,7 @@ function QRPanel({ url }) {
             display: "grid",
             placeItems: "center",
             flexShrink: 0,
+            cursor: "pointer",
           }}
         >
           <img
@@ -172,7 +177,7 @@ function QRPanel({ url }) {
             height={mobile ? 120 : 156}
             style={{ display: "block" }}
           />
-        </div>
+        </a>
 
         {/* Text */}
         <div style={{ position: "relative", textAlign: mobile ? "center" : undefined }}>
@@ -203,7 +208,7 @@ function QRPanel({ url }) {
             margin: "0 0 20px",
             maxWidth: 440,
           }}>
-            Scan the code with your phone, or tap the link below. Your words help others find their way to the practice.
+            Scan the code with your phone, or tap the link on the QR. Your words help others find their way to the practice.
           </p>
           {mobile && <a
             href={url}

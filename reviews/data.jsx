@@ -117,7 +117,7 @@ const REVIEWS = [
 ];
 
 const STATS = {
-  average: 5.0,
+  average: 4.9,
   total: REVIEWS.length, // shown as "from N reviews"
   // For a more authoritative display you can override these from the Featurable
   // response — many monasteries cite their full Google count here.
