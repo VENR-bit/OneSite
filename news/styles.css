@@ -246,11 +246,6 @@ button.readmore { background: none; border: 0; cursor: pointer; padding: 0; font
 .lang-toggle button { border: 0; background: transparent; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; cursor: pointer; transition: background .2s ease, color .2s ease; }
 .lang-toggle button.on { background: var(--accent); color: #f7f1e6; }
 .lang-toggle button:not(.on):hover { color: var(--ink); }
-/* Hide Google website-translate chrome (top banner, tooltips, highlight) */
-.goog-te-banner-frame.skiptranslate, .goog-te-gadget-icon, #goog-gt-tt, .goog-tooltip, .goog-tooltip:hover { display: none !important; }
-body { top: 0 !important; }
-font.goog-text-highlight { background: none !important; box-shadow: none !important; color: inherit !important; }
-#google_translate_element { display: none; }
 
 .reader-text { margin-top: 1.2rem; }
 .reader-text p { color: var(--ink-soft); margin: 0 0 1rem; line-height: 1.7; }
