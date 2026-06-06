@@ -286,6 +286,43 @@ function Footer() {
   );
 }
 
+/* ---------- Translation (lightweight Google Translate endpoint) ---------- */
+
+function gtTranslate(text, tl) {
+  var parts = String(text || "").split(/\n{2,}/);
+  return Promise.all(parts.map(function (seg) {
+    if (!seg.trim()) return Promise.resolve(seg);
+    return fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=" + tl + "&dt=t&q=" + encodeURIComponent(seg))
+      .then(function (r) { return r.json(); })
+      .then(function (j) { return (j[0] || []).map(function (x) { return x[0]; }).join(""); })
+      .catch(function () { return seg; });
+  })).then(function (a) { return a.join("\n\n"); });
+}
+
+function LangToggle({ lang, onSet, busy }) {
+  function btn(code, label) {
+    var on = lang === code;
+    return (
+      <button onClick={() => onSet(code)} style={{
+        border: 0, background: on ? "var(--accent)" : "transparent",
+        color: on ? "#fdfbf6" : "var(--muted)", cursor: "pointer",
+        fontFamily: "var(--sans)", fontSize: 12, fontWeight: 600,
+        letterSpacing: 0.6, textTransform: "uppercase", padding: "7px 16px", borderRadius: 999,
+      }}>{label}</button>
+    );
+  }
+  return (
+    <div style={{ display: "flex", justifyContent: "center", margin: "0 0 30px" }}>
+      <div style={{ display: "inline-flex", alignItems: "center", gap: 3, background: "rgba(253,251,246,0.6)", border: "1px solid var(--line)", borderRadius: 999, padding: 3, backdropFilter: "blur(8px)" }}>
+        <span aria-hidden="true" style={{ fontSize: 13, opacity: 0.6, padding: "0 3px 0 9px" }}>&#127760;</span>
+        {btn("en", "English")}
+        {btn("si", "සිංහල")}
+        {busy ? <span style={{ fontSize: 11, color: "var(--muted)", padding: "0 9px 0 3px" }}>…</span> : null}
+      </div>
+    </div>
+  );
+}
+
 /* ---------- App ---------- */
 
 function App() {
@@ -308,6 +345,27 @@ function App() {
   const visible = sorted.slice(0, page * perPage);
   const hasMore = visible.length < sorted.length;
 
+  // ── Language toggle: translate review text on demand (cached) ──
+  const [lang, setLang] = useStateApp("en");
+  const [tr, setTr] = useStateApp({});      // original text → Sinhala text
+  const [busy, setBusy] = useStateApp(false);
+  React.useEffect(() => {
+    if (lang !== "si") return;
+    const missing = visible.filter((r) => r.text && !(r.text in tr));
+    if (!missing.length) return;
+    setBusy(true);
+    Promise.all(missing.map((r) => gtTranslate(r.text, "si").then((t) => [r.text, t])))
+      .then((pairs) => setTr((prev) => {
+        const n = Object.assign({}, prev);
+        pairs.forEach((p) => { n[p[0]] = p[1]; });
+        return n;
+      }))
+      .then(() => setBusy(false), () => setBusy(false));
+  }, [lang, visible.length]);
+  const displayed = (lang === "si")
+    ? visible.map((r) => (tr[r.text] ? Object.assign({}, r, { text: tr[r.text] }) : r))
+    : visible;
+
   const Layout =
     t.layout === "editorial" ? EditorialLayout :
     t.layout === "stream" ? StreamLayout :
@@ -317,8 +375,10 @@ function App() {
     <>
       <PageHeader stats={STATS} style={t.headerStyle} mobile={mobile} />
 
+      <LangToggle lang={lang} onSet={setLang} busy={busy} />
+
       <main style={{ padding: mobile ? "0 12px 16px" : "0 24px 24px" }}>
-        <Layout reviews={visible} />
+        <Layout reviews={displayed} />
         <LoadMore hasMore={hasMore} onClick={() => setPage((p) => p + 1)} />
       </main>
 
