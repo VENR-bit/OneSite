@@ -38,12 +38,12 @@ window.NEWS_POSTS = [
     images: ["post-38.jpg", "post-38b.jpg", "post-38c.jpg", "post-38d.jpg", "post-38e.jpg", "post-38f.jpg", "post-38g.jpg", "post-38h.jpg"]
   },
   {
-    title: "භාවනා කුටි සංකීර්ණය සඟසතු පූජාව",
+    title: "Offering of the New Meditation-Kuṭi Complex to the Sangha",
     date: "2026-03-03",
     type: "Event",
-    when: "මැදින් පුර පසළොස්වක පොහොය දිනය",
-    excerpt: "උඩස්ගිරිය රිදීකන්ද ආරණ්‍ය සේනාසනයේ අභිනවයෙන් ඉදිකළ භාවනා කුටි සංකීර්ණය මහා සංඝරත්නයට පූජා කිරීමේ පිංකම.",
-    body: "උඩස්ගිරිය රිදීකන්ද ආරණ්‍ය සේනාසනයේ අභිනවයෙන් ඉදිකර නිමකර භාවනා කුටි සංකීර්ණය සඟසතු පුජා කිරීමේ පිංකම පසුගිය මැදින් පුර පසළොස්වක පොහොය දිනයේ සිදු කෙරුණි. බෝයගොඩ සහ පාදෙණිය පවුලේ පිංවතුන්, හිතමිත්‍රාදීන් ඇතුළු සියළු දෙනාගේ ධන දායකත්වයෙන් ඉදිකර මහා සංඝරත්නයේ පරිහරණය පිණිස ඉතා ශාසන ගෞරවයෙන් යුක්තව මෙලෙස පුජා කෙරුණි. දැක සතුටු සිතින් අනුමෝදන් වෙත්වා!",
+    when: "Medin Full Moon Poya Day",
+    excerpt: "The newly built meditation-kuṭi complex at Udasgiriya Rideekanda Forest Monastery was formally offered to the Mahā Sangha.",
+    body: "The newly constructed meditation-kuṭi (cottage) complex at Udasgiriya Rideekanda Forest Monastery was formally offered to the Sangha on the recent Medin Full Moon Poya day.\n\nBuilt through the generous dāna of the Bōyagoda and Pādeniya families together with their friends and well-wishers, it was offered with deep reverence for the Sāsana, for the use of the Mahā Sangha.\n\nMay all rejoice in this meritorious deed — sādhu!",
     image: "post-37.jpg",
     images: ["post-37.jpg", "post-37b.jpg", "post-37c.jpg", "post-37d.jpg", "post-37e.jpg"]
   },
