@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=9" />
+<link rel="stylesheet" href="styles.css?v=10" />
 </head>
 <body>
 <main id="top">
@@ -108,6 +108,13 @@
     <div class="reader-media" id="reader-media"></div>
     <div class="reader-body">
       <div class="kicker"><span class="tag" id="reader-tag"></span><span class="date" id="reader-date"></span></div>
+      <div class="tr-row notranslate" translate="no">
+        <span class="tr-ic" aria-hidden="true">&#127760;</span>
+        <span class="lang-toggle">
+          <button type="button" data-tr="en">English</button>
+          <button type="button" data-tr="si">සිංහල</button>
+        </span>
+      </div>
       <h2 id="reader-title"></h2>
       <p class="when" id="reader-when" hidden></p>
       <div class="reader-text" id="reader-text"></div>
@@ -289,6 +296,50 @@
     sweep();
   })();
 </script>
+
+<!-- Google Translate (in-page EN ⇄ Sinhala) -->
+<div id="google_translate_element"></div>
+<script>
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+      { pageLanguage: 'auto', includedLanguages: 'en,si', autoDisplay: false },
+      'google_translate_element'
+    );
+  }
+  (function () {
+    // Drive Google's hidden language <select> from our custom buttons.
+    // The page language is English, so Google's "original" state (value "")
+    // IS English; සිංහල uses the "si" target.
+    function setLang(lang) {
+      // pageLanguage 'auto' makes both 'en' and 'si' real targets, so each
+      // direction translates (English post → සිංහල, Sinhala post → English).
+      var tries = 0;
+      (function go() {
+        var sel = document.querySelector('select.goog-te-combo');
+        if (sel) {
+          sel.value = lang;
+          sel.dispatchEvent(new Event('change'));
+        } else if (++tries < 60) {
+          setTimeout(go, 120);
+        }
+      })();
+      var btns = document.querySelectorAll('[data-tr]');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.toggle('on', btns[i].getAttribute('data-tr') === lang);
+      }
+    }
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-tr]');
+      if (b) { e.preventDefault(); setLang(b.getAttribute('data-tr')); }
+    });
+    // Default highlight: English (page is shown in its original language).
+    window.addEventListener('load', function () {
+      var en = document.querySelectorAll('[data-tr="en"]');
+      for (var i = 0; i < en.length; i++) en[i].classList.add('on');
+    });
+  })();
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <!-- eco-header -->
   <link rel="stylesheet" href="../eco-header.css?v=2">
