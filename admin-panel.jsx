@@ -6,6 +6,79 @@ const ADMIN_PIN = '92424';
 const STORAGE_KEY = 'rideekanda-tiles';
 const RING_DEFAULTS = { 0: 178, 1: 132, 2: 82, 3: 56 };
 
+// The live, published tiles (set by tiles-data.js → window.RK_TILES via the
+// Publish-to-site flow). Falls back to the defaults baked into app.jsx.
+function publishedTiles() {
+  return (Array.isArray(window.RK_TILES) && window.RK_TILES.length)
+    ? window.RK_TILES
+    : window.DEFAULT_TILES;
+}
+
+// ── GitHub publishing (same token system as the news admin panel) ──
+const GH = {
+  owner: 'VENR-bit', repo: 'OneSite', branch: 'main', api: 'https://api.github.com',
+  TOK_KEY: 'rk-gh-token',
+  token() { try { return localStorage.getItem(this.TOK_KEY) || ''; } catch (e) { return ''; } },
+  setToken(t) { try { t ? localStorage.setItem(this.TOK_KEY, t) : localStorage.removeItem(this.TOK_KEY); } catch (e) {} },
+};
+async function ghFetch(path, opts) {
+  opts = opts || {};
+  const headers = Object.assign({
+    'Authorization': 'Bearer ' + GH.token(),
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+  }, opts.headers || {});
+  const res = await fetch(GH.api + path, { method: opts.method || 'GET', headers, body: opts.body });
+  const txt = await res.text();
+  let data = null; try { data = txt ? JSON.parse(txt) : null; } catch (e) {}
+  if (!res.ok) { const e = new Error((data && data.message) || ('HTTP ' + res.status)); e.status = res.status; throw e; }
+  return data;
+}
+const ghGet = (p) => ghFetch('/repos/' + GH.owner + '/' + GH.repo + '/contents/' + encodeURI(p) + '?ref=' + GH.branch);
+const ghPut = (p, contentB64, message, sha) => {
+  const body = { message, content: contentB64, branch: GH.branch };
+  if (sha) body.sha = sha;
+  return ghFetch('/repos/' + GH.owner + '/' + GH.repo + '/contents/' + encodeURI(p),
+    { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+};
+function b64FromStr(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '', ch = 0x8000;
+  for (let i = 0; i < bytes.length; i += ch) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + ch));
+  return btoa(bin);
+}
+function strFromB64(b64) {
+  const bin = atob(b64.replace(/\s/g, ''));
+  const a = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
+  return new TextDecoder('utf-8').decode(a);
+}
+async function publishTilesToSite(tiles, log) {
+  log('Reading tiles-data.js & index.html…');
+  let tilesFile = null;
+  try { tilesFile = await ghGet('tiles-data.js'); } catch (e) { if (e.status !== 404) throw e; }
+  const indexFile = await ghGet('index.html');
+
+  const header =
+    '/* Published dashboard tiles — managed by the dashboard Admin Panel.\n' +
+    '   A non-empty window.RK_TILES overrides DEFAULT_TILES in app.jsx. */\n';
+  const content = header + 'window.RK_TILES = ' + JSON.stringify(tiles, null, 2) + ';\n';
+  log('Writing ' + tiles.length + ' tiles to tiles-data.js…');
+  await ghPut('tiles-data.js', b64FromStr(content), 'Dashboard: update tiles (admin panel)', tilesFile && tilesFile.sha);
+
+  const html = strFromB64(indexFile.content);
+  const m = html.match(/tiles-data\.js\?v=(\d+)/);
+  if (m) {
+    const n = (parseInt(m[1], 10) || 0) + 1;
+    const bumped = html.replace(/tiles-data\.js\?v=\d+/, 'tiles-data.js?v=' + n);
+    log('Bumping cache → tiles-data.js?v=' + n + ' …');
+    await ghPut('index.html', b64FromStr(bumped), 'Dashboard: bump tiles cache to v' + n + ' (admin panel)', indexFile.sha);
+  } else {
+    log('Note: no tiles-data.js?v= found in index.html to bump (skipped).');
+  }
+  log('✓ Published! GitHub Pages is rebuilding — live in about a minute.');
+}
+
 function useTiles() {
   const [tiles, setTiles] = React.useState(() => {
     try {
@@ -23,7 +96,7 @@ function useTiles() {
         }
       }
     } catch (e) {}
-    return window.DEFAULT_TILES;
+    return publishedTiles();
   });
 
   const persist = (next) => {
@@ -63,7 +136,7 @@ function useTiles() {
 
   const resetTiles = () => {
     localStorage.removeItem(STORAGE_KEY);
-    setTiles(window.DEFAULT_TILES);
+    setTiles(publishedTiles());
   };
 
   return [tiles, { addTile, updateTile, removeTile, resetTiles }];
@@ -107,14 +180,59 @@ const __ADMIN_STYLE = `
     border-top:1px solid rgba(0,0,0,.06);margin-top:4px}
   .adm-actions{display:flex;gap:6px;padding-top:6px;border-top:1px solid rgba(0,0,0,.08)}
   .adm-actions .twk-btn{flex:1;font-size:10px}
+  .adm-pub{padding-top:8px;border-top:1px solid rgba(0,0,0,.08);margin-top:6px}
+  .adm-pub .adm-ring-label{padding-top:0}
+  .adm-tok{width:100%;padding:6px 8px;border:1px solid rgba(0,0,0,.15);border-radius:7px;
+    font-size:11px;background:#fff;color:#29261b;margin-bottom:6px;box-sizing:border-box}
+  .adm-tok:focus{outline:none;border-color:rgba(156,111,58,.7)}
+  .adm-log{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;line-height:1.6;
+    background:rgba(0,0,0,.04);border-radius:7px;padding:7px 9px;margin-top:7px;
+    max-height:130px;overflow:auto;white-space:pre-wrap}
+  .adm-log .l-ok{color:#3e7d4f}
+  .adm-log .l-err{color:#b4452c}
+  .adm-note{font-size:9.5px;color:rgba(41,38,27,.5);margin-top:7px;line-height:1.45}
 `;
 
 const RING_NAMES = ['Center', 'Primary', 'Secondary', 'Tertiary'];
 
 function AdminPanel({ open, onClose, tiles, actions }) {
   const [editingId, setEditingId] = React.useState(null);
+  const [tokVal, setTokVal] = React.useState(() => GH.token());
+  const [ghBusy, setGhBusy] = React.useState(false);
+  const [ghLog, setGhLog] = React.useState([]);
   const dragRef = React.useRef(null);
   const offsetRef = React.useRef({ x: 16, y: 16 });
+
+  const pushLog = (m) => setGhLog((prev) => prev.concat(m));
+
+  const handleTokenSave = async () => {
+    GH.setToken(tokVal.trim());
+    setGhLog([]);
+    if (!tokVal.trim()) { pushLog('Token cleared from this browser.'); return; }
+    pushLog('Verifying token & repo access…');
+    setGhBusy(true);
+    try {
+      const r = await ghFetch('/repos/' + GH.owner + '/' + GH.repo);
+      pushLog('✓ ' + r.full_name + (r.permissions && r.permissions.push ? ' — write access OK' : ' — ⚠ no write access'));
+    } catch (e) {
+      pushLog('✗ ' + e.message + (e.status === 404 ? ' (does the token have access to this repo?)' : ''));
+    }
+    setGhBusy(false);
+  };
+
+  const handlePublish = async () => {
+    if (!GH.token()) { alert('Add and save a GitHub token first.'); return; }
+    if (!confirm('Publish the current dashboard tiles to the live site now?')) return;
+    setGhLog([]);
+    setGhBusy(true);
+    try {
+      await publishTilesToSite(tiles, pushLog);
+      pushLog('Tip: use “Reset” to drop local edits and load the published tiles.');
+    } catch (e) {
+      pushLog('✗ Publish failed: ' + e.message);
+    }
+    setGhBusy(false);
+  };
 
   const clampToViewport = React.useCallback(() => {
     const panel = dragRef.current;
@@ -250,6 +368,29 @@ function AdminPanel({ open, onClose, tiles, actions }) {
             <TweakButton label="Reset" onClick={handleReset} secondary />
             <TweakButton label="Export" onClick={handleExport} secondary />
             <TweakButton label="Import" onClick={handleImport} secondary />
+          </div>
+
+          <div className="adm-pub">
+            <div className="adm-ring-label">Publish to site {GH.token() ? '· token saved' : '· no token'}</div>
+            <input className="adm-tok" type="password" autoComplete="off" spellCheck={false}
+                   placeholder="GitHub token (Contents: read & write)"
+                   value={tokVal} onChange={(e) => setTokVal(e.target.value)} />
+            <div className="adm-actions" style={{ borderTop: 'none', paddingTop: 0 }}>
+              <TweakButton label="Save token" onClick={handleTokenSave} secondary />
+              <TweakButton label={ghBusy ? 'Working…' : 'Publish tiles'} onClick={handlePublish} />
+            </div>
+            {ghLog.length > 0 && (
+              <div className="adm-log">
+                {ghLog.map((l, i) => (
+                  <div key={i} className={l[0] === '✗' ? 'l-err' : (l[0] === '✓' ? 'l-ok' : '')}>{l}</div>
+                ))}
+              </div>
+            )}
+            <div className="adm-note">
+              Commits the current tiles to the repo; the site rebuilds automatically.
+              The passcode only hides this panel — your GitHub token is the real key and
+              is stored only in this browser.
+            </div>
           </div>
         </div>
       </div>
