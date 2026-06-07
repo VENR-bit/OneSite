@@ -9,6 +9,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<script>
+  /* Set the theme before first paint (no flash). Mode: "auto" (by time) | "light" | "dark".
+     Auto = light from 06:00–18:00, dark otherwise — same rule as the dashboard. */
+  (function () {
+    try {
+      var m = localStorage.getItem('rk-home-theme');
+      if (m !== 'light' && m !== 'dark' && m !== 'auto') m = 'auto';
+      var h = new Date().getHours();
+      var theme = (m === 'auto') ? ((h >= 6 && h < 18) ? 'light' : 'dark') : m;
+      var r = document.documentElement;
+      r.setAttribute('data-theme', theme);
+      r.setAttribute('data-theme-mode', m);
+    } catch (e) {}
+  })();
+</script>
 <link rel="stylesheet" href="styles.css?v=11" />
 </head>
 <body>
@@ -224,34 +239,52 @@
     sweep();
   })();
 
-  // Manual light/dark theme toggle. Default follows the OS; once tapped the
-  // choice is remembered (localStorage) and overrides the OS preference.
+  // Theme control — 3-way cycle:  Auto (by time) → Light → Dark → Auto …
+  //  • Auto  = light 06:00–18:00, dark otherwise (re-checked every minute,
+  //            so it flips on its own at sunrise / sunset). This is the default.
+  //  • Light / Dark = manual override, remembered in localStorage.
   (function () {
     var KEY = 'rk-home-theme';
     var root = document.documentElement;
     var btn = document.getElementById('themeToggle');
-    var SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M3.5 3.5l1.8 1.8M18.7 18.7l1.8 1.8M2 12h2.5M19.5 12H22M3.5 20.5l1.8-1.8M18.7 5.3l1.8-1.8"/></svg>';
+    var ORDER = ['auto', 'light', 'dark'];
+    var AUTO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+    var SUN  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M3.5 3.5l1.8 1.8M18.7 18.7l1.8 1.8M2 12h2.5M19.5 12H22M3.5 20.5l1.8-1.8M18.7 5.3l1.8-1.8"/></svg>';
     var MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.2A8 8 0 1 1 9.8 4 6.4 6.4 0 0 0 20 14.2z"/></svg>';
-    function isDark() {
-      var v = root.getAttribute('data-theme');
-      if (v === 'dark') return true;
-      if (v === 'light') return false;
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    function timeTheme() { var h = new Date().getHours(); return (h >= 6 && h < 18) ? 'light' : 'dark'; }
+    function getMode() {
+      try { var m = localStorage.getItem(KEY); if (ORDER.indexOf(m) !== -1) return m; } catch (e) {}
+      return 'auto';
     }
-    function paint() { if (btn) btn.innerHTML = isDark() ? SUN : MOON; }   // show what tapping switches TO
-    // apply stored choice
-    try { var s = localStorage.getItem(KEY); if (s === 'dark' || s === 'light') root.setAttribute('data-theme', s); } catch (e) {}
+    function applyMode(m) {
+      var theme = (m === 'auto') ? timeTheme() : m;
+      root.setAttribute('data-theme', theme);
+      root.setAttribute('data-theme-mode', m);
+    }
+    function paint() {
+      if (!btn) return;
+      var m = getMode();
+      btn.innerHTML = m === 'auto' ? AUTO : (m === 'dark' ? MOON : SUN);
+      var label = m === 'auto' ? 'Theme: Auto (by time) — tap for Light'
+                : m === 'light' ? 'Theme: Light — tap for Dark'
+                : 'Theme: Dark — tap for Auto';
+      btn.setAttribute('title', label);
+      btn.setAttribute('aria-label', label);
+    }
+    applyMode(getMode());   // re-sync with the head script
     paint();
     if (btn) btn.addEventListener('click', function () {
-      var next = isDark() ? 'light' : 'dark';
-      root.setAttribute('data-theme', next);
+      var next = ORDER[(ORDER.indexOf(getMode()) + 1) % ORDER.length];
       try { localStorage.setItem(KEY, next); } catch (e) {}
+      applyMode(next);
       paint();
     });
-    // keep icon in sync if OS theme changes while on auto
-    if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
-      if (!root.getAttribute('data-theme')) paint();
-    });
+    // While on Auto, flip the theme on its own when the clock crosses 06:00 / 18:00.
+    setInterval(function () {
+      if (getMode() !== 'auto') return;
+      var t = timeTheme();
+      if (root.getAttribute('data-theme') !== t) { root.setAttribute('data-theme', t); paint(); }
+    }, 60000);
   })();
 </script>
 
