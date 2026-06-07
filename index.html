@@ -350,85 +350,23 @@
     .compass-dot { fill: var(--accent); }
     .compass-tick { stroke: var(--muted); stroke-width: 0.5; }
 
-    /* Sun/Moon toggle pill */
+    /* Day/Night toggle — round icon button, matching the other dock buttons
+       (weather, calendar). Shows a sun in day, a moon at night. */
     .theme-toggle {
       position: fixed; top: auto; bottom: 49px; left: calc(50% + 42px); transform: none; z-index: 500;
-      display: inline-flex; align-items: center; gap: 2px;
-      padding: 6px;   /* matches the Explore launcher's 34px height */
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; padding: 0;
       border-radius: 999px;
       background: color-mix(in srgb, var(--card) 70%, transparent);
       border: 1px solid var(--line);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      cursor: pointer;
-      font: inherit;
-      transition: background 0.3s ease, border-color 0.3s ease;
+      color: var(--accent); cursor: pointer;
+      transition: transform 0.25s ease, background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
     }
-    /* Track */
-    .theme-toggle .knob {
-      position: relative;
-      width: 40px; height: 20px;
-      border-radius: 999px;
-      background: linear-gradient(180deg, #e7f0ea 0%, #d2e2d6 100%);
-      transition: background 0.5s ease;
-      overflow: hidden;
-    }
-    body.dark .theme-toggle .knob {
-      background: linear-gradient(180deg, #211b13 0%, #14100b 100%);
-    }
-    /* Disc (sun ↔ moon) */
-    .theme-toggle .knob .indicator {
-      position: absolute; top: 2px; left: 2px;
-      width: 16px; height: 16px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%,
-                  #fff3cf 0%, #f0c24e 60%, #c0892e 100%);
-      box-shadow:
-        0 1px 2px rgba(120,90,20,0.3),
-        0 0 12px rgba(240,200,90,0.6);
-      transform: translateX(20px);
-      transition:
-        transform 0.45s cubic-bezier(.4, 1.4, .5, 1),
-        background 0.5s ease,
-        box-shadow 0.5s ease;
-    }
-    body.dark .theme-toggle .knob .indicator {
-      transform: translateX(0);
-      background: radial-gradient(circle at 35% 30%,
-                  #f7f0dc 0%, #d8cba8 60%, #9d8c6e 100%);
-      box-shadow:
-        0 1px 2px rgba(0,0,0,0.4),
-        0 0 10px rgba(220,200,160,0.4);
-    }
-    /* Stars (night only) */
-    .theme-toggle .knob .stars {
-      position: absolute; inset: 0;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-    body.dark .theme-toggle .knob .stars { opacity: 1; }
-    .theme-toggle .knob .stars i {
-      position: absolute;
-      width: 1px; height: 1px;
-      border-radius: 50%;
-      background: #e8dcbc;
-      opacity: 0.85;
-    }
-    .theme-toggle .knob .stars i:nth-child(1) { top: 5px;  left: 23px; }
-    .theme-toggle .knob .stars i:nth-child(2) { top: 10px; left: 29px; }
-    .theme-toggle .knob .stars i:nth-child(3) { top: 14px; left: 26px; }
-    .theme-toggle .knob .stars i:nth-child(4) { top: 6px;  left: 33px; }
-    /* Label */
-    .theme-toggle .label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 7px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      padding: 0 8px 0 5px;
-      color: var(--muted);
-      white-space: nowrap;
-      transition: color 0.4s ease;
-    }
+    .theme-toggle:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    .theme-toggle .tt-ico { display: inline-flex; }
+    .theme-toggle .tt-ico svg { display: block; width: 19px; height: 19px; }
     @media (max-width: 600px) {
       .theme-toggle { bottom: 49px; }
     }
@@ -619,13 +557,20 @@
     </div>
   </div>
 
-  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-    <div class="knob">
-      <div class="stars"><i></i><i></i><i></i><i></i></div>
-      <div class="indicator"></div>
-    </div>
-    <span class="label">Night</span>
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle day / night theme">
+    <span class="tt-ico" id="tt-ico"></span>
   </button>
+  <script>
+    /* Seed the toggle icon by the current hour before React loads, so the
+       circle is never empty (matches app.jsx's day/night boot rule). */
+    (function () {
+      var h = new Date().getHours();
+      var SUN  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M3.5 3.5l1.8 1.8M18.7 18.7l1.8 1.8M2 12h2.5M19.5 12H22M3.5 20.5l1.8-1.8M18.7 5.3l1.8-1.8"/></svg>';
+      var MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.2A8 8 0 1 1 9.8 4 6.4 6.4 0 0 0 20 14.2z"/></svg>';
+      var el = document.getElementById('tt-ico');
+      if (el) el.innerHTML = (h >= 6 && h < 18) ? SUN : MOON;
+    })();
+  </script>
 
   <!-- Calendar button (Poya days, holidays, retreat schedule) -->
   <button class="cal-btn" id="cal-btn" aria-label="Open calendar" aria-haspopup="dialog">
@@ -705,7 +650,7 @@
   <script type="text/babel" src="tweaks-panel.jsx?v=21"></script>
   <script type="text/babel" src="icons.jsx?v=21"></script>
   <script type="text/babel" src="admin-panel.jsx?v=22"></script>
-  <script type="text/babel" src="app.jsx?v=24"></script>
+  <script type="text/babel" src="app.jsx?v=25"></script>
 <!-- eco-nav -->
   <link rel="stylesheet" href="eco-nav.css">
   <script id="eco-nav" src="eco-nav.js?v=12" data-root="" data-current="dashboard" defer></script>

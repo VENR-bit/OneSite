@@ -575,7 +575,13 @@ function App() {
     if (tc) tc.setAttribute('content', themeBg);
     const toggleEl = document.getElementById('theme-toggle');
     if (toggleEl) {
-      toggleEl.querySelector('.label').textContent = isDark ? 'Night' : 'Day';
+      const ico = toggleEl.querySelector('.tt-ico');
+      if (ico) {
+        const SUN  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M3.5 3.5l1.8 1.8M18.7 18.7l1.8 1.8M2 12h2.5M19.5 12H22M3.5 20.5l1.8-1.8M18.7 5.3l1.8-1.8"/></svg>';
+        const MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.2A8 8 0 1 1 9.8 4 6.4 6.4 0 0 0 20 14.2z"/></svg>';
+        ico.innerHTML = isDark ? MOON : SUN;
+      }
+      toggleEl.setAttribute('aria-label', isDark ? 'Night — tap to switch to day' : 'Day — tap to switch to night');
     }
   }, [t.palette]);
 
