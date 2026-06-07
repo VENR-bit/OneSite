@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=9" />
+<link rel="stylesheet" href="styles.css?v=10" />
 </head>
 <body>
 <main id="top">
@@ -179,6 +179,8 @@
 
 </main>
 
+<button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle light / dark theme"></button>
+
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -220,6 +222,36 @@
     window.addEventListener('scroll', onReveal, { passive: true });
     window.addEventListener('resize', onReveal, { passive: true });
     sweep();
+  })();
+
+  // Manual light/dark theme toggle. Default follows the OS; once tapped the
+  // choice is remembered (localStorage) and overrides the OS preference.
+  (function () {
+    var KEY = 'rk-home-theme';
+    var root = document.documentElement;
+    var btn = document.getElementById('themeToggle');
+    var SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M3.5 3.5l1.8 1.8M18.7 18.7l1.8 1.8M2 12h2.5M19.5 12H22M3.5 20.5l1.8-1.8M18.7 5.3l1.8-1.8"/></svg>';
+    var MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.2A8 8 0 1 1 9.8 4 6.4 6.4 0 0 0 20 14.2z"/></svg>';
+    function isDark() {
+      var v = root.getAttribute('data-theme');
+      if (v === 'dark') return true;
+      if (v === 'light') return false;
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    function paint() { if (btn) btn.innerHTML = isDark() ? SUN : MOON; }   // show what tapping switches TO
+    // apply stored choice
+    try { var s = localStorage.getItem(KEY); if (s === 'dark' || s === 'light') root.setAttribute('data-theme', s); } catch (e) {}
+    paint();
+    if (btn) btn.addEventListener('click', function () {
+      var next = isDark() ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem(KEY, next); } catch (e) {}
+      paint();
+    });
+    // keep icon in sync if OS theme changes while on auto
+    if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+      if (!root.getAttribute('data-theme')) paint();
+    });
   })();
 </script>
 
