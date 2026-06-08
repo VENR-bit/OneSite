@@ -240,6 +240,7 @@ p:last-child { margin-bottom: 0; }
   margin: 0 auto 2.2rem;
   opacity: 0.95;
 }
+:root[data-theme="night"] .hero .lotus-mark { filter: brightness(0) invert(1); }   /* white lotus in dark theme */
 .hero h1 {
   font-size: clamp(3.4rem, 9vw, 7.5rem);
   font-weight: 300;
