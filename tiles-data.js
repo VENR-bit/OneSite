@@ -1,6 +1,289 @@
-/* Published dashboard tiles — managed by the dashboard Admin Panel
-   ("Publish to site"). When window.RK_TILES is a non-empty array it
-   overrides the built-in DEFAULT_TILES in app.jsx, so tile changes go
-   live for everyone (the kiosk included). Until the first publish this
-   stays null and the dashboard uses the defaults baked into app.jsx. */
-window.RK_TILES = null;
+/* Published dashboard tiles — managed by the dashboard Admin Panel.
+   A non-empty window.RK_TILES overrides DEFAULT_TILES in app.jsx. */
+window.RK_TILES = [
+  {
+    "id": "home",
+    "label": "Rideekanda WEB",
+    "sub": "Official Website of the Rideekanda Forest Monastery",
+    "url": "home/",
+    "size": 178,
+    "ring": 0,
+    "bg": "radial-gradient(circle at 35% 30%, #4a2e16 0%, #1c100a 80%)",
+    "halo": "rgba(224, 183, 106, 0.45)",
+    "fg": "#f4e1b8",
+    "icon": "home"
+  },
+  {
+    "id": "booking",
+    "label": "Retreat Booking",
+    "sub": "Reserve a stay for retreat",
+    "url": "booking/",
+    "size": 132,
+    "ring": 1,
+    "bg": "radial-gradient(circle at 30% 25%, #a06a2a 0%, #5a3210 85%)",
+    "halo": "rgba(217, 155, 74, 0.35)",
+    "fg": "#f6e0bd",
+    "icon": "calendar"
+  },
+  {
+    "id": "threestory",
+    "label": "Project ThreeStory Building",
+    "sub": "Ongoing Construction of ThreeStory Building with Meditation Hall and Accommodations",
+    "url": "projects/threestory/",
+    "size": 82,
+    "ring": 2,
+    "bg": "radial-gradient(circle at 30% 25%, #5a4020 0%, #2a1c0c 85%)",
+    "halo": "rgba(200, 160, 80, 0.32)",
+    "fg": "#f0ddb8",
+    "icon": "threeStory"
+  },
+  {
+    "id": "requirements",
+    "label": "Monastery Requirements",
+    "sub": "Necessary Items needed for Rideekanda",
+    "url": "requirements/",
+    "size": 132,
+    "ring": 1,
+    "bg": "radial-gradient(circle at 30% 25%, #6a4e26 0%, #2e1f0c 85%)",
+    "halo": "rgba(204, 160, 92, 0.32)",
+    "fg": "#f0e0bd",
+    "icon": "list"
+  },
+  {
+    "id": "library",
+    "label": "Project Library Cafe",
+    "sub": "Ongoing Project to build a Library Cafe in Rideekanda",
+    "url": "projects/library-cafe/",
+    "size": 82,
+    "ring": 2,
+    "bg": "radial-gradient(circle at 30% 25%, #4a5a30 0%, #1e2812 85%)",
+    "halo": "rgba(160, 180, 100, 0.32)",
+    "fg": "#e8e6c8",
+    "icon": "book"
+  },
+  {
+    "id": "donate",
+    "label": "Dāna | Donation",
+    "sub": "Your contributions allow the monastery to center its programs and outreach",
+    "url": "donate/",
+    "size": 132,
+    "ring": 1,
+    "bg": "radial-gradient(circle at 30% 25%, #7a3018 0%, #3a1808 85%)",
+    "halo": "rgba(217, 130, 74, 0.32)",
+    "fg": "#f0c8a8",
+    "icon": "hands"
+  },
+  {
+    "id": "news",
+    "label": "News & Events",
+    "sub": "Happenings, observances, and announcements from the monastery",
+    "url": "news/",
+    "size": 82,
+    "ring": 2,
+    "bg": "#3a3018",
+    "fg": "#f0e2bd",
+    "icon": "feather"
+  },
+  {
+    "id": "videos",
+    "label": "Video Gallery",
+    "sub": "Films, dhamma, and life from the hillside — watch in-page",
+    "url": "videos/",
+    "size": 82,
+    "ring": 2,
+    "bg": "#3a2218",
+    "fg": "#f0cdbd",
+    "icon": "play"
+  },
+  {
+    "id": "photos",
+    "label": "Photo Gallery",
+    "sub": "Photo Gallery from Google Maps",
+    "url": "gallery/",
+    "size": 82,
+    "ring": 2,
+    "bg": "#2a3624",
+    "fg": "#dee0c0",
+    "icon": "image"
+  },
+  {
+    "id": "map",
+    "label": "Map",
+    "sub": "Google location on Rideekanda",
+    "url": "https://maps.app.goo.gl/3Gb3nt8qaPqdSTgB9",
+    "size": 56,
+    "ring": 3,
+    "bg": "#2a2418",
+    "fg": "#e8d6b0",
+    "icon": "pin"
+  },
+  {
+    "id": "contact",
+    "label": "Contact",
+    "sub": "Contact Us on Email | WhatsApp | Tel",
+    "url": "contact/",
+    "size": 82,
+    "ring": 2,
+    "bg": "#2a261a",
+    "fg": "#d4c8a4",
+    "icon": "mail"
+  },
+  {
+    "id": "suttas-en",
+    "label": "Sutta Archive",
+    "sub": "Reading Suttas in English",
+    "url": "https://suttacentral.net/?lang=en",
+    "size": 82,
+    "ring": 2,
+    "bg": "#4a3818",
+    "fg": "#ecd8a8",
+    "icon": "scroll"
+  },
+  {
+    "id": "suttas-si",
+    "label": "සුත්‍ර පිටකය",
+    "sub": "සුත්‍ර පිටකය සිංහලෙන්",
+    "url": "https://pitaka.lk/main/",
+    "size": 82,
+    "ring": 2,
+    "bg": "#3a3018",
+    "fg": "#e6d4a8",
+    "icon": "suttaPitaka"
+  },
+  {
+    "id": "retreat-program",
+    "label": "Retreat Program",
+    "sub": "Details of Ongoing Retreats",
+    "url": "retreat/",
+    "size": 132,
+    "ring": 1,
+    "bg": "radial-gradient(circle at 30% 25%, #7a4424 0%, #3a1c0a 85%)",
+    "halo": "rgba(217, 150, 90, 0.32)",
+    "fg": "#fbdcc0",
+    "icon": "retreat"
+  },
+  {
+    "id": "monastery",
+    "label": "Monastery",
+    "sub": "About Monastery",
+    "url": "monastery/",
+    "size": 132,
+    "ring": 1,
+    "bg": "radial-gradient(circle at 30% 25%, #3a5028 0%, #18240e 85%)",
+    "halo": "rgba(150, 180, 100, 0.32)",
+    "fg": "#dce0c4",
+    "icon": "tree"
+  },
+  {
+    "id": "reviews",
+    "label": "Reviews",
+    "sub": "Reviews on Rideekanda",
+    "url": "reviews/",
+    "size": 132,
+    "ring": 1,
+    "bg": "radial-gradient(circle at 30% 25%, #4a3818 0%, #1e1608 85%)",
+    "halo": "rgba(200, 170, 80, 0.32)",
+    "fg": "#e6c888",
+    "icon": "star"
+  },
+  {
+    "id": "daily-routine",
+    "label": "Daily Routine",
+    "sub": "Daily Routine of the Rideekanda",
+    "url": "https://www.rideekanda.com/resources/Daily_Routine_Schedule.pdf",
+    "size": 56,
+    "ring": 3,
+    "bg": "#1f2a18",
+    "fg": "#b8c8a0",
+    "icon": "dailyRoutine"
+  },
+  {
+    "id": "admin",
+    "label": "Admin",
+    "sub": "Admin Panel",
+    "url": "admin.html",
+    "size": 56,
+    "ring": 3,
+    "bg": "#252028",
+    "fg": "#b0a8b0",
+    "icon": "settings"
+  },
+  {
+    "id": "facebook",
+    "label": "Facebook",
+    "sub": "/rideekandaforest",
+    "url": "https://www.facebook.com/rideekandaforest",
+    "size": 56,
+    "ring": 3,
+    "bg": "#1c2238",
+    "fg": "#b0c0e0",
+    "icon": "facebook"
+  },
+  {
+    "id": "instagram",
+    "label": "Instagram",
+    "sub": "/rideekanda.monastery/",
+    "url": "https://www.instagram.com/rideekanda.monastery/",
+    "size": 56,
+    "ring": 3,
+    "bg": "#38202a",
+    "fg": "#e0b0c0",
+    "icon": "instagram"
+  },
+  {
+    "id": "google-profile",
+    "label": "Google Profile",
+    "sub": "Google Profiles",
+    "url": "https://share.google/gXH0xqwl9PWo2iQOd",
+    "size": 56,
+    "ring": 3,
+    "bg": "#2a2a2a",
+    "fg": "#d4d4d4",
+    "icon": "google"
+  },
+  {
+    "id": "dhamma",
+    "label": "Dhamma Talks",
+    "sub": "Video Recordings of Teachings",
+    "url": "https://drive.google.com/drive/folders/1ITnaTnLj3Ntx9erkMFhGeSMVdWy9mU7t?usp=drive_link",
+    "size": 56,
+    "ring": 3,
+    "bg": "#3a2818",
+    "fg": "#e6d4ae",
+    "icon": "lotus"
+  },
+  {
+    "id": "audio",
+    "label": "Audio Library",
+    "sub": "Guided Audio Recording of Jhāna Meditation",
+    "url": "https://drive.google.com/drive/folders/10QOiPGjkCcWODUnI-kKiNLqWdcpSpMRq?usp=drive_link",
+    "size": 56,
+    "ring": 3,
+    "bg": "#2a2018",
+    "fg": "#d4c4a0",
+    "icon": "wave"
+  },
+  {
+    "id": "youtube",
+    "label": "YouTube",
+    "sub": "/RideekandaForestMonastery",
+    "url": "https://youtube.com/c/RideekandaForestMonastery",
+    "size": 56,
+    "ring": 3,
+    "bg": "#8a2a18",
+    "fg": "#fbe2cb",
+    "icon": "play"
+  },
+  {
+    "id": "projects",
+    "label": "Projects",
+    "sub": "Building & design initiatives at Rideekanda",
+    "url": "projects/",
+    "size": 132,
+    "ring": 1,
+    "bg": "radial-gradient(circle at 30% 25%, #4a5a30 0%, #1e2812 85%)",
+    "halo": "rgba(160, 180, 100, 0.32)",
+    "fg": "#e8e6c8",
+    "icon": "tree"
+  }
+];
