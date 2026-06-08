@@ -24,10 +24,10 @@
   var MAIN = [
     { id: "home",        href: "home/",                 en: "Home",                si: "මුල් පිටුව" },
     { id: "monastery",   href: "monastery/",            en: "Monastery",           si: "ආරණ්‍ය සේනාසනය" },
-    { id: "retreat",     href: "retreat/",              en: "Retreat Program",     si: "භාවනා වැඩසටහන" },
-    { id: "booking",     href: "booking/",              en: "Book Your Stay",      si: "වෙන් කරවා ගැනීම" },
+    { id: "retreat",     href: "retreat-center/",              en: "Retreat Program",     si: "භාවනා වැඩසටහන" },
+    { id: "booking",     href: "book-your-stay/",              en: "Book Your Stay",      si: "වෙන් කරවා ගැනීම" },
     { id: "reviews",     href: "reviews/",              en: "Reviews",             si: "ඇගයීම්" },
-    { id: "news",        href: "news/",                 en: "News & Events",       si: "ප්‍රවෘත්ති සහ සිදුවීම්" },
+    { id: "news",        href: "news-and-events/",                 en: "News & Events",       si: "ප්‍රවෘත්ති සහ සිදුවීම්" },
     { id: "gallery",     href: "gallery/",              en: "Gallery",             si: "ඡායාරූප" },
     { id: "videos",      href: "videos/",               en: "Video Gallery",       si: "වීඩියෝ" },
     { id: "donate",      href: "donate/",               en: "Donate",              si: "පරිත්‍යාග" },

@@ -26,15 +26,15 @@
 
   var EXPLORE = [
     { label: "The Monastery",   href: "monastery/" },
-    { label: "Retreat Program", href: "retreat/" },
+    { label: "Retreat Program", href: "retreat-center/" },
     { label: "Gallery",         href: "gallery/" },
     { label: "Projects",        href: "projects/" },
-    { label: "News &amp; Events", href: "news/" }
+    { label: "News &amp; Events", href: "news-and-events/" }
   ];
   var VISIT = [
     { text: "Yatawatta, Matale District" },
     { text: "Sri Lanka" },
-    { label: "Book your stay",   href: "booking/" },
+    { label: "Book your stay",   href: "book-your-stay/" },
     { label: "Dāna · Donation", href: "donate/" },
     { label: "Contact",          href: "contact/" }
   ];

@@ -49,5 +49,5 @@ window.RK_CALENDAR = {
     { start: "2026-11-26", end: "2026-12-03", name: "7-Day Concentration & Vipassana Retreat" },
     { start: "2026-12-07", end: "2026-12-14", name: "7-Day Concentration & Vipassana Retreat" }
   ],
-  bookingUrl: "booking/"
+  bookingUrl: "book-your-stay/"
 };

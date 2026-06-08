@@ -18,7 +18,7 @@ const DEFAULT_TILES = [
 
   // RING 1 — primary destinations
   { id: 'booking', label: 'Retreat Booking', sub: 'Reserve a stay for retreat',
-    url: 'booking/', size: 132, ring: 1,
+    url: 'book-your-stay/', size: 132, ring: 1,
     bg: 'radial-gradient(circle at 30% 25%, #a06a2a 0%, #5a3210 85%)',
     halo: 'rgba(217, 155, 74, 0.35)', fg: '#f6e0bd', icon: 'calendar' },
 
@@ -43,7 +43,7 @@ const DEFAULT_TILES = [
     halo: 'rgba(217, 130, 74, 0.32)', fg: '#f0c8a8', icon: 'hands' },
 
   { id: 'news', label: 'News & Events', sub: 'Happenings, observances, and announcements from the monastery',
-    url: 'news/', size: 82, ring: 2,
+    url: 'news-and-events/', size: 82, ring: 2,
     bg: '#3a3018', fg: '#f0e2bd', icon: 'feather' },
 
   { id: 'videos', label: 'Video Gallery', sub: 'Films, dhamma, and life from the hillside — watch in-page',
@@ -71,7 +71,7 @@ const DEFAULT_TILES = [
     url: 'https://pitaka.lk/main/', size: 82, ring: 2,
     bg: '#3a3018', fg: '#e6d4a8', icon: 'suttaPitaka' },
   { id: 'retreat-program', label: 'Retreat Program', sub: 'Details of Ongoing Retreats',
-    url: 'retreat/', size: 132, ring: 1,
+    url: 'retreat-center/', size: 132, ring: 1,
     bg: 'radial-gradient(circle at 30% 25%, #7a4424 0%, #3a1c0a 85%)',
     halo: 'rgba(217, 150, 90, 0.32)', fg: '#fbdcc0', icon: 'retreat' },
   { id: 'monastery', label: 'Monastery', sub: 'About Monastery',

@@ -200,9 +200,9 @@
   var REPO = { owner: 'VENR-bit', name: 'OneSite', branch: 'main' };
   var API  = 'https://api.github.com';
   var TOK_KEY = 'rk-gh-token';   // shared with the dashboard admin panel
-  var POSTS_PATH = 'news/posts.js';
-  var INDEX_PATH = 'news/index.html';
-  var ASSETS_DIR = 'news/assets/';
+  var POSTS_PATH = 'news-and-events/posts.js';
+  var INDEX_PATH = 'news-and-events/index.html';
+  var ASSETS_DIR = 'news-and-events/assets/';
   var MAX_DIM = 1800, JPEG_Q = 0.85;
 
   /* ─────────── tiny helpers ─────────── */
@@ -364,7 +364,7 @@
     var obj = buildObject(names);
     log('This is the entry that will be added to the TOP of posts.js:', 'step');
     log(JSON.stringify(obj, null, 2));
-    log(photos.length + ' photo(s) will be compressed (max ' + MAX_DIM + 'px) and uploaded to news/assets/.', 'step');
+    log(photos.length + ' photo(s) will be compressed (max ' + MAX_DIM + 'px) and uploaded to news-and-events/assets/.', 'step');
   });
 
   /* ─────────── publish ─────────── */
