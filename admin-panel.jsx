@@ -227,6 +227,9 @@ function AdminPanel({ open, onClose, tiles, actions }) {
     setGhBusy(true);
     try {
       await publishTilesToSite(tiles, pushLog);
+      GH.setToken('');
+      setTokVal('');
+      pushLog('🔒 Token forgotten from this browser — re-enter it next time.');
       pushLog('Tip: use “Reset” to drop local edits and load the published tiles.');
     } catch (e) {
       pushLog('✗ Publish failed: ' + e.message);

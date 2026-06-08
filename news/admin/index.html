@@ -429,6 +429,9 @@
       .then(function(){
         log('✓ Published! GitHub Pages is rebuilding — the post should be live in about a minute.', 'ok');
         log('Open the news page in a new tab and refresh to confirm.', 'step');
+        // auto-forget the token after a successful publish
+        setToken(''); $('token').value = ''; refreshTokBadge();
+        log('🔒 Token forgotten from this browser — re-enter it next time.', 'step');
         // reset the form for the next post
         ['f-title','f-when','f-excerpt','f-body','f-youtube'].forEach(function(id){ $(id).value=''; });
         photos = []; renderThumbs();
