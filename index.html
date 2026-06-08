@@ -273,6 +273,11 @@
     }
     .tile--home .tile-icon { color: #f4ede0; }
     body.dark .tile--home .tile-icon { color: #f4ede0; }
+    /* Day mode only: the centre Home medallion + tile icons use the espresso
+       brown of the night Home medallion. Dark mode is left untouched (night
+       keeps its gold icons via var(--accent); centre lotus stays cream). */
+    body:not(.dark) .tile--home .tile-inner { background: radial-gradient(circle at 34% 28%, #3a3026, #211c15 80%); }
+    body:not(.dark) .tile:not(.tile--home) .tile-icon { color: #3a3026; }
     /* Mask-based SVG icons inherit currentColor via backgroundColor */
     /* Tile label beneath */
     .tile-label {
