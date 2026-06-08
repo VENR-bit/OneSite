@@ -120,7 +120,7 @@ function QRPanel({ url }) {
   return (
     <aside
       style={{
-        margin: "64px auto 0",
+        margin: "64px auto 88px",
         maxWidth: 880,
         padding: "0 24px",
       }}
