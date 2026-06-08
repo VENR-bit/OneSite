@@ -102,7 +102,7 @@
 </main>
 
 <script>
-  document.getElementById('year').textContent = new Date().getFullYear();
+  (function(){ var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear(); })();
   (function () {
     var reveals = [].slice.call(document.querySelectorAll('.reveal'));
     var ticking = false;

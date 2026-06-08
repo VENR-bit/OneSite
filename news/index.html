@@ -89,7 +89,7 @@
 <!-- News data + render -->
 <script src="posts.js?v=11"></script>
 <script>
-  document.getElementById('year').textContent = new Date().getFullYear();
+  (function(){ var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear(); })();
 
   (function () {
     var posts = (window.NEWS_POSTS || []).slice().sort(function (a, b) {

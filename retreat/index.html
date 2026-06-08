@@ -298,7 +298,7 @@
 <div id="tweaks-root"></div>
 
 <script>
-  document.getElementById('year').textContent = new Date().getFullYear();
+  (function(){ var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear(); })();
 
   // Original header removed in favour of the shared eco-header, so guard
   // against a missing #nav — otherwise this throws and halts the script,

@@ -66,7 +66,7 @@
 
 <script src="videos.js?v=1"></script>
 <script>
-  document.getElementById('year').textContent = new Date().getFullYear();
+  (function(){ var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear(); })();
   (function () {
     var vids = (window.RK_VIDEOS || []).slice();
     function fmtDate(iso){ if(!iso) return ''; var d=new Date(iso+'T00:00:00'); return isNaN(d)?iso:d.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}); }
