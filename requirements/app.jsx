@@ -294,17 +294,6 @@ function App() {
             </table>
           </div>
         </div>
-        <div className="footer-inner">
-          <div>
-            <div className="footer-mark">Rideekanda Forest Monastery</div>
-            <div className="footer-meta si" style={{marginTop:4}}>රිදීකන්ද ආරණ්‍ය සේනාසනය · උඩස්ගිරිය, මාතලේ, ශ්‍රී ලංකාව</div>
-          </div>
-          <div className="footer-meta" style={{textAlign:"right"}}>
-            <div>Maintained with care · <a href="../index.html">rideekanda.org</a></div>
-            <div>Donations · <a href="../donate/">RideekandaDonate</a></div>
-            <div>Powered by Supabase & GitHub Pages</div>
-          </div>
-        </div>
       </footer>
 
       <PledgeModal item={pledgeFor} onClose={() => setPledgeFor(null)} onConfirm={onConfirmPledge} />

@@ -389,8 +389,6 @@ function App() {
 
       {t.showQR && <QRPanel url={WRITE_REVIEW_URL} />}
 
-      <Footer />
-
       <TweaksPanel>
         <TweakSection label="Layout" />
         <TweakRadio

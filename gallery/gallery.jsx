@@ -480,12 +480,6 @@ function App() {
             ))}
           </div>
         </section>
-
-        <footer className="footer" data-screen-label="05 Footer">
-          <div className="mono"><Lotus /></div>
-          <p>Rideekanda Forest Monastery</p>
-          <p className="note">photographs shared by visitors</p>
-        </footer>
       </main>
 
       <Lightbox
