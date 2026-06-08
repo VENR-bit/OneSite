@@ -54,10 +54,10 @@ function strFromB64(b64) {
   return new TextDecoder('utf-8').decode(a);
 }
 async function publishTilesToSite(tiles, log) {
-  log('Reading tiles-data.js & index.html…');
+  log('Reading tiles-data.js & dashboard/index.html…');
   let tilesFile = null;
   try { tilesFile = await ghGet('tiles-data.js'); } catch (e) { if (e.status !== 404) throw e; }
-  const indexFile = await ghGet('index.html');
+  const indexFile = await ghGet('dashboard/index.html');
 
   const header =
     '/* Published dashboard tiles — managed by the dashboard Admin Panel.\n' +
@@ -72,7 +72,7 @@ async function publishTilesToSite(tiles, log) {
     const n = (parseInt(m[1], 10) || 0) + 1;
     const bumped = html.replace(/tiles-data\.js\?v=\d+/, 'tiles-data.js?v=' + n);
     log('Bumping cache → tiles-data.js?v=' + n + ' …');
-    await ghPut('index.html', b64FromStr(bumped), 'Dashboard: bump tiles cache to v' + n + ' (admin panel)', indexFile.sha);
+    await ghPut('dashboard/index.html', b64FromStr(bumped), 'Dashboard: bump tiles cache to v' + n + ' (admin panel)', indexFile.sha);
   } else {
     log('Note: no tiles-data.js?v= found in index.html to bump (skipped).');
   }

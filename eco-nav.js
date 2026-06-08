@@ -22,7 +22,7 @@
   var CURRENT = (tag && tag.getAttribute("data-current")) || "";
 
   var MAIN = [
-    { id: "home",        href: "home/",                 en: "Home",                si: "මුල් පිටුව" },
+    { id: "home",        href: "",                 en: "Home",                si: "මුල් පිටුව" },
     { id: "monastery",   href: "monastery/",            en: "Monastery",           si: "ආරණ්‍ය සේනාසනය" },
     { id: "retreat",     href: "retreat-center/",              en: "Retreat Program",     si: "භාවනා වැඩසටහන" },
     { id: "booking",     href: "book-your-stay/",              en: "Book Your Stay",      si: "වෙන් කරවා ගැනීම" },
@@ -43,7 +43,7 @@
     { id: "requirements", href: "requirements/",         en: "Monastery Requirements", si: "ආරණ්‍ය අවශ්‍යතා" }
   ];
   var BOTTOM = [
-    { id: "dashboard",   href: "index.html",            en: "Dashboard",           si: "උපකරණ පුවරුව" }
+    { id: "dashboard",   href: "dashboard/",            en: "Dashboard",           si: "උපකරණ පුවරුව" }
   ];
 
   // Explore mark = the official Rideekanda logo, rendered via CSS mask so it

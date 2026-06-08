@@ -8,20 +8,24 @@
        paint from cache, refreshed in the background.
    Bump CACHE_VERSION to force clients to drop old caches.
    ────────────────────────────────────────────────────────────── */
-var CACHE_VERSION = "rk-v8";
+var CACHE_VERSION = "rk-v9";
 var CACHE = "rideekanda-" + CACHE_VERSION;
 
 // Core shell to precache so the dashboard works offline on first launch.
+// The dashboard now lives at /dashboard/; its scripts stay at the site root.
 var PRECACHE = [
   "./",
-  "./index.html",
-  "./app.jsx?v=16",
-  "./icons.jsx?v=16",
-  "./admin-panel.jsx?v=16",
-  "./tweaks-panel.jsx?v=16",
-  "./image-slot.js?v=16",
-  "./eco-nav.js?v=3",
-  "./eco-nav.css",
+  "dashboard/",
+  "dashboard/index.html",
+  "./app.jsx?v=26",
+  "./icons.jsx?v=21",
+  "./admin-panel.jsx?v=24",
+  "./tweaks-panel.jsx?v=21",
+  "./image-slot.js?v=21",
+  "./tiles-data.js?v=3",
+  "./calendar-data.js?v=22",
+  "./eco-nav.js?v=13",
+  "./eco-nav.css?v=2",
   "./rideekanda-logo.svg",
   "./app/icon-192.png",
   "./app/icon-512.png",
@@ -69,7 +73,7 @@ self.addEventListener("fetch", function (e) {
         return res;
       }).catch(function () {
         return caches.match(req).then(function (hit) {
-          return hit || caches.match("./index.html");
+          return hit || caches.match("dashboard/index.html") || caches.match("./");
         });
       })
     );
