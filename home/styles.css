@@ -39,7 +39,7 @@ img { max-width:100%; display:block; }
 .hero-bg img { width:100%; height:100%; object-fit:cover; }
 /* Light (paper) veil — tints the hero image toward the page background so
    the colored lotus + dark text read clearly, matching Monastery/Retreat. */
-.hero-veil { position:absolute; inset:0; z-index:1; background:radial-gradient(120% 95% at 50% 30%, color-mix(in srgb, var(--bg) 35%, transparent) 0%, color-mix(in srgb, var(--bg) 72%, transparent) 55%, var(--bg) 100%), linear-gradient(to bottom, color-mix(in srgb, var(--bg) 50%, transparent), color-mix(in srgb, var(--bg) 90%, transparent)); }
+.hero-veil { position:absolute; inset:0; z-index:1; background:radial-gradient(120% 90% at 50% 18%, transparent 0%, color-mix(in srgb, var(--bg) 55%, transparent) 55%, var(--bg) 100%), linear-gradient(to bottom, color-mix(in srgb, var(--bg) 22%, transparent) 0%, color-mix(in srgb, var(--bg) 45%, transparent) 45%, color-mix(in srgb, var(--bg) 85%, transparent) 100%); }
 .hero-inner { position:relative; z-index:2; max-width:920px; }
 .hero .lotus-mark { height:64px; width:auto; margin:0 auto 2rem; opacity:0.96; }
 /* Dark theme → white lotus (matches the same dark/auto rules used for vars) */
