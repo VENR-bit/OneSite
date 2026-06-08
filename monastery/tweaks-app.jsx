@@ -15,9 +15,9 @@ const LETTERFORMS = {
 function TweaksApp() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
 
-  React.useEffect(() => {
-    document.documentElement.setAttribute('data-theme', t.palette);
-  }, [t.palette]);
+  // NOTE: the light/dark theme is owned by the shared eco-theme toggle
+  // (Auto-by-time + manual). The tweaks palette no longer sets data-theme
+  // so it can't fight that system.
 
   React.useEffect(() => {
     const lf = LETTERFORMS[t.letterforms] || LETTERFORMS.classic;

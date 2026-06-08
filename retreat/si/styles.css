@@ -12,7 +12,7 @@
   --maxw:1080px; --reveal-y:24px; --reveal-dur:1000ms;
 }
 @media (prefers-color-scheme: dark) {
-  :root { --bg:#1f1a14; --bg-2:#16120d; --card:#2a241c; --ink:#f3ecdb; --ink-soft:#d8ccb4; --muted:#9d8d72; --line:rgba(255,235,200,0.12); --accent:#c79a5c; --accent-soft:#e0b76a; }
+  :root:not([data-theme]) { --bg:#1f1a14; --bg-2:#16120d; --card:#2a241c; --ink:#f3ecdb; --ink-soft:#d8ccb4; --muted:#9d8d72; --line:rgba(255,235,200,0.12); --accent:#c79a5c; --accent-soft:#e0b76a; }
 }
 * { box-sizing:border-box; }
 html { scroll-behavior:smooth; background:#1f1a14; color-scheme:light dark; }

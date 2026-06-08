@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="paper">
 <head>
+<script>(function(){try{var m=localStorage.getItem("rk-theme");if(m!=="light"&&m!=="dark"&&m!=="auto")m="auto";var h=new Date().getHours();var day=(m==="auto")?(h>=6&&h<18):(m==="light");var t=day?"paper":"night";var r=document.documentElement;r.setAttribute("data-theme",t);r.setAttribute("data-theme-mode",m);}catch(e){}})();</script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Rideekanda Forest Monastery</title>
@@ -289,7 +290,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script type="text/babel" src="tweaks-panel.jsx"></script>
-<script type="text/babel" src="tweaks-app.jsx"></script>
+<script type="text/babel" src="tweaks-app.jsx?v=2"></script>
 
 <!-- eco-header -->
   <link rel="stylesheet" href="../eco-header.css?v=2">
@@ -300,5 +301,8 @@
   <!-- eco-footer -->
   <link rel="stylesheet" href="../eco-footer.css?v=1">
   <script id="eco-footer" src="../eco-footer.js?v=1" data-root="../" defer></script>
+  <!-- eco-theme -->
+  <link rel="stylesheet" href="../eco-theme.css?v=1">
+  <script id="eco-theme" src="../eco-theme.js?v=2" data-light="paper" data-dark="night" defer></script>
 </body>
 </html>

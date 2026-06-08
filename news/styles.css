@@ -28,7 +28,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
     --bg: #1f1a14; --bg-2: #16120d; --card: #2a241c;
     --ink: #f3ecdb; --ink-soft: #d8ccb4; --muted: #9d8d72;
     --line: rgba(255,235,200,0.12); --accent: #c79a5c; --accent-soft: #e0b76a;
