@@ -85,9 +85,6 @@ const DEFAULT_TILES = [
     halo: 'rgba(200, 170, 80, 0.32)', fg: '#e6c888', icon: 'star' },
 
   // RING 3 — tertiary / accent
-  { id: 'daily-routine', label: 'Daily Routine', sub: 'Daily Routine of the Rideekanda',
-    url: 'https://www.rideekanda.com/resources/Daily_Routine_Schedule.pdf', size: 56, ring: 3,
-    bg: '#1f2a18', fg: '#b8c8a0', icon: 'dailyRoutine' },
   { id: 'admin', label: 'Admin', sub: 'Admin Panel',
     url: 'admin.html', size: 56, ring: 3,
     bg: '#252028', fg: '#b0a8b0', icon: 'settings' },

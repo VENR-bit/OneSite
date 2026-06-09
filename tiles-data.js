@@ -187,17 +187,6 @@ window.RK_TILES = [
     "icon": "star"
   },
   {
-    "id": "daily-routine",
-    "label": "Daily Routine",
-    "sub": "Daily Routine of the Rideekanda",
-    "url": "https://www.rideekanda.com/resources/Daily_Routine_Schedule.pdf",
-    "size": 56,
-    "ring": 3,
-    "bg": "#1f2a18",
-    "fg": "#b8c8a0",
-    "icon": "dailyRoutine"
-  },
-  {
     "id": "admin",
     "label": "Admin",
     "sub": "Admin Panel",
