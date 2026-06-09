@@ -434,7 +434,7 @@
     .wx-overlay { position: absolute; inset: 0; background: color-mix(in srgb, var(--bg) 50%, rgba(0,0,0,0.5)); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
     .wx-panel {
       position: absolute; left: 50%; bottom: 96px; transform: translateX(-50%);
-      width: min(320px, calc(100vw - 32px));
+      width: min(360px, calc(100vw - 32px));
       background: var(--card); color: var(--ink);
       border: 1px solid var(--line); border-radius: 18px;
       box-shadow: 0 40px 90px -30px rgba(0,0,0,0.55);
@@ -454,12 +454,12 @@
     .wx-grid div { display: flex; justify-content: space-between; font-size: 0.85rem; border-bottom: 1px solid var(--line); padding-bottom: 5px; }
     .wx-grid span { color: var(--muted); }
     .wx-grid b { color: var(--ink); font-weight: 600; }
-    .wx-fc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
-    .wx-fc .d { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-    .wx-fc .d .dn { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-    .wx-fc .d svg { width: 24px; height: 24px; color: var(--accent); }
-    .wx-fc .d .t { font-size: 0.82rem; color: var(--ink); }
-    .wx-fc .d .t small { color: var(--muted); }
+    .wx-fc { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
+    .wx-fc .d { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .wx-fc .d .dn { font-family: 'JetBrains Mono', monospace; font-size: 8.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+    .wx-fc .d svg { width: 22px; height: 22px; color: var(--accent); }
+    .wx-fc .d .t { font-size: 0.8rem; color: var(--ink); text-align: center; line-height: 1.15; }
+    .wx-fc .d .t small { display: block; color: var(--muted); font-size: 0.85em; }
     .wx-foot { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 12px 0 0; }
 
     /* Calendar popup */
@@ -779,11 +779,11 @@
       document.getElementById('wx-wind').textContent = Math.round(c.wind_speed_10m) + ' km/h';
       document.getElementById('wx-rain').textContent = (c.precipitation || 0) + ' mm';
       var d = data.daily, html = '';
-      for (var i = 0; i < Math.min(3, d.time.length); i++) {
+      for (var i = 0; i < Math.min(5, d.time.length); i++) {
         var dt = new Date(d.time[i] + 'T00:00:00');
         html += '<div class="d"><span class="dn">' + (i === 0 ? 'Today' : DOW[dt.getDay()]) + '</span>' +
                 ICONS[keyFor(d.weather_code[i], 1)] +
-                '<span class="t">' + Math.round(d.temperature_2m_max[i]) + '°<small> / ' + Math.round(d.temperature_2m_min[i]) + '°</small></span></div>';
+                '<span class="t">' + Math.round(d.temperature_2m_max[i]) + '°<small>' + Math.round(d.temperature_2m_min[i]) + '°</small></span></div>';
       }
       document.getElementById('wx-fc').innerHTML = html;
       var u = new Date();
@@ -793,7 +793,7 @@
     function load() {
       var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT + '&longitude=' + LON +
         '&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m' +
-        '&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=3';
+        '&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=5';
       fetch(url).then(function (r) { return r.json(); }).then(function (j) {
         if (!j || !j.current) return;
         data = j;
