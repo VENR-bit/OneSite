@@ -403,13 +403,13 @@ p:last-child { margin-bottom: 0; }
 @media (max-width: 880px) {
   .chief image-slot { min-height: 0; }
 }
-/* Phone tuning: smaller name, tighter labels, and a readable body size so
-   the two narrow columns don't feel cramped. */
+/* Phone tuning: smaller name and tighter labels. The body prose keeps the
+   page's standard reading size (no shrink) now that each teacher is a single
+   full-width column, so it matches the rest of the page. */
 @media (max-width: 600px) {
   .person-name { font-size: clamp(1.3rem, 6vw, 1.7rem); margin-bottom: 1rem; }
   .chief .role { font-size: 0.6rem; letter-spacing: 0.16em; margin-bottom: 0.7rem; }
   .chief .cred { font-size: 0.58rem; letter-spacing: 0.12em; margin: -0.5rem 0 1rem; }
-  .chief .prose p { font-size: 0.82rem; line-height: 1.55; margin-bottom: 0.8rem; }
   .chief-portrait .frame-tag { font-size: 0.5rem; letter-spacing: 0.16em; padding: 6px 9px; left: -8px; }
   .chief.reverse .frame-tag { right: -8px; left: auto; }
 }
