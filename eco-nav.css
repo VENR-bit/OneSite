@@ -150,6 +150,13 @@ body.dark, html.dark, body.night, html.night, html[data-theme="dark"], body[data
 
 .eco-foot { margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--eco-line); text-align: center; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--eco-faint); }
 
+/* Mobile: tighter spacing between the stacked menu tiles. Placed after the base
+   .eco-grid rule so it wins on source order (equal specificity). */
+@media (max-width: 560px) {
+  .eco-grid { gap: 6px; }
+  .eco-sec-label { margin: 14px 2px 6px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .eco-launch, .eco-overlay, .eco-panel, .eco-link, .eco-close { transition: none; }
 }
