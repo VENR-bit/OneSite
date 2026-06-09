@@ -454,7 +454,17 @@
     .wx-grid div { display: flex; justify-content: space-between; font-size: 0.85rem; border-bottom: 1px solid var(--line); padding-bottom: 5px; }
     .wx-grid span { color: var(--muted); }
     .wx-grid b { color: var(--ink); font-weight: 600; }
-    .wx-fc { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
+    .wx-sec { font-family: 'JetBrains Mono', monospace; font-size: 8.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin: 14px 0 6px; }
+    .wx-hourly { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+    .wx-hourly .h { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 36px; }
+    .wx-hourly .h .ht { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.02em; color: var(--muted); white-space: nowrap; }
+    .wx-hourly .h svg { width: 20px; height: 20px; color: var(--accent); display: block; }
+    .wx-hourly .h .htemp { font-size: 0.78rem; color: var(--ink); }
+    .wx-hourly .h.now .ht { color: var(--accent); font-weight: 700; }
+    .wx-hourly .h.now .htemp { font-weight: 700; }
+    .wx-hourly::-webkit-scrollbar { height: 5px; }
+    .wx-hourly::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--ink) 18%, transparent); border-radius: 3px; }
+    .wx-fc { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 4px; border-top: 1px solid var(--line); padding-top: 12px; }
     .wx-fc .d { display: flex; flex-direction: column; align-items: center; gap: 2px; }
     .wx-fc .d .dn { font-family: 'JetBrains Mono', monospace; font-size: 8.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
     .wx-fc .d svg { width: 22px; height: 22px; color: var(--accent); }
@@ -631,6 +641,9 @@
         <div><span>Wind</span><b id="wx-wind">–</b></div>
         <div><span>Rain</span><b id="wx-rain">–</b></div>
       </div>
+      <div class="wx-sec">Hourly &middot; today</div>
+      <div class="wx-hourly" id="wx-hourly"></div>
+      <div class="wx-sec">Next 5 days</div>
       <div class="wx-fc" id="wx-fc"></div>
       <p class="wx-foot" id="wx-foot"></p>
     </div>
@@ -765,6 +778,7 @@
     var data = null;
     function setIcon(el, key) { if (el) el.innerHTML = ICONS[key] || ICONS.cloud; }
     function pad(n){ return (n<10?'0':'')+n; }
+    function fmtHour(h){ var ap = h < 12 ? 'AM' : 'PM'; var x = h % 12; if (x === 0) x = 12; return x + ap; }
 
     function render() {
       if (!data || !data.current) return;
@@ -786,6 +800,25 @@
                 '<span class="t">' + Math.round(d.temperature_2m_max[i]) + '°<small>' + Math.round(d.temperature_2m_min[i]) + '°</small></span></div>';
       }
       document.getElementById('wx-fc').innerHTML = html;
+
+      // Hourly forecast for today (horizontal scroll, current hour highlighted)
+      var H = data.hourly, today = d.time[0], nowH = new Date().getHours(), hh = '';
+      if (H && H.time) {
+        for (var j = 0; j < H.time.length; j++) {
+          if (H.time[j].indexOf(today) !== 0) continue;           // present day only
+          var hr = parseInt(H.time[j].slice(11, 13), 10);
+          var isNow = (hr === nowH);
+          hh += '<div class="h' + (isNow ? ' now' : '') + '">' +
+                '<span class="ht">' + (isNow ? 'Now' : fmtHour(hr)) + '</span>' +
+                ICONS[keyFor(H.weather_code[j], H.is_day ? H.is_day[j] : (hr >= 6 && hr < 18 ? 1 : 0))] +
+                '<span class="htemp">' + Math.round(H.temperature_2m[j]) + '°</span></div>';
+        }
+      }
+      var hEl = document.getElementById('wx-hourly');
+      hEl.innerHTML = hh;
+      var nowEl = hEl.querySelector('.h.now');
+      if (nowEl) hEl.scrollLeft = Math.max(0, nowEl.offsetLeft - 8);
+
       var u = new Date();
       document.getElementById('wx-foot').textContent = 'Updated ' + pad(u.getHours()) + ':' + pad(u.getMinutes()) + ' · open-meteo';
     }
@@ -793,6 +826,7 @@
     function load() {
       var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT + '&longitude=' + LON +
         '&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m' +
+        '&hourly=temperature_2m,weather_code,is_day' +
         '&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=5';
       fetch(url).then(function (r) { return r.json(); }).then(function (j) {
         if (!j || !j.current) return;
@@ -807,7 +841,15 @@
     load();
     setInterval(load, 15 * 60 * 1000); // refresh every 15 min
 
-    function open() { render(); modal.classList.add('is-open'); modal.setAttribute('aria-hidden', 'false'); }
+    function open() {
+      render();
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      // panel is visible now → centre the current hour in the hourly strip
+      var hEl = document.getElementById('wx-hourly');
+      var nowEl = hEl && hEl.querySelector('.h.now');
+      if (nowEl) hEl.scrollLeft = Math.max(0, nowEl.offsetLeft - 8);
+    }
     function close() { modal.classList.remove('is-open'); modal.setAttribute('aria-hidden', 'true'); }
     btn.addEventListener('click', open);
     modal.addEventListener('click', function (e) { if (e.target.hasAttribute('data-wx-close')) close(); });
