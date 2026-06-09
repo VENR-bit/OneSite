@@ -2,7 +2,7 @@
   "name": "Rideekanda Forest Monastery",
   "short_name": "Rideekanda",
   "description": "Rideekanda Forest Monastery — official site, retreats, news, and resources.",
-  "id": "/",
+  "id": "/dashboard/",
   "start_url": "/dashboard/",
   "scope": "/",
   "display": "standalone",
@@ -14,14 +14,14 @@
   "dir": "ltr",
   "categories": ["lifestyle", "education"],
   "icons": [
-    { "src": "app/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "app/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "app/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "/app/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/app/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/app/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    { "name": "Monastery", "url": "./monastery/" },
-    { "name": "Retreat Program", "url": "./retreat/" },
-    { "name": "News & Events", "url": "./news/" },
-    { "name": "Book Your Stay", "url": "./booking/" }
+    { "name": "Monastery", "url": "/monastery/" },
+    { "name": "Retreat Program", "url": "/retreat-center/" },
+    { "name": "News & Events", "url": "/news-and-events/" },
+    { "name": "Book Your Stay", "url": "/book-your-stay/" }
   ]
 }
