@@ -136,8 +136,8 @@ body.eco-h-pad { padding-top: 64px; }
   .eco-h-brandtext b { font-size: 17px; }
 }
 @media (max-width: 560px) {
-  /* Launcher is icon-only here — less clearance needed. */
-  .eco-h-inner { padding-left: 60px; }
+  /* Clear the small text-only "Explore" button on the left. */
+  .eco-h-inner { padding-left: 92px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -56,12 +56,20 @@ body.dark, html.dark, body.night, html.night, html[data-theme="dark"], body[data
 }
 .eco-launch:hover { transform: translateY(-1px); color: var(--eco-ink); }
 .eco-launch:active { transform: translateY(0); }
+/* Centre the floating launcher vertically within the header band (content pages
+   only — on the dashboard it lives in the bottom dock, not as a body child).
+   translateY(-50%) keeps it centred regardless of the button's height. */
+.eco-root > .eco-launch { top: 32px; transform: translateY(-50%); }     /* 64px header */
+.eco-root > .eco-launch:hover { transform: translateY(-50%) translateY(-1px); }
+.eco-root > .eco-launch:active { transform: translateY(-50%); }
+@media (max-width: 860px) { .eco-root > .eco-launch { top: 28px; } }    /* 56px header */
 .eco-launch .eco-mark { width: 18px; height: 18px; flex: 0 0 auto; color: var(--eco-accent); }
 .eco-launch .eco-mark svg { width: 100%; height: 100%; display: block; }
 .eco-launch .eco-launch-label { white-space: nowrap; }
 @media (max-width: 560px) {
-  .eco-launch { padding: 8px; gap: 0; }
-  .eco-launch .eco-launch-label { display: none; }
+  /* Mobile: a small plain text "Explore" button (no lotus) so it clearly reads as a menu. */
+  .eco-launch { padding: 6px 11px; gap: 0; font-size: 9px; letter-spacing: 0.13em; }
+  .eco-launch .eco-mark { display: none; }
 }
 
 /* ── Overlay + panel ───────────────────────────────────────── */
