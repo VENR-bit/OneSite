@@ -77,8 +77,11 @@ body.dark, html.dark, body.night, html.night, html[data-theme="dark"], body[data
   position: fixed; inset: 0; z-index: 99001;
   display: flex; align-items: flex-start; justify-content: center;
   padding: 84px 18px 32px;
-  background: color-mix(in srgb, var(--eco-bg) 55%, rgba(0,0,0,0.45));
-  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  /* Soft full-page frost: a light same-hue tint over a strong diffuse blur,
+     so whatever sits behind the menu reads as gently blurred glass and any
+     movement in the background stays visible (but soft). */
+  background: color-mix(in srgb, var(--eco-bg) 32%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2);
   opacity: 0; pointer-events: none; transition: opacity .28s ease;
   overflow-y: auto;
 }
@@ -86,15 +89,24 @@ body.dark, html.dark, body.night, html.night, html[data-theme="dark"], body[data
 
 .eco-panel {
   width: 100%; max-width: 720px;
-  background: var(--eco-card);
-  border: 1px solid var(--eco-line);
+  /* Frosted-glass pane: translucent card tint diffusing the blurred backdrop
+     behind it, with a faint top highlight so it reads as a sheet of glass. */
+  background: color-mix(in srgb, var(--eco-card) 72%, transparent);
+  -webkit-backdrop-filter: blur(22px) saturate(1.5); backdrop-filter: blur(22px) saturate(1.5);
+  border: 1px solid color-mix(in srgb, var(--eco-card) 35%, var(--eco-line));
   border-radius: 22px;
-  box-shadow: var(--eco-shadow);
+  box-shadow: var(--eco-shadow), inset 0 1px 0 rgba(255,255,255,0.18);
   padding: 26px 26px 30px;
   transform: translateY(-10px) scale(0.985); opacity: 0;
   transition: transform .3s cubic-bezier(.2,.9,.3,1), opacity .3s ease;
 }
 .eco-overlay.is-open .eco-panel { transform: translateY(0) scale(1); opacity: 1; }
+
+/* Fallback for browsers without backdrop-filter: solid, readable surfaces. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .eco-overlay { background: color-mix(in srgb, var(--eco-bg) 60%, rgba(0,0,0,0.45)); }
+  .eco-panel { background: var(--eco-card); }
+}
 
 .eco-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
 .eco-head .eco-title { font-family: 'Cormorant', Georgia, serif; font-weight: 500; font-size: 26px; line-height: 1.1; color: var(--eco-ink); margin: 0; }
