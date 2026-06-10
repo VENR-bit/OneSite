@@ -47,25 +47,8 @@
 
   var year = new Date().getFullYear();
 
-  // Brevo newsletter signup (public serve embed — no API key). Lazy-loaded so
-  // it doesn't cost anything until the footer scrolls into view.
-  var NEWSLETTER =
-    '<div class="eco-f-newsletter">' +
-      '<div class="eco-f-news-copy">' +
-        '<h4>Newsletter</h4>' +
-        '<p>Receive news of upcoming retreats, observances, and events at ' +
-        'Rideekanda — straight to your inbox.</p>' +
-      '</div>' +
-      '<div class="eco-f-news-form">' +
-        '<iframe loading="lazy" frameborder="0" scrolling="auto" ' +
-        'title="Subscribe to the Rideekanda newsletter" ' +
-        'src="https://818ccd9b.sibforms.com/v2/serve/MUIFAIEn2n0CPWsMkI700fEHb8CND2tNzfvpeP_KYJfCPUnjFTpQnQckkbmEH9bt0Q1BOn9_LnEQDKafSck7i7SdrcFqGk1fIvw-ABDeWck_6QciUk4wZoF2z-7tI0-DhiRzIfKZKRFEYcR6CdFS49GtaxLiK0ldTUwVMfU1witn9_pFRWQWwwEOZn2K05LnUvlf8hHoWzNe3iRNwQ=="></iframe>' +
-      '</div>' +
-    '</div>';
-
   var html =
     '<div class="eco-f-container">' +
-      NEWSLETTER +
       '<div class="eco-f-grid">' +
         '<div>' +
           '<div class="eco-f-brand">' + MARK +

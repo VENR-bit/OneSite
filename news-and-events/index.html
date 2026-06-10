@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=14" />
+<link rel="stylesheet" href="styles.css?v=15" />
 </head>
 <body>
 <main id="top">
@@ -56,9 +56,17 @@
       <div class="subscribe reveal">
         <p class="eyebrow">Stay in touch</p>
         <p class="lead">Subscribe to receive news of upcoming retreats, observances, and events at Rideekanda — straight to your inbox.</p>
-        <div class="subscribe-embed">
-          <iframe src="https://818ccd9b.sibforms.com/v2/serve/MUIFAIEn2n0CPWsMkI700fEHb8CND2tNzfvpeP_KYJfCPUnjFTpQnQckkbmEH9bt0Q1BOn9_LnEQDKafSck7i7SdrcFqGk1fIvw-ABDeWck_6QciUk4wZoF2z-7tI0-DhiRzIfKZKRFEYcR6CdFS49GtaxLiK0ldTUwVMfU1witn9_pFRWQWwwEOZn2K05LnUvlf8hHoWzNe3iRNwQ==" frameborder="0" scrolling="auto" allowfullscreen title="Subscribe to the Rideekanda newsletter"></iframe>
-        </div>
+        <form class="rk-subform" action="https://818ccd9b.sibforms.com/v2/serve/MUIFAIEn2n0CPWsMkI700fEHb8CND2tNzfvpeP_KYJfCPUnjFTpQnQckkbmEH9bt0Q1BOn9_LnEQDKafSck7i7SdrcFqGk1fIvw-ABDeWck_6QciUk4wZoF2z-7tI0-DhiRzIfKZKRFEYcR6CdFS49GtaxLiK0ldTUwVMfU1witn9_pFRWQWwwEOZn2K05LnUvlf8hHoWzNe3iRNwQ==" method="POST" target="rk-subframe">
+          <input type="hidden" name="locale" value="en">
+          <!-- honeypot: bots fill this; Brevo rejects them -->
+          <input class="rk-subform-hp" type="text" name="email_address_check" value="" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="rk-subform-row">
+            <input class="rk-subform-input" type="email" name="EMAIL" required placeholder="Your email address" autocomplete="email" aria-label="Email address">
+            <button class="rk-subform-btn" type="submit">Subscribe</button>
+          </div>
+          <p class="rk-subform-msg" role="status" aria-live="polite" hidden></p>
+        </form>
+        <iframe name="rk-subframe" class="rk-subform-frame" title="Newsletter signup" aria-hidden="true" tabindex="-1"></iframe>
         <p class="subnote">Prefer social? <a href="https://www.facebook.com/rideekandaforest" target="_blank" rel="noopener">Follow the monastery on Facebook &#8599;</a></p>
       </div>
     </div>
@@ -310,6 +318,29 @@
   })();
 </script>
 
+<!-- Newsletter signup: native form posts to Brevo via a hidden iframe, so the
+     page never navigates; we show our own success message on the iframe load. -->
+<script>
+  (function () {
+    var form = document.querySelector('.rk-subform');
+    if (!form) return;
+    var frame = document.querySelector('iframe[name="rk-subframe"]');
+    var msg = form.querySelector('.rk-subform-msg');
+    var btn = form.querySelector('.rk-subform-btn');
+    var sent = false;
+    form.addEventListener('submit', function () { sent = true; if (btn) btn.textContent = 'Subscribing…'; });
+    if (frame) {
+      frame.addEventListener('load', function () {
+        if (!sent) return;                 // ignore the initial blank load
+        sent = false;
+        form.reset();
+        if (btn) btn.textContent = 'Subscribe';
+        if (msg) { msg.hidden = false; msg.textContent = 'Thank you — you are now subscribed. 🙏'; }
+      });
+    }
+  })();
+</script>
+
 <!-- eco-header -->
   <link rel="stylesheet" href="../eco-header.css?v=5">
   <script id="eco-header" src="../eco-header.js?v=2" data-root="../" data-links='[{"label":"Latest","href":"#latest"},{"label":"News","href":"#more"},{"label":"Subscribe","href":"#subscribe"},{"label":"Admin","href":"admin/"}]' data-pad="true" defer></script>
@@ -317,8 +348,8 @@
   <link rel="stylesheet" href="../eco-nav.css?v=9">
   <script id="eco-nav" src="../eco-nav.js?v=14" data-root="../" data-current="news" defer></script>
   <!-- eco-footer -->
-  <link rel="stylesheet" href="../eco-footer.css?v=2">
-  <script id="eco-footer" src="../eco-footer.js?v=3" data-root="../" defer></script>
+  <link rel="stylesheet" href="../eco-footer.css?v=3">
+  <script id="eco-footer" src="../eco-footer.js?v=4" data-root="../" defer></script>
   <!-- eco-theme -->
   <link rel="stylesheet" href="../eco-theme.css?v=1">
   <script src="../eco-theme.js?v=3" defer></script>
