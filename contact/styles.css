@@ -78,6 +78,50 @@ img { max-width:100%; display:block; }
 .section-head { max-width:760px; margin-bottom:clamp(36px,5vw,60px); }
 .section-title { font-family:var(--font-display); font-size:clamp(2.1rem,4vw,3.2rem); letter-spacing:-0.01em; line-height:1.05; margin:0; }
 
+/* ── Stay in touch (newsletter + social) — matches the News & Events page ── */
+.section.dark { background:var(--dark-bg); color:var(--dark-ink); }
+.section.dark .eyebrow { color:var(--accent-soft); }
+.section.dark .eyebrow::before { background:var(--accent-soft); }
+.lead { font-family:var(--font-display); font-size:clamp(1.4rem,2.5vw,2.05rem); line-height:1.32; font-weight:400; color:var(--ink); margin:0; }
+.section.dark .lead { color:var(--dark-ink); }
+.subscribe { max-width:640px; }
+.subscribe .lead { margin-bottom:1.2rem; }
+.subnote { color:var(--muted); }
+.section.dark .subnote { color:var(--dark-muted); }
+/* Native, on-brand newsletter signup (posts to Brevo via a hidden iframe). */
+.rk-subform { max-width:520px; margin:0 0 1.2rem; }
+.rk-subform-hp { position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
+.rk-subform-row { display:flex; gap:10px; flex-wrap:wrap; }
+.rk-subform-input {
+  flex:1 1 240px; min-width:0;
+  padding:14px 18px; border-radius:999px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid color-mix(in srgb, var(--dark-muted) 50%, transparent);
+  color:var(--dark-ink); font-family:var(--font-body); font-size:0.98rem;
+  transition:border-color .2s ease, background .2s ease;
+}
+.rk-subform-input::placeholder { color:var(--dark-muted); }
+.rk-subform-input:focus { outline:none; border-color:var(--accent-soft); background:rgba(255,255,255,0.1); }
+.rk-subform-btn {
+  flex:0 0 auto; padding:14px 28px; border:0; cursor:pointer;
+  background:var(--accent); color:#f7f1e6;
+  border-radius:999px; font-family:var(--font-body); font-size:0.78rem;
+  font-weight:600; letter-spacing:0.16em; text-transform:uppercase;
+  transition:filter .2s ease, transform .2s ease;
+}
+.rk-subform-btn:hover { filter:brightness(1.08); transform:translateY(-1px); }
+.rk-subform-msg { margin:1rem 0 0; color:var(--accent-soft); font-size:0.98rem; }
+.rk-subform-frame { display:none; }
+@media (max-width:560px) {
+  .rk-subform-row { flex-direction:column; align-items:stretch; }
+  .rk-subform-input, .rk-subform-btn { width:100%; flex:0 0 auto; }
+}
+/* Social links — eco-styled (arrow inherits text colour, no emoji). */
+.rk-social { list-style:none; margin:0.4rem 0 0; padding:0; display:grid; gap:0.55rem; }
+.rk-social a { display:inline-flex; align-items:center; gap:7px; color:var(--dark-muted); text-decoration:none; font-size:0.98rem; transition:color .2s ease; }
+.rk-social a:hover { color:var(--accent-soft); }
+.rk-social a svg { width:13px; height:13px; flex:0 0 auto; opacity:0.9; }
+
 /* Footer (matches news/monastery) */
 .footer { background:var(--dark-bg); color:var(--dark-ink); padding:clamp(56px,7vw,96px) 0 40px; }
 .footer-grid { display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:clamp(32px,5vw,72px); }
