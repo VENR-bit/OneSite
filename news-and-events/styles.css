@@ -185,6 +185,9 @@ img { max-width: 100%; display: block; }
 .section.dark .subnote { color: var(--dark-muted); }
 .subscribe { max-width: 640px; }
 .subscribe .lead { margin-bottom: 1.2rem; }
+/* Brevo newsletter signup embed, framed as a light card on the dark section. */
+.subscribe-embed { max-width: 540px; margin: 0 0 1.3rem; background: #fdfbf6; border-radius: 16px; overflow: hidden; box-shadow: 0 18px 44px -22px rgba(0,0,0,0.6); }
+.subscribe-embed iframe { display: block; width: 100%; min-height: 320px; border: 0; }
 .subnote { color: var(--ink-soft); }
 .btn {
   display: inline-flex; align-items: center; gap: 9px;
