@@ -58,7 +58,7 @@ body[data-accent="indigo"]     { --accent: #3F4D7A; --accent-deep: #2A3858; }
 :root[data-theme="dark"] .banner { border-color: rgba(255, 235, 200, 0.22); }
 
 /* Lotus mark at the top of the hero (like the contact page); white in dark. */
-.hero .lotus-mark { display: block; height: 64px; width: auto; margin: 0 0 1.4rem; opacity: 0.95; }
+.hero .lotus-mark { display: block; height: 64px; width: auto; margin: 0 auto 1.4rem; opacity: 0.95; }
 :root[data-theme="dark"] .hero .lotus-mark { filter: brightness(0) invert(1); }
 
 * { box-sizing: border-box; }
@@ -166,6 +166,8 @@ img { display: block; max-width: 100%; }
   position: relative;
   z-index: 2;
   max-width: 980px;
+  margin-inline: auto;
+  text-align: center;
 }
 .hero__lotus {
   position: absolute;
@@ -227,7 +229,7 @@ body[data-hero="lead"]    .hero-v--lead    { display: inline; }
   line-height: 1.5;
   color: var(--ink-2);
   max-width: 60ch;
-  margin: 0;
+  margin: 0 auto;
   font-weight: 400;
 }
 
