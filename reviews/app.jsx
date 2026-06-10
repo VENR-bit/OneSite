@@ -21,7 +21,7 @@ function StatsBlock({ stats, mobile }) {
         justifyContent: "center",
         gap: mobile ? 10 : 18,
         padding: mobile ? "8px 16px" : "10px 22px",
-        background: "rgba(253, 251, 246, 0.6)",
+        background: "color-mix(in srgb, var(--card) 70%, transparent)",
         border: "1px solid var(--line)",
         borderRadius: 999,
         backdropFilter: "blur(8px)",
@@ -318,7 +318,7 @@ function LangToggle({ lang, onSet, busy }) {
   }
   return (
     <div style={{ display: "flex", justifyContent: "center", margin: "0 0 30px" }}>
-      <div style={{ display: "inline-flex", alignItems: "center", gap: 3, background: "rgba(253,251,246,0.6)", border: "1px solid var(--line)", borderRadius: 999, padding: 3, backdropFilter: "blur(8px)" }}>
+      <div style={{ display: "inline-flex", alignItems: "center", gap: 3, background: "color-mix(in srgb, var(--card) 70%, transparent)", border: "1px solid var(--line)", borderRadius: 999, padding: 3, backdropFilter: "blur(8px)" }}>
         <span aria-hidden="true" style={{ fontSize: 13, opacity: 0.6, padding: "0 3px 0 9px" }}>&#127760;</span>
         {btn("en", "English")}
         {btn("si", "සිංහල")}

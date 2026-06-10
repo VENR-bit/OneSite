@@ -26,6 +26,7 @@ function Lotus({ size = 28, color, opacity = 1 }) {
       src="assets/lotus.png"
       alt=""
       aria-hidden="true"
+      className="rk-lotus"
       width={w}
       height={size}
       style={{ opacity, display: "inline-block", verticalAlign: "middle" }}
