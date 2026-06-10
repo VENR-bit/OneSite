@@ -210,8 +210,9 @@ img { max-width: 100%; display: block; }
 .rk-subform-msg { margin: 1rem 0 0; color: var(--accent-soft); font-size: 0.98rem; }
 .rk-subform-frame { display: none; }
 @media (max-width: 560px) {
-  .rk-subform-row { flex-direction: column; }
-  .rk-subform-input, .rk-subform-btn { width: 100%; }
+  .rk-subform-row { flex-direction: column; align-items: stretch; }
+  /* Reset flex so the 240px basis isn't applied as height in column mode. */
+  .rk-subform-input, .rk-subform-btn { width: 100%; flex: 0 0 auto; }
 }
 .subnote { color: var(--ink-soft); }
 .btn {
