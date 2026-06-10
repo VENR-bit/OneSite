@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script>(function(){try{var m=localStorage.getItem("rk-theme");if(m!=="light"&&m!=="dark"&&m!=="auto")m="auto";var h=new Date().getHours();var t=(m==="auto")?((h>=6&&h<18)?"light":"dark"):m;var r=document.documentElement;r.setAttribute("data-theme",t);r.setAttribute("data-theme-mode",m);}catch(e){}})();</script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Book Your Stay — Rideekanda Forest Monastery</title>
@@ -9,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=2" />
 </head>
 <body data-hero="phrase" data-accent="terracotta">
 
@@ -22,6 +23,7 @@
     <!-- ───────── HERO ───────── -->
     <section class="hero">
       <div class="hero__inner">
+        <img class="lotus-mark" src="assets/lotus.png" alt="Rideekanda Forest Monastery" />
         <div class="eyebrow"><span class="eyebrow__dot"></span> A residential retreat</div>
 
         <h1 class="display" data-comment-anchor="hero-display">
@@ -167,5 +169,8 @@
   <!-- eco-footer -->
   <link rel="stylesheet" href="../eco-footer.css?v=3">
   <script id="eco-footer" src="../eco-footer.js?v=4" data-root="../" defer></script>
+  <!-- eco-theme -->
+  <link rel="stylesheet" href="../eco-theme.css?v=1">
+  <script src="../eco-theme.js?v=3" defer></script>
 </body>
 </html>

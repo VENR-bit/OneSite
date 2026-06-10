@@ -34,6 +34,33 @@ body[data-accent="saffron"]    { --accent: #C8782A; --accent-deep: #A65C16; }
 body[data-accent="forest"]     { --accent: #4F6B3A; --accent-deep: #38502A; }
 body[data-accent="indigo"]     { --accent: #3F4D7A; --accent-deep: #2A3858; }
 
+/* ── Dark theme ─────────────────────────────────────────────
+   eco-theme.css supplies night values for the standard vars
+   (--bg/--card/--ink/--muted/--line) when <html data-theme="dark">.
+   Here we override the booking page's extra vars so every surface
+   adapts. (--accent stays terracotta — the data-accent preset wins
+   on specificity, keeping the page's identity in both modes.) */
+:root[data-theme="dark"] {
+  --bg-soft:   #221d17;
+  --ink-2:     #e8ddc8;
+  --muted-2:   #9d8d72;
+  --line-soft: rgba(255, 235, 200, 0.06);
+}
+/* Pre-script / no-JS fallback for visitors whose OS is in dark mode. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #1f1a14; --bg-soft: #221d17; --card: #2a241c;
+    --ink: #f3ecdb; --ink-2: #e8ddc8; --muted: #9d8d72; --muted-2: #9d8d72;
+    --line: rgba(255,235,200,0.12); --line-soft: rgba(255,235,200,0.06);
+  }
+}
+/* The dashed banner border uses dark ink in light mode; lighten for dark. */
+:root[data-theme="dark"] .banner { border-color: rgba(255, 235, 200, 0.22); }
+
+/* Lotus mark at the top of the hero (like the contact page); white in dark. */
+.hero .lotus-mark { display: block; height: 64px; width: auto; margin: 0 0 1.4rem; opacity: 0.95; }
+:root[data-theme="dark"] .hero .lotus-mark { filter: brightness(0) invert(1); }
+
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 
