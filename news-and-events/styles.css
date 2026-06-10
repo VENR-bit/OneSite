@@ -209,6 +209,11 @@ img { max-width: 100%; display: block; }
 .rk-subform-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
 .rk-subform-msg { margin: 1rem 0 0; color: var(--accent-soft); font-size: 0.98rem; }
 .rk-subform-frame { display: none; }
+/* Social links — eco-styled (arrow inherits text colour, no emoji). */
+.rk-social { list-style: none; margin: 0.4rem 0 0; padding: 0; display: grid; gap: 0.55rem; }
+.rk-social a { display: inline-flex; align-items: center; gap: 7px; color: var(--dark-muted); text-decoration: none; font-size: 0.98rem; transition: color .2s ease; }
+.rk-social a:hover { color: var(--accent-soft); }
+.rk-social a svg { width: 13px; height: 13px; flex: 0 0 auto; opacity: 0.9; }
 @media (max-width: 560px) {
   .rk-subform-row { flex-direction: column; align-items: stretch; }
   /* Reset flex so the 240px basis isn't applied as height in column mode. */
