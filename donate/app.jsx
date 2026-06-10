@@ -157,6 +157,7 @@ function Hero({ onJump }) {
   return (
     <section className="hero">
       <LotusOrnament />
+      <img className="lotus-mark" src="assets/logo-mark.png" alt="Rideekanda Forest Monastery" />
       <div className="eyebrow mono"><span className="dot"></span><span>An offering of dāna</span></div>
       <h1><em>Support</em> the monastery &amp; meditation community.</h1>
     </section>

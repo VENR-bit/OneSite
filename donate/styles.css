@@ -89,6 +89,8 @@ a.home-link:hover { color: var(--accent); }
 
 /* hero */
 .hero { padding: 32px 0 8px; position: relative; text-align: center; }
+/* Colored lotus mark at the top of the hero (matches the contact page). */
+.hero .lotus-mark { display: block; height: 64px; width: auto; margin: 0 auto 1.3rem; opacity: 0.95; position: relative; z-index: 1; }
 .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--muted); margin-bottom: 28px; }
 .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 .hero h1 {
