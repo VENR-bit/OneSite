@@ -409,7 +409,25 @@ function App() {
   const error = (placeError && albumError) ? `${placeError}; ${albumError}` : null;
 
   const palette = PALETTES[t.palette] || PALETTES.stillness;
-  useEffect(() => { applyPalette(palette); }, [palette]);
+  // Apply the day/night palette, reacting to the eco-theme toggle (which sets
+  // <html data-theme>). Dark uses a night palette; light uses the selected one.
+  useEffect(() => {
+    const DARK = {
+      bg: '#1f1a14', paper: '#2a241c', ink: '#f3ecdb',
+      muted: 'rgba(243, 236, 219, .60)', line: 'rgba(255, 235, 200, .14)',
+      tones: ['#cbb78c','#b2a06f','#a9b487','#c4a98a','#d8c9a4','#b9966f','#9bb89e','#cdbf9a'],
+    };
+    const root = document.documentElement;
+    const apply = () => {
+      const dark = root.getAttribute('data-theme') === 'dark';
+      applyPalette(dark ? DARK : palette);
+      root.style.setProperty('--accent', dark ? '#c79a5c' : '#6b5a3c');
+    };
+    apply();
+    const mo = new MutationObserver(apply);
+    mo.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => mo.disconnect();
+  }, [palette]);
 
   useEffect(() => {
     const gap = t.density === 'spacious' ? 40 : t.density === 'dense' ? 12 : 24;

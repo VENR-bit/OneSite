@@ -47,6 +47,17 @@ body {
   overflow-x: hidden;
 }
 
+/* ── Dark theme refinements ─────────────────────────────────
+   The palette vars are swapped to night values by gallery.jsx; these
+   handle the few hardcoded light bits so dark mode reads cleanly. */
+:root[data-theme="dark"] body {
+  background:
+    radial-gradient(ellipse 1200px 600px at 50% -120px, rgba(255,235,200,.05), transparent 60%),
+    var(--bg);
+}
+:root[data-theme="dark"] .hero .lotus { filter: brightness(0) invert(1); }
+:root[data-theme="dark"] .api-status.error { background: rgba(180,80,40,.16); color: #e3a892; }
+
 /* Subtle paper grain over the whole page */
 body::before {
   content: "";
