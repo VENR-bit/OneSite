@@ -336,15 +336,33 @@ function App() {
   const mobile = useIsMobile();
   const perPage = t.layout === "editorial" ? 6 : 8;
 
-  // Apply palette to CSS variables
+  // Apply the day/night palette to CSS variables, reacting to the eco-theme
+  // toggle (which sets <html data-theme>). The reviews page keeps its forest
+  // green identity — lightened for readability on the night palette.
   React.useEffect(() => {
     const root = document.documentElement;
-    const [bg, card, accent] = t.palette || [];
-    if (bg) root.style.setProperty("--bg", bg);
-    if (card) root.style.setProperty("--card", card);
-    if (accent) root.style.setProperty("--accent", accent);
-    document.body.style.background = bg || "var(--bg)";
-  }, [t.palette]);
+    const LIGHT = {
+      "--bg": "#f4ede0", "--bg-deep": "#ece3d1", "--card": "#fdfbf6",
+      "--ink": "#1f1a14", "--ink-soft": "#4a4034", "--muted": "#8a7d68",
+      "--line": "#e6dcc6", "--accent": "#2d4a32", "--accent-soft": "#5b7a5f",
+      "--gold": "#c08a3e", "--star": "#e6a93b",
+    };
+    const DARK = {
+      "--bg": "#1f1a14", "--bg-deep": "#16120d", "--card": "#2a241c",
+      "--ink": "#f3ecdb", "--ink-soft": "#d8ccb4", "--muted": "#9d8d72",
+      "--line": "rgba(255,235,200,0.14)", "--accent": "#86a98a", "--accent-soft": "#9bb89e",
+      "--gold": "#d6a652", "--star": "#e6a93b",
+    };
+    const apply = () => {
+      const P = root.getAttribute("data-theme") === "dark" ? DARK : LIGHT;
+      for (const k in P) root.style.setProperty(k, P[k]);
+      document.body.style.background = P["--bg"];
+    };
+    apply();
+    const mo = new MutationObserver(apply);
+    mo.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => mo.disconnect();
+  }, []);
 
   const sorted = useMemoApp(() => [...REVIEWS].sort((a, b) => a.daysAgo - b.daysAgo), []);
   const visible = sorted.slice(0, page * perPage);
