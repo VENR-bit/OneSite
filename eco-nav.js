@@ -21,6 +21,29 @@
   var ROOT = (tag && tag.getAttribute("data-root")) || "";
   var CURRENT = (tag && tag.getAttribute("data-current")) || "";
 
+  // ── Kiosk idle return ───────────────────────────────────────
+  // In the installed kiosk app (PWA standalone), if a visitor wanders off the
+  // dashboard and leaves a page idle, return them to the dashboard so the next
+  // person starts fresh. Any interaction resets the timer; normal browser
+  // visitors (not standalone) are never redirected.
+  (function kioskIdleReturn() {
+    var standalone =
+      (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
+      window.navigator.standalone === true;
+    if (!standalone) return;                                     // installed kiosk only
+    if (location.pathname.indexOf("/dashboard") !== -1) return;  // already on the dashboard
+    var IDLE_MS = 120000;                                        // 2 minutes of no interaction
+    var DASH = ROOT + "dashboard/";
+    var timer;
+    function go() { location.href = DASH; }
+    function reset() { clearTimeout(timer); timer = setTimeout(go, IDLE_MS); }
+    ["pointerdown", "touchstart", "mousemove", "keydown", "scroll", "wheel", "click"].forEach(function (ev) {
+      window.addEventListener(ev, reset, { passive: true });
+    });
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) reset(); });
+    reset();
+  })();
+
   var MAIN = [
     { id: "home",        href: "",                 en: "Home",                si: "මුල් පිටුව" },
     { id: "monastery",   href: "monastery/",            en: "Monastery",           si: "ආරණ්‍ය සේනාසනය" },
