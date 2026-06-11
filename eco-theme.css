@@ -35,11 +35,11 @@
   border-radius: 50%; cursor: pointer; padding: 0;
   background: color-mix(in srgb, var(--card, #fffaf0) 82%, transparent);
   color: var(--accent, #a3763c);
-  border: 1px solid var(--line, rgba(0,0,0,0.14));
+  border: 0;                       /* no stroke — matches the other toggles */
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   box-shadow: 0 8px 22px -10px rgba(0,0,0,0.45);
-  transition: transform .2s ease, background .3s ease, color .3s ease, border-color .3s ease;
+  transition: transform .2s ease, background .3s ease, color .3s ease;
 }
-.eco-theme-toggle:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent, #a3763c) 45%, var(--line, rgba(0,0,0,0.14))); }
+.eco-theme-toggle:hover { transform: translateY(-2px); }
 .eco-theme-toggle svg { width: 20px; height: 20px; display: block; }
 @media print { .eco-theme-toggle { display: none; } }
