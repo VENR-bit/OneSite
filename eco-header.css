@@ -28,18 +28,21 @@ body.dark, html.dark, body.night, html.night, html[data-theme="dark"], body[data
   --ech-accent: #c08a3e; --ech-gold: #e0b76a;
 }
 
-html { scroll-padding-top: 84px; }
+html { scroll-padding-top: calc(84px + env(safe-area-inset-top, 0px)); }
 
 /* Optional body offset for pages whose original header was in-flow
    (so content isn't hidden behind the fixed bar). Toggled by
    eco-header.js when the script tag sets data-pad="true". */
-body.eco-h-pad { padding-top: 64px; }
-@media (max-width: 860px) { body.eco-h-pad { padding-top: 56px; } }
+body.eco-h-pad { padding-top: calc(64px + env(safe-area-inset-top, 0px)); }
+@media (max-width: 860px) { body.eco-h-pad { padding-top: calc(56px + env(safe-area-inset-top, 0px)); } }
 
 .eco-header, .eco-header * { box-sizing: border-box; }
 
 .eco-header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 9000;
+  /* Extend the bar's background up behind the iOS status bar / notch, while
+     its inner content (.eco-h-inner) is pushed below the safe-area inset. */
+  padding-top: env(safe-area-inset-top, 0px);
   background: var(--ech-bg);
   -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
   border-bottom: 1px solid transparent;
@@ -54,7 +57,8 @@ body.eco-h-pad { padding-top: 64px; }
   display: flex; align-items: center; gap: 18px;
   max-width: 1280px; margin: 0 auto;
   height: 64px;
-  padding: 0 24px 0 148px;   /* left pad clears the Explore launcher */
+  /* left pad clears the Explore launcher; +safe-area keeps them aligned in landscape */
+  padding: 0 24px 0 calc(148px + env(safe-area-inset-left, 0px));
 }
 
 /* Brand (logo links home — not a labelled Home button) */
@@ -130,14 +134,14 @@ body.eco-h-pad { padding-top: 64px; }
   /* Clear the FULL Explore launcher (icon + "EXPLORE" label, ~140px) so the
      brand never sits under it. Below 560px the launcher collapses to an
      icon-only pill (see eco-nav.css), so the offset is reduced to match. */
-  .eco-h-inner { padding-left: 152px; height: 56px; gap: 10px; }
+  .eco-h-inner { padding-left: calc(152px + env(safe-area-inset-left, 0px)); height: 56px; gap: 10px; }
   .eco-h-links { display: none; }
   .eco-h-burger { display: inline-flex; }
   .eco-h-brandtext b { font-size: 17px; }
 }
 @media (max-width: 560px) {
   /* Launcher is icon-only here — less clearance needed. */
-  .eco-h-inner { padding-left: 60px; }
+  .eco-h-inner { padding-left: calc(60px + env(safe-area-inset-left, 0px)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

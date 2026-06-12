@@ -40,7 +40,10 @@ body.dark, html.dark, body.night, html.night, html[data-theme="dark"], body[data
 
 /* ── Launcher pill ─────────────────────────────────────────── */
 .eco-launch {
-  position: fixed; top: 14px; left: 14px; z-index: 99000;
+  position: fixed; z-index: 99000;
+  /* Clear the iOS status bar / notch (safe-area inset) on standalone web apps. */
+  top: calc(14px + env(safe-area-inset-top, 0px));
+  left: calc(14px + env(safe-area-inset-left, 0px));
   display: inline-flex; align-items: center; gap: 9px;
   padding: 7px 14px 7px 9px;
   border-radius: 999px;
