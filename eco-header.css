@@ -53,6 +53,13 @@ body.eco-h-pad { padding-top: calc(64px + env(safe-area-inset-top, 0px)); }
   box-shadow: 0 6px 24px -18px rgba(57,44,22,0.5);
 }
 
+/* iOS installed web app (Home Screen) runs full-screen under a translucent
+   status bar. env(safe-area-inset-top) is unreliable in that launch context
+   (it can resolve to 0), so enforce a minimum top clearance when standalone. */
+@media (display-mode: standalone) {
+  .eco-header { padding-top: max(env(safe-area-inset-top, 0px), 44px); }
+}
+
 .eco-h-inner {
   display: flex; align-items: center; gap: 18px;
   max-width: 1280px; margin: 0 auto;

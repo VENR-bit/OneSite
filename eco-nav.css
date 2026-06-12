@@ -59,6 +59,11 @@ body.dark, html.dark, body.night, html.night, html[data-theme="dark"], body[data
 }
 .eco-launch:hover { transform: translateY(-1px); color: var(--eco-ink); }
 .eco-launch:active { transform: translateY(0); }
+/* iOS installed web app runs full-screen under a translucent status bar where
+   env(safe-area-inset-top) can resolve to 0; enforce a minimum top clearance. */
+@media (display-mode: standalone) {
+  .eco-launch { top: calc(14px + max(env(safe-area-inset-top, 0px), 44px)); }
+}
 .eco-launch .eco-mark { width: 18px; height: 18px; flex: 0 0 auto; color: var(--eco-accent); }
 .eco-launch .eco-mark svg { width: 100%; height: 100%; display: block; }
 .eco-launch .eco-launch-label { white-space: nowrap; }
