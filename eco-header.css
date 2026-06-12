@@ -33,14 +33,18 @@ html { scroll-padding-top: 84px; }
 /* Optional body offset for pages whose original header was in-flow
    (so content isn't hidden behind the fixed bar). Toggled by
    eco-header.js when the script tag sets data-pad="true". */
-body.eco-h-pad { padding-top: 64px; }
-@media (max-width: 860px) { body.eco-h-pad { padding-top: 56px; } }
+body.eco-h-pad { padding-top: calc(64px + env(safe-area-inset-top, 0px)); }
+@media (max-width: 860px) { body.eco-h-pad { padding-top: calc(56px + env(safe-area-inset-top, 0px)); } }
 
 .eco-header, .eco-header * { box-sizing: border-box; }
 
 .eco-header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 9000;
   background: var(--ech-bg);
+  /* Reserve the iOS safe area so, in the installed PWA (viewport-fit=cover),
+     the bar's background fills behind the status bar and its content sits below
+     it. env() is 0 in a browser / on auto-inset pages, so nothing changes. */
+  padding-top: env(safe-area-inset-top, 0px);
   -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
   border-bottom: 1px solid transparent;
   transition: border-color .3s ease, background .3s ease, box-shadow .3s ease;
