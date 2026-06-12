@@ -533,6 +533,10 @@
       left: auto;
       right: calc(50% + 42px);
     }
+    /* Hide the launcher until JS moves it into the dock, so it doesn't flash at
+       the eco-nav default (top-left) position during load. Once relocated into
+       .dock it no longer matches this selector and shows normally. */
+    body .eco-root > .eco-launch { display: none; }
     @media (max-width: 560px) {
       /* Explore is icon-only (~36px) here, so nudge up 1px to stay centred. */
       body .eco-launch { bottom: 48px; }
