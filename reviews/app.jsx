@@ -389,7 +389,9 @@ function App() {
           .filter((r) => (r.comment || "").trim() && r.reviewer && r.reviewer.displayName)
           .map((r) => {
             const name = r.reviewer.displayName.trim();
-            let days = Math.floor((Date.now() - new Date(r.createTime).getTime()) / 86400000);
+            // Use updateTime (falling back to createTime) so recently edited
+            // reviews surface — matching how Featurable orders/dates them.
+            let days = Math.floor((Date.now() - new Date(r.updateTime || r.createTime).getTime()) / 86400000);
             if (isNaN(days) || days < 0) days = 0;
             return {
               name,
