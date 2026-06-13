@@ -364,7 +364,59 @@ function App() {
     return () => mo.disconnect();
   }, []);
 
-  const sorted = useMemoApp(() => [...REVIEWS].sort((a, b) => a.daysAgo - b.daysAgo), []);
+  // ── Live Google reviews via Featurable (auto-syncs the Google listing).
+  //    Falls back to the bundled REVIEWS/STATS if the feed is unreachable. ──
+  const [live, setLive] = useStateApp(null);
+  React.useEffect(() => {
+    const FEED = "https://api.featurable.com/v1/widgets/216da9a8-0522-432c-91f6-b1ba20c43da8";
+    const PALETTE = ["#b08968","#7c8c66","#8a73c2","#6b7d8c","#a0795a","#6f8c6f","#9a6b8c","#7a8ca0","#b0895a","#6f7c8c"];
+    const colorFor = (s) => { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return PALETTE[h % PALETTE.length]; };
+    const rel = (days) => {
+      if (days <= 0) return "today";
+      if (days === 1) return "yesterday";
+      if (days < 30) return days + " days ago";
+      const m = Math.floor(days / 30.4);
+      if (m <= 1) return "a month ago";
+      if (m < 12) return m + " months ago";
+      const y = Math.floor(days / 365);
+      return y === 1 ? "a year ago" : y + " years ago";
+    };
+    fetch(FEED)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((d) => {
+        if (!d || !d.success || !Array.isArray(d.reviews)) return;
+        const reviews = d.reviews
+          .filter((r) => (r.comment || "").trim() && r.reviewer && r.reviewer.displayName)
+          .map((r) => {
+            const name = r.reviewer.displayName.trim();
+            let days = Math.floor((Date.now() - new Date(r.createTime).getTime()) / 86400000);
+            if (isNaN(days) || days < 0) days = 0;
+            return {
+              name,
+              initial: name.charAt(0).toUpperCase(),
+              color: colorFor(name),
+              daysAgo: days,
+              when: rel(days),
+              rating: r.starRating || 5,
+              text: (r.comment || "").trim(),
+            };
+          });
+        if (!reviews.length) return;
+        setLive({
+          reviews,
+          stats: {
+            average: d.averageRating || STATS.average,
+            total: reviews.length,
+            displayTotal: d.totalReviewCount || STATS.displayTotal,
+          },
+        });
+      })
+      .catch(() => {});
+  }, []);
+
+  const baseReviews = live ? live.reviews : REVIEWS;
+  const baseStats = live ? live.stats : STATS;
+  const sorted = useMemoApp(() => [...baseReviews].sort((a, b) => a.daysAgo - b.daysAgo), [baseReviews]);
   const visible = sorted.slice(0, page * perPage);
   const hasMore = visible.length < sorted.length;
 
@@ -396,7 +448,7 @@ function App() {
 
   return (
     <>
-      <PageHeader stats={STATS} style={t.headerStyle} mobile={mobile} />
+      <PageHeader stats={baseStats} style={t.headerStyle} mobile={mobile} />
 
       <LangToggle lang={lang} onSet={setLang} busy={busy} />
 
