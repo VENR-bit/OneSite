@@ -6,7 +6,7 @@ const STORE_KEY = "rideekanda_pledges_v2";
 // Google Sheets backend (Apps Script Web App /exec URL). When set, pledges are
 // saved to the Sheet (POST) and the live shared list is loaded from it (GET).
 // Empty = the page works on its own (seed + this browser's localStorage).
-const PLEDGE_ENDPOINT = "";
+const PLEDGE_ENDPOINT = "https://script.google.com/macros/s/AKfycbwXroHe8dZGecXpSUGqU0EfmHTd63K7ZJY2T3LTAvribe-NFug7r88Ow6onfPWdnLaD2A/exec";
 
 function postPledge(p) {
   if (!PLEDGE_ENDPOINT) return;
@@ -457,11 +457,13 @@ function App() {
       .then((r) => (r.ok ? r.json() : Promise.reject()))
       .then((d) => {
         const rows = (d && d.pledges) || (Array.isArray(d) ? d : null);
-        if (!rows || !rows.length) return;
+        if (!rows) return; // malformed response → keep seed/local fallback
+        // Live Sheet is authoritative: even an empty list replaces the seed,
+        // so an empty Sheet shows an honest empty road, not fake samples.
         const mapped = rows
           .filter((x) => x && Number(x.meters || x.feet) > 0)
           .map((x, i) => ({ id: "g" + i, name: x.name || "Anonymous", feet: Number(x.meters || x.feet) || 0, message: x.message || "" }));
-        if (mapped.length) setPledges(mapped);
+        setPledges(mapped);
       })
       .catch(() => {});
   }, []);
