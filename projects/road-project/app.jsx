@@ -455,7 +455,8 @@ function App() {
 
   return (
     <React.Fragment>
-      <Nav />
+      {/* Shared eco-header + eco-footer (injected into <body>) replace the
+          page's own Nav/Footer, so they aren't rendered here. */}
       <Hero stats={{ pavedFeet: fmt(pavedFeet), pct }} />
       <About />
       <Tech />
@@ -466,7 +467,6 @@ function App() {
       />
       <Budget pavedFeet={pavedFeet} pledgedLKR={pledgedLKR} />
       <CTA />
-      <Footer />
       <Toast msg={toast.msg} show={toast.show} />
       <ProgressFab pct={pct} onClick={() => setProgressOpen(true)} />
       <ProgressModal

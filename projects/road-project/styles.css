@@ -847,5 +847,8 @@ textarea.input { resize: vertical; min-height: 64px; }
 }
 .progress-inline__panel .vstage { height: min(62vh, 560px); }
 
+/* Lotus is now the shared brand <img>; size it (the old rule targeted <svg>). */
+.lotus { display: block; width: 72px; height: auto; }
+.hero__lotus img.lotus { width: 72px; }
 /* lotus mark inside the pledge success card */
 .lotus--mark { width: 56px; height: auto; }

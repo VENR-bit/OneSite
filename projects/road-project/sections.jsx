@@ -32,41 +32,9 @@ const fmt = (n) => Math.round(n).toLocaleString("en-US");
 const LKR = ({ children }) => (<span><span className="lkr">LKR</span> {children}</span>);
 
 /* ----------------------------- Icons ------------------------------------ */
-let _lotusN = 0;
 function Lotus({ className }) {
-  // Unique gradient ids so multiple lotuses on the page don't collide.
-  const uid = useMemo(() => "lt" + (++_lotusN), []);
-  return (
-    <svg className={"lotus " + (className || "")} viewBox="0 26 200 120" role="img" aria-label="Lotus">
-      <defs>
-        <linearGradient id={uid + "f"} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#9c6c3f" /><stop offset="1" stopColor="#6e4a28" />
-        </linearGradient>
-        <linearGradient id={uid + "b"} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#835833" /><stop offset="1" stopColor="#5d3f23" />
-        </linearGradient>
-        <linearGradient id={uid + "o"} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#6b4626" /><stop offset="1" stopColor="#46301a" />
-        </linearGradient>
-        <linearGradient id={uid + "c"} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#6c5443" /><stop offset="1" stopColor="#443429" />
-        </linearGradient>
-      </defs>
-      <g stroke="#F8F4EB" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round">
-        {/* right-half petals, then mirrored for the left */}
-        <g id={uid + "half"}>
-          <path fill={`url(#${uid}b)`} d="M100 135 Q154.5 124.4 190.9 82.5 Q136.5 93.2 100 135 Z" />
-          <path fill={`url(#${uid}b)`} d="M100 135 Q143.7 100.8 157.2 46.9 Q113.5 81.2 100 135 Z" />
-          <path fill={`url(#${uid}o)`} d="M100 135 Q150.5 141.7 187.5 106.6 Q136.9 99.9 100 135 Z" />
-          <path fill={`url(#${uid}f)`} d="M100 135 Q148.1 118.1 165 70 Q116.9 86.9 100 135 Z" />
-          <path fill={`url(#${uid}f)`} d="M100 135 Q136.4 99.3 131.5 48.5 Q95 84.3 100 135 Z" />
-        </g>
-        <use href={`#${uid}half`} transform="translate(200 0) scale(-1 1)" />
-        {/* central petal on top */}
-        <path fill={`url(#${uid}c)`} d="M100 135 Q115 86 100 37 Q85 86 100 135 Z" />
-      </g>
-    </svg>
-  );
+  // Shared Rideekanda brand lotus (matches the rest of the site).
+  return <img className={"lotus " + (className || "")} src="/assets/lotus-logo.png" alt="Rideekanda Forest Monastery" />;
 }
 function Ico({ d, className, style }) {
   return (<svg className={className} style={style} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d={d}/></svg>);
