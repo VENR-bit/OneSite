@@ -40,7 +40,7 @@ function loadPledges() {
 /* ===================== PLEDGE CARD ===================== */
 function PledgeCard({ remaining, onPledge, justPledged, onReset }) {
   const [name, setName] = useState("");
-  const [feet, setFeet] = useState(3);
+  const [feet, setFeet] = useState(1);
   const [err, setErr] = useState("");
 
   const ft = feet === "" ? 0 : feet;
@@ -54,7 +54,7 @@ function PledgeCard({ remaining, onPledge, justPledged, onReset }) {
     if (remaining <= 0) { setErr("The road is fully pledged — thank you!"); return; }
     setErr("");
     onPledge({ name: name.trim(), feet: clampFeet(feet) });
-    setName(""); setFeet(10);
+    setName(""); setFeet(1);
   }
 
   if (justPledged) {
