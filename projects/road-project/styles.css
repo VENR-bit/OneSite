@@ -670,15 +670,19 @@ textarea.input { resize: vertical; min-height: 64px; }
   .vlabel__tick { right: -20px; width: 20px; }
 }
 
-/* Mobile: stack the road stage as a centred column — legend on top, the road
-   bar centred below — and pad the panel within the safe area so nothing tucks
-   behind the fixed header / launcher. */
+/* Mobile: stack the road stage as a column — legend (centred) on top, then the
+   road bar on the LEFT with its segment labels flipped to the RIGHT so they read
+   clearly instead of clipping off the left edge. Pad within the safe area so
+   nothing tucks behind the fixed header / launcher. */
 @media (max-width: 560px){
   .pmodal { padding: max(16px, env(safe-area-inset-top, 0px)) 14px max(16px, env(safe-area-inset-bottom, 0px)); }
   .pmodal__panel, .progress-inline__panel { padding: 18px 18px; }
-  .vstage { flex-direction: column; align-items: center; justify-content: flex-start; padding: 12px 0 6px; }
-  .vlegend { position: static; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 8px 18px; margin: 0 0 32px; width: auto; }
-  .vroad { flex: 1 1 auto; height: auto; min-height: 0; }
+  .vstage { flex-direction: column; align-items: flex-start; justify-content: flex-start; padding: 12px 0 6px 6px; }
+  .vlegend { align-self: stretch; position: static; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 8px 18px; margin: 0 0 32px; width: auto; }
+  .vroad { flex: 1 1 auto; height: auto; min-height: 0; margin-left: 8px; }
+  /* labels to the right of the road */
+  .vlabel { left: calc(100% + 18px); right: auto; flex-direction: row-reverse; justify-content: flex-end; text-align: left; transform-origin: left center; }
+  .vlabel__tick { left: -18px; right: auto; }
 }
 
 /* ============================================================
