@@ -265,7 +265,6 @@ function CTA() {
           quietly into the forest at Rideekanda. May your generosity bear fruit.</p>
         <div className="cta__cta">
           <a className="btn btn--saffron" href="#road">Pledge a linear meter <Ico d={ICONS.arrow} style={{width:18,height:18}}/></a>
-          <a className="btn btn--ghost" href={PROJECT.mapUrl} target="_blank" rel="noopener" style={{color:"#ECE7D7", boxShadow:"inset 0 0 0 1.5px rgba(236,231,215,.3)"}}>Visit the site ↗</a>
         </div>
       </div>
     </section>

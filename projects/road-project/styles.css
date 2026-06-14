@@ -468,6 +468,8 @@ textarea.input { resize: vertical; min-height: 64px; }
 .cta__cta { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
 .cta__lotus { display:flex; justify-content:center; margin-bottom: 24px; }
 .cta__lotus svg { width: 64px; height: auto; }
+/* white lotus on the dark forest CTA */
+.cta__lotus img.lotus { width: 64px; filter: brightness(0) invert(1); }
 
 .footer { background: #1c2417; color: rgba(236,231,215,.6); padding: 50px 0 40px; }
 .footer__inner { display:flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items:center; }

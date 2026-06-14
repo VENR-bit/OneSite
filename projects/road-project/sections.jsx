@@ -13,9 +13,8 @@ const PROJECT = {
   mapUrl: "https://maps.app.goo.gl/ZbSeubxqA7pg2tbQ6",
 };
 
-// Where the "Donate" button sends supporters. Replace with the real
-// payment link / bank-details page once provided.
-const DONATE_URL = "#";
+// Where the "Donate" button sends supporters — the site's donate page.
+const DONATE_URL = "../../donate/";
 
 // Total material requirement for the 610 m concrete scope (1:3:5 mix).
 const MATERIALS = [
