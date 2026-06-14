@@ -3,6 +3,23 @@ const { useState, useEffect, useRef, useMemo } = window;
 
 const STORE_KEY = "rideekanda_pledges_v2";
 
+// Google Sheets backend (Apps Script Web App /exec URL). When set, pledges are
+// saved to the Sheet (POST) and the live shared list is loaded from it (GET).
+// Empty = the page works on its own (seed + this browser's localStorage).
+const PLEDGE_ENDPOINT = "";
+
+function postPledge(p) {
+  if (!PLEDGE_ENDPOINT) return;
+  try {
+    fetch(PLEDGE_ENDPOINT, {
+      method: "POST",
+      mode: "no-cors",                                 // fire-and-forget; avoids CORS preflight
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ name: p.name, meters: p.feet, message: p.message }),
+    }).catch(function () {});
+  } catch (e) {}
+}
+
 const SEED = [
   { id: "s1", name: "The Silva Family", message: "For our late mother.", feet: 18 },
   { id: "s2", name: "Anonymous", message: "", feet: 30 },
@@ -432,6 +449,23 @@ function App() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(pledges)); } catch (e) {}
   }, [pledges]);
 
+  // Load the live, shared pledge list from the Google Sheet (if configured).
+  // Falls back silently to the seed + localStorage if unreachable.
+  useEffect(() => {
+    if (!PLEDGE_ENDPOINT) return;
+    fetch(PLEDGE_ENDPOINT)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((d) => {
+        const rows = (d && d.pledges) || (Array.isArray(d) ? d : null);
+        if (!rows || !rows.length) return;
+        const mapped = rows
+          .filter((x) => x && Number(x.meters || x.feet) > 0)
+          .map((x, i) => ({ id: "g" + i, name: x.name || "Anonymous", feet: Number(x.meters || x.feet) || 0, message: x.message || "" }));
+        if (mapped.length) setPledges(mapped);
+      })
+      .catch(() => {});
+  }, []);
+
   function flash(msg) {
     setToast({ msg, show: true });
     clearTimeout(toastTimer.current);
@@ -447,6 +481,7 @@ function App() {
     const id = "p" + Date.now();
     const p = { id, name, feet, message };
     setPledges((list) => [...list, p]);
+    postPledge(p);                                   // save to the Google Sheet
     setJustPledged(p);
     setNewId(id);
     flash(`${feet} m reserved on the road — complete your donation below.`);
