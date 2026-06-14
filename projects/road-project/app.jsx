@@ -15,7 +15,7 @@ function postPledge(p) {
       method: "POST",
       mode: "no-cors",                                 // fire-and-forget; avoids CORS preflight
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ name: p.name, meters: p.feet, message: p.message }),
+      body: JSON.stringify({ name: p.name, meters: p.feet }),
     }).catch(function () {});
   } catch (e) {}
 }
@@ -41,7 +41,6 @@ function loadPledges() {
 function PledgeCard({ remaining, onPledge, justPledged, onReset }) {
   const [name, setName] = useState("");
   const [feet, setFeet] = useState(3);
-  const [message, setMessage] = useState("");
   const [err, setErr] = useState("");
 
   const ft = feet === "" ? 0 : feet;
@@ -51,11 +50,11 @@ function PledgeCard({ remaining, onPledge, justPledged, onReset }) {
   const clampFeet = (v) => Math.max(1, Math.min(remaining, v || 1));
 
   function submit() {
-    if (!name.trim()) { setErr("Please add a name for the road marker."); return; }
+    if (!name.trim()) { setErr("Please add the name to mark on the road."); return; }
     if (remaining <= 0) { setErr("The road is fully pledged — thank you!"); return; }
     setErr("");
-    onPledge({ name: name.trim(), feet: clampFeet(feet), message: message.trim() });
-    setName(""); setMessage(""); setFeet(10);
+    onPledge({ name: name.trim(), feet: clampFeet(feet) });
+    setName(""); setFeet(10);
   }
 
   if (justPledged) {
@@ -124,11 +123,6 @@ function PledgeCard({ remaining, onPledge, justPledged, onReset }) {
             <button key={q} className={feet===q?"on":""} onClick={()=>setFeet(clampFeet(q))}>{q} m</button>
           ))}
         </div>
-      </div>
-
-      <div className="field">
-        <label>A short dedication <span style={{textTransform:"none",letterSpacing:0,color:"var(--ink-faint)"}}>(optional)</span></label>
-        <textarea className="input" value={message} placeholder="May all beings be well…" onChange={(e)=>setMessage(e.target.value)} />
       </div>
 
       {err && <p className="warn">{err}</p>}
@@ -479,9 +473,9 @@ function App() {
   const pct = Math.round((pavedFeet / PROJECT.totalFeet) * 100);
   const pledgedLKR = pavedFeet * PROJECT.costPerFoot;
 
-  function handlePledge({ name, feet, message }) {
+  function handlePledge({ name, feet }) {
     const id = "p" + Date.now();
-    const p = { id, name, feet, message };
+    const p = { id, name, feet };
     setPledges((list) => [...list, p]);
     postPledge(p);                                   // save to the Google Sheet
     setJustPledged(p);
