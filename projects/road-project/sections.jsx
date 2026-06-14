@@ -136,7 +136,7 @@ function About() {
             <p className="kicker">The Critical 610 Meters</p>
             <h3>One meter of road, <span style={{fontStyle:"italic"}}>one act of generosity.</span></h3>
             <p>Each linear meter of finished concrete costs <strong style={{color:'#F4F0E5'}}>LKR&nbsp;8,878</strong>.
-              Choose how many meters you wish to pave — your name marks that stretch of the road forever.</p>
+              Choose how many meters you wish to pave — and join the supporters who carry this road to the forest.</p>
           </div>
         </aside>
       </div>

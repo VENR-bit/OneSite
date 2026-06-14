@@ -50,7 +50,7 @@ function PledgeCard({ remaining, onPledge, justPledged, onReset }) {
   const clampFeet = (v) => Math.max(1, Math.min(remaining, v || 1));
 
   function submit() {
-    if (!name.trim()) { setErr("Please add the name to mark on the road."); return; }
+    if (!name.trim()) { setErr("Please add the name for the supporters list."); return; }
     if (remaining <= 0) { setErr("The road is fully pledged — thank you!"); return; }
     setErr("");
     onPledge({ name: name.trim(), feet: clampFeet(feet) });
@@ -66,7 +66,7 @@ function PledgeCard({ remaining, onPledge, justPledged, onReset }) {
         <h3 style={{textAlign:"center"}}>Your stretch is reserved.</h3>
         <p className="pledge__hint" style={{textAlign:"center"}}>
           You’ve pledged <b>{justPledged.feet} linear meters</b>. Complete your donation to lay the concrete —
-          your name marks that stretch of the road.
+          and join the supporters of this road.
         </p>
         <div className="pledge__cost">
           <span className="l">Amount to donate</span>
@@ -94,7 +94,7 @@ function PledgeCard({ remaining, onPledge, justPledged, onReset }) {
       <p className="pledge__hint">Choose how many linear meters to pledge. Each meter is <b>LKR&nbsp;8,878</b> of finished concrete.</p>
 
       <div className="field">
-        <label>Your name — as it appears on the road</label>
+        <label>Your name — as it appears in the supporters list</label>
         <input className="input" value={name} placeholder="e.g. The Perera Family" onChange={(e)=>setName(e.target.value)} />
       </div>
 
@@ -147,7 +147,7 @@ function Paver({ pledges, pavedFeet, pct, remaining, onPledge, justPledged, setJ
       <div className="wrap">
         <div className="center" style={{maxWidth:720, margin:"0 auto"}}>
           <p className="kicker kicker--center">Pave the Road</p>
-          <h2 className="title">Your name, set in <span className="h-em">concrete</span>.</h2>
+          <h2 className="title">Generosity, set in <span className="h-em">concrete</span>.</h2>
           <p className="lede">Each pledge lays a real stretch of the 610-meter road. Watch it pave, meter by meter, as the
             community comes together. The rough gravel that remains is the work still to be done.</p>
         </div>
