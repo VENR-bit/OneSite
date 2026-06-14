@@ -23,12 +23,26 @@
   <script type="text/babel" src="app.jsx?v=eco10"></script>
 <!-- eco-header -->
   <link rel="stylesheet" href="../../eco-header.css?v=6">
-  <script id="eco-header" src="../../eco-header.js?v=2" data-root="../../" data-links='[{"label": "About", "href": "#about"}, {"label": "Engineering", "href": "#specs"}, {"label": "The Road", "href": "#road"}, {"label": "Budget", "href": "#budget"}, {"label": "Support", "href": "../../donate/", "cta": true, "external": true}]' data-pad="true" defer></script>
+  <script id="eco-header" src="../../eco-header.js?v=2" data-root="../../" data-links='[{"label": "About", "href": "#about"}, {"label": "Engineering", "href": "#specs"}, {"label": "The Road", "href": "#road"}, {"label": "Budget", "href": "#budget"}, {"label": "සිංහල", "href": "#sinhala"}, {"label": "Support", "href": "../../donate/", "cta": true, "external": true}]' data-pad="true" defer></script>
 <!-- eco-nav -->
   <link rel="stylesheet" href="../../eco-nav.css?v=10">
   <script id="eco-nav" src="../../eco-nav.js?v=15" data-root="../../" data-current="road-project" defer></script>
   <!-- eco-footer -->
   <link rel="stylesheet" href="../../eco-footer.css?v=3">
   <script id="eco-footer" src="../../eco-footer.js?v=4" data-root="../../" defer></script>
+
+  <!-- "සිංහල" menu link → open this page translated to Sinhala via Google Translate -->
+  <script>
+    (function () {
+      document.addEventListener("click", function (e) {
+        var a = e.target.closest && e.target.closest('a[href$="#sinhala"]');
+        if (!a) return;
+        e.preventDefault();
+        var page = location.href.split("#")[0];
+        var url = "https://translate.google.com/translate?sl=en&tl=si&u=" + encodeURIComponent(page);
+        window.open(url, "_blank", "noopener");
+      });
+    })();
+  </script>
 </body>
 </html>
