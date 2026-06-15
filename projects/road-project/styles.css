@@ -33,8 +33,8 @@
   --grad-forest: linear-gradient(135deg, #36462B 0%, #243019 100%);
 
   /* Type — eco family fonts, matching the main OneSite pages. */
-  --display: "Cormorant Garamond", Georgia, serif;
-  --body: "Spectral", Georgia, serif;
+  --display: "Cormorant Garamond", "Noto Serif Sinhala", Georgia, serif;
+  --body: "Spectral", "Noto Sans Sinhala", Georgia, serif;
   --mono: "JetBrains Mono", ui-monospace, monospace;
 
   --maxw: 1200px;
