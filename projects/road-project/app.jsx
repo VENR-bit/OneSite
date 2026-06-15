@@ -254,13 +254,13 @@ function Budget({ pavedFeet, pledgedLKR }) {
 
 /* ===================== CTA + FOOTER ===================== */
 function CTA() {
-  const { t } = useT();
+  const { t, lang } = useT();
   return (
     <section className="section cta">
       <div className="wrap center">
         <div className="cta__lotus"><Lotus /></div>
         <p className="kicker kicker--center">{t("cta_kicker")}</p>
-        <h2><Em k="cta_h2" t={t} italic /></h2>
+        {lang !== "si" && <h2><Em k="cta_h2" t={t} italic /></h2>}
         <p className="lede">{t("cta_lede")}</p>
         <div className="cta__cta">
           <a className="btn btn--saffron" href="#road">{t("btn_pledge_meter")} <Ico d={ICONS.arrow} style={{width:18,height:18}}/></a>
