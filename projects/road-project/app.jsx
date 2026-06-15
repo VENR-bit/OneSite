@@ -142,14 +142,14 @@ function PledgeCard({ remaining, onPledge, justPledged, onReset }) {
 
 /* ===================== PAVER SECTION ===================== */
 function Paver({ pledges, pavedFeet, pct, remaining, onPledge, justPledged, setJustPledged }) {
-  const { t } = useT();
+  const { t, lang } = useT();
   return (
     <section className="section paver" id="road">
       <div className="wrap">
         <div className="center" style={{maxWidth:720, margin:"0 auto"}}>
           <p className="kicker kicker--center">{t("paver_kicker")}</p>
-          <h2 className="title"><Em k="paver_title" t={t} cls="h-em" /></h2>
-          <p className="lede">{t("paver_lede")}</p>
+          {lang !== "si" && <h2 className="title"><Em k="paver_title" t={t} cls="h-em" /></h2>}
+          {lang !== "si" && <p className="lede">{t("paver_lede")}</p>}
         </div>
 
         {/* 1 · Pledge a stretch */}
