@@ -409,14 +409,12 @@ function About() {
 
 /* ----------------------------- TECH SPECS ------------------------------- */
 function Tech() {
-  const { t, lang } = useT();
+  const { t } = useT();
   return (
     <section className="section tech" id="specs">
       <div className="wrap">
         <div className="center" style={{maxWidth:720, margin:"0 auto 8px"}}>
           <p className="kicker kicker--center">{t("tech_kicker")}</p>
-          {lang !== "si" && <h2 className="title"><Em k="tech_title" t={t} cls="h-em" /></h2>}
-          {lang !== "si" && <p className="lede">{t("tech_lede")}</p>}
         </div>
 
         <div className="spec-cards" style={{marginTop:48}}>
