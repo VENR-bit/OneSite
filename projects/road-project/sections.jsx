@@ -38,6 +38,7 @@ const STR = {
     callout_kicker: "The Critical 610 Meters",
     callout_h3_a: "One meter of road, ",
     callout_h3_em: "one act of generosity.",
+    callout_h3_b: "",
     callout_p: "Each linear meter of finished concrete costs LKR 8,878. Choose how many meters you wish to pave — and join the supporters who carry this road to the forest.",
     /* tech */
     tech_kicker: "Engineering & Cost",
@@ -113,6 +114,7 @@ const STR = {
     cta_kicker: "An Act of Generosity",
     cta_h2_a: "Lay one meter of the path, ",
     cta_h2_em: "and walk it forever.",
+    cta_h2_b: "",
     cta_lede: "Whether you pave a single meter or a hundred, every contribution carries practitioners quietly into the forest at Rideekanda. May your generosity bear fruit.",
     /* toast */
     toast_reserved: "{n} m reserved on the road — complete your donation below.",
@@ -161,6 +163,7 @@ const STR = {
     callout_kicker: "තීරණාත්මක මීටර් 610",
     callout_h3_a: "මාර්ගයේ එක් මීටරයක්, ",
     callout_h3_em: "එක් පරිත්‍යාග ක්‍රියාවක්.",
+    callout_h3_b: "",
     callout_p: "නිම කළ කොන්ක්‍රීට් රේඛීය මීටරයක් සඳහා වැය වන්නේ රු. 8,878කි. ඔබ කොපමණ මීටර් ගණනක් කොන්ක්‍රීට් කිරීමට කැමතිද යන්න තෝරන්න — මෙම මාර්ගය වනයට රැගෙන යන දායකයින් අතරට එක්වන්න.",
     /* tech */
     tech_kicker: "ඉංජිනේරු හා පිරිවැය",
@@ -236,6 +239,7 @@ const STR = {
     cta_kicker: "පරිත්‍යාග ක්‍රියාවක්",
     cta_h2_a: "මාවතේ එක් මීටරයක් තනා, ",
     cta_h2_em: "සදහටම එහි ගමන් කරන්න.",
+    cta_h2_b: "",
     cta_lede: "ඔබ එක් මීටරයක් හෝ සියයක් කොන්ක්‍රීට් කළත්, සෑම දායකත්වයක්ම යෝගාවචරයන් නිහඬව රිදීකන්ද වනය තුළට රැගෙන යයි. ඔබේ පින් සමෘද්ධිමත් වේවා.",
     /* toast */
     toast_reserved: "මාර්ගයේ මීටර් {n}ක් වෙන් කරන ලදී — පහතින් ඔබේ පරිත්‍යාගය සම්පූර්ණ කරන්න.",
