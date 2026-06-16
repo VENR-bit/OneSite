@@ -351,6 +351,11 @@ function VRoad({ pledges }) {
     const rect = road.getBoundingClientRect();
     const fracFromBottom = Math.max(0, Math.min(1, 1 - (e.clientY - rect.top) / rect.height));
     setCaret(fracFromBottom * 100);
+    // If the pointer is over a pledge label, highlight that pledge directly
+    // (works for mouse hover and for dragging a finger across the labels).
+    const over = document.elementFromPoint(e.clientX, e.clientY);
+    const labelEl = over && over.closest && over.closest(".vlabel");
+    if (labelEl && labelEl.dataset.segId) { setActive(labelEl.dataset.segId); return; }
     const ft = fracFromBottom * total;
     const hit = spans.find((s) => ft >= s.start && ft < s.end);
     setActive(hit ? hit.id : null);
@@ -400,12 +405,9 @@ function VRoad({ pledges }) {
           const delay = (s.mid / total) * ROLL_MS + 180;
           return (
             <div key={"l" + s.id}
+              data-seg-id={s.id}
               className={"vlabel vlabel--pledged" + (isActive ? " is-active" : "")}
-              style={{ bottom: (roadH > 0 && labelPos[s.id] != null ? labelPos[s.id] + "px" : (s.mid / total) * 100 + "%"), transform: "translateY(50%)" + (isActive ? " scale(1.16)" : ""), animationDelay: delay + "ms" }}
-              onPointerEnter={() => setActive(s.id)}
-              onPointerLeave={(e) => { if (!e || e.pointerType !== "touch") setActive(null); }}
-              onPointerDown={(e) => { e.stopPropagation(); setActive(s.id); }}
-              onPointerUp={() => setActive(null)}>
+              style={{ bottom: (roadH > 0 && labelPos[s.id] != null ? labelPos[s.id] + "px" : (s.mid / total) * 100 + "%"), transform: "translateY(50%)" + (isActive ? " scale(1.16)" : ""), animationDelay: delay + "ms" }}>
               <span><span className="vlabel__ft">{s.feet}m</span> {s.name}</span>
               <span className="vlabel__dot" />
               <span className="vlabel__tick" style={{ top: "50%" }} />
