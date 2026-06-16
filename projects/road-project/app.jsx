@@ -312,12 +312,38 @@ function VRoad({ pledges }) {
   const [active, setActive] = useState(null);
   const [caret, setCaret] = useState(null);
   const [rolling, setRolling] = useState(true);
+  const [roadH, setRoadH] = useState(0);
   const stageRef = useRef(null);
 
   useEffect(() => {
     const tm = setTimeout(() => setRolling(false), ROLL_MS + 80);
     return () => clearTimeout(tm);
   }, []);
+
+  // Measure the road height so labels can be spaced apart (collision avoidance).
+  useEffect(() => {
+    const measure = () => {
+      const el = stageRef.current && stageRef.current.querySelector(".vroad-track");
+      if (el) setRoadH(el.getBoundingClientRect().height);
+    };
+    measure();
+    const tm = setTimeout(measure, ROLL_MS + 200);
+    window.addEventListener("resize", measure);
+    return () => { clearTimeout(tm); window.removeEventListener("resize", measure); };
+  }, []);
+
+  // Stack labels with a minimum vertical gap so neighbouring pledges don't overlap.
+  const LABEL_GAP = 24; // px between label centres
+  const labelPos = {};
+  if (roadH > 0) {
+    let last = -Infinity;
+    spans.slice().sort((a, b) => a.mid - b.mid).forEach((s) => {
+      let c = (s.mid / total) * roadH;
+      if (c - last < LABEL_GAP) c = last + LABEL_GAP;
+      labelPos[s.id] = c;
+      last = c;
+    });
+  }
 
   function locate(e) {
     const el = stageRef.current; if (!el) return;
@@ -375,7 +401,7 @@ function VRoad({ pledges }) {
           return (
             <div key={"l" + s.id}
               className={"vlabel vlabel--pledged" + (isActive ? " is-active" : "")}
-              style={{ bottom: (s.mid / total) * 100 + "%", transform: "translateY(50%)" + (isActive ? " scale(1.16)" : ""), animationDelay: delay + "ms" }}
+              style={{ bottom: (roadH > 0 && labelPos[s.id] != null ? labelPos[s.id] + "px" : (s.mid / total) * 100 + "%"), transform: "translateY(50%)" + (isActive ? " scale(1.16)" : ""), animationDelay: delay + "ms" }}
               onMouseEnter={() => setActive(s.id)} onMouseLeave={() => setActive(null)}>
               <span><span className="vlabel__ft">{s.feet}m</span> {s.name}</span>
               <span className="vlabel__dot" />
