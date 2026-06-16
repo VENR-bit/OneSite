@@ -356,6 +356,10 @@ function VRoad({ pledges }) {
                 style={{ bottom: (s.start / total) * 100 + "%", height: (s.feet / total) * 100 + "%" }} />
             ))}
           </div>
+          {/* jagged "road continues" edge at the top of the pledged stretch */}
+          {!rolling && pledgedFeet > 0 && pledgedFeet < total && (
+            <div className="vroad-edge" style={{ bottom: (pledgedFeet / total) * 100 + "%" }} />
+          )}
         </div>
         {rolling && <div className="vroad-roll" />}
         {caret != null && (

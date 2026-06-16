@@ -625,6 +625,12 @@ textarea.input { resize: vertical; min-height: 64px; }
   background-position: center top, 8px 0, calc(100% - 8px) 0, 0 0;
   background-repeat: no-repeat;
 }
+/* jagged top edge of the pledged road — teeth point up into the gravel,
+   so the paved stretch reads as "continuing further" rather than cut flat */
+.vroad-edge {
+  position: absolute; left: 0; right: 0; height: 9px; z-index: 2; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpolygon points='0,9 7,0 14,9' fill='%23565a5e'/%3E%3C/svg%3E") repeat-x bottom / 14px 9px;
+}
 .vseg.is-active { filter: brightness(1.14) saturate(1.08); transform: scaleX(1.06); z-index: 3; }
 .vseg.is-active::before { content:""; position:absolute; inset:0; box-shadow: inset 0 0 0 2px var(--saffron); }
 
