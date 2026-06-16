@@ -665,6 +665,7 @@ textarea.input { resize: vertical; min-height: 64px; }
 /* name labels — all on the LEFT of the road, low opacity, zoom + full on active */
 .vlabel {
   position: absolute; z-index: 4; white-space: nowrap; cursor: pointer;
+  touch-action: none; -webkit-tap-highlight-color: transparent;
   display: flex; align-items: center; gap: 8px; justify-content: flex-end; text-align: right;
   right: calc(100% + 24px); transform-origin: right center;
   font-family: var(--body); font-size: 12px; font-weight: 500; color: #ECE7D7;

@@ -402,7 +402,10 @@ function VRoad({ pledges }) {
             <div key={"l" + s.id}
               className={"vlabel vlabel--pledged" + (isActive ? " is-active" : "")}
               style={{ bottom: (roadH > 0 && labelPos[s.id] != null ? labelPos[s.id] + "px" : (s.mid / total) * 100 + "%"), transform: "translateY(50%)" + (isActive ? " scale(1.16)" : ""), animationDelay: delay + "ms" }}
-              onMouseEnter={() => setActive(s.id)} onMouseLeave={() => setActive(null)}>
+              onPointerEnter={() => setActive(s.id)}
+              onPointerLeave={(e) => { if (!e || e.pointerType !== "touch") setActive(null); }}
+              onPointerDown={(e) => { e.stopPropagation(); setActive(s.id); }}
+              onPointerUp={() => setActive(null)}>
               <span><span className="vlabel__ft">{s.feet}m</span> {s.name}</span>
               <span className="vlabel__dot" />
               <span className="vlabel__tick" style={{ top: "50%" }} />
