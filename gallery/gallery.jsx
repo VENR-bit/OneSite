@@ -6,12 +6,8 @@
 const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
 // ──────────────────────────────────────────────────────────────────────
-// Google Places configuration (key is in index.html's Maps JS script tag)
-const PLACE_ID = 'ChIJ5eRfpfpP4zoR-ExQbZI87sk';
-const MAX_PHOTO_WIDTH = 1200;
-
-// Google Photos album via Apps Script proxy
-const PHOTOS_API_URL = 'https://script.google.com/macros/s/AKfycbzWK_h62Kw5AwfuUzs5Yn1l4MxOWFwBsohALrpB0g8iTU76GWLiT_RNkcVTW2704N8l1w/exec';
+// Local photo set — images live in /gallery/photos with a manifest.json
+// (built from the RideekandaImages folder). No external photo service.
 
 // ──────────────────────────────────────────────────────────────────────
 // Tweakable defaults — host rewrites this block on disk when user adjusts.
@@ -76,108 +72,36 @@ const FALLBACK_ITEMS = [
 ];
 
 // ──────────────────────────────────────────────────────────────────────
-// Google Places — fetch real photos via Maps JavaScript API (CORS-safe)
-// The Maps JS API is loaded in index.html; __mapsReadyPromise is defined there
-// before the async Maps script tag, so the callback is always available.
-const __mapsReady = window.__mapsReadyPromise || new Promise((resolve) => {
-  if (window.google?.maps?.places) { resolve(); return; }
-  window.__onMapsReady = resolve;
-});
-
-function useGooglePlacePhotos() {
+// Local photos — load the manifest built from the RideekandaImages folder.
+function useLocalPhotos() {
   const [photos, setPhotos] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
-    setError(null);
-
-    __mapsReady
-      .then(async () => {
-        if (cancelled) return;
-        await google.maps.importLibrary('places');
-        const place = new google.maps.places.Place({ id: PLACE_ID });
-        await place.fetchFields({ fields: ['photos', 'displayName'] });
-        if (cancelled) return;
-        const placePhotos = place.photos || [];
-        if (placePhotos.length === 0) {
-          setError('No photos found for this place');
-          setLoading(false);
-          return;
-        }
-        const mapped = placePhotos.map((photo, i) => {
-          const attribs = photo.authorAttributions || [];
-          const authorName = attribs[0]?.displayName || `Visitor photo ${i + 1}`;
-          return {
-            caption: authorName,
-            type: 'photo',
-            src: photo.getURI({ maxWidth: MAX_PHOTO_WIDTH }),
-            thumbSrc: photo.getURI({ maxWidth: 400 }),
-            width: photo.widthPx,
-            height: photo.heightPx,
-            attribution: authorName,
-          };
-        });
-        setPhotos(mapped);
-        setLoading(false);
-      })
-      .catch((err) => {
-        if (cancelled) return;
-        console.warn('Google Places photo fetch failed:', err);
-        setError(err.message || 'Places API failed');
-        setLoading(false);
-      });
-
-    return () => { cancelled = true; };
-  }, []);
-
-  return { photos, loading, error };
-}
-
-// ──────────────────────────────────────────────────────────────────────
-// Google Photos album — fetch via Apps Script proxy (no CORS issues)
-// Returns fresh baseUrls each call; the proxy caches album data for 30 min.
-function useGooglePhotosAlbum() {
-  const [photos, setPhotos] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    setError(null);
-
-    fetch(PHOTOS_API_URL)
+    fetch('photos/manifest.json')
       .then((res) => res.json())
-      .then((data) => {
+      .then((list) => {
         if (cancelled) return;
-        if (!data.success) {
-          setError(data.error || 'API returned an error');
-          setLoading(false);
-          return;
-        }
-        const mapped = data.photos.map((p, i) => ({
-          caption: p.ts ? `Rideekanda · ${new Date(p.ts).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}` : 'Rideekanda Forest Monastery',
+        const mapped = list.map((p) => ({
+          caption: 'Rideekanda Forest Monastery',
           type: 'photo',
-          src: `${p.baseUrl}=w${MAX_PHOTO_WIDTH}`,
-          thumbSrc: `${p.baseUrl}=w400`,
+          src: p.src,
+          thumbSrc: p.thumb,
           width: p.w,
           height: p.h,
-          ts: p.ts || null,
-          attribution: 'Google Photos album',
+          attribution: '',
         }));
         setPhotos(mapped);
         setLoading(false);
       })
       .catch((err) => {
         if (cancelled) return;
-        console.warn('Google Photos album fetch failed:', err);
-        setError(err.message || 'Album API failed');
+        console.warn('Local photo manifest failed:', err);
+        setError(err.message || 'Could not load photos');
         setLoading(false);
       });
-
     return () => { cancelled = true; };
   }, []);
 
@@ -390,23 +314,7 @@ function applyPalette(p) {
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [idx, setIdx] = useState(null);
-  const { photos: placePhotos, loading: placeLoading, error: placeError } = useGooglePlacePhotos();
-  const { photos: albumPhotos, loading: albumLoading, error: albumError } = useGooglePhotosAlbum();
-
-  // Combine both sources, sort newest-first (photos without timestamps go last)
-  const photos = useMemo(() => {
-    const all = [...placePhotos, ...albumPhotos];
-    all.sort((a, b) => {
-      if (!a.ts && !b.ts) return 0;
-      if (!a.ts) return 1;
-      if (!b.ts) return -1;
-      return new Date(b.ts) - new Date(a.ts);
-    });
-    return all;
-  }, [placePhotos, albumPhotos]);
-
-  const loading = placeLoading || albumLoading;
-  const error = (placeError && albumError) ? `${placeError}; ${albumError}` : null;
+  const { photos, loading, error } = useLocalPhotos();
 
   const palette = PALETTES[t.palette] || PALETTES.stillness;
   // Apply the day/night palette, reacting to the eco-theme toggle (which sets
@@ -488,7 +396,6 @@ function App() {
             <span className="line" />
             <span className="count">
               {String(photoCount).padStart(2,'0')} photographs
-              {photos.length > 0 && ' · via Google'}
             </span>
           </div>
 
