@@ -47,7 +47,27 @@ window.RK_CALENDAR = {
     { start: "2026-09-15", end: "2026-09-22", name: "7-Day Concentration & Vipassana Retreat" },
     { start: "2026-10-02", end: "2026-10-09", name: "7-Day Concentration & Vipassana Retreat" },
     { start: "2026-11-26", end: "2026-12-03", name: "7-Day Concentration & Vipassana Retreat" },
-    { start: "2026-12-07", end: "2026-12-14", name: "7-Day Concentration & Vipassana Retreat" }
+    { start: "2026-12-07", end: "2026-12-14", name: "7-Day Concentration & Vipassana Retreat" },
+
+    { start: "2027-01-16", end: "2027-01-23", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-02-01", end: "2027-02-08", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-02-15", end: "2027-02-22", name: "7-Day Concentration & Vipassana Retreat (Pending)", pending: true },
+    { start: "2027-03-01", end: "2027-03-08", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-03-15", end: "2027-03-22", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-04-01", end: "2027-04-08", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-06-01", end: "2027-06-08", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-06-15", end: "2027-06-22", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-06-29", end: "2027-07-06", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-07-11", end: "2027-07-18", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-07-24", end: "2027-07-31", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-08-08", end: "2027-08-15", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-08-22", end: "2027-08-29", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-09-08", end: "2027-09-15", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-09-22", end: "2027-09-29", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-10-03", end: "2027-10-10", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-10-24", end: "2027-10-31", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-11-15", end: "2027-11-22", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2027-11-29", end: "2027-12-06", name: "7-Day Concentration & Vipassana Retreat" }
   ],
   bookingUrl: "book-your-stay/"
 };
