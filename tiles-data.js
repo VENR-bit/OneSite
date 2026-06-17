@@ -107,6 +107,18 @@ window.RK_TILES = [
     "icon": "image"
   },
   {
+    "id": "ebooks",
+    "label": "E-Book Library",
+    "sub": "Free Dhamma & meditation books — read online or download",
+    "url": "../ebooks/",
+    "size": 82,
+    "ring": 2,
+    "bg": "radial-gradient(circle at 30% 25%, #5a4a22 0%, #261d0c 85%)",
+    "halo": "rgba(204, 168, 92, 0.32)",
+    "fg": "#ece0b8",
+    "icon": "book"
+  },
+  {
     "id": "map",
     "label": "Map",
     "sub": "Google location on Rideekanda",
