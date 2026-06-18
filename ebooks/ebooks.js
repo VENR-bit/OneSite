@@ -37,17 +37,21 @@
     var coverInner = b.cover
       ? '<img src="' + esc(b.cover) + '" alt="' + esc(b.title) + ' — cover" loading="lazy" decoding="async">'
       : '<span class="ph"><b>' + esc(b.title) + '</b></span>';
-    var actions = commercial
-      ? '<button class="btn read" data-i="' + i + '">Read</button>' +
-        '<a class="btn ghost dl" href="' + esc(L.dl) + '" download target="_blank" rel="noopener">Drive ↓</a>' +
-        '<a class="btn ghost src" href="' + esc(sourceUrl(b)) + '" target="_blank" rel="noopener">Source ↗</a>'
-      : '<button class="btn read" data-i="' + i + '">Read</button>' +
+    var cover, actions;
+    if (commercial) {
+      // copyright titles are not hosted/distributed here — only a link to the source
+      var src = sourceUrl(b);
+      cover = '<a class="book__cover book__cover--ext" href="' + esc(src) + '" target="_blank" rel="noopener" aria-label="Find ' + esc(b.title) + ' at its source">' +
+        coverInner + '<span class="read-badge">Source ↗</span></a>';
+      actions = '<a class="btn src" href="' + esc(src) + '" target="_blank" rel="noopener">Read / buy at source ↗</a>';
+    } else {
+      cover = '<button class="book__cover" data-i="' + i + '" aria-label="Read ' + esc(b.title) + '">' +
+        coverInner + '<span class="read-badge">Read</span></button>';
+      actions = '<button class="btn read" data-i="' + i + '">Read</button>' +
         '<a class="btn ghost dl" href="' + esc(L.dl) + '" download target="_blank" rel="noopener">Download</a>' +
         '<button class="btn ghost qr" data-i="' + i + '" aria-label="Show QR code">QR</button>';
-    return '<article class="book">' +
-      '<button class="book__cover" data-i="' + i + '" aria-label="Read ' + esc(b.title) + '">' +
-        coverInner + '<span class="read-badge">Read</span>' +
-      '</button>' +
+    }
+    return '<article class="book">' + cover +
       '<div class="book__body">' +
         '<h3 class="book__title">' + esc(b.title) + '</h3>' +
         '<p class="book__author">' + esc(b.author) + '</p>' +
@@ -115,9 +119,11 @@
 
   /* ---- delegated clicks (both grids) ---- */
   document.addEventListener("click", function (e) {
-    var read = e.target.closest && e.target.closest(".book__cover, .read");
-    var qrBtn = e.target.closest && e.target.closest(".qr");
+    if (!e.target.closest) return;
+    var qrBtn = e.target.closest(".qr");
     if (qrBtn) { openQR(+qrBtn.dataset.i); return; }
+    // only the free (button) covers open the in-page reader; copyright covers are <a> links
+    var read = e.target.closest("button.book__cover, .read");
     if (read) { openReader(+read.dataset.i); }
   });
 
