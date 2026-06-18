@@ -2,7 +2,9 @@
      • Free distribution / public-domain → self-hosted ('file'), read & download here.
      • Other (commercial copyright) → Drive copy ('id') + a link to the source.       */
 (function () {
-  var BOOKS = window.RK_BOOKS || [];
+  var MAIN = window.RK_BOOKS || [];
+  var MAIN_LEN = MAIN.length;
+  var BOOKS = MAIN.concat(window.RK_BOOKS_BN || []);  // BuddhaNet titles share one global index space
 
   function links(b) {
     if (b.file) {  // self-hosted on this site → clean same-origin download
@@ -54,8 +56,8 @@
     return '<article class="book">' + cover +
       '<div class="book__body">' +
         '<h3 class="book__title">' + esc(b.title) + '</h3>' +
-        '<p class="book__author">' + esc(b.author) + '</p>' +
-        '<p class="book__about">' + esc(b.about) + '</p>' +
+        (b.author ? '<p class="book__author">' + esc(b.author) + '</p>' : '') +
+        (b.about ? '<p class="book__about">' + esc(b.about) + '</p>' : '<div class="book__about"></div>') +
         (b.source ? '<p class="book__src">' + esc(b.source) + '</p>' : '') +
         '<div class="book__actions">' + actions + '</div>' +
       '</div>' +
@@ -71,9 +73,14 @@
     });
   }
 
-  var free = [], other = [];
-  BOOKS.forEach(function (b, i) { (b.file ? free : other).push({ b: b, i: i }); });
+  var free = [], other = [], bn = [];
+  BOOKS.forEach(function (b, i) {
+    if (i >= MAIN_LEN) bn.push({ b: b, i: i });          // BuddhaNet manifest
+    else if (b.file) free.push({ b: b, i: i });          // self-hosted free-distribution
+    else other.push({ b: b, i: i });                     // commercial copyright
+  });
   renderInto("grid-free", "count-free", free, false);
+  renderInto("grid-bn", "count-bn", bn, false);
   renderInto("grid-other", "count-other", other, true);
 
   /* ---- reader lightbox ---- */
