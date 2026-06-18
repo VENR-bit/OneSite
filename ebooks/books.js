@@ -1,7 +1,5 @@
-/* Rideekanda e-book library. Each book links to its Google Drive file.
-   read:  https://drive.google.com/file/d/<id>/view
-   embed: https://drive.google.com/file/d/<id>/preview
-   down:  https://drive.google.com/uc?export=download&id=<id>  */
+/* Rideekanda e-book library. Books are either Drive files (id),
+   Internet Archive items (archive + pdf), or direct PDFs (url). */
 window.RK_BOOKS = [
   {
     "id": "13Xn948eGeXprn9gv55Wtto0wYc42sr2D",
@@ -128,5 +126,58 @@ window.RK_BOOKS = [
     "author": "Rideekanda Forest Monastery",
     "about": "A reference on the monastic ordination procedure.",
     "cover": "covers/book-18.jpg"
+  },
+  {
+    "title": "Buddhist Suttas",
+    "author": "trans. T. W. Rhys Davids",
+    "about": "Early discourses of the Pāli Canon, including the Buddha's last days (1881).",
+    "cover": "covers/book-19.jpg",
+    "source": "Internet Archive · public domain",
+    "archive": "buddhistsuttas00davigoog",
+    "pdf": "https://archive.org/download/buddhistsuttas00davigoog/buddhistsuttas00davigoog.pdf"
+  },
+  {
+    "title": "Dialogues of the Buddha",
+    "author": "trans. T. W. & C. A. F. Rhys Davids",
+    "about": "A classic translation of the Dīgha Nikāya, the long discourses.",
+    "cover": "covers/book-20.jpg",
+    "source": "Internet Archive · public domain",
+    "archive": "dialoguesofbuddh01davi",
+    "pdf": "https://archive.org/download/dialoguesofbuddh01davi/dialoguesofbuddh01davi_bw.pdf"
+  },
+  {
+    "title": "The Questions of King Milinda",
+    "author": "trans. T. W. Rhys Davids",
+    "about": "The famous dialogue between the monk Nāgasena and King Milinda.",
+    "cover": "covers/book-21.jpg",
+    "source": "Internet Archive · public domain",
+    "archive": "questionsofkingm01davi",
+    "pdf": "https://archive.org/download/questionsofkingm01davi/questionsofkingm01davi_bw.pdf"
+  },
+  {
+    "title": "The Gospel of Buddha",
+    "author": "Paul Carus",
+    "about": "A poetic compilation of the Buddha's life and teachings (1894).",
+    "cover": "covers/book-22.jpg",
+    "source": "Internet Archive · public domain",
+    "archive": "gospelofbuddhaac00caru",
+    "pdf": "https://archive.org/download/gospelofbuddhaac00caru/gospelofbuddhaac00caru_bw.pdf"
+  },
+  {
+    "title": "Buddhism: Its History and Literature",
+    "author": "T. W. Rhys Davids",
+    "about": "Lectures on the origins, history and texts of early Buddhism.",
+    "cover": "covers/book-23.jpg",
+    "source": "Internet Archive · public domain",
+    "archive": "buddhismitshisto00davi",
+    "pdf": "https://archive.org/download/buddhismitshisto00davi/buddhismitshisto00davi.pdf"
+  },
+  {
+    "title": "The Buddha and His Teachings",
+    "author": "Venerable Nārada Mahāthera",
+    "about": "A comprehensive classic on the life of the Buddha and the Dhamma.",
+    "cover": "covers/book-24.jpg",
+    "source": "BuddhaNet · for free distribution",
+    "url": "https://www.buddhanet.net/pdf_file/buddha-teachingsurw6.pdf"
   }
 ];

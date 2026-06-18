@@ -55,7 +55,8 @@ body{
 .book__body{padding:16px 16px 18px;display:flex;flex-direction:column;flex:1}
 .book__title{font-family:var(--display);font-weight:600;font-size:20px;line-height:1.18;margin:0 0 4px}
 .book__author{color:var(--accent);font-size:13px;margin:0 0 10px;font-style:italic}
-.book__about{color:var(--muted);font-size:14px;margin:0 0 16px;flex:1}
+.book__about{color:var(--muted);font-size:14px;margin:0 0 8px;flex:1}
+.book__src{color:var(--muted);font-size:11px;letter-spacing:.04em;opacity:.7;margin:0 0 14px}
 .book__actions{display:flex;gap:8px;flex-wrap:wrap}
 
 /* buttons */

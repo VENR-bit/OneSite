@@ -1,10 +1,27 @@
-/* Rideekanda e-book library — renders book cards, in-page reader, and QR codes. */
+/* Rideekanda e-book library — renders book cards, in-page reader, and QR codes.
+   A book is one of:
+     • Drive file:        { id }
+     • Internet Archive:  { archive, pdf }
+     • Direct PDF:        { url }                                              */
 (function () {
   var BOOKS = window.RK_BOOKS || [];
 
-  var viewUrl     = function (id) { return "https://drive.google.com/file/d/" + id + "/view"; };
-  var previewUrl  = function (id) { return "https://drive.google.com/file/d/" + id + "/preview"; };
-  var downloadUrl = function (id) { return "https://drive.google.com/uc?export=download&id=" + id; };
+  function links(b) {
+    if (b.id) return {
+      read: "https://drive.google.com/file/d/" + b.id + "/preview",
+      dl:   "https://drive.google.com/uc?export=download&id=" + b.id,
+      ext:  "https://drive.google.com/file/d/" + b.id + "/view",
+      qr:   "https://drive.google.com/file/d/" + b.id + "/view",
+    };
+    if (b.archive) return {
+      read: "https://archive.org/embed/" + b.archive,
+      dl:   b.pdf,
+      ext:  "https://archive.org/details/" + b.archive,
+      qr:   "https://archive.org/details/" + b.archive,
+    };
+    return { read: b.url, dl: b.url, ext: b.url, qr: b.url };
+  }
+
   var esc = function (s) { return String(s || "").replace(/[&<>"]/g, function (c) {
     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
 
@@ -13,6 +30,7 @@
     String(BOOKS.length).padStart(2, "0") + " books";
 
   BOOKS.forEach(function (b, i) {
+    var L = links(b);
     var art = document.createElement("article");
     art.className = "book";
     var coverInner = b.cover
@@ -26,14 +44,14 @@
         '<h3 class="book__title">' + esc(b.title) + '</h3>' +
         '<p class="book__author">' + esc(b.author) + '</p>' +
         '<p class="book__about">' + esc(b.about) + '</p>' +
+        (b.source ? '<p class="book__src">' + esc(b.source) + '</p>' : '') +
         '<div class="book__actions">' +
           '<button class="btn read" data-i="' + i + '">Read</button>' +
-          '<a class="btn ghost dl" href="' + downloadUrl(b.id) + '" target="_blank" rel="noopener">Download</a>' +
+          '<a class="btn ghost dl" href="' + esc(L.dl) + '" target="_blank" rel="noopener">Download</a>' +
           '<button class="btn ghost qr" data-i="' + i + '" aria-label="Show QR code">QR</button>' +
         '</div>' +
       '</div>';
     grid.appendChild(art);
-    // reveal on scroll
     setTimeout(function () { art.classList.add("in"); }, 40 + (i % 8) * 45);
   });
 
@@ -42,11 +60,12 @@
   var rFrame = document.getElementById("r-frame");
   function openReader(i) {
     var b = BOOKS[i]; if (!b) return;
+    var L = links(b);
     document.getElementById("r-title").textContent = b.title;
-    document.getElementById("r-author").textContent = b.author;
-    document.getElementById("r-dl").href = downloadUrl(b.id);
-    document.getElementById("r-open").href = viewUrl(b.id);
-    rFrame.src = previewUrl(b.id);
+    document.getElementById("r-author").textContent = b.author + (b.source ? "  ·  " + b.source : "");
+    document.getElementById("r-dl").href = L.dl;
+    document.getElementById("r-open").href = L.ext;
+    rFrame.src = L.read;
     reader.classList.add("open");
     reader.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -66,7 +85,7 @@
     var box = document.getElementById("qr-code");
     try {
       var qr = qrcode(0, "M");
-      qr.addData(viewUrl(b.id));
+      qr.addData(links(b).qr);
       qr.make();
       box.innerHTML = qr.createSvgTag({ cellSize: 6, margin: 1, scalable: true });
     } catch (e) { box.textContent = "QR unavailable"; }
@@ -85,7 +104,6 @@
     if (read) { openReader(+read.dataset.i); }
   });
 
-  // backdrop + Escape close
   reader.addEventListener("click", function (e) { if (e.target === reader) closeReader(); });
   qrm.addEventListener("click", function (e) { if (e.target === qrm) closeQR(); });
   document.addEventListener("keydown", function (e) {
