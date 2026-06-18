@@ -7,6 +7,10 @@
   var BOOKS = window.RK_BOOKS || [];
 
   function links(b) {
+    if (b.file) {  // self-hosted on this site → clean same-origin download
+      var abs = new URL(b.file, location.href).href;
+      return { read: b.file, dl: b.file, ext: b.file, qr: abs, local: true };
+    }
     if (b.id) return {
       read: "https://drive.google.com/file/d/" + b.id + "/preview",
       dl:   "https://drive.google.com/uc?export=download&id=" + b.id,
@@ -47,7 +51,7 @@
         (b.source ? '<p class="book__src">' + esc(b.source) + '</p>' : '') +
         '<div class="book__actions">' +
           '<button class="btn read" data-i="' + i + '">Read</button>' +
-          '<a class="btn ghost dl" href="' + esc(L.dl) + '" target="_blank" rel="noopener">Download</a>' +
+          '<a class="btn ghost dl" href="' + esc(L.dl) + '" download target="_blank" rel="noopener">Download</a>' +
           '<button class="btn ghost qr" data-i="' + i + '" aria-label="Show QR code">QR</button>' +
         '</div>' +
       '</div>';
