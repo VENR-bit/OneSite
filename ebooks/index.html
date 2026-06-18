@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
   <main class="shell">
@@ -28,12 +28,20 @@
       <div class="rule"></div>
     </section>
 
-    <section class="lib">
+    <section class="lib" id="lib-free">
       <div class="lib__label">
-        <span>E-Books</span><span class="line"></span><span class="count" id="count"></span>
+        <span>Free Distribution</span><span class="line"></span><span class="count" id="count-free"></span>
       </div>
-      <p class="lib__note">Free-distribution &amp; public-domain titles can be read and downloaded here; other books link to their source for reading or download.</p>
-      <div class="grid" id="grid"></div>
+      <p class="lib__note">Freely distributable &amp; public-domain titles — read in your browser or download directly from this site.</p>
+      <div class="grid" id="grid-free"></div>
+    </section>
+
+    <section class="lib" id="lib-other">
+      <div class="lib__label">
+        <span>Other Titles</span><span class="line"></span><span class="count" id="count-other"></span>
+      </div>
+      <p class="lib__note">These books are under commercial copyright. You can read or download the monastery's Google&nbsp;Drive copy, or get them from the publisher / original source — please support the authors and publishers.</p>
+      <div class="grid" id="grid-other"></div>
     </section>
   </main>
 
@@ -62,7 +70,7 @@
 
   <script src="books.js?v=5"></script>
   <script src="vendor/qrcode.js"></script>
-  <script src="ebooks.js?v=4"></script>
+  <script src="ebooks.js?v=5"></script>
 
   <!-- eco-header -->
   <link rel="stylesheet" href="../eco-header.css?v=6">

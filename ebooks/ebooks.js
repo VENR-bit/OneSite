@@ -1,8 +1,6 @@
-/* Rideekanda e-book library — renders book cards, in-page reader, and QR codes.
-   A book is one of:
-     • Drive file:        { id }
-     • Internet Archive:  { archive, pdf }
-     • Direct PDF:        { url }                                              */
+/* Rideekanda e-book library — two categories:
+     • Free distribution / public-domain → self-hosted ('file'), read & download here.
+     • Other (commercial copyright) → Drive copy ('id') + a link to the source.       */
 (function () {
   var BOOKS = window.RK_BOOKS || [];
 
@@ -26,21 +24,27 @@
     return { read: b.url, dl: b.url, ext: b.url, qr: b.url };
   }
 
+  // "Source" link for copyright titles → Google Books (read a preview / buy / download from the rights holder).
+  function sourceUrl(b) {
+    return "https://www.google.com/search?tbm=bks&q=" + encodeURIComponent(b.title + " " + b.author);
+  }
+
   var esc = function (s) { return String(s || "").replace(/[&<>"]/g, function (c) {
     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
 
-  var grid = document.getElementById("grid");
-  document.getElementById("count").textContent =
-    String(BOOKS.length).padStart(2, "0") + " books";
-
-  BOOKS.forEach(function (b, i) {
+  function card(b, i, commercial) {
     var L = links(b);
-    var art = document.createElement("article");
-    art.className = "book";
     var coverInner = b.cover
       ? '<img src="' + esc(b.cover) + '" alt="' + esc(b.title) + ' — cover" loading="lazy" decoding="async">'
       : '<span class="ph"><b>' + esc(b.title) + '</b></span>';
-    art.innerHTML =
+    var actions = commercial
+      ? '<button class="btn read" data-i="' + i + '">Read</button>' +
+        '<a class="btn ghost dl" href="' + esc(L.dl) + '" download target="_blank" rel="noopener">Drive ↓</a>' +
+        '<a class="btn ghost src" href="' + esc(sourceUrl(b)) + '" target="_blank" rel="noopener">Source ↗</a>'
+      : '<button class="btn read" data-i="' + i + '">Read</button>' +
+        '<a class="btn ghost dl" href="' + esc(L.dl) + '" download target="_blank" rel="noopener">Download</a>' +
+        '<button class="btn ghost qr" data-i="' + i + '" aria-label="Show QR code">QR</button>';
+    return '<article class="book">' +
       '<button class="book__cover" data-i="' + i + '" aria-label="Read ' + esc(b.title) + '">' +
         coverInner + '<span class="read-badge">Read</span>' +
       '</button>' +
@@ -49,15 +53,24 @@
         '<p class="book__author">' + esc(b.author) + '</p>' +
         '<p class="book__about">' + esc(b.about) + '</p>' +
         (b.source ? '<p class="book__src">' + esc(b.source) + '</p>' : '') +
-        '<div class="book__actions">' +
-          '<button class="btn read" data-i="' + i + '">Read</button>' +
-          '<a class="btn ghost dl" href="' + esc(L.dl) + '" download target="_blank" rel="noopener">Download</a>' +
-          '<button class="btn ghost qr" data-i="' + i + '" aria-label="Show QR code">QR</button>' +
-        '</div>' +
-      '</div>';
-    grid.appendChild(art);
-    setTimeout(function () { art.classList.add("in"); }, 40 + (i % 8) * 45);
-  });
+        '<div class="book__actions">' + actions + '</div>' +
+      '</div>' +
+    '</article>';
+  }
+
+  function renderInto(gridId, countId, items, commercial) {
+    var grid = document.getElementById(gridId);
+    document.getElementById(countId).textContent = String(items.length).padStart(2, "0") + " books";
+    grid.innerHTML = items.map(function (it) { return card(it.b, it.i, commercial); }).join("");
+    [].slice.call(grid.querySelectorAll(".book")).forEach(function (el, k) {
+      setTimeout(function () { el.classList.add("in"); }, 40 + (k % 8) * 45);
+    });
+  }
+
+  var free = [], other = [];
+  BOOKS.forEach(function (b, i) { (b.file ? free : other).push({ b: b, i: i }); });
+  renderInto("grid-free", "count-free", free, false);
+  renderInto("grid-other", "count-other", other, true);
 
   /* ---- reader lightbox ---- */
   var reader = document.getElementById("reader");
@@ -100,10 +113,10 @@
   function closeQR() { qrm.classList.remove("open"); qrm.setAttribute("aria-hidden", "true"); }
   document.getElementById("qr-close").addEventListener("click", closeQR);
 
-  /* ---- delegated clicks ---- */
-  grid.addEventListener("click", function (e) {
-    var read = e.target.closest(".book__cover, .read");
-    var qrBtn = e.target.closest(".qr");
+  /* ---- delegated clicks (both grids) ---- */
+  document.addEventListener("click", function (e) {
+    var read = e.target.closest && e.target.closest(".book__cover, .read");
+    var qrBtn = e.target.closest && e.target.closest(".qr");
     if (qrBtn) { openQR(+qrBtn.dataset.i); return; }
     if (read) { openReader(+read.dataset.i); }
   });

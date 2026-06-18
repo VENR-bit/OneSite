@@ -69,7 +69,8 @@ body{
 .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
 .btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
 .book__actions .btn{flex:1;justify-content:center}
-.book__actions .btn.qr{flex:0 0 auto}
+.book__actions .btn.qr,.book__actions .btn.src{flex:0 0 auto}
+#lib-other{margin-top:18px}
 
 /* reader lightbox */
 .reader{position:fixed;inset:0;z-index:99500;background:rgba(18,15,10,.92);
