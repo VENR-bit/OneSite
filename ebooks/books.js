@@ -85,11 +85,12 @@ window.RK_BOOKS = [
     "file": "files/the-experience-of-insight-goldstein.pdf"
   },
   {
-    "id": "1QAm7nEqcWcdItmGO6TkHlFQxaWhswD5f",
     "title": "Mastering the Core Teachings of the Buddha",
     "author": "Daniel M. Ingram",
     "about": "A direct, practitioner's manual on insight meditation and the stages of the path.",
-    "cover": "covers/book-12.jpg"
+    "cover": "covers/book-12.jpg",
+    "source": "mctb.org · free distribution",
+    "file": "files/mastering-core-teachings-ingram.pdf"
   },
   {
     "id": "1Fg0uubagjUU6upSgfG9dWZc0T1K9DGKC",
