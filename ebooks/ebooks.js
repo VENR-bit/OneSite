@@ -13,7 +13,7 @@
     }
     if (b.id) return {
       read: "https://drive.google.com/file/d/" + b.id + "/preview",
-      dl:   "https://drive.google.com/uc?export=download&id=" + b.id,
+      dl:   "https://drive.usercontent.google.com/download?id=" + b.id + "&export=download&confirm=t",
       ext:  "https://drive.google.com/file/d/" + b.id + "/view",
       qr:   "https://drive.google.com/file/d/" + b.id + "/view",
     };

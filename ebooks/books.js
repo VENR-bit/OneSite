@@ -16,18 +16,20 @@ window.RK_BOOKS = [
     "cover": "covers/book-02.jpg"
   },
   {
-    "id": "1xpGCBStonJBaN_OTRIIaeE1QXUd1WQ-h",
     "title": "Mindfulness in Plain English",
     "author": "Bhante Henepola Gunaratana",
     "about": "A practical, much-loved guide to insight (vipassanā) meditation.",
-    "cover": "covers/book-03.jpg"
+    "cover": "covers/book-03.jpg",
+    "source": "Bhavana Society · for free distribution",
+    "file": "files/mindfulness-in-plain-english.pdf"
   },
   {
-    "id": "1DSkwpeXd3Nb6r1gFEIMaD6Mbi6a8iP2W",
     "title": "The Teachings of Ajahn Chah",
     "author": "Ajahn Chah",
     "about": "A collection of talks by the renowned Thai forest meditation master.",
-    "cover": "covers/book-04.jpg"
+    "cover": "covers/book-04.jpg",
+    "source": "Forest Sangha · for free distribution",
+    "file": "files/the-teachings-of-ajahn-chah.pdf"
   },
   {
     "id": "1R1h8JzstZ12NDXNCSI4sXBeLB8c6YgAE",
@@ -44,18 +46,20 @@ window.RK_BOOKS = [
     "cover": "covers/book-06.jpg"
   },
   {
-    "id": "1nAk6_PhK02e95oGZ0ZeacAN1nfYXxFYV",
     "title": "The Life of the Buddha",
     "author": "Bhikkhu Ñāṇamoli",
     "about": "The Buddha's life and teachings drawn directly from the Pāli Canon.",
-    "cover": "covers/book-07.jpg"
+    "cover": "covers/book-07.jpg",
+    "source": "Buddhist Publication Society · for free distribution",
+    "file": "files/life-of-the-buddha-nyanamoli.pdf"
   },
   {
-    "id": "1-tWdX4sOVgBGnW5eqJLHMiumzygIf_ze",
     "title": "The Path of Purification (Visuddhimagga)",
     "author": "Buddhaghosa · trans. Bhikkhu Ñāṇamoli",
     "about": "The great classical Theravāda manual of doctrine and meditation.",
-    "cover": "covers/book-08.jpg"
+    "cover": "covers/book-08.jpg",
+    "source": "Buddhist Publication Society · for free distribution",
+    "file": "files/path-of-purification-visuddhimagga.pdf"
   },
   {
     "id": "1aUlV9a2aVI4crBCs04MLrPRoCj6W0BgA",
@@ -65,18 +69,20 @@ window.RK_BOOKS = [
     "cover": "covers/book-09.jpg"
   },
   {
-    "id": "16gA1oNEJcUnegow7-EkQZj5xLJ1H2fO8",
     "title": "In This Very Life",
     "author": "Sayadaw U Paṇḍita",
     "about": "Direct teachings on liberation through insight meditation.",
-    "cover": "covers/book-10.jpg"
+    "cover": "covers/book-10.jpg",
+    "source": "Buddhist Publication Society · for free distribution",
+    "file": "files/in-this-very-life-pandita.pdf"
   },
   {
-    "id": "17T4xymIAMIKH4oAkCWslB2l2viTWiCoc",
     "title": "The Experience of Insight",
     "author": "Joseph Goldstein",
     "about": "A clear, encouraging guide to insight (vipassanā) meditation.",
-    "cover": "covers/book-11.jpg"
+    "cover": "covers/book-11.jpg",
+    "source": "Buddhist Publication Society · for free distribution",
+    "file": "files/the-experience-of-insight-goldstein.pdf"
   },
   {
     "id": "1QAm7nEqcWcdItmGO6TkHlFQxaWhswD5f",
@@ -121,11 +127,12 @@ window.RK_BOOKS = [
     "cover": "covers/book-17.jpg"
   },
   {
-    "id": "1y135FY9kYvWuFPVheGFc9biKNudUvgHA",
     "title": "Ordination",
     "author": "Rideekanda Forest Monastery",
     "about": "A reference on the monastic ordination procedure.",
-    "cover": "covers/book-18.jpg"
+    "cover": "covers/book-18.jpg",
+    "source": "Rideekanda Forest Monastery",
+    "file": "files/ordination-rideekanda.pdf"
   },
   {
     "title": "Buddhist Suttas",
