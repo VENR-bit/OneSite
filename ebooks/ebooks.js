@@ -219,7 +219,6 @@
     document.getElementById("r-title").textContent = b.title;
     document.getElementById("r-author").textContent = (b.author || "") + (b.source ? "  ·  " + b.source : "");
     document.getElementById("r-dl").href = L.dl;
-    document.getElementById("r-open").href = L.ext;
     readUrl = L.read;
     applyNight();
     reader.classList.add("open");
