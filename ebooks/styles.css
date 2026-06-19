@@ -49,6 +49,11 @@ body{
   align-items:center;text-align:center;padding:18px;color:#f3ecdb;
   background:linear-gradient(150deg,var(--forest),#3a4628)}
 .book__cover .ph b{font-family:var(--display);font-size:21px;line-height:1.2}
+.book__tag{position:absolute;top:10px;left:10px;z-index:2;font-family:var(--display);
+  font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  padding:4px 9px;border-radius:999px;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25);white-space:nowrap}
+.book__tag.tag--free{background:rgba(74,90,55,.92)}
+.book__tag.tag--paid{background:rgba(150,90,40,.92)}
 .book__cover .read-badge{position:absolute;left:50%;bottom:14px;transform:translateX(-50%) translateY(8px);
   background:rgba(20,18,12,.78);color:#f3ecdb;font-family:var(--display);letter-spacing:.12em;
   text-transform:uppercase;font-size:11px;padding:7px 16px;border-radius:999px;opacity:0;transition:.18s}

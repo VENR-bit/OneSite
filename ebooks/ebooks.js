@@ -53,11 +53,13 @@
       ? '<img src="' + esc(b.cover) + '" alt="' + esc(b.title) + ' — cover" loading="lazy" decoding="async">'
       : '<span class="ph"><b>' + esc(b.title) + '</b></span>';
     var cover, actions;
+    var freeTag = '<span class="book__tag tag--free">Free for distribution</span>';
+    var paidTag = '<span class="book__tag tag--paid">Commercial copyright</span>';
     if (b.langs) {
       // multi-language book → in-tile language selector; Read/Download use the chosen one
       var first = b.langs[0].file;
       cover = '<button class="book__cover" data-i="' + i + '" aria-label="Read ' + esc(b.title) + '">' +
-        coverInner + '<span class="read-badge">Read</span></button>';
+        freeTag + coverInner + '<span class="read-badge">Read</span></button>';
       var select = b.langs.length > 1
         ? '<select class="book__lang" data-i="' + i + '" aria-label="Choose language">' +
             b.langs.map(function (l, k) { return '<option value="' + k + '">' + esc(l.lang) + '</option>'; }).join("") +
@@ -80,11 +82,11 @@
       // copyright titles are not hosted/distributed here — only a link to the source
       var src = sourceUrl(b);
       cover = '<a class="book__cover book__cover--ext" href="' + esc(src) + '" target="_blank" rel="noopener" aria-label="Find ' + esc(b.title) + ' at its source">' +
-        coverInner + '<span class="read-badge">Source ↗</span></a>';
+        paidTag + coverInner + '<span class="read-badge">Source ↗</span></a>';
       actions = '<a class="btn src" href="' + esc(src) + '" target="_blank" rel="noopener">Read / buy at source ↗</a>';
     } else {
       cover = '<button class="book__cover" data-i="' + i + '" aria-label="Read ' + esc(b.title) + '">' +
-        coverInner + '<span class="read-badge">Read</span></button>';
+        freeTag + coverInner + '<span class="read-badge">Read</span></button>';
       actions = '<button class="btn read" data-i="' + i + '">Read</button>' +
         '<a class="btn ghost dl" href="' + esc(L.dl) + '" download target="_blank" rel="noopener">Download</a>' +
         '<button class="btn ghost qr" data-i="' + i + '" aria-label="Show QR code">QR</button>';
