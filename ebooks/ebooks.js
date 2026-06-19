@@ -132,35 +132,84 @@
     if (a) a.setAttribute("href", fileFor(i));
   });
 
-  /* ---- reader ---- */
+  /* ---- reader (PDF.js — scrollable, works on mobile) ---- */
   var reader = document.getElementById("reader");
-  var rFrame = document.getElementById("r-frame");
+  var stage = document.getElementById("r-stage");
+  var pagesEl = document.getElementById("r-pages");
   var readUrl = "", zoom = 100, night = false;
+  var pdfDoc = null, pdfDims = null, pageObserver = null, loadToken = 0;
   try {
     var z = parseInt(localStorage.getItem("rk-read-zoom"), 10); if (z >= 50 && z <= 300) zoom = z;
     night = localStorage.getItem("rk-read-night") === "1";
   } catch (e) {}
+  if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = "vendor/pdf.worker.min.js";
 
-  function applyFrame(reload) {
-    if (!readUrl) return;
-    var sep = readUrl.indexOf("#") > -1 ? "&" : "#";
-    var u = readUrl + sep + "zoom=" + zoom + "&page=1";
-    if (reload) {              // force the PDF viewer to re-apply zoom on an already-open book
-      rFrame.src = "about:blank";
-      setTimeout(function () { rFrame.src = u; }, 40);
-    } else {
-      rFrame.src = u;
-    }
-  }
   function applyNight() {
     reader.classList.toggle("reader--night", night);
     var nb = document.getElementById("r-night");
     if (nb) nb.textContent = night ? "☀️" : "🌙";
   }
+  function fitScale() {
+    if (!pdfDims) return 1;
+    var w = (pagesEl.clientWidth || stage.clientWidth || 700) - 4;
+    return (w / pdfDims.w) * (zoom / 100);   // zoom 100% = fit page width
+  }
+  function buildPages() {
+    if (!pdfDoc) return;
+    if (pageObserver) pageObserver.disconnect();
+    pagesEl.innerHTML = "";
+    var s = fitScale();
+    for (var n = 1; n <= pdfDoc.numPages; n++) {
+      var d = document.createElement("div");
+      d.className = "pdfpage"; d.dataset.n = n; d.dataset.done = "0";
+      d.style.width = Math.round(pdfDims.w * s) + "px";
+      d.style.height = Math.round(pdfDims.h * s) + "px";
+      pagesEl.appendChild(d);
+    }
+    pageObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) renderPage(en.target); });
+    }, { root: stage, rootMargin: "300px 0px" });
+    [].slice.call(pagesEl.children).forEach(function (d) { pageObserver.observe(d); });
+  }
+  function renderPage(div) {
+    if (div.dataset.done === "1") return;
+    div.dataset.done = "1";
+    var n = +div.dataset.n, token = loadToken;
+    pdfDoc.getPage(n).then(function (page) {
+      if (token !== loadToken) return;
+      var s = fitScale();
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var vp = page.getViewport({ scale: s * dpr });
+      var canvas = document.createElement("canvas");
+      canvas.width = vp.width; canvas.height = vp.height;
+      canvas.style.width = "100%"; canvas.style.height = "100%";
+      div.style.height = "auto";
+      div.innerHTML = ""; div.appendChild(canvas);
+      page.render({ canvasContext: canvas.getContext("2d"), viewport: vp });
+    }).catch(function () { div.dataset.done = "0"; });
+  }
+  function loadPdf(url) {
+    var token = ++loadToken;
+    pdfDoc = null; pdfDims = null;
+    pagesEl.innerHTML = '<div class="reader__msg">Loading…</div>';
+    if (!window.pdfjsLib) { pagesEl.innerHTML = '<div class="reader__msg">Reader unavailable — use Download or Open.</div>'; return; }
+    pdfjsLib.getDocument(url).promise.then(function (doc) {
+      if (token !== loadToken) return;
+      pdfDoc = doc;
+      return doc.getPage(1).then(function (p1) {
+        var vp = p1.getViewport({ scale: 1 });
+        pdfDims = { w: vp.width, h: vp.height };
+        buildPages();
+      });
+    }).catch(function () {
+      if (token !== loadToken) return;
+      pagesEl.innerHTML = '<div class="reader__msg">Could not display this book here. Use <b>Download</b> or <b>Open&nbsp;↗</b>.</div>';
+    });
+  }
   function setZoom(z) {
     zoom = Math.max(50, Math.min(300, z));
     try { localStorage.setItem("rk-read-zoom", zoom); } catch (e) {}
-    applyFrame(true);
+    if (pdfDoc) buildPages();
   }
 
   function openReader(i) {
@@ -173,15 +222,19 @@
     document.getElementById("r-open").href = L.ext;
     readUrl = L.read;
     applyNight();
-    applyFrame();
     reader.classList.add("open");
     reader.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
+    stage.scrollTop = 0;
+    loadPdf(readUrl);
   }
   function closeReader() {
     reader.classList.remove("open");
     reader.setAttribute("aria-hidden", "true");
-    rFrame.src = "about:blank";
+    loadToken++;                 // cancel any in-flight renders
+    if (pageObserver) pageObserver.disconnect();
+    pagesEl.innerHTML = "";
+    pdfDoc = null;
     readUrl = "";
     document.body.style.overflow = "";
   }
