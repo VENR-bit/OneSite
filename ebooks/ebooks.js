@@ -75,7 +75,7 @@
           '</select>'
         : '<p class="book__src">' + esc(b.langs[0].lang) + '</p>';
       actions = '<button class="btn read" data-i="' + i + '">Read</button>' +
-        '<a class="btn ghost dl" data-i="' + i + '" href="' + esc(first) + '" download target="_blank" rel="noopener">Download</a>' +
+        '<a class="btn ghost dl" data-i="' + i + '" href="' + esc(first) + '" download="' + esc(b.title) + '.pdf">Download</a>' +
         qrButton(i);
       return '<article class="book">' + cover +
         '<div class="book__body">' +
@@ -97,7 +97,7 @@
       cover = '<button class="book__cover" data-i="' + i + '" aria-label="Read ' + esc(b.title) + '">' +
         freeTag + coverInner + '<span class="read-badge">Read</span></button>';
       actions = '<button class="btn read" data-i="' + i + '">Read</button>' +
-        '<a class="btn ghost dl" href="' + esc(L.dl) + '" download target="_blank" rel="noopener">Download</a>' +
+        '<a class="btn ghost dl" href="' + esc(L.dl) + '" download="' + esc(b.title) + '.pdf">Download</a>' +
         qrButton(i);
     }
     return '<article class="book">' + cover +
@@ -227,7 +227,9 @@
     var L = f ? { read: f, dl: f, ext: f } : links(b);
     document.getElementById("r-title").textContent = b.title;
     document.getElementById("r-author").textContent = (b.author || "") + (b.source ? "  ·  " + b.source : "");
-    document.getElementById("r-dl").href = L.dl;
+    var rdl = document.getElementById("r-dl");
+    rdl.href = L.dl;
+    rdl.setAttribute("download", b.title + ".pdf");
     readUrl = L.read;
     applyNight();
     reader.classList.add("open");
@@ -283,6 +285,27 @@
     // only the free (button) covers open the in-page reader; copyright covers are <a> links
     var read = e.target.closest("button.book__cover, .read");
     if (read) { openReader(+read.dataset.i); }
+  });
+
+  // Download local files via Blob so the installed app saves them instead of
+  // opening the PDF in a trapped viewer (iOS standalone has no back/save there).
+  function saveFile(url, name) {
+    fetch(url).then(function (r) { if (!r.ok) throw 0; return r.blob(); }).then(function (blob) {
+      var u = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = u; a.download = name || "book.pdf";
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(u); a.remove(); }, 6000);
+    }).catch(function () { window.open(url, "_blank"); });
+  }
+  document.addEventListener("click", function (e) {
+    var dl = e.target.closest && e.target.closest("a.dl, #r-dl");
+    if (!dl) return;
+    var href = dl.getAttribute("href");
+    if (!href || href === "#" || /^https?:\/\//i.test(href)) return; // only same-origin local files
+    e.preventDefault();
+    var name = dl.getAttribute("download") || href.split("/").pop().split(/[?#]/)[0] || "book.pdf";
+    saveFile(href, name);
   });
 
   reader.addEventListener("click", function (e) { if (e.target === reader) closeReader(); });
