@@ -62,8 +62,8 @@
       ? '<img src="' + esc(b.cover) + '" alt="' + esc(b.title) + ' — cover" loading="lazy" decoding="async">'
       : '<span class="ph"><b>' + esc(b.title) + '</b></span>';
     var cover, actions;
-    var freeTag = '<span class="book__tag tag--free">Free for distribution</span>';
-    var paidTag = '<span class="book__tag tag--paid">Commercial copyright</span>';
+    var freeTag = "";
+    var paidTag = "";
     if (b.langs) {
       // multi-language book → in-tile language selector; Read/Download use the chosen one
       var first = b.langs[0].file;
