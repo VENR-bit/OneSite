@@ -3,8 +3,21 @@
      • Other (commercial copyright) → Drive copy ('id') + a link to the source.       */
 (function () {
   var MAIN = window.RK_BOOKS || [];
-  var MAIN_LEN = MAIN.length;
-  var BOOKS = MAIN.concat(window.RK_BOOKS_BN || []);  // BuddhaNet titles share one global index space
+  var BN   = window.RK_BOOKS_BN || [];
+  var TC   = window.RK_BOOKS_TC || [];
+  var MAIN_LEN = MAIN.length, BN_LEN = BN.length;
+  var BOOKS = MAIN.concat(BN).concat(TC);  // one global index space across all sections
+
+  // For multi-language books, the file of the currently selected language.
+  function fileFor(i) {
+    var b = BOOKS[i];
+    if (b && b.langs) {
+      var sel = document.querySelector('.book__lang[data-i="' + i + '"]');
+      var k = sel ? (+sel.value || 0) : 0;
+      return (b.langs[k] || b.langs[0]).file;
+    }
+    return null;
+  }
 
   function links(b) {
     if (b.file) {  // self-hosted on this site → clean same-origin download
@@ -40,6 +53,29 @@
       ? '<img src="' + esc(b.cover) + '" alt="' + esc(b.title) + ' — cover" loading="lazy" decoding="async">'
       : '<span class="ph"><b>' + esc(b.title) + '</b></span>';
     var cover, actions;
+    if (b.langs) {
+      // multi-language book → in-tile language selector; Read/Download use the chosen one
+      var first = b.langs[0].file;
+      cover = '<button class="book__cover" data-i="' + i + '" aria-label="Read ' + esc(b.title) + '">' +
+        coverInner + '<span class="read-badge">Read</span></button>';
+      var select = b.langs.length > 1
+        ? '<select class="book__lang" data-i="' + i + '" aria-label="Choose language">' +
+            b.langs.map(function (l, k) { return '<option value="' + k + '">' + esc(l.lang) + '</option>'; }).join("") +
+          '</select>'
+        : '<p class="book__src">' + esc(b.langs[0].lang) + '</p>';
+      actions = '<button class="btn read" data-i="' + i + '">Read</button>' +
+        '<a class="btn ghost dl" data-i="' + i + '" href="' + esc(first) + '" download target="_blank" rel="noopener">Download</a>' +
+        '<button class="btn ghost qr" data-i="' + i + '" aria-label="Show QR code">QR</button>';
+      return '<article class="book">' + cover +
+        '<div class="book__body">' +
+          '<h3 class="book__title">' + esc(b.title) + '</h3>' +
+          (b.author ? '<p class="book__author">' + esc(b.author) + '</p>' : '') +
+          (b.source ? '<p class="book__src">' + esc(b.source) + '</p>' : '') +
+          select +
+          '<div class="book__actions">' + actions + '</div>' +
+        '</div>' +
+      '</article>';
+    }
     if (commercial) {
       // copyright titles are not hosted/distributed here — only a link to the source
       var src = sourceUrl(b);
@@ -73,24 +109,36 @@
     });
   }
 
-  var free = [], other = [], bn = [];
+  var free = [], other = [], bn = [], tc = [];
   BOOKS.forEach(function (b, i) {
-    if (i >= MAIN_LEN) bn.push({ b: b, i: i });          // BuddhaNet manifest
-    else if (b.file) free.push({ b: b, i: i });          // self-hosted free-distribution
-    else other.push({ b: b, i: i });                     // commercial copyright
+    if (i >= MAIN_LEN + BN_LEN) tc.push({ b: b, i: i });   // Thubten Chodron (multi-language)
+    else if (i >= MAIN_LEN) bn.push({ b: b, i: i });       // BuddhaNet manifest
+    else if (b.file) free.push({ b: b, i: i });            // self-hosted free-distribution
+    else other.push({ b: b, i: i });                       // commercial copyright
   });
   renderInto("grid-free", "count-free", free, false);
+  renderInto("grid-tc", "count-tc", tc, false);
   renderInto("grid-bn", "count-bn", bn, false);
   renderInto("grid-other", "count-other", other, true);
+
+  // language selector → update that card's download link
+  document.addEventListener("change", function (e) {
+    var sel = e.target.closest && e.target.closest(".book__lang");
+    if (!sel) return;
+    var i = +sel.dataset.i;
+    var a = document.querySelector('.book__actions .dl[data-i="' + i + '"]');
+    if (a) a.setAttribute("href", fileFor(i));
+  });
 
   /* ---- reader lightbox ---- */
   var reader = document.getElementById("reader");
   var rFrame = document.getElementById("r-frame");
   function openReader(i) {
     var b = BOOKS[i]; if (!b) return;
-    var L = links(b);
+    var f = fileFor(i);
+    var L = f ? { read: f, dl: f, ext: f } : links(b);
     document.getElementById("r-title").textContent = b.title;
-    document.getElementById("r-author").textContent = b.author + (b.source ? "  ·  " + b.source : "");
+    document.getElementById("r-author").textContent = (b.author || "") + (b.source ? "  ·  " + b.source : "");
     document.getElementById("r-dl").href = L.dl;
     document.getElementById("r-open").href = L.ext;
     rFrame.src = L.read;
@@ -111,9 +159,11 @@
   function openQR(i) {
     var b = BOOKS[i]; if (!b) return;
     var box = document.getElementById("qr-code");
+    var f = fileFor(i);
+    var qrTarget = f ? new URL(f, location.href).href : links(b).qr;
     try {
       var qr = qrcode(0, "M");
-      qr.addData(links(b).qr);
+      qr.addData(qrTarget);
       qr.make();
       box.innerHTML = qr.createSvgTag({ cellSize: 6, margin: 1, scalable: true });
     } catch (e) { box.textContent = "QR unavailable"; }

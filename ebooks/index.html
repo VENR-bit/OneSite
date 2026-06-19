@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
   <main class="shell">
@@ -42,6 +42,14 @@
       </div>
       <p class="lib__note">Titles from BuddhaNet (Buddha Dharma Education Association), offered <em>for free distribution only</em> — read or download any of them directly here.</p>
       <div class="grid" id="grid-bn"></div>
+    </section>
+
+    <section class="lib" id="lib-tc">
+      <div class="lib__label">
+        <span>Books by Ven. Thubten Chodron</span><span class="line"></span><span class="count" id="count-tc"></span>
+      </div>
+      <p class="lib__note">From <em>thubtenchodron.org</em> (Sravasti Abbey), offered for free distribution. Several titles are available in multiple languages — choose a language inside each book.</p>
+      <div class="grid" id="grid-tc"></div>
     </section>
 
     <section class="lib" id="lib-other">
@@ -78,8 +86,9 @@
 
   <script src="books.js?v=5"></script>
   <script src="books-buddhanet.js?v=1"></script>
+  <script src="books-tc.js?v=1"></script>
   <script src="vendor/qrcode.js"></script>
-  <script src="ebooks.js?v=7"></script>
+  <script src="ebooks.js?v=8"></script>
 
   <!-- eco-header -->
   <link rel="stylesheet" href="../eco-header.css?v=6">
