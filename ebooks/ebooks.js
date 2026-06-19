@@ -8,6 +8,15 @@
   var MAIN_LEN = MAIN.length, BN_LEN = BN.length;
   var BOOKS = MAIN.concat(BN).concat(TC);  // one global index space across all sections
 
+  // QR codes only on the kiosk (installed standalone app). ?kiosk=1 forces on, ?kiosk=0 off.
+  var standalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
+                   window.navigator.standalone === true;
+  var kparam = new URLSearchParams(location.search).get("kiosk");
+  var KIOSK = kparam === "1" || (standalone && kparam !== "0");
+  function qrButton(i) {
+    return KIOSK ? '<button class="btn ghost qr" data-i="' + i + '" aria-label="Show QR code">QR</button>' : "";
+  }
+
   // For multi-language books, the file of the currently selected language.
   function fileFor(i) {
     var b = BOOKS[i];
@@ -67,7 +76,7 @@
         : '<p class="book__src">' + esc(b.langs[0].lang) + '</p>';
       actions = '<button class="btn read" data-i="' + i + '">Read</button>' +
         '<a class="btn ghost dl" data-i="' + i + '" href="' + esc(first) + '" download target="_blank" rel="noopener">Download</a>' +
-        '<button class="btn ghost qr" data-i="' + i + '" aria-label="Show QR code">QR</button>';
+        qrButton(i);
       return '<article class="book">' + cover +
         '<div class="book__body">' +
           '<h3 class="book__title">' + esc(b.title) + '</h3>' +
@@ -89,7 +98,7 @@
         freeTag + coverInner + '<span class="read-badge">Read</span></button>';
       actions = '<button class="btn read" data-i="' + i + '">Read</button>' +
         '<a class="btn ghost dl" href="' + esc(L.dl) + '" download target="_blank" rel="noopener">Download</a>' +
-        '<button class="btn ghost qr" data-i="' + i + '" aria-label="Show QR code">QR</button>';
+        qrButton(i);
     }
     return '<article class="book">' + cover +
       '<div class="book__body">' +
