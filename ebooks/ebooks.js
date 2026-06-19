@@ -132,9 +132,37 @@
     if (a) a.setAttribute("href", fileFor(i));
   });
 
-  /* ---- reader lightbox ---- */
+  /* ---- reader ---- */
   var reader = document.getElementById("reader");
   var rFrame = document.getElementById("r-frame");
+  var readUrl = "", zoom = 100, night = false;
+  try {
+    var z = parseInt(localStorage.getItem("rk-read-zoom"), 10); if (z >= 50 && z <= 300) zoom = z;
+    night = localStorage.getItem("rk-read-night") === "1";
+  } catch (e) {}
+
+  function applyFrame(reload) {
+    if (!readUrl) return;
+    var sep = readUrl.indexOf("#") > -1 ? "&" : "#";
+    var u = readUrl + sep + "zoom=" + zoom + "&page=1";
+    if (reload) {              // force the PDF viewer to re-apply zoom on an already-open book
+      rFrame.src = "about:blank";
+      setTimeout(function () { rFrame.src = u; }, 40);
+    } else {
+      rFrame.src = u;
+    }
+  }
+  function applyNight() {
+    reader.classList.toggle("reader--night", night);
+    var nb = document.getElementById("r-night");
+    if (nb) nb.textContent = night ? "☀️" : "🌙";
+  }
+  function setZoom(z) {
+    zoom = Math.max(50, Math.min(300, z));
+    try { localStorage.setItem("rk-read-zoom", zoom); } catch (e) {}
+    applyFrame(true);
+  }
+
   function openReader(i) {
     var b = BOOKS[i]; if (!b) return;
     var f = fileFor(i);
@@ -143,7 +171,9 @@
     document.getElementById("r-author").textContent = (b.author || "") + (b.source ? "  ·  " + b.source : "");
     document.getElementById("r-dl").href = L.dl;
     document.getElementById("r-open").href = L.ext;
-    rFrame.src = L.read;
+    readUrl = L.read;
+    applyNight();
+    applyFrame();
     reader.classList.add("open");
     reader.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -152,9 +182,17 @@
     reader.classList.remove("open");
     reader.setAttribute("aria-hidden", "true");
     rFrame.src = "about:blank";
+    readUrl = "";
     document.body.style.overflow = "";
   }
   document.getElementById("r-close").addEventListener("click", closeReader);
+  document.getElementById("r-zoomin").addEventListener("click", function () { setZoom(zoom + 25); });
+  document.getElementById("r-zoomout").addEventListener("click", function () { setZoom(zoom - 25); });
+  document.getElementById("r-night").addEventListener("click", function () {
+    night = !night;
+    try { localStorage.setItem("rk-read-night", night ? "1" : "0"); } catch (e) {}
+    applyNight();
+  });
 
   /* ---- QR modal ---- */
   var qrm = document.getElementById("qrm");
