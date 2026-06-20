@@ -132,6 +132,49 @@
   renderInto("grid-bn", "count-bn", bn, false);
   renderInto("grid-other", "count-other", other, true);
 
+  /* ---- search + sort ---- */
+  function norm(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+  function haystack(b) {
+    var parts = [b.title, b.author, b.about, b.source];
+    if (b.langs) b.langs.forEach(function (l) { parts.push(l.lang); });
+    return norm(parts.join(" "));
+  }
+  var SECTIONS = ["lib-free", "lib-tc", "lib-bn", "lib-other"];
+  var qEl = document.getElementById("q");
+  var sortEl = document.getElementById("sort");
+  var resGrid = document.getElementById("grid-results");
+  var resSec = document.getElementById("lib-results");
+  var noRes = document.getElementById("no-results");
+
+  function applyFilter() {
+    var q = norm((qEl.value || "").trim());
+    var sort = sortEl.value;
+    var sectionMode = !q && sort === "cat";
+    SECTIONS.forEach(function (id) { document.getElementById(id).hidden = !sectionMode; });
+    resSec.hidden = sectionMode;
+    if (sectionMode) return;
+
+    var words = q ? q.split(/\s+/) : [];
+    var list = [];
+    BOOKS.forEach(function (b, i) {
+      var h = haystack(b);
+      if (words.every(function (w) { return h.indexOf(w) > -1; }))
+        list.push({ b: b, i: i, commercial: i < MAIN_LEN && !!b.id });
+    });
+    if (sort === "za") list.sort(function (a, c) { return c.b.title.localeCompare(a.b.title); });
+    else if (sort === "author") list.sort(function (a, c) { return (a.b.author || "~").localeCompare(c.b.author || "~") || a.b.title.localeCompare(c.b.title); });
+    else list.sort(function (a, c) { return a.b.title.localeCompare(c.b.title); }); // az or (searching) default
+
+    resGrid.innerHTML = list.map(function (it) { return card(it.b, it.i, it.commercial); }).join("");
+    [].slice.call(resGrid.children).forEach(function (el) { el.classList.add("in"); });
+    noRes.hidden = list.length > 0;
+    document.getElementById("count-results").textContent =
+      list.length + (q ? (" result" + (list.length === 1 ? "" : "s")) : " books");
+  }
+  qEl.addEventListener("input", applyFilter);
+  sortEl.addEventListener("change", applyFilter);
+  applyFilter();
+
   // language selector → update that card's download link
   document.addEventListener("change", function (e) {
     var sel = e.target.closest && e.target.closest(".book__lang");
