@@ -160,7 +160,9 @@ body{
   .libview__btn{padding:8px 11px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px}
   .book__title{font-size:17px}
-  .book__about{display:none}
+  /* on mobile, show the description and hide the publisher / distribution line */
+  .book__about{display:block}
+  .book__src{display:none}
   .reader__bar{gap:6px;padding-left:10px;padding-right:10px}
   .rbtn{padding:7px 10px;font-size:12px}
   .rbtn__lbl{display:none}
