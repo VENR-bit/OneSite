@@ -175,6 +175,23 @@
   sortEl.addEventListener("change", applyFilter);
   applyFilter();
 
+  /* ---- tile / list view toggle (persisted) ---- */
+  (function () {
+    var root = document.documentElement;
+    var tileBtn = document.getElementById("view-tile");
+    var listBtn = document.getElementById("view-list");
+    function setView(v) {
+      v = (v === "list") ? "list" : "tile";
+      root.setAttribute("data-view", v);
+      try { localStorage.setItem("rk-lib-view", v); } catch (e) {}
+      if (tileBtn) tileBtn.setAttribute("aria-pressed", String(v === "tile"));
+      if (listBtn) listBtn.setAttribute("aria-pressed", String(v === "list"));
+    }
+    if (tileBtn) tileBtn.addEventListener("click", function () { setView("tile"); });
+    if (listBtn) listBtn.addEventListener("click", function () { setView("list"); });
+    setView(root.getAttribute("data-view"));
+  })();
+
   // language selector → update that card's download link
   document.addEventListener("change", function (e) {
     var sel = e.target.closest && e.target.closest(".book__lang");
