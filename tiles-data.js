@@ -131,6 +131,18 @@ window.RK_TILES = [
     "icon": "book"
   },
   {
+    "id": "retreat-sessions",
+    "label": "Retreat Sessions",
+    "sub": "Recorded 7-day Vipassanā retreat — watch, listen & download",
+    "url": "https://venr-bit.github.io/retreat-sessions/",
+    "size": 82,
+    "ring": 2,
+    "bg": "radial-gradient(circle at 30% 25%, #6a4a2a 0%, #2a1c0c 85%)",
+    "halo": "rgba(210, 165, 95, 0.32)",
+    "fg": "#f2ddb8",
+    "icon": "retreat"
+  },
+  {
     "id": "map",
     "label": "Map",
     "sub": "Google location on Rideekanda",
