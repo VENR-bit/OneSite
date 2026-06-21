@@ -368,6 +368,18 @@
     saveFile(href, name);
   });
 
+  /* ---- back to top ---- */
+  (function () {
+    var btn = document.getElementById("toTop");
+    if (!btn) return;
+    function onScroll() { btn.classList.toggle("show", window.pageYOffset > 600); }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    btn.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    onScroll();
+  })();
+
   reader.addEventListener("click", function (e) { if (e.target === reader) closeReader(); });
   qrm.addEventListener("click", function (e) { if (e.target === qrm) closeQR(); });
   document.addEventListener("keydown", function (e) {

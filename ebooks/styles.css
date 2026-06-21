@@ -152,6 +152,16 @@ body{
 .qrm__title{font-family:var(--display);font-size:20px;line-height:1.2;margin-bottom:6px}
 .qrm__hint{color:var(--muted);font-size:13px}
 
+/* back-to-top button (bottom-left, opposite the theme toggle) */
+.totop{position:fixed;left:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:9000;
+  width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--paper);
+  color:var(--accent);font-size:21px;line-height:1;cursor:pointer;box-shadow:var(--shadow);
+  display:grid;place-items:center;opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:opacity .2s ease,transform .2s ease,visibility .2s,background .15s,color .15s}
+.totop.show{opacity:1;visibility:visible;transform:none}
+.totop:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:540px){.totop{width:42px;height:42px;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px))}}
+
 @media (max-width:540px){
   /* search on its own line; sort dropdown + view toggle share the next line */
   .libsearch{flex:1 1 100%}
