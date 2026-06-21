@@ -49,9 +49,7 @@ window.RK_BOOKS = [
     "title": "The Life of the Buddha",
     "author": "Bhikkhu Ñāṇamoli",
     "about": "The Buddha's life and teachings drawn directly from the Pāli Canon.",
-    "cover": "covers/book-07.jpg",
-    "source": "Buddhist Publication Society · for free distribution",
-    "file": "files/life-of-the-buddha-nyanamoli.pdf"
+    "cover": "covers/book-07.jpg"
   },
   {
     "title": "The Path of Purification (Visuddhimagga)",
@@ -72,25 +70,20 @@ window.RK_BOOKS = [
     "title": "In This Very Life",
     "author": "Sayadaw U Paṇḍita",
     "about": "Direct teachings on liberation through insight meditation.",
-    "cover": "covers/book-10.jpg",
-    "source": "Buddhist Publication Society · for free distribution",
-    "file": "files/in-this-very-life-pandita.pdf"
+    "cover": "covers/book-10.jpg"
   },
   {
     "title": "The Experience of Insight",
     "author": "Joseph Goldstein",
     "about": "A clear, encouraging guide to insight (vipassanā) meditation.",
-    "cover": "covers/book-11.jpg",
-    "source": "Buddhist Publication Society · for free distribution",
-    "file": "files/the-experience-of-insight-goldstein.pdf"
+    "cover": "covers/book-11.jpg"
   },
   {
     "title": "Mastering the Core Teachings of the Buddha",
     "author": "Daniel M. Ingram",
     "about": "A direct, practitioner's manual on insight meditation and the stages of the path.",
     "cover": "covers/book-12.jpg",
-    "source": "mctb.org · free distribution",
-    "file": "files/mastering-core-teachings-ingram.pdf"
+    "url": "https://www.mctb.org"
   },
   {
     "id": "1Fg0uubagjUU6upSgfG9dWZc0T1K9DGKC",

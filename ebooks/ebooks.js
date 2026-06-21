@@ -97,7 +97,7 @@
     }
     if (commercial) {
       // copyright titles are not hosted/distributed here — only a link to the source
-      var src = sourceUrl(b);
+      var src = b.url || sourceUrl(b);
       cover = '<a class="book__cover book__cover--ext" href="' + esc(src) + '" target="_blank" rel="noopener" aria-label="Find ' + esc(b.title) + ' at its source">' +
         paidTag + coverInner + '<span class="read-badge">Source ↗</span></a>';
       actions = '<a class="btn src" href="' + esc(src) + '" target="_blank" rel="noopener">Read / buy at source ↗</a>';
