@@ -166,5 +166,50 @@ window.RK_BOOKS = [
     "cover": "covers/book-23.jpg",
     "source": "Internet Archive · public domain",
     "file": "files/buddhism-history-and-literature-rhys-davids.pdf"
+  },
+  {
+    "title": "Purity of Heart",
+    "author": "Ṭhānissaro Bhikkhu",
+    "about": "Essays on the Buddhist path — faith, change, and training the heart.",
+    "source": "dhammatalks.org · for free distribution",
+    "file": "files/purity-of-heart-thanissaro.pdf"
+  },
+  {
+    "title": "Things as They Can Be",
+    "author": "Ṭhānissaro Bhikkhu",
+    "about": "Essays on the Buddhist path and the active role of skillful intention in shaping experience.",
+    "cover": "covers/things-as-they-can-be-thanissaro.jpg",
+    "source": "dhammatalks.org · for free distribution",
+    "file": "files/things-as-they-can-be-thanissaro.pdf"
+  },
+  {
+    "title": "The Power of Karma",
+    "author": "Ṭhānissaro Bhikkhu",
+    "about": "Dhamma talks on kamma — how intentional action shapes experience, and the path to its ending.",
+    "cover": "covers/the-power-of-karma-thanissaro.jpg",
+    "source": "dhammatalks.org · for free distribution",
+    "file": "files/the-power-of-karma-thanissaro.pdf"
+  },
+  {
+    "title": "Meditations 13",
+    "author": "Ṭhānissaro Bhikkhu",
+    "about": "Short Dhamma talks given before evening meditation at Metta Forest Monastery.",
+    "cover": "covers/meditations-13-thanissaro.jpg",
+    "source": "dhammatalks.org · for free distribution",
+    "file": "files/meditations-13-thanissaro.pdf"
+  },
+  {
+    "title": "Not for Sure",
+    "author": "Ajahn Chah · trans. Ṭhānissaro Bhikkhu",
+    "about": "Two Dhamma talks by the renowned Thai forest master Ajahn Chah.",
+    "source": "dhammatalks.org · for free distribution",
+    "file": "files/not-for-sure-ajahn-chah.pdf"
+  },
+  {
+    "title": "The Autobiography of Phra Ajaan Lee",
+    "author": "Ajaan Lee Dhammadharo · trans. Ṭhānissaro Bhikkhu",
+    "about": "The life story of a foremost teacher of the Thai forest meditation tradition.",
+    "source": "dhammatalks.org · for free distribution",
+    "file": "files/autobiography-of-phra-ajaan-lee.pdf"
   }
 ];
