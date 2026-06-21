@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=16">
+  <link rel="stylesheet" href="styles.css?v=18">
 </head>
 <body>
   <main class="shell">
@@ -31,6 +31,13 @@
 
     <div class="libbar">
       <input id="q" class="libsearch" type="search" autocomplete="off" placeholder="Search by title, author, or description…" aria-label="Search the library">
+      <select id="jump" class="libsort libjump" aria-label="Jump to a category">
+        <option value="">Jump to category…</option>
+        <option value="lib-free">Free Distribution</option>
+        <option value="lib-bn">Published by BuddhaNet</option>
+        <option value="lib-tc">Books by Ven. Thubten Chodron</option>
+        <option value="lib-other">Other Titles</option>
+      </select>
       <select id="sort" class="libsort" aria-label="Sort books">
         <option value="cat">Browse by category</option>
         <option value="az">Title · A–Z</option>
@@ -122,7 +129,7 @@
   <script src="books-tc.js?v=1"></script>
   <script src="vendor/qrcode.js"></script>
   <script src="vendor/pdf.min.js"></script>
-  <script src="ebooks.js?v=18"></script>
+  <script src="ebooks.js?v=19"></script>
 
   <!-- eco-header -->
   <link rel="stylesheet" href="../eco-header.css?v=6">

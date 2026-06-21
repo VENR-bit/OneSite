@@ -175,6 +175,20 @@
   sortEl.addEventListener("change", applyFilter);
   applyFilter();
 
+  /* ---- jump to category ---- */
+  var jumpEl = document.getElementById("jump");
+  if (jumpEl) jumpEl.addEventListener("change", function () {
+    var id = jumpEl.value;
+    jumpEl.selectedIndex = 0;              // reset back to the placeholder
+    if (!id) return;
+    // category sections only exist in browse mode — restore it first if needed
+    if (qEl.value || sortEl.value !== "cat") { qEl.value = ""; sortEl.value = "cat"; applyFilter(); }
+    var sec = document.getElementById(id);
+    if (!sec) return;
+    var top = sec.getBoundingClientRect().top + window.pageYOffset - 72;  // clear the fixed header
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+  });
+
   /* ---- tile / list view toggle (persisted) ---- */
   (function () {
     var root = document.documentElement;

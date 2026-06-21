@@ -163,9 +163,10 @@ body{
 @media (max-width:540px){.totop{width:42px;height:42px;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px))}}
 
 @media (max-width:540px){
-  /* search on its own line; sort dropdown + view toggle share the next line */
+  /* search and the jump menu each get their own line; sort + view toggle share a line */
   .libsearch{flex:1 1 100%}
   .libsort{flex:1 1 0;min-width:0}
+  select.libjump{flex:1 1 100%}
   .libview{flex:0 0 auto}
   .libview__btn{padding:8px 11px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px}
