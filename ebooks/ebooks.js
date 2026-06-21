@@ -5,8 +5,9 @@
   var MAIN = window.RK_BOOKS || [];
   var BN   = window.RK_BOOKS_BN || [];
   var TC   = window.RK_BOOKS_TC || [];
-  var MAIN_LEN = MAIN.length, BN_LEN = BN.length;
-  var BOOKS = MAIN.concat(BN).concat(TC);  // one global index space across all sections
+  var BTTS = window.RK_BOOKS_BTTS || [];
+  var MAIN_LEN = MAIN.length, BN_LEN = BN.length, TC_LEN = TC.length;
+  var BOOKS = MAIN.concat(BN).concat(TC).concat(BTTS);  // one global index space across all sections
 
   // QR codes only on the kiosk (installed standalone app). ?kiosk=1 forces on, ?kiosk=0 off.
   var standalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
@@ -120,16 +121,18 @@
     });
   }
 
-  var free = [], other = [], bn = [], tc = [];
+  var free = [], other = [], bn = [], tc = [], btts = [];
   BOOKS.forEach(function (b, i) {
-    if (i >= MAIN_LEN + BN_LEN) tc.push({ b: b, i: i });   // Thubten Chodron (multi-language)
-    else if (i >= MAIN_LEN) bn.push({ b: b, i: i });       // BuddhaNet manifest
-    else if (b.file) free.push({ b: b, i: i });            // self-hosted free-distribution
-    else other.push({ b: b, i: i });                       // commercial copyright
+    if (i >= MAIN_LEN + BN_LEN + TC_LEN) btts.push({ b: b, i: i }); // Buddhist Text Translation Society
+    else if (i >= MAIN_LEN + BN_LEN) tc.push({ b: b, i: i });       // Thubten Chodron (multi-language)
+    else if (i >= MAIN_LEN) bn.push({ b: b, i: i });                // BuddhaNet manifest
+    else if (b.file) free.push({ b: b, i: i });                     // self-hosted free-distribution
+    else other.push({ b: b, i: i });                                // commercial copyright
   });
   renderInto("grid-free", "count-free", free, false);
   renderInto("grid-tc", "count-tc", tc, false);
   renderInto("grid-bn", "count-bn", bn, false);
+  renderInto("grid-btts", "count-btts", btts, false);
   renderInto("grid-other", "count-other", other, true);
 
   /* ---- search + sort ---- */
@@ -139,7 +142,7 @@
     if (b.langs) b.langs.forEach(function (l) { parts.push(l.lang); });
     return norm(parts.join(" "));
   }
-  var SECTIONS = ["lib-free", "lib-tc", "lib-bn", "lib-other"];
+  var SECTIONS = ["lib-free", "lib-tc", "lib-bn", "lib-btts", "lib-other"];
   var qEl = document.getElementById("q");
   var sortEl = document.getElementById("sort");
   var resGrid = document.getElementById("grid-results");
