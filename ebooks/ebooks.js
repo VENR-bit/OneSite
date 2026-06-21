@@ -9,6 +9,13 @@
   var MAIN_LEN = MAIN.length, BN_LEN = BN.length, TC_LEN = TC.length;
   var BOOKS = MAIN.concat(BN).concat(TC).concat(BTTS);  // one global index space across all sections
 
+  // Total-books status line in the hero.
+  var totalEl = document.getElementById("lib-total");
+  if (totalEl) {
+    totalEl.innerHTML = "<b>" + BOOKS.length + "</b> books in the library";
+    totalEl.hidden = false;
+  }
+
   // QR codes only on the kiosk (installed standalone app). ?kiosk=1 forces on, ?kiosk=0 off.
   var standalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
                    window.navigator.standalone === true;
