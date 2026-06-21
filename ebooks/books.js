@@ -128,14 +128,6 @@ window.RK_BOOKS = [
     "cover": "covers/book-17.jpg"
   },
   {
-    "title": "Ordination",
-    "author": "Rideekanda Forest Monastery",
-    "about": "A reference on the monastic ordination procedure.",
-    "cover": "covers/book-18.jpg",
-    "source": "Rideekanda Forest Monastery",
-    "file": "files/ordination-rideekanda.pdf"
-  },
-  {
     "title": "Buddhist Suttas",
     "author": "trans. T. W. Rhys Davids",
     "about": "Early discourses of the Pāli Canon, including the Buddha's last days (1881).",
@@ -174,13 +166,5 @@ window.RK_BOOKS = [
     "cover": "covers/book-23.jpg",
     "source": "Internet Archive · public domain",
     "file": "files/buddhism-history-and-literature-rhys-davids.pdf"
-  },
-  {
-    "title": "The Buddha and His Teachings",
-    "author": "Venerable Nārada Mahāthera",
-    "about": "A comprehensive classic on the life of the Buddha and the Dhamma.",
-    "cover": "covers/book-24.jpg",
-    "source": "BuddhaNet · for free distribution",
-    "file": "files/the-buddha-and-his-teachings-narada.pdf"
   }
 ];
