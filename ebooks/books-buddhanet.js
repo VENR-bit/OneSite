@@ -217,14 +217,6 @@ window.RK_BOOKS_BN = [
   "file": "buddhanet/bd_students.pdf"
  },
  {
-  "title": "BuddhaNet Brochure",
-  "author": "",
-  "about": "",
-  "cover": "buddhanet/covers/bnet_brochure.jpg",
-  "source": "BuddhaNet · for free distribution",
-  "file": "buddhanet/bnet_brochure.pdf"
- },
- {
   "title": "Buddhism as a Religion",
   "author": "",
   "about": "",
