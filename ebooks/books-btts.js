@@ -39,13 +39,6 @@ window.RK_BOOKS_BTTS = [
   "file": "files/btts-listen-to-yourself-guan-yin.pdf"
  },
  {
-  "title": "Dharma Talks in Europe",
-  "author": "Dharma Realm Buddhist Association",
-  "about": "A collection of Dharma talks given during teaching visits across Europe.",
-  "source": "Buddhist Text Translation Society",
-  "file": "files/btts-dharma-talks-in-europe.pdf"
- },
- {
   "title": "Words of Wisdom, Vol. 1: Beginning Buddhism",
   "author": "Ven. Master Hsüan Hua",
   "about": "An accessible introduction to the fundamentals of Buddhist understanding and practice.",
