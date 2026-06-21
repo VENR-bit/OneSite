@@ -64,7 +64,8 @@
   ];
   // Each shown on its own at the bottom, under a divider line.
   var REQUIREMENTS = [
-    { id: "requirements", href: "requirements/",         en: "Monastery Requirements", si: "ආරණ්‍ය අවශ්‍යතා" }
+    { id: "requirements", href: "requirements/",         en: "Monastery Requirements", si: "ආරණ්‍ය අවශ්‍යතා" },
+    { id: "ebooks",       href: "ebooks/",               en: "E-Book Library",         si: "ඊ-පොත් පුස්තකාලය" }
   ];
   var BOTTOM = [
     { id: "dashboard",   href: "dashboard/",            en: "Dashboard",           si: "උපකරණ පුවරුව" }

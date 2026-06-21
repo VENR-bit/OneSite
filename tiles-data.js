@@ -62,6 +62,18 @@ window.RK_TILES = [
     "icon": "book"
   },
   {
+    "id": "road-project",
+    "label": "Road Project",
+    "sub": "Help pave the monastery access road — mark your name along the way",
+    "url": "../projects/road-project/",
+    "size": 82,
+    "ring": 2,
+    "bg": "radial-gradient(circle at 30% 25%, #6a5230 0%, #2a1e0c 85%)",
+    "halo": "rgba(200, 160, 90, 0.32)",
+    "fg": "#f0e0bd",
+    "icon": "pin"
+  },
+  {
     "id": "donate",
     "label": "Dāna | Donation",
     "sub": "Your contributions allow the monastery to center its programs and outreach",
