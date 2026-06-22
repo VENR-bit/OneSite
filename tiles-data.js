@@ -282,7 +282,7 @@ window.RK_TILES = [
     "id": "audio",
     "label": "Audio Library",
     "sub": "Guided meditation recordings (English & Sinhala) — listen & download",
-    "url": "https://venr-bit.github.io/audio-library/",
+    "url": "../audio-library/",
     "size": 82,
     "ring": 2,
     "bg": "radial-gradient(circle at 30% 25%, #4a4628 0%, #20200c 85%)",

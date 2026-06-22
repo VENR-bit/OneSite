@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script>(function(){try{var m=localStorage.getItem("rk-theme");if(m!=="light"&&m!=="dark"&&m!=="auto")m="auto";var h=new Date().getHours();var t=(m==="auto")?((h>=6&&h<18)?"light":"dark"):m;var r=document.documentElement;r.setAttribute("data-theme",t);r.setAttribute("data-theme-mode",m);}catch(e){}})();</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Audio Library — Rideekanda Forest Monastery</title>
+  <meta name="description" content="Guided meditation recordings from Rideekanda Forest Monastery — listen online or download, in English and Sinhala.">
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="64x64" href="/app/favicon-64.png?v=3" />
+  <link rel="apple-touch-icon" href="/app/apple-touch-icon.png?v=2" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+Sinhala:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=1">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <img class="lotus" src="/assets/lotus-logo.png" alt="Rideekanda Forest Monastery" draggable="false">
+      <p class="place">Rideekanda&nbsp;·&nbsp;Forest Monastery</p>
+      <h1>Audio Library</h1>
+      <p class="hero__si">ශ්‍රව්‍ය පුස්තකාලය</p>
+      <p class="hero__about">
+        Guided meditation recordings in English and Sinhala — listen in your
+        browser or download to keep and practise offline. May it be of benefit. 🙏
+      </p>
+      <div class="rule"></div>
+      <p class="hero__total" id="total"></p>
+    </section>
+
+    <section id="library"></section>
+  </main>
+
+  <script src="audio-data.js?v=2"></script>
+  <script src="audio.js?v=1"></script>
+
+  <!-- eco-header -->
+  <link rel="stylesheet" href="../eco-header.css?v=6">
+  <script id="eco-header" src="../eco-header.js?v=2" data-root="../" data-links='[]' data-pad="true" defer></script>
+  <!-- eco-nav -->
+  <link rel="stylesheet" href="../eco-nav.css?v=10">
+  <script id="eco-nav" src="../eco-nav.js?v=16" data-root="../" data-current="" defer></script>
+  <!-- eco-footer -->
+  <link rel="stylesheet" href="../eco-footer.css?v=3">
+  <script id="eco-footer" src="../eco-footer.js?v=4" data-root="../" defer></script>
+  <!-- eco-theme -->
+  <link rel="stylesheet" href="../eco-theme.css?v=2">
+  <script src="../eco-theme.js?v=3" defer></script>
+</body>
+</html>
