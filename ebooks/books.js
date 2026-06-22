@@ -204,5 +204,53 @@ window.RK_BOOKS = [
     "about": "The life story of a foremost teacher of the Thai forest meditation tradition.",
     "source": "dhammatalks.org · for free distribution",
     "file": "files/autobiography-of-phra-ajaan-lee.pdf"
+  },
+  {
+    "title": "The Light of Asia",
+    "author": "Edwin Arnold",
+    "about": "An epic poem on the life, character and teachings of the Buddha (1879).",
+    "cover": "covers/edwin-arnold_light-of-asia.jpg",
+    "source": "Global Grey · public domain",
+    "file": "files/edwin-arnold_light-of-asia.pdf"
+  },
+  {
+    "title": "The Song Celestial (Bhagavad Gītā)",
+    "author": "trans. Edwin Arnold",
+    "about": "Edwin Arnold's celebrated poetic translation of the Bhagavad Gītā (1885).",
+    "cover": "covers/edwin-arnold_bhagavad-gita.jpg",
+    "source": "Global Grey · public domain",
+    "file": "files/edwin-arnold_bhagavad-gita.pdf"
+  },
+  {
+    "title": "The Dhammapada",
+    "author": "trans. F. Max Müller",
+    "about": "Max Müller's classic translation of the Buddha's verses of Dhamma (1881).",
+    "cover": "covers/friedrich-max-muller_dhammapada.jpg",
+    "source": "Global Grey · public domain",
+    "file": "files/friedrich-max-muller_dhammapada.pdf"
+  },
+  {
+    "title": "The Buddhist Catechism",
+    "author": "Henry S. Olcott",
+    "about": "A foundational question-and-answer primer on the principles of Buddhism (1881).",
+    "cover": "covers/henry-s-olcott_buddhist-catechism.jpg",
+    "source": "Global Grey · public domain",
+    "file": "files/henry-s-olcott_buddhist-catechism.pdf"
+  },
+  {
+    "title": "Buddhism and Buddhists in China",
+    "author": "Lewis Hodous",
+    "about": "A concise early study of Chinese Buddhist practice, temples and life (1924).",
+    "cover": "covers/lewis-hodous_buddhism-and-buddhists-in-china.jpg",
+    "source": "Global Grey · public domain",
+    "file": "files/lewis-hodous_buddhism-and-buddhists-in-china.pdf"
+  },
+  {
+    "title": "As a Man Thinketh",
+    "author": "James Allen",
+    "about": "A short, influential essay on the power of thought and self-mastery (1903).",
+    "cover": "covers/james-allen_as-a-man-thinketh.jpg",
+    "source": "Global Grey · public domain",
+    "file": "files/james-allen_as-a-man-thinketh.pdf"
   }
 ];
