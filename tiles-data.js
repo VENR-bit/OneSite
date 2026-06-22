@@ -281,12 +281,13 @@ window.RK_TILES = [
   {
     "id": "audio",
     "label": "Audio Library",
-    "sub": "Guided Audio Recording of Jhāna Meditation",
-    "url": "https://drive.google.com/drive/folders/10QOiPGjkCcWODUnI-kKiNLqWdcpSpMRq?usp=drive_link",
-    "size": 56,
-    "ring": 3,
-    "bg": "#2a2018",
-    "fg": "#d4c4a0",
+    "sub": "Guided meditation recordings (English & Sinhala) — listen & download",
+    "url": "https://venr-bit.github.io/audio-library/",
+    "size": 82,
+    "ring": 2,
+    "bg": "radial-gradient(circle at 30% 25%, #4a4628 0%, #20200c 85%)",
+    "halo": "rgba(190, 180, 110, 0.32)",
+    "fg": "#e8e0bc",
     "icon": "wave"
   },
   {
