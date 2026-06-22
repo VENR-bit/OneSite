@@ -29,6 +29,7 @@ body{
 .rule{width:54px;height:1px;background:var(--accent);opacity:.6;margin:30px auto 0}
 .hero__total{font-family:var(--display);text-transform:uppercase;letter-spacing:.16em;font-size:12.5px;color:var(--muted);margin:18px 0 0}
 .hero__total b{color:var(--accent);font-weight:600}
+.hero__soon{font-family:var(--display);font-style:italic;font-size:16px;color:var(--accent);margin:10px 0 0;opacity:.9}
 
 /* session list */
 .sessions{margin-top:30px;display:flex;flex-direction:column;gap:26px}
