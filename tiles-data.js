@@ -134,7 +134,7 @@ window.RK_TILES = [
     "id": "retreat-sessions",
     "label": "Retreat Sessions",
     "sub": "Recorded 7-day Vipassanā retreat — watch, listen & download",
-    "url": "https://venr-bit.github.io/retreat-sessions/",
+    "url": "../retreat-sessions/",
     "size": 82,
     "ring": 2,
     "bg": "radial-gradient(circle at 30% 25%, #6a4a2a 0%, #2a1c0c 85%)",
@@ -265,17 +265,6 @@ window.RK_TILES = [
     "bg": "#2a2a2a",
     "fg": "#d4d4d4",
     "icon": "google"
-  },
-  {
-    "id": "dhamma",
-    "label": "Dhamma Talks",
-    "sub": "Video Recordings of Teachings",
-    "url": "https://drive.google.com/drive/folders/1ITnaTnLj3Ntx9erkMFhGeSMVdWy9mU7t?usp=drive_link",
-    "size": 56,
-    "ring": 3,
-    "bg": "#3a2818",
-    "fg": "#e6d4ae",
-    "icon": "lotus"
   },
   {
     "id": "audio",
