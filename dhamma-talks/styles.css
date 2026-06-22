@@ -30,6 +30,11 @@ body{
 .hero__total{font-family:var(--display);text-transform:uppercase;letter-spacing:.16em;font-size:12.5px;color:var(--muted);margin:18px 0 0}
 .hero__total b{color:var(--accent);font-weight:600}
 .hero__soon{font-family:var(--display);font-style:italic;font-size:16px;color:var(--accent);margin:10px 0 0;opacity:.9}
+.hero__lang{margin:14px 0 0}
+.hero__lang a{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);text-transform:uppercase;
+  letter-spacing:.12em;font-size:12.5px;color:var(--ink);text-decoration:none;
+  border:1px solid var(--line);border-radius:999px;padding:8px 16px;transition:.15s}
+.hero__lang a:hover{border-color:var(--accent);color:var(--accent)}
 
 /* session list */
 .sessions{margin-top:30px;display:flex;flex-direction:column;gap:26px}

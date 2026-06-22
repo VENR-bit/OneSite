@@ -143,6 +143,18 @@ window.RK_TILES = [
     "icon": "retreat"
   },
   {
+    "id": "dhamma-talks-si",
+    "label": "ධර්ම දේශනා",
+    "sub": "භාවනා වැඩසටහනේ සිංහල ධර්ම දේශනා — නරඹන්න සහ බාගත කරගන්න",
+    "url": "../dhamma-talks/si/",
+    "size": 82,
+    "ring": 2,
+    "bg": "radial-gradient(circle at 30% 25%, #5a3a2a 0%, #2a160c 85%)",
+    "halo": "rgba(210, 150, 110, 0.32)",
+    "fg": "#f2d8c0",
+    "icon": "lotus"
+  },
+  {
     "id": "map",
     "label": "Map",
     "sub": "Google location on Rideekanda",
