@@ -140,7 +140,7 @@ window.RK_TILES = [
     "bg": "radial-gradient(circle at 30% 25%, #6a4a2a 0%, #2a1c0c 85%)",
     "halo": "rgba(210, 165, 95, 0.32)",
     "fg": "#f2ddb8",
-    "icon": "retreat"
+    "icon": "lotus"
   },
   {
     "id": "dhamma-talks-si",
