@@ -47,7 +47,7 @@ window.RK_SESSIONS = [
     audio: "11Ia2ekBCIMKV6ITzLP_pw88Bl0zU6OgH",
     pdf:   "1E1KVwgnTj_9k6GNMnXMpMSg5HjqdOalw",
     guided: [
-      { label: "Guided Meditation — Body Analysis (English · 30 min)", id: "1385sMR-mZjJBOttlxoS-nuynLvJT-LLG" }
+      { label: "Guided Meditation — Body Analysis (English · 30 min)", id: "1fGKUFQvRWj0Bc3HSxhhTMBukAvauTbbT" }
     ]
   },
   {
