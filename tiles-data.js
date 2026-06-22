@@ -131,10 +131,10 @@ window.RK_TILES = [
     "icon": "book"
   },
   {
-    "id": "retreat-sessions",
-    "label": "Retreat Sessions",
+    "id": "dhamma-talks",
+    "label": "Dhamma Talks",
     "sub": "Recorded 7-day Vipassanā retreat — watch, listen & download",
-    "url": "../retreat-sessions/",
+    "url": "../dhamma-talks/",
     "size": 82,
     "ring": 2,
     "bg": "radial-gradient(circle at 30% 25%, #6a4a2a 0%, #2a1c0c 85%)",
