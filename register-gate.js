@@ -20,7 +20,8 @@
   var FLAG = "rk-registered", EMAIL_KEY = "rk-reg-email";
 
   var tag = document.getElementById("rk-gate") || document.currentScript;
-  var LANG = (tag && tag.getAttribute("data-lang")) === "si" ? "si" : "en";
+  var LANG = (tag && tag.getAttribute("data-lang")) || "en";
+  if (LANG !== "si" && LANG !== "bi") LANG = "en";
   var PAGE = (tag && tag.getAttribute("data-page")) || location.pathname;
 
   // already registered on this device?
@@ -62,6 +63,25 @@
       errName: "කරුණාකර නම ඇතුළත් කරන්න.", errEmail: "වලංගු විද්‍යුත් තැපෑලක් ඇතුළත් කරන්න.",
       errFind: "එම විද්‍යුත් තැපෑල හමු නොවීය. කරුණාකර පහතින් ලියාපදිංචි වන්න.",
       errNet: "සන්නිවේදන ගැටලුවක් — නැවත උත්සාහ කරන්න."
+    },
+    bi: {
+      place: "Rideekanda · Forest Monastery",
+      title: 'Please register to continue<span class="rkgate__si2">ඉදිරියට යාමට ලියාපදිංචි වන්න</span>',
+      intro: 'These teachings and recordings are offered freely. Kindly share your details so we can stay in touch. 🙏<span class="rkgate__si2">මෙම දේශනා සහ පටිගත කිරීම් නොමිලේ පිරිනමනු ලැබේ. සම්බන්ධව සිටීමට ඔබගේ විස්තර බෙදාගන්න.</span>',
+      name: "Full name · සම්පූර්ණ නම", email: "Email · විද්‍යුත් තැපෑල",
+      country: "Country (optional) · රට (අත්‍යවශ්‍ය නොවේ)",
+      consent: "Keep me updated with news · ආරණ්‍යයේ පුවත් ලබා ගැනීමට කැමැත්තෙමි",
+      submit: "Enter · ඇතුළු වන්න", sending: "Sending… · යවමින්…",
+      altQ: "Already registered? · දැනටමත් ලියාපදිංචිද?", altLink: "Continue with your email → · විද්‍යුත් තැපෑලෙන් →",
+      emailTitle: 'Welcome back<span class="rkgate__si2">නැවත සාදරයෙන් පිළිගනිමු</span>',
+      emailIntro: 'Enter the email you registered with to continue.<span class="rkgate__si2">ලියාපදිංචි වූ විද්‍යුත් තැපෑල ඇතුළත් කරන්න.</span>',
+      emailSubmit: "Continue · ඉදිරියට", checking: "Checking… · පරීක්ෂා කරමින්…",
+      backLink: "← New here? Register · ලියාපදිංචි වන්න",
+      note: "Free · we’ll never share your details · ඔබගේ විස්තර බෙදා නොගනිමු.",
+      errName: "Please enter your name · කරුණාකර නම ඇතුළත් කරන්න.",
+      errEmail: "Enter a valid email · වලංගු විද්‍යුත් තැපෑලක් ඇතුළත් කරන්න.",
+      errFind: "Email not found — please register below · එම විද්‍යුත් තැපෑල හමු නොවීය.",
+      errNet: "Network problem — please try again · නැවත උත්සාහ කරන්න."
     }
   }[LANG];
 
@@ -76,7 +96,7 @@
 
   function build() {
     if (document.querySelector(".rkgate")) return;
-    var wrap = el("div", "rkgate" + (LANG === "si" ? " rkgate--si" : ""));
+    var wrap = el("div", "rkgate" + (LANG === "si" ? " rkgate--si" : LANG === "bi" ? " rkgate--bi" : ""));
     var card = el("div", "rkgate__card");
     card.innerHTML =
       '<img class="rkgate__lotus" src="/assets/lotus-logo.png" alt="" draggable="false">' +

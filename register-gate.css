@@ -37,3 +37,11 @@ html.rkgate-lock,body.rkgate-lock{overflow:hidden}
 .rkgate--si .rkgate__title,.rkgate--si .rkgate__intro,.rkgate--si .rkgate__field label,
 .rkgate--si .rkgate__consent,.rkgate--si .rkgate__btn,.rkgate--si .rkgate__alt,
 .rkgate--si .rkgate__link,.rkgate--si .rkgate__note,.rkgate--si .rkgate__msg{font-family:"Noto Serif Sinhala","Cormorant Garamond",serif}
+
+/* bilingual: Latin font first, Noto Sinhala as fallback for the Sinhala glyphs */
+.rkgate--bi .rkgate__title,.rkgate--bi .rkgate__field label,.rkgate--bi .rkgate__btn,
+.rkgate--bi .rkgate__alt,.rkgate--bi .rkgate__link{font-family:"Cormorant Garamond","Noto Serif Sinhala",serif}
+.rkgate--bi .rkgate__intro,.rkgate--bi .rkgate__consent,.rkgate--bi .rkgate__note,.rkgate--bi .rkgate__msg{font-family:"Lora","Noto Serif Sinhala",serif}
+.rkgate__si2{display:block;font-family:"Noto Serif Sinhala","Cormorant Garamond",serif;font-size:.8em;
+  color:var(--accent,#b07a2e);font-weight:500;letter-spacing:0;margin-top:5px;line-height:1.35}
+.rkgate__intro .rkgate__si2{font-weight:400;color:var(--muted,rgba(42,36,24,.6));font-size:.92em}
