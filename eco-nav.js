@@ -64,8 +64,11 @@
   ];
   // Each shown on its own at the bottom, under a divider line.
   var REQUIREMENTS = [
-    { id: "requirements", href: "requirements/",         en: "Monastery Requirements", si: "ආරණ්‍ය අවශ්‍යතා" },
-    { id: "ebooks",       href: "ebooks/",               en: "E-Book Library",         si: "ඊ-පොත් පුස්තකාලය" }
+    { id: "requirements",    href: "requirements/",     en: "Monastery Requirements",  si: "ආරණ්‍ය අවශ්‍යතා" },
+    { id: "ebooks",          href: "ebooks/",           en: "E-Book Library",          si: "ඊ-පොත් පුස්තකාලය" },
+    { id: "dhamma-talks",    href: "dhamma-talks/",     en: "Dhamma Talks (English)",  si: "ධර්ම දේශනා (ඉංග්‍රීසි)" },
+    { id: "dhamma-talks-si", href: "dhamma-talks/si/",  en: "Dhamma Talks (Sinhala)",  si: "ධර්ම දේශනා (සිංහල)" },
+    { id: "audio-library",   href: "audio-library/",    en: "Audio Library",           si: "ශ්‍රව්‍ය පුස්තකාලය" }
   ];
   var BOTTOM = [
     { id: "dashboard",   href: "dashboard/",            en: "Dashboard",           si: "උපකරණ පුවරුව" }
