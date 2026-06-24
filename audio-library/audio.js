@@ -11,8 +11,19 @@
 
   var IC = {
     audio:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 10v4M7 7v10M11 4v16M15 8v8M19 11v2"/></svg>',
-    dl:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>'
+    dl:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>',
+    qr:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v7h-7"/></svg>'
   };
+
+  // QR only in the installed kiosk (standalone app). ?kiosk=1 forces on, ?kiosk=0 off.
+  var standalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
+                   window.navigator.standalone === true;
+  var kparam = new URLSearchParams(location.search).get("kiosk");
+  var KIOSK = kparam === "1" || (standalone && kparam !== "0");
+  function qrButton(it) {
+    return KIOSK ? '<button class="btn ghost qr" data-id="' + it.id + '" data-title="' + esc(it.title) +
+      '" aria-label="Show QR code to download">' + IC.qr + '<span>QR</span></button>' : "";
+  }
 
   var idx = 0;
   function row(it) {
@@ -27,6 +38,7 @@
         '<div class="aud__act">' +
           '<button class="btn" data-id="' + it.id + '">' + IC.audio + '<span>Listen</span></button>' +
           '<a class="btn ghost" href="' + downloadUrl(it.id) + '">' + IC.dl + '<span>Download</span></a>' +
+          qrButton(it) +
         '</div>' +
       '</div>' +
       '<div class="aud__stage" data-stage></div>' +
@@ -53,8 +65,32 @@
     totalEl.innerHTML = "<b>" + n + "</b> guided recordings · listen &amp; download";
   }
 
+  /* ---- QR modal (kiosk only) ---- */
+  var qrm = document.getElementById("qrm");
+  function openQR(id, title) {
+    if (!qrm) return;
+    var box = document.getElementById("qr-code");
+    try {
+      var qr = qrcode(0, "M");
+      qr.addData(downloadUrl(id));
+      qr.make();
+      box.innerHTML = qr.createSvgTag({ cellSize: 6, margin: 1, scalable: true });
+    } catch (err) { box.textContent = "QR unavailable"; }
+    document.getElementById("qr-title").textContent = title || "";
+    qrm.classList.add("open"); qrm.setAttribute("aria-hidden", "false");
+  }
+  function closeQR() { if (qrm) { qrm.classList.remove("open"); qrm.setAttribute("aria-hidden", "true"); } }
+  if (qrm) {
+    var qx = document.getElementById("qr-close");
+    if (qx) qx.addEventListener("click", closeQR);
+    qrm.addEventListener("click", function (e) { if (e.target === qrm) closeQR(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeQR(); });
+  }
+
   root.addEventListener("click", function (e) {
-    var btn = e.target.closest && e.target.closest("button[data-id]");
+    var qrBtn = e.target.closest && e.target.closest("button.qr");
+    if (qrBtn) { openQR(qrBtn.dataset.id, qrBtn.dataset.title); return; }
+    var btn = e.target.closest && e.target.closest("button[data-id]:not(.qr)");
     if (!btn) return;
     var card = btn.closest(".aud");
     var stage = card.querySelector("[data-stage]");

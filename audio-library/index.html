@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+Sinhala:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1">
+  <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
   <main class="shell">
@@ -32,8 +32,19 @@
     <section id="library"></section>
   </main>
 
-  <script src="audio-data.js?v=2"></script>
-  <script src="audio.js?v=1"></script>
+  <!-- QR modal (kiosk) -->
+  <div class="qrm" id="qrm" aria-hidden="true">
+    <div class="qrm__card">
+      <button class="qrm__x" id="qr-close" aria-label="Close">✕</button>
+      <div class="qrm__code" id="qr-code"></div>
+      <div class="qrm__title" id="qr-title"></div>
+      <div class="qrm__hint">Scan with your phone camera to download this audio</div>
+    </div>
+  </div>
+
+  <script src="/ebooks/vendor/qrcode.js"></script>
+  <script src="audio-data.js?v=3"></script>
+  <script src="audio.js?v=2"></script>
 
   <!-- registration gate -->
   <link rel="stylesheet" href="/register-gate.css?v=2">

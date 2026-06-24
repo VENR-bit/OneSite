@@ -59,7 +59,7 @@ window.RK_TILES = [
     "bg": "radial-gradient(circle at 30% 25%, #4a5a30 0%, #1e2812 85%)",
     "halo": "rgba(160, 180, 100, 0.32)",
     "fg": "#e8e6c8",
-    "icon": "book"
+    "icon": "library"
   },
   {
     "id": "road-project",
@@ -311,6 +311,6 @@ window.RK_TILES = [
     "bg": "radial-gradient(circle at 30% 25%, #4a5a30 0%, #1e2812 85%)",
     "halo": "rgba(160, 180, 100, 0.32)",
     "fg": "#e8e6c8",
-    "icon": "tree"
+    "icon": "projects"
   }
 ];

@@ -8,7 +8,8 @@ window.RK_AUDIO = [
     items: [
       { title: "Body Analysis — Guided Meditation", sub: "English · 30 min", id: "1fGKUFQvRWj0Bc3HSxhhTMBukAvauTbbT" },
       { title: "Jhāna — Guided Meditation",          sub: "English · 40 min", id: "19sgSv2udfmHHhZfWs8JtT8mKF9M15tqp" },
-      { title: "Jhāna — Guided Meditation",          sub: "English · 60 min", id: "1OY0Hk3ctsz5qM-N8q9hLcrBm2urMk397" }
+      { title: "Jhāna — Guided Meditation",          sub: "English · 60 min", id: "1OY0Hk3ctsz5qM-N8q9hLcrBm2urMk397" },
+      { title: "Dhamma Analysis of Rising & Falling", sub: "English", id: "1DOlqY2VIM7VG94tfjHL5yHyGX7rvCkw-" }
     ]
   },
   {
