@@ -22,7 +22,8 @@
   <script type="text/babel" src="gallery.jsx?v=7"></script>
   <!-- page watermark -->
   <img class="rk-watermark" src="/assets/logo-mark.png" alt="" aria-hidden="true">
-  <style>.rk-watermark{position:absolute;top:60px;right:-60px;width:460px;opacity:.06;pointer-events:none;user-select:none;z-index:0}@media (max-width:900px){.rk-watermark{width:280px;right:-80px;top:40px}}</style>
+  <style>.rk-watermark{position:absolute;top:210px;left:50%;transform:translateX(-50%);width:min(72vw,460px);opacity:.06;pointer-events:none;user-select:none;z-index:0}</style>
+  <script>(function(){function place(){var w=document.querySelector(".rk-watermark");if(!w)return;var cs=document.querySelectorAll(".hero .lotus-mark,.lotus-mark,.lotus,.rk-lotus");var logo=null;for(var i=0;i<cs.length;i++){var c=cs[i];if(c===w)continue;var r=c.getBoundingClientRect();if(r.top>=0&&r.top<700&&r.width>20){logo=c;break;}}if(!logo)return;var lr=logo.getBoundingClientRect();w.style.top=(lr.bottom+window.scrollY-8)+"px";}if(document.readyState!=="loading")place();else document.addEventListener("DOMContentLoaded",place);[200,700,1500].forEach(function(t){setTimeout(place,t);});window.addEventListener("resize",place);})();</script>
 
 <!-- eco-header -->
   <link rel="stylesheet" href="../eco-header.css?v=6">
