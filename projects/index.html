@@ -49,6 +49,9 @@
     .card .thumb { aspect-ratio: 16 / 10; width: 100%; background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 22%, var(--card)), color-mix(in srgb, var(--gold) 20%, var(--card))); overflow: hidden; }
     .card .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
     .card:hover .thumb img { transform: scale(1.04); }
+    .card .thumb--icon { display: grid; place-items: center; }
+    .card .thumb--icon svg { width: 72px; height: 72px; color: var(--accent); opacity: .5; transition: transform .4s ease; }
+    .card:hover .thumb--icon svg { transform: scale(1.06); }
     .card .body { padding: 20px 22px 24px; }
     .card .body h2 { font-family: 'Cormorant', serif; font-weight: 600; font-size: 26px; margin: 0 0 2px; }
     .card .body .si { font-family: 'Noto Serif Sinhala', serif; font-size: 13px; color: var(--faint); margin-bottom: 10px; }
@@ -94,6 +97,20 @@
           <div class="si">මාර්ග ව්‍යාපෘතිය</div>
           <p>Paving the 2,000 ft concrete road to the monastery — pledge the road by the linear foot.</p>
           <span class="go">View project <span class="arr">→</span></span>
+        </div>
+      </a>
+
+      <a class="card" href="../requirements/">
+        <div class="thumb thumb--icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>
+          </svg>
+        </div>
+        <div class="body">
+          <h2>Monastery Requirements</h2>
+          <div class="si">ආරණ්‍ය අවශ්‍යතා</div>
+          <p>Items and resources the monastery currently needs — see the list and how you can help provide them.</p>
+          <span class="go">View list <span class="arr">→</span></span>
         </div>
       </a>
     </div>
