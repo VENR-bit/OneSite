@@ -205,6 +205,7 @@ const Icons = {
 
   google: svgIcon('icon-google.svg', 'Google'),
   threeStory: svgIcon('icon-threestory.svg', 'ThreeStory Building'),
+  road: svgIcon('icon-road.svg', 'Road'),
 };
 
 window.Icons = Icons;

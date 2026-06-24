@@ -52,6 +52,9 @@
     .card .thumb--icon { display: grid; place-items: center; }
     .card .thumb--icon svg { width: 72px; height: 72px; color: var(--accent); opacity: .5; transition: transform .4s ease; }
     .card:hover .thumb--icon svg { transform: scale(1.06); }
+    .card .thumb--icon .glyph { width: 88px; height: 88px; background: var(--accent); opacity: .55; transition: transform .4s ease;
+      -webkit-mask: url(../icon-road.svg) center / contain no-repeat; mask: url(../icon-road.svg) center / contain no-repeat; }
+    .card:hover .thumb--icon .glyph { transform: scale(1.06); }
     .card .body { padding: 20px 22px 24px; }
     .card .body h2 { font-family: 'Cormorant', serif; font-weight: 600; font-size: 26px; margin: 0 0 2px; }
     .card .body .si { font-family: 'Noto Serif Sinhala', serif; font-size: 13px; color: var(--faint); margin-bottom: 10px; }
@@ -91,7 +94,7 @@
       </a>
 
       <a class="card" href="road-project/">
-        <div class="thumb"><img src="road-project/thumb.jpg" alt="Road construction project" loading="lazy"></div>
+        <div class="thumb thumb--icon"><span class="glyph" aria-hidden="true"></span></div>
         <div class="body">
           <h2>Road Project</h2>
           <div class="si">මාර්ග ව්‍යාපෘතිය</div>

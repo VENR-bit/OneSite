@@ -71,7 +71,7 @@ window.RK_TILES = [
     "bg": "radial-gradient(circle at 30% 25%, #6a5230 0%, #2a1e0c 85%)",
     "halo": "rgba(200, 160, 90, 0.32)",
     "fg": "#f0e0bd",
-    "icon": "pin"
+    "icon": "road"
   },
   {
     "id": "donate",
