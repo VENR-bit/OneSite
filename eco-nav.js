@@ -60,11 +60,11 @@
     { id: "projects",     href: "projects/",                en: "All Projects",  si: "ව්‍යාපෘති" },
     { id: "library-cafe", href: "projects/library-cafe/",   en: "Library Café",  si: "පුස්තකාල කැෆේ" },
     { id: "threestory",   href: "projects/threestory/",     en: "ThreeStory",    si: "තෙමහල් ගොඩනැගිල්ල" },
-    { id: "road-project", href: "projects/road-project/",   en: "Road Project",  si: "මාර්ග ව්‍යාපෘතිය" }
+    { id: "road-project", href: "projects/road-project/",   en: "Road Project",  si: "මාර්ග ව්‍යාපෘතිය" },
+    { id: "requirements", href: "requirements/",            en: "Monastery Requirements", si: "ආරණ්‍ය අවශ්‍යතා" }
   ];
-  // Each shown on its own at the bottom, under a divider line.
-  var REQUIREMENTS = [
-    { id: "requirements",    href: "requirements/",     en: "Monastery Requirements",  si: "ආරණ්‍ය අවශ්‍යතා" },
+  // Libraries — its own labelled section near the bottom.
+  var LIBRARIES = [
     { id: "ebooks",          href: "ebooks/",           en: "E-Book Library",          si: "ඊ-පොත් පුස්තකාලය" },
     { id: "dhamma-talks",    href: "dhamma-talks/",     en: "Dhamma Talks (English)",  si: "ධර්ම දේශනා (ඉංග්‍රීසි)" },
     { id: "dhamma-talks-si", href: "dhamma-talks/si/",  en: "Dhamma Talks (Sinhala)",  si: "ධර්ම දේශනා (සිංහල)" },
@@ -139,9 +139,8 @@
     }
     panel.appendChild(buildSection("Explore the Monastery", MAIN));
     panel.appendChild(buildSection("Projects", PROJECTS));
-    // Monastery Requirements, then Dashboard — each under its own divider line.
-    panel.appendChild(divider());
-    panel.appendChild(buildGrid(REQUIREMENTS));
+    panel.appendChild(buildSection("Libraries", LIBRARIES));
+    // Dashboard on its own at the bottom, under a divider line.
     panel.appendChild(divider());
     panel.appendChild(buildGrid(BOTTOM));
     panel.appendChild(el("div", "eco-foot", "Rideekanda Forest Monastery · Matale, Sri Lanka"));
