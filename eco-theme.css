@@ -43,3 +43,29 @@
 .eco-theme-toggle:hover { transform: translateY(-2px); }
 .eco-theme-toggle svg { width: 20px; height: 20px; display: block; }
 @media print { .eco-theme-toggle { display: none; } }
+
+/* ── Keyboard focus visibility (accessibility) ──────────────────
+   A clear focus ring for keyboard users on links, buttons, custom
+   button-role elements and form fields. Mouse clicks don't trigger it
+   (:focus-visible), so it stays unobtrusive. */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 3px solid #c0894a;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+:root[data-theme="dark"] a:focus-visible,
+:root[data-theme="dark"] button:focus-visible,
+:root[data-theme="dark"] [role="button"]:focus-visible,
+:root[data-theme="dark"] [tabindex]:not([tabindex="-1"]):focus-visible,
+:root[data-theme="dark"] input:focus-visible,
+:root[data-theme="dark"] select:focus-visible,
+:root[data-theme="dark"] textarea:focus-visible {
+  outline-color: #e0b76a;
+}

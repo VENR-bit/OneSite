@@ -191,7 +191,7 @@ function Tile({ item, index, onOpen }) {
       role="button"
       aria-label={`Open ${item.caption}`}
       tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter') onOpen(index); }}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(index); } }}
     >
       <div className="ph" />
       {hasSrc && visible && (
