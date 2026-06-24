@@ -224,7 +224,7 @@
           'allowfullscreen></iframe>';
         rMedia.style.display = '';
       } else {
-        rMedia.innerHTML = lead ? '<img src="assets/' + esc(lead) + '" alt="' + esc(p.title) + '">' : '';
+        rMedia.innerHTML = lead ? '<img loading="lazy" decoding="async" src="assets/' + esc(lead) + '" alt="' + esc(p.title) + '">' : '';
         rMedia.style.display = lead ? '' : 'none';
       }
       rTag.textContent = p.type || 'News';
@@ -249,7 +249,7 @@
     // Featured = newest post
     var f = posts[0];
     var fSrc = thumbSrc(f);
-    var fMedia = fSrc ? '<div class="feature-media"><img src="' + fSrc + '" alt="' + esc(f.title) + '">' + playBadge(f) + '</div>' : '';
+    var fMedia = fSrc ? '<div class="feature-media"><img loading="lazy" decoding="async" src="' + fSrc + '" alt="' + esc(f.title) + '">' + playBadge(f) + '</div>' : '';
     featureMount.className = 'feature reveal';
     featureMount.style.setProperty('--reveal-delay', '120ms');
     featureMount.innerHTML =
