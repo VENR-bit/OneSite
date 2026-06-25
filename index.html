@@ -28,7 +28,7 @@
     } catch (e) {}
   })();
 </script>
-<link rel="stylesheet" href="styles.css?v=13" />
+<link rel="stylesheet" href="styles.css?v=14" />
 </head>
 <body>
 <main id="top">
@@ -132,10 +132,50 @@
   <!-- ============ QUOTE ============ -->
   <section class="quote">
     <div class="container">
-      <blockquote class="reveal">“Atta hi attano nātho — you are your own refuge.”</blockquote>
-      <cite class="reveal" style="--reveal-delay:120ms">Dhammapada, Verse 160</cite>
+      <blockquote class="reveal" id="dhp-quote">
+        <span class="dhp-pali"></span>
+        <span class="dhp-en"></span>
+      </blockquote>
+      <cite class="reveal" id="dhp-cite" style="--reveal-delay:120ms"></cite>
     </div>
   </section>
+
+  <!-- Dhammapada · Citta Vagga (the Mind, verses 33–43) — a random verse on each visit -->
+  <script>
+  (function () {
+    var V = [
+      { n: 33, pali: ["Phandanaṃ capalaṃ cittaṃ, dūrakkhaṃ dunnivārayaṃ;", "Ujuṃ karoti medhāvī, usukārova tejanaṃ."],
+        en: "The restless, agitated mind, hard to guard and hard to restrain — the wise one straightens it, as a fletcher straightens an arrow." },
+      { n: 34, pali: ["Vārijova thale khitto, okamokata ubbhato;", "Pariphandatidaṃ cittaṃ, māradheyyaṃ pahātave."],
+        en: "Like a fish pulled from its watery home and cast on dry ground, this mind quivers and thrashes to escape the realm of Māra." },
+      { n: 35, pali: ["Dunniggahassa lahuno, yatthakāmanipātino;", "Cittassa damatho sādhu, cittaṃ dantaṃ sukhāvahaṃ."],
+        en: "Hard to subdue, swift, alighting wherever it wishes — good it is to tame the mind; a tamed mind brings happiness." },
+      { n: 36, pali: ["Sududdasaṃ sunipuṇaṃ, yatthakāmanipātinaṃ;", "Cittaṃ rakkhetha medhāvī, cittaṃ guttaṃ sukhāvahaṃ."],
+        en: "So subtle and hard to see, alighting wherever it wishes — let the wise guard the mind; a guarded mind brings happiness." },
+      { n: 37, pali: ["Dūraṅgamaṃ ekacaraṃ, asarīraṃ guhāsayaṃ;", "Ye cittaṃ saṃyamissanti, mokkhanti mārabandhanā."],
+        en: "Faring far, wandering alone, bodiless, dwelling in the cave of the heart — those who restrain the mind are freed from the bonds of Māra." },
+      { n: 38, pali: ["Anavaṭṭhitacittassa, saddhammaṃ avijānato;", "Pariplavapasādassa, paññā na paripūrati."],
+        en: "He whose mind is unsteady, who does not know the true Dhamma, whose confidence wavers — his wisdom never comes to fullness." },
+      { n: 39, pali: ["Anavassutacittassa, ananvāhatacetaso;", "Puññapāpapahīnassa, natthi jāgarato bhayaṃ."],
+        en: "He whose mind is free of craving and unassailed by hatred, who has risen above good and evil — for that wakeful one there is no fear." },
+      { n: 40, pali: ["Kumbhūpamaṃ kāyamimaṃ viditvā, nagarūpamaṃ cittamidaṃ ṭhapetvā;", "Yodhetha māraṃ paññāyudhena, jitañca rakkhe anivesano siyā."],
+        en: "Knowing this body to be fragile as a clay pot, making the mind firm as a fortress, fight Māra with the sword of wisdom; guard your gain, clinging to nothing." },
+      { n: 41, pali: ["Aciraṃ vatayaṃ kāyo, pathaviṃ adhisessati;", "Chuddho apetaviññāṇo, niratthaṃva kaliṅgaraṃ."],
+        en: "Before long, alas, this body will lie upon the earth — cast aside, devoid of consciousness, like a useless log." },
+      { n: 42, pali: ["Diso disaṃ yaṃ taṃ kayirā, verī vā pana verinaṃ;", "Micchāpaṇihitaṃ cittaṃ, pāpiyo naṃ tato kare."],
+        en: "Whatever harm a foe may do to a foe, or a hater to one he hates, a wrongly directed mind does to oneself far greater harm." },
+      { n: 43, pali: ["Na taṃ mātā pitā kayirā, aññe vāpi ca ñātakā;", "Sammāpaṇihitaṃ cittaṃ, seyyaso naṃ tato kare."],
+        en: "Neither mother, father, nor any other kin can do one the good that a rightly directed mind can do." }
+    ];
+    var v = V[Math.floor(Math.random() * V.length)];
+    var pali = document.querySelector('#dhp-quote .dhp-pali');
+    var en = document.querySelector('#dhp-quote .dhp-en');
+    var cite = document.getElementById('dhp-cite');
+    if (pali) pali.innerHTML = '“' + v.pali.join('<br>') + '”';
+    if (en) en.textContent = v.en;
+    if (cite) cite.textContent = 'Dhammapada · Citta Vagga · Verse ' + v.n;
+  })();
+  </script>
 
   <!-- ============ VISIT ============ -->
   <section class="section visit" id="visit">
