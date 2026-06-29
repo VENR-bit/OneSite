@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+Sinhala:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=4" />
+<link rel="stylesheet" href="styles.css?v=5" />
   <!-- Google Analytics -->
   <script src="/analytics.js?v=1"></script>
 </head>
@@ -104,17 +104,31 @@
     modal.addEventListener('click', function(e){ if(e.target===modal) closeVideo(); });
     document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !modal.classList.contains('hidden')) closeVideo(); });
 
-    // ---- Featured = first video, plays inline ----
+    // ---- Featured = first video, click-to-play facade ----
+    // The YouTube iframe is injected only when the visitor presses play, so an
+    // iframe on the page reliably means "actively watching" — which lets the
+    // kiosk avoid auto-returning to the dashboard mid-video (see eco-nav.js).
     var f=vids[0];
     featureMount.className='feature reveal';
     featureMount.style.setProperty('--reveal-delay','120ms');
     featureMount.innerHTML =
-      '<div class="player"><iframe src="https://www.youtube-nocookie.com/embed/'+f.id+'?rel=0&modestbranding=1" title="'+esc(f.title)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>' +
+      '<div class="player">' +
+        '<button type="button" class="play-facade" aria-label="Play: '+esc(f.title)+'">' +
+          '<img src="https://i.ytimg.com/vi/'+f.id+'/maxresdefault.jpg" alt="'+esc(f.title)+'" ' +
+            'onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/'+f.id+'/hqdefault.jpg\'" />' +
+          '<span class="play"><span></span></span>' +
+        '</button>' +
+      '</div>' +
       '<div class="feature-body">' +
         '<div class="date">'+fmtDate(f.date)+'</div>' +
         '<h2>'+esc(f.title)+'</h2>' +
         (f.desc ? '<p>'+esc(f.desc)+'</p>' : '') +
       '</div>';
+    var facade=featureMount.querySelector('.play-facade');
+    if(facade){ facade.addEventListener('click', function(){
+      featureMount.querySelector('.player').innerHTML =
+        '<iframe src="'+embed(f.id)+'" title="'+esc(f.title)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+    }); }
 
     // ---- Grid = the rest ----
     var rest=vids.slice(1);
@@ -148,7 +162,7 @@
   <script id="eco-header" src="../eco-header.js?v=2" data-root="../" data-links='[{"label":"Featured","href":"#featured"},{"label":"All Videos","href":"#all"}]' data-pad="true" defer></script>
 <!-- eco-nav -->
   <link rel="stylesheet" href="../eco-nav.css?v=10">
-  <script id="eco-nav" src="../eco-nav.js?v=19" data-root="../" data-current="videos" defer></script>
+  <script id="eco-nav" src="../eco-nav.js?v=20" data-root="../" data-current="videos" defer></script>
   <!-- eco-footer -->
   <link rel="stylesheet" href="../eco-footer.css?v=3">
   <script id="eco-footer" src="../eco-footer.js?v=4" data-root="../" defer></script>

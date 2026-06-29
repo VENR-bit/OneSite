@@ -37,10 +37,12 @@
     var timer;
     function go() {
       // Don't interrupt an open media player. Audio/video plays inside a
-      // cross-origin Google Drive /preview iframe, whose playback can't reset
-      // this timer — so if a player is open (audio library, Dhamma Talks),
-      // defer the return instead of navigating away mid-listen.
-      if (document.querySelector('iframe[src*="drive.google.com"]')) { reset(); return; }
+      // cross-origin iframe (Google Drive /preview in the audio library and
+      // Dhamma Talks; YouTube in the video gallery) whose playback can't reset
+      // this timer. Each of those iframes exists only while actively playing
+      // (injected on press, removed on close), so if one is on the page, defer
+      // the return instead of navigating away mid-listen.
+      if (document.querySelector('iframe[src*="drive.google.com"], iframe[src*="youtube"], iframe[src*="youtu.be"]')) { reset(); return; }
       location.href = DASH;
     }
     function reset() { clearTimeout(timer); timer = setTimeout(go, IDLE_MS); }
