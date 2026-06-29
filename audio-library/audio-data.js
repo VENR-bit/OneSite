@@ -21,7 +21,8 @@ window.RK_AUDIO = [
       { title: "තෙවන ධ්‍යානය",   sub: "උපදෙස් සහිත භාවනාව", id: "10ARXnYL7tYeG4Ex3LGeFQhACUaniTAUa" },
       { title: "හතරවන ධ්‍යානය",  sub: "උපදෙස් සහිත භාවනාව", id: "1mUgFzP7us0sPETUy639Y15xLS4MIpH5H" },
       { title: "කායානුපස්සනාව",  sub: "උපදෙස් සහිත භාවනාව", id: "1R1y4343MOPpVS1pj9XtXcl0pc1CY_uGQ" },
-      { title: "උදයවය දර්ශනය",   sub: "ධම්ම විජය",          id: "1ciQxk4e8tGP2h6JNp0phndAF_z6l3xUE" }
+      { title: "උදයවය දර්ශනය",   sub: "ධම්ම විජය",          id: "1ciQxk4e8tGP2h6JNp0phndAF_z6l3xUE" },
+      { title: "දැනීමක් අනිත්‍යයි", sub: "ධම්ම විජය",          id: "1yyWNg4tzSknwWjG4tHkjWU7nZTeO9TrI" }
     ]
   }
 ];
