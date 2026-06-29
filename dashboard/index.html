@@ -25,6 +25,23 @@
       if (m) m.setAttribute('content', bg);
     })();
   </script>
+  <!-- Remember kiosk mode at the launch page so QR codes etc. stay enabled
+       as visitors navigate to inner pages (some kiosk launchers don't report
+       a display-mode on every page). ?kiosk=1 forces on, ?kiosk=0 off. -->
+  <script>
+    (function () {
+      try {
+        var p = new URLSearchParams(location.search).get("kiosk");
+        var mm = window.matchMedia;
+        var k = (mm && (mm("(display-mode: standalone)").matches ||
+                        mm("(display-mode: fullscreen)").matches ||
+                        mm("(display-mode: minimal-ui)").matches)) ||
+                window.navigator.standalone === true;
+        if (p === "1" || k) localStorage.setItem("rk-kiosk", "1");
+        if (p === "0") localStorage.removeItem("rk-kiosk");
+      } catch (e) {}
+    })();
+  </script>
   <!-- PWA / kiosk install: standalone display = no browser URL bar -->
   <link rel="manifest" href="../manifest.webmanifest">
   <link rel="icon" type="image/png" sizes="64x64" href="../app/favicon-64.png?v=2">

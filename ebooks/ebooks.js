@@ -16,11 +16,25 @@
     totalEl.hidden = false;
   }
 
-  // QR codes only on the kiosk (installed standalone app). ?kiosk=1 forces on, ?kiosk=0 off.
-  var standalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
-                   window.navigator.standalone === true;
+  // QR is for the kiosk: an installed PWA (display-mode standalone) OR a
+  // fullscreen / minimal-ui kiosk browser. ?kiosk=1 forces on, ?kiosk=0 off.
+  // Once kiosk is seen we remember it (localStorage), because some kiosk
+  // launchers don't report a display-mode on every page — so the QR keeps
+  // showing as visitors move between pages.
   var kparam = new URLSearchParams(location.search).get("kiosk");
-  var KIOSK = kparam === "1" || (standalone && kparam !== "0");
+  var mm = window.matchMedia;
+  var standalone =
+    (mm && (mm("(display-mode: standalone)").matches ||
+            mm("(display-mode: fullscreen)").matches ||
+            mm("(display-mode: minimal-ui)").matches)) ||
+    window.navigator.standalone === true;
+  try {
+    if (kparam === "1" || standalone) localStorage.setItem("rk-kiosk", "1");
+    if (kparam === "0") localStorage.removeItem("rk-kiosk");
+  } catch (e) {}
+  var remembered = false;
+  try { remembered = localStorage.getItem("rk-kiosk") === "1"; } catch (e) {}
+  var KIOSK = kparam === "1" || (kparam !== "0" && (standalone || remembered));
   function qrButton(i) {
     return KIOSK ? '<button class="btn ghost qr" data-i="' + i + '" aria-label="Show QR code">QR</button>' : "";
   }

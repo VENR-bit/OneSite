@@ -15,11 +15,25 @@
     qr:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v7h-7"/></svg>'
   };
 
-  // QR only in the installed kiosk (standalone app). ?kiosk=1 forces on, ?kiosk=0 off.
-  var standalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
-                   window.navigator.standalone === true;
+  // QR is for the kiosk: an installed PWA (display-mode standalone) OR a
+  // fullscreen / minimal-ui kiosk browser. ?kiosk=1 forces on, ?kiosk=0 off.
+  // Once kiosk is seen we remember it (localStorage), because some kiosk
+  // launchers don't report a display-mode on every page — so the QR keeps
+  // showing as visitors move between pages.
   var kparam = new URLSearchParams(location.search).get("kiosk");
-  var KIOSK = kparam === "1" || (standalone && kparam !== "0");
+  var mm = window.matchMedia;
+  var standalone =
+    (mm && (mm("(display-mode: standalone)").matches ||
+            mm("(display-mode: fullscreen)").matches ||
+            mm("(display-mode: minimal-ui)").matches)) ||
+    window.navigator.standalone === true;
+  try {
+    if (kparam === "1" || standalone) localStorage.setItem("rk-kiosk", "1");
+    if (kparam === "0") localStorage.removeItem("rk-kiosk");
+  } catch (e) {}
+  var remembered = false;
+  try { remembered = localStorage.getItem("rk-kiosk") === "1"; } catch (e) {}
+  var KIOSK = kparam === "1" || (kparam !== "0" && (standalone || remembered));
   function qrButton(it) {
     return KIOSK ? '<button class="btn ghost qr" data-id="' + it.id + '" data-title="' + esc(it.title) +
       '" aria-label="Show QR code to download">' + IC.qr + '<span>QR</span></button>' : "";
