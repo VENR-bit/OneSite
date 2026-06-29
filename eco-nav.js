@@ -35,7 +35,14 @@
     var IDLE_MS = 120000;                                        // 2 minutes of no interaction
     var DASH = ROOT + "dashboard/";
     var timer;
-    function go() { location.href = DASH; }
+    function go() {
+      // Don't interrupt an open media player. Audio/video plays inside a
+      // cross-origin Google Drive /preview iframe, whose playback can't reset
+      // this timer — so if a player is open (audio library, Dhamma Talks),
+      // defer the return instead of navigating away mid-listen.
+      if (document.querySelector('iframe[src*="drive.google.com"]')) { reset(); return; }
+      location.href = DASH;
+    }
     function reset() { clearTimeout(timer); timer = setTimeout(go, IDLE_MS); }
     ["pointerdown", "touchstart", "mousemove", "keydown", "scroll", "wheel", "click"].forEach(function (ev) {
       window.addEventListener(ev, reset, { passive: true });
