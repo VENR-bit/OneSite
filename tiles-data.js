@@ -291,6 +291,18 @@ window.RK_TILES = [
     "icon": "wave"
   },
   {
+    "id": "retreat-docs",
+    "label": "Retreat Documents",
+    "sub": "Route guidance, daily schedule, chanting texts & application form — English & Sinhala",
+    "url": "../retreat-docs/",
+    "size": 82,
+    "ring": 2,
+    "bg": "radial-gradient(circle at 30% 25%, #55432a 0%, #241a0e 85%)",
+    "halo": "rgba(206, 172, 110, 0.32)",
+    "fg": "#eddfc0",
+    "icon": "docs"
+  },
+  {
     "id": "youtube",
     "label": "YouTube",
     "sub": "/RideekandaForestMonastery",

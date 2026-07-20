@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script>(function(){try{var m=localStorage.getItem("rk-theme");if(m!=="light"&&m!=="dark"&&m!=="auto")m="auto";var h=new Date().getHours();var t=(m==="auto")?((h>=6&&h<18)?"light":"dark"):m;var r=document.documentElement;r.setAttribute("data-theme",t);r.setAttribute("data-theme-mode",m);}catch(e){}})();</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Retreat Documents — Rideekanda Forest Monastery</title>
+  <meta name="description" content="Documents for the meditation retreat at Rideekanda Forest Monastery — route guidance, daily schedule, chanting texts, and the application form, in English and Sinhala.">
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="64x64" href="/app/favicon-64.png?v=3" />
+  <link rel="apple-touch-icon" href="/app/apple-touch-icon.png?v=2" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+Sinhala:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=1">
+  <!-- Google Analytics -->
+  <script src="/analytics.js?v=1"></script>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <img class="lotus" src="/assets/lotus-logo.png" alt="Rideekanda Forest Monastery" draggable="false">
+      <p class="place">Rideekanda&nbsp;·&nbsp;Forest Monastery</p>
+      <h1>Retreat Documents</h1>
+      <p class="hero__si">වැඩසටහන් ලේඛන</p>
+      <p class="hero__about">
+        Everything you need for a residential retreat — route guidance, the daily
+        schedule, chanting texts, and the application form. Read any document here
+        or download it to keep. May it be of benefit. 🙏
+      </p>
+      <div class="rule"></div>
+      <p class="hero__total" id="total"></p>
+    </section>
+
+    <section id="library"></section>
+  </main>
+
+  <!-- QR modal (kiosk) -->
+  <div class="qrm" id="qrm" aria-hidden="true">
+    <div class="qrm__card">
+      <button class="qrm__x" id="qr-close" aria-label="Close">✕</button>
+      <div class="qrm__code" id="qr-code"></div>
+      <div class="qrm__title" id="qr-title"></div>
+      <div class="qrm__hint">Scan with your phone camera to open this document</div>
+    </div>
+  </div>
+
+  <script src="/ebooks/vendor/qrcode.js"></script>
+  <script src="docs-data.js?v=1"></script>
+  <script src="docs.js?v=1"></script>
+
+  <!-- eco-header -->
+  <link rel="stylesheet" href="../eco-header.css?v=6">
+  <script id="eco-header" src="../eco-header.js?v=2" data-root="../" data-links='[]' data-pad="true" defer></script>
+  <!-- eco-nav -->
+  <link rel="stylesheet" href="../eco-nav.css?v=10">
+  <script id="eco-nav" src="../eco-nav.js?v=20" data-root="../" data-current="" defer></script>
+  <!-- eco-footer -->
+  <link rel="stylesheet" href="../eco-footer.css?v=3">
+  <script id="eco-footer" src="../eco-footer.js?v=4" data-root="../" defer></script>
+  <!-- eco-theme -->
+  <link rel="stylesheet" href="../eco-theme.css?v=3">
+  <script src="../eco-theme.js?v=3" defer></script>
+</body>
+</html>

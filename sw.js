@@ -8,7 +8,7 @@
        paint from cache, refreshed in the background.
    Bump CACHE_VERSION to force clients to drop old caches.
    ────────────────────────────────────────────────────────────── */
-var CACHE_VERSION = "rk-v29";
+var CACHE_VERSION = "rk-v30";
 var CACHE = "rideekanda-" + CACHE_VERSION;
 
 // Core shell to precache so the dashboard works offline on first launch.
@@ -18,11 +18,11 @@ var PRECACHE = [
   "dashboard/",
   "dashboard/index.html",
   "./app.jsx?v=27",
-  "./icons.jsx?v=24",
+  "./icons.jsx?v=25",
   "./admin-panel.jsx?v=25",
   "./tweaks-panel.jsx?v=21",
   "./image-slot.js?v=21",
-  "./tiles-data.js?v=15",
+  "./tiles-data.js?v=16",
   "./calendar-data.js?v=24",
   "./eco-nav.js?v=20",
   "./eco-nav.css?v=10",

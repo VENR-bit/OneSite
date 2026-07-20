@@ -75,6 +75,15 @@ const Icons = {
     </svg>
   ),
 
+  docs: ({size=32}) => (
+    <svg width={size} height={size} viewBox="-12 -12 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M -6 -10 L 2 -10 L 7 -5 L 7 10 L -6 10 Z"/>
+      <path d="M 2 -10 L 2 -5 L 7 -5"/>
+      <path d="M -3 1 L 4 1"/>
+      <path d="M -3 5 L 4 5"/>
+    </svg>
+  ),
+
   lotus: svgIcon('icon-dhamma-talks.svg', 'Dhamma Talks'),
 
   wave: ({size=28}) => (
