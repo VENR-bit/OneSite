@@ -14,6 +14,9 @@ window.RK_DOCS = [
       { title: "Pāli Pronunciation",
         desc: "A guide to pronouncing Pāli for chanting",
         file: "pali-pronunciation.pdf", size: "81 KB" },
+      { title: "Pāli Chanting",
+        desc: "Daily chants of the Theravāda tradition, with English translation",
+        file: "pali-chanting.pdf", size: "93 KB" },
       { title: "Three Suttas — Pāli & English",
         desc: "Chanting texts with English translation",
         file: "three-suttas-pali-english.pdf", size: "90 KB" }
