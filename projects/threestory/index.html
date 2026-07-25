@@ -311,6 +311,17 @@
     }
     .estimate-amount .big .unit { font-size: 32px; opacity: 0.6; }
     .estimate-amount .big .currency { font-size: 20px; vertical-align: top; opacity: 0.6; }
+    .report-row {
+      max-width: 1060px; margin: 16px auto 0; padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+      background: var(--paper-2); border: 1px solid var(--ink-faint); border-radius: 14px;
+    }
+    .report-note {
+      font-family: var(--hand); font-size: 16px; font-style: italic;
+      color: var(--ink-soft); flex: 1; min-width: 240px; margin: 0;
+    }
+    .report-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+    .report-btns .btn-primary, .report-btns .btn-outline { padding: 11px 20px; font-size: 14px; }
 
     /* ---- DONATE / SUPPORT ---- */
     .support {
@@ -450,6 +461,137 @@
       .support-stat-num { font-size: 28px; }
       .footer { padding: 40px 20px 24px; }
       .sinhala h2 { font-size: 28px; }
+    }
+
+    /* ---- PLEDGE THE SLAB ---- */
+    .pledge-section { padding: 100px 48px; }
+    .slab-wrap {
+      display: grid; grid-template-columns: 0.9fr 1.1fr;
+      gap: 40px; max-width: 1060px; margin: 0 auto; align-items: start;
+    }
+    /* Let the grid columns shrink below their content width (grid items default
+       to min-width:auto, which otherwise overflows the viewport on mobile). */
+    .slab-wrap > * { min-width: 0; }
+    .slab-pledge {
+      background: var(--paper-2); border: 1px solid var(--ink-faint);
+      border-radius: 16px; padding: 32px; position: sticky; top: 88px;
+    }
+    .slab-pledge h3 { font-family: var(--hand); font-size: 26px; font-style: italic; font-weight: 400; margin-bottom: 6px; }
+    .sp-hint { font-size: 14px; color: var(--ink-soft); line-height: 1.5; margin-bottom: 22px; }
+    .sp-hint b { color: var(--ink); font-weight: 600; }
+    .sp-field { margin-bottom: 16px; }
+    .sp-field label {
+      display: block; font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 7px;
+    }
+    .sp-input {
+      width: 100%; padding: 12px 14px; border: 1px solid var(--ink-faint);
+      border-radius: 10px; background: var(--paper); font-family: var(--sans);
+      font-size: 15px; color: var(--ink);
+    }
+    .sp-input:focus { outline: none; border-color: var(--green); }
+    .sp-ftrow {
+      display: flex; align-items: stretch; border: 1px solid var(--ink-faint);
+      border-radius: 10px; overflow: hidden; background: var(--paper);
+    }
+    .sp-ftrow button {
+      width: 46px; border: none; background: var(--paper-2);
+      font-size: 20px; color: var(--ink-soft); cursor: pointer; transition: background 0.15s, color 0.15s;
+    }
+    .sp-ftrow button:hover { background: var(--ink-faint); color: var(--ink); }
+    .sp-ftrow input {
+      flex: 1; min-width: 0; border: none; text-align: center;
+      font-family: var(--mono); font-size: 18px; font-weight: 600;
+      color: var(--ink); background: transparent; -moz-appearance: textfield;
+    }
+    .sp-ftrow input::-webkit-outer-spin-button, .sp-ftrow input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .sp-ftrow .sp-suffix {
+      display: flex; align-items: center; padding: 0 14px;
+      font-family: var(--mono); font-size: 12px; color: var(--ink-soft); border-left: 1px solid var(--ink-faint);
+    }
+    .sp-quick { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+    .sp-chip {
+      padding: 7px 12px; border: 1px solid var(--ink-faint); border-radius: 999px;
+      background: var(--paper); font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
+      cursor: pointer; transition: border-color 0.15s, color 0.15s;
+    }
+    .sp-chip:hover { border-color: var(--green); color: var(--green); }
+    .sp-cost {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin: 22px 0 18px; padding-top: 18px; border-top: 1px dashed var(--ink-faint);
+    }
+    .sp-cost .l { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+    .sp-cost .v { font-family: var(--hand); font-size: 32px; font-style: italic; color: var(--accent); }
+    .sp-cost .v .cur { font-size: 15px; opacity: 0.6; margin-right: 3px; }
+    .sp-submit {
+      width: 100%; padding: 15px; background: var(--green); color: #fff;
+      border: none; border-radius: 999px; font-family: var(--sans); font-weight: 600;
+      font-size: 15px; cursor: pointer; transition: background 0.2s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .sp-submit:hover { background: var(--green-light); }
+    .sp-note { font-size: 12.5px; color: var(--ink-soft); text-align: center; margin-top: 14px; line-height: 1.5; }
+    .sp-rate { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); text-align: center; margin-top: 12px; }
+    .sp-err { color: var(--accent); font-size: 13px; margin-top: 10px; text-align: center; }
+    .sp-ok { text-align: center; }
+    .sp-ok .tick {
+      width: 56px; height: 56px; border-radius: 50%; background: var(--green); color: #fff;
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 26px;
+    }
+
+    /* slab visual */
+    .slab-visual { position: relative; }
+    .slab-legend {
+      display: flex; gap: 22px; justify-content: flex-end; margin-bottom: 12px;
+      font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
+    }
+    .slab-legend b { color: var(--ink); }
+    .slab-legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+    .dot--filled { background: var(--green); }
+    .dot--open { background: #efe7d4; border: 1px solid var(--ink-faint); }
+    .slab-frame {
+      position: relative; background: var(--ink); padding: 12px;
+      border-radius: 14px; border: 1px solid var(--ink-faint);
+    }
+    .slab-grid { display: grid; grid-template-columns: repeat(75, 1fr); gap: 1px; }
+    .scell { aspect-ratio: 1; background: #efe7d4; border-radius: 1px; transition: background 0.3s; }
+    .slab-labels { position: absolute; inset: 12px; pointer-events: none; }
+    .slab-name {
+      position: absolute; transform: translate(-50%, -50%);
+      font-family: var(--mono); font-size: 9px; font-weight: 600; color: #fff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.7); letter-spacing: 0.02em;
+      max-width: 26%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .slab-tip {
+      position: absolute; z-index: 5; pointer-events: none;
+      background: var(--ink); color: var(--paper); padding: 7px 11px; border-radius: 8px;
+      font-size: 12.5px; transform: translate(-50%, -135%); white-space: nowrap;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    }
+    .slab-tip b { color: var(--accent-warm); }
+
+    .slab-progress { max-width: 1060px; margin: 36px auto 0; }
+    .slab-bar { height: 8px; background: #efe7d4; border: 1px solid var(--ink-faint); border-radius: 999px; overflow: hidden; }
+    .slab-bar-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--green-light)); border-radius: 999px; transition: width 0.6s ease; }
+    .slab-bar-labels { display: flex; justify-content: space-between; margin-top: 10px; font-family: var(--mono); font-size: 12px; color: var(--ink-soft); }
+    .slab-bar-labels b { color: var(--ink); }
+
+    .slab-donors { max-width: 1060px; margin: 44px auto 0; }
+    .slab-donors-head { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--ink-faint); padding-bottom: 12px; margin-bottom: 18px; }
+    .slab-donors-head h4 { font-family: var(--hand); font-size: 24px; font-style: italic; font-weight: 400; }
+    .slab-donors-head span { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); }
+    .slab-donorgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+    .slab-donor { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--paper-2); border: 1px solid var(--ink-faint); border-radius: 12px; }
+    .slab-donor .sw { width: 26px; height: 26px; border-radius: 6px; flex: none; }
+    .slab-donor .dn { font-family: var(--hand); font-size: 17px; font-style: italic; }
+    .slab-donor .df { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); margin-top: 2px; }
+
+    @media (max-width: 900px) {
+      .pledge-section { padding: 60px 20px; }
+      .slab-wrap { grid-template-columns: 1fr; gap: 28px; }
+      .slab-pledge { position: static; }
+      .slab-legend { justify-content: flex-start; }
+      .slab-name { font-size: 7px; }
     }
   </style>
   <!-- Google Analytics -->
@@ -676,9 +818,54 @@
         <h3>3,000 ft&sup2; of structural concrete &mdash; the next thing we build.</h3>
       </div>
       <div class="estimate-amount">
-        <span class="label">Estimate</span>
-        <div class="big">5<span class="unit"> M</span><span class="currency"> LKR</span></div>
+        <span class="label">Lowest Estimate</span>
+        <div class="big">5.69<span class="unit"> M</span><span class="currency"> LKR</span></div>
       </div>
+    </div>
+    <div class="report-row">
+      <p class="report-note">Costed from a full Bill of Quantities &mdash; rebar, cement, sand, aggregate, formwork &amp; labour.</p>
+      <div class="report-btns">
+        <a class="btn-primary" href="1st-floor-slab-boq.pdf" target="_blank" rel="noopener">View BOQ &amp; cost report</a>
+        <a class="btn-outline" href="1st-floor-slab-boq.pdf" download>Download report</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLEDGE THE SLAB -->
+  <section class="pledge-section fade-in" id="pledge">
+    <div class="section-header">
+      <div class="section-label">Build the Floor 01 Slab</div>
+      <h2>Pledge a <em>square foot</em></h2>
+      <p>The next milestone is a 3,000&nbsp;ft&sup2; structural concrete slab. Contribute by the square foot and watch the floor take shape &mdash; your name rests on the ground you help to lay.</p>
+    </div>
+
+    <div class="slab-wrap">
+      <div class="slab-pledge" id="slabPledge"><!-- pledge form injected by script --></div>
+
+      <div class="slab-visual">
+        <div class="slab-legend">
+          <span><i class="dot dot--filled"></i> Pledged <b id="slabPledgedFt">0 ft&sup2;</b></span>
+          <span><i class="dot dot--open"></i> Open <b id="slabOpenFt">3,000 ft&sup2;</b></span>
+        </div>
+        <div class="slab-frame">
+          <div class="slab-grid" id="slabGrid" role="img" aria-label="A 3,000 square foot slab, each cell one square foot; filled cells are pledged."></div>
+          <div class="slab-labels" id="slabLabels"></div>
+        </div>
+        <div class="slab-tip" id="slabTip" hidden></div>
+      </div>
+    </div>
+
+    <div class="slab-progress">
+      <div class="slab-bar"><div class="slab-bar-fill" id="slabBarFill" style="width:0%"></div></div>
+      <div class="slab-bar-labels">
+        <span id="slabPct">0% pledged &middot; 0 / 3,000 ft&sup2;</span>
+        <span>Goal &middot; <b id="slabGoal">LKR 5,694,120</b></span>
+      </div>
+    </div>
+
+    <div class="slab-donors" id="slabDonors" hidden>
+      <div class="slab-donors-head"><h4>Contributors</h4><span id="slabDonorCount">0</span></div>
+      <div class="slab-donorgrid" id="slabDonorGrid"></div>
     </div>
   </section>
 
@@ -787,9 +974,223 @@
     }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
     document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
   </script>
+
+  <!-- ============ PLEDGE THE SLAB ============ -->
+  <script>
+  (function () {
+    var SLAB = {
+      totalSqft: 3000,
+      totalCost: 5694120,          // LKR — lowest estimate from the BOQ & cost report (July 2026)
+      cols: 75, rows: 40,          // 75 × 40 = 3,000 ft² (one cell = 1 ft²)
+      donate: "../../donate/",
+      // Google Apps Script /exec URL for the SHARED live list (its own Sheet +
+      // standalone web app). POST {action:"slab",name,sqft,message}; GET
+      // ?action=slab → {pledges:[...]}. Empty = local-only (localStorage).
+      endpoint: "https://script.google.com/macros/s/AKfycbwe53AZqvnt-oL7eTm0Ocx6GImCw54vJ_i-Ct5LQGheUARoAIeF7tPtToHLzaacrhM6wg/exec",
+      storeKey: "rk_slab_pledges_v1"
+    };
+    SLAB.costPerSqft = SLAB.totalCost / SLAB.totalSqft;   // ≈ 1,898 / ft²
+    var PALETTE = ["#2F4F3A","#B3502A","#3A6348","#C77D3A","#6B8E5A","#A8642B","#4E7C59","#D0993F","#556B4A","#7A4A6B"];
+
+    var grid = document.getElementById("slabGrid");
+    if (!grid) return;
+    var cardEl = document.getElementById("slabPledge");
+    var tip = document.getElementById("slabTip");
+
+    function fmt(n) { return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+    function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+    function byId(id) { return document.getElementById(id); }
+    function setText(id, v) { var e = byId(id); if (e) e.textContent = v; }
+
+    // Build the 3,000 cells once.
+    grid.style.gridTemplateColumns = "repeat(" + SLAB.cols + ",1fr)";
+    var cells = [], frag = document.createDocumentFragment();
+    for (var i = 0; i < SLAB.totalSqft; i++) { var d = document.createElement("div"); d.className = "scell"; frag.appendChild(d); cells.push(d); }
+    grid.appendChild(frag);
+
+    var state = { pledges: load(), justPledged: null };
+
+    function load() {
+      try { var raw = localStorage.getItem(SLAB.storeKey); if (raw) { var p = JSON.parse(raw); if (Array.isArray(p)) return p; } } catch (e) {}
+      return [];
+    }
+    function save() { try { localStorage.setItem(SLAB.storeKey, JSON.stringify(state.pledges)); } catch (e) {} }
+    function pledgedSqft() { return state.pledges.reduce(function (a, p) { return a + (+p.sqft || 0); }, 0); }
+    function remaining() { return Math.max(0, SLAB.totalSqft - pledgedSqft()); }
+
+    function post(p) {
+      if (!SLAB.endpoint) return;
+      try {
+        fetch(SLAB.endpoint, { method: "POST", mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: "slab", name: p.name, sqft: p.sqft, message: p.message || "" }) }).catch(function () {});
+      } catch (e) {}
+    }
+    function fetchLive() {
+      if (!SLAB.endpoint) return;
+      fetch(SLAB.endpoint + "?action=slab").then(function (r) { return r.json(); }).then(function (d) {
+        if (d && Array.isArray(d.pledges)) {
+          state.pledges = d.pledges.map(function (x, i) {
+            return { id: x.id || ("live" + i), name: x.name, sqft: +x.sqft || +x.meters || 0, message: x.message || "", ts: x.ts };
+          }).filter(function (x) { return x.name && x.sqft > 0; });
+          save(); render();
+        }
+      }).catch(function () {});
+    }
+
+    /* ---------- render ---------- */
+    function render() {
+      var used = 0, labels = [];
+      for (var i = 0; i < cells.length; i++) { cells[i].className = "scell"; cells[i].style.background = ""; cells[i].removeAttribute("data-pid"); }
+      state.pledges.forEach(function (p, idx) {
+        var color = PALETTE[idx % PALETTE.length];
+        var n = Math.min(+p.sqft || 0, SLAB.totalSqft - used);
+        var sum = 0, count = 0;
+        for (var k = 0; k < n; k++) {
+          var ci = used + k, c = cells[ci]; if (!c) break;
+          c.classList.add("is-filled"); c.style.background = color; c.setAttribute("data-pid", idx);
+          sum += ci; count++;
+        }
+        if (n >= 50 && count) labels.push({ name: p.name, avg: sum / count });
+        used += n;
+      });
+
+      var pct = Math.min(100, used / SLAB.totalSqft * 100);
+      setText("slabPledgedFt", fmt(used) + " ft²");
+      setText("slabOpenFt", fmt(SLAB.totalSqft - used) + " ft²");
+      setText("slabPct", Math.round(pct) + "% pledged · " + fmt(used) + " / " + fmt(SLAB.totalSqft) + " ft²");
+      var bar = byId("slabBarFill"); if (bar) bar.style.width = pct + "%";
+      setText("slabGoal", "LKR " + fmt(SLAB.totalCost));
+
+      renderNames(labels);
+      renderDonors();
+      renderCard();
+    }
+
+    function renderNames(labels) {
+      var wrap = byId("slabLabels"); if (!wrap) return; wrap.innerHTML = "";
+      labels.forEach(function (L) {
+        var col = Math.floor(L.avg % SLAB.cols), row = Math.floor(L.avg / SLAB.cols);
+        var el = document.createElement("div"); el.className = "slab-name";
+        var lx = (col + 0.5) / SLAB.cols * 100;
+        el.style.left = Math.max(6, Math.min(94, lx)) + "%";
+        el.style.top = ((row + 0.5) / SLAB.rows * 100) + "%";
+        el.textContent = L.name;
+        wrap.appendChild(el);
+      });
+    }
+
+    function renderDonors() {
+      var sec = byId("slabDonors"), gridD = byId("slabDonorGrid");
+      if (!sec) return;
+      if (!state.pledges.length) { sec.hidden = true; return; }
+      sec.hidden = false;
+      setText("slabDonorCount", state.pledges.length + (state.pledges.length === 1 ? " contributor" : " contributors"));
+      gridD.innerHTML = "";
+      state.pledges.map(function (p, idx) { return { p: p, idx: idx }; }).reverse().forEach(function (o) {
+        var color = PALETTE[o.idx % PALETTE.length];
+        var d = document.createElement("div"); d.className = "slab-donor";
+        d.innerHTML = '<span class="sw" style="background:' + color + '"></span>' +
+          '<div><div class="dn">' + esc(o.p.name) + '</div>' +
+          '<div class="df">' + fmt(o.p.sqft) + ' ft² · LKR ' + fmt(o.p.sqft * SLAB.costPerSqft) + '</div></div>';
+        gridD.appendChild(d);
+      });
+    }
+
+    /* ---------- pledge card ---------- */
+    function renderCard() { if (state.justPledged) renderSuccess(); else renderForm(); }
+
+    function getSqft() { var el = byId("spSqft"); var v = el ? parseInt(el.value, 10) : 0; return isNaN(v) ? 0 : v; }
+    function setSqft(v) { var rem = remaining(); v = Math.max(1, Math.min(rem || 1, v)); var el = byId("spSqft"); if (el) el.value = v; updateCost(); }
+    function updateCost() {
+      var v = getSqft(), c = byId("spCost"); if (c) c.textContent = fmt(v * SLAB.costPerSqft);
+      var ft = byId("spSubmitFt"); if (ft) ft.textContent = v > 0 ? (v + " ft²") : "";
+    }
+
+    function renderForm() {
+      var rem = remaining(), full = rem <= 0;
+      cardEl.innerHTML =
+        '<h3>Pledge a square foot</h3>' +
+        '<p class="sp-hint">Give by the ft&sup2;. Your name will rest on the squares you help lay.</p>' +
+        '<div class="sp-field"><label>Your name</label>' +
+          '<input class="sp-input" id="spName" placeholder="e.g. The Silva Family" maxlength="120" autocomplete="name"></div>' +
+        '<div class="sp-field"><label>Square feet</label>' +
+          '<div class="sp-ftrow"><button type="button" id="spMinus" aria-label="Fewer square feet">&minus;</button>' +
+            '<input id="spSqft" type="number" min="1" value="10" inputmode="numeric" aria-label="Square feet to pledge">' +
+            '<span class="sp-suffix">ft&sup2;</span>' +
+            '<button type="button" id="spPlus" aria-label="More square feet">+</button></div>' +
+          '<div class="sp-quick" id="spQuick"></div></div>' +
+        '<div class="sp-cost"><span class="l">Your contribution</span>' +
+          '<span class="v"><span class="cur">LKR</span><span id="spCost">0</span></span></div>' +
+        '<button class="sp-submit" id="spSubmit"' + (full ? ' disabled' : '') + '>' +
+          (full ? 'Fully pledged 🙏' : 'Pledge <span id="spSubmitFt"></span> →') + '</button>' +
+        '<div class="sp-err" id="spErr" hidden></div>' +
+        '<p class="sp-rate">≈ LKR ' + fmt(SLAB.costPerSqft) + ' per ft² · ' + fmt(SLAB.totalSqft) + ' ft² total</p>' +
+        '<p class="sp-note">A pledge is a promise, not a payment &mdash; complete your dāna on the donation page. ' +
+          (full ? 'The slab is fully pledged &mdash; thank you!' : fmt(rem) + ' ft² still open.') + '</p>';
+
+      if (full) return;
+      [5, 10, 25, 50, 100].forEach(function (v) {
+        var b = document.createElement("button"); b.type = "button"; b.className = "sp-chip";
+        b.textContent = v + " ft²"; b.onclick = function () { setSqft(v); }; byId("spQuick").appendChild(b);
+      });
+      byId("spMinus").onclick = function () { setSqft(getSqft() - 1); };
+      byId("spPlus").onclick = function () { setSqft(getSqft() + 1); };
+      byId("spSqft").addEventListener("input", updateCost);
+      byId("spSubmit").onclick = submit;
+      setSqft(Math.min(10, rem));
+    }
+
+    function submit() {
+      var nameEl = byId("spName"), name = (nameEl.value || "").trim(), err = byId("spErr"), rem = remaining();
+      if (!name) { err.textContent = "Please add your name."; err.hidden = false; nameEl.focus(); return; }
+      if (rem <= 0) { err.textContent = "The slab is fully pledged — thank you!"; err.hidden = false; return; }
+      var sqft = Math.max(1, Math.min(rem, getSqft()));
+      var p = { id: "p" + Date.now(), name: name, sqft: sqft, message: "", ts: Date.now() };
+      state.pledges.push(p); save(); post(p);
+      state.justPledged = p; render();
+    }
+
+    function renderSuccess() {
+      var p = state.justPledged, cost = p.sqft * SLAB.costPerSqft;
+      cardEl.innerHTML =
+        '<div class="sp-ok"><div class="tick">✓</div>' +
+        '<h3>Thank you, ' + esc(p.name) + '</h3>' +
+        '<p class="sp-hint">You’ve pledged <b>' + fmt(p.sqft) + ' ft²</b> of the Floor&nbsp;01 slab.</p>' +
+        '<div class="sp-cost" style="justify-content:center;gap:8px;border-top:none;padding-top:0;margin-top:0;">' +
+          '<span class="v"><span class="cur">LKR</span> ' + fmt(cost) + '</span></div>' +
+        '<a class="sp-submit" style="text-decoration:none;" href="' + SLAB.donate + '">Complete your dāna →</a>' +
+        '<button class="sp-chip" id="spAnother" style="margin:14px auto 0;display:block;">Pledge another →</button>' +
+        '<p class="sp-note">Your name now rests on the slab above. A team member will be in touch to confirm your dāna.</p></div>';
+      byId("spAnother").onclick = function () { state.justPledged = null; renderCard(); };
+    }
+
+    /* ---------- hover tooltip ---------- */
+    grid.addEventListener("pointermove", function (e) {
+      var cell = e.target.closest && e.target.closest(".scell");
+      if (cell && cell.hasAttribute("data-pid")) {
+        var p = state.pledges[+cell.getAttribute("data-pid")];
+        if (p) {
+          var vr = grid.closest(".slab-visual").getBoundingClientRect();
+          tip.hidden = false;
+          tip.innerHTML = esc(p.name) + " · <b>" + fmt(p.sqft) + " ft²</b>";
+          tip.style.left = (e.clientX - vr.left) + "px";
+          tip.style.top = (e.clientY - vr.top) + "px";
+          return;
+        }
+      }
+      tip.hidden = true;
+    });
+    grid.addEventListener("pointerleave", function () { tip.hidden = true; });
+
+    render();
+    fetchLive();
+  })();
+  </script>
 <!-- eco-header -->
   <link rel="stylesheet" href="../../eco-header.css?v=6">
-  <script id="eco-header" src="../../eco-header.js?v=2" data-root="../../" data-links='[{"label": "Vision", "href": "#vision"}, {"label": "3D Model", "href": "#model"}, {"label": "Gallery", "href": "#gallery"}, {"label": "Film", "href": "#video"}, {"label": "Progress", "href": "#progress"}, {"label": "Support", "href": "../../donate/", "cta": true, "external": true}]' data-pad="true" defer></script>
+  <script id="eco-header" src="../../eco-header.js?v=2" data-root="../../" data-links='[{"label": "Vision", "href": "#vision"}, {"label": "3D Model", "href": "#model"}, {"label": "Progress", "href": "#progress"}, {"label": "Pledge the Slab", "href": "#pledge"}, {"label": "Support", "href": "../../donate/", "cta": true, "external": true}]' data-pad="true" defer></script>
 <!-- eco-nav -->
   <link rel="stylesheet" href="../../eco-nav.css?v=10">
   <script id="eco-nav" src="../../eco-nav.js?v=21" data-root="../../" data-current="threestory" defer></script>
