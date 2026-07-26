@@ -542,8 +542,8 @@
     /* slab visual */
     .slab-visual { position: relative; }
     .slab-legend {
-      display: flex; gap: 22px; justify-content: flex-end; margin-bottom: 12px;
-      font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
+      display: flex; gap: 22px; justify-content: space-between; margin: 0 auto 12px;
+      max-width: 420px; font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
     }
     .slab-legend b { color: var(--ink); }
     .slab-legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
@@ -552,8 +552,9 @@
     .slab-frame {
       position: relative; background: var(--ink); padding: 12px;
       border-radius: 14px; border: 1px solid var(--ink-faint);
+      max-width: 420px; margin: 0 auto;      /* keep the tall portrait slab a tidy width */
     }
-    .slab-grid { display: grid; grid-template-columns: repeat(75, 1fr); gap: 1px; }
+    .slab-grid { display: grid; grid-template-columns: repeat(40, 1fr); gap: 1px; }
     .scell { aspect-ratio: 1; background: #efe7d4; border-radius: 1px; transition: background 0.3s; }
     .slab-labels { position: absolute; inset: 12px; pointer-events: none; }
     .slab-name {
@@ -590,8 +591,7 @@
       .pledge-section { padding: 60px 20px; }
       .slab-wrap { grid-template-columns: 1fr; gap: 28px; }
       .slab-pledge { position: static; }
-      .slab-legend { justify-content: flex-start; }
-      .slab-name { font-size: 7px; }
+      .slab-name { font-size: 8px; }
     }
   </style>
   <!-- Google Analytics -->
@@ -981,7 +981,7 @@
     var SLAB = {
       totalSqft: 3000,
       totalCost: 5694120,          // LKR — lowest estimate from the BOQ & cost report (July 2026)
-      cols: 75, rows: 40,          // 75 × 40 = 3,000 ft² (one cell = 1 ft²)
+      cols: 40, rows: 75,          // 40 × 75 = 3,000 ft² (one cell = 1 ft²) — portrait
       donate: "../../donate/",
       // Google Apps Script /exec URL for the SHARED live list (its own Sheet +
       // standalone web app). POST {action:"slab",name,sqft,message}; GET
