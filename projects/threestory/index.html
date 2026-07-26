@@ -58,6 +58,18 @@
       max-width: 600px; margin: 0 auto 36px;
     }
     .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .hero-milestone {
+      margin: 26px auto 0; max-width: 560px;
+      font-family: var(--mono); font-size: 12.5px; line-height: 1.6;
+      letter-spacing: 0.01em; color: var(--ink-soft);
+      display: inline-flex; align-items: baseline; gap: 8px; text-align: left;
+    }
+    .hero-milestone strong { color: var(--accent); font-weight: 600; }
+    .hero-milestone .dot {
+      flex: none; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green); position: relative; top: 1px;
+      box-shadow: 0 0 0 4px rgba(47,79,58,0.14);
+    }
     .btn-primary {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 14px 28px;
@@ -323,6 +335,70 @@
     .report-btns { display: flex; gap: 12px; flex-wrap: wrap; }
     .report-btns .btn-primary, .report-btns .btn-outline { padding: 11px 20px; font-size: 14px; }
 
+    /* BOQ report viewer */
+    .boq-modal {
+      display: none; position: fixed; inset: 0; z-index: 99700;   /* above eco-header/nav */
+      flex-direction: column; background: var(--paper);
+    }
+    .boq-modal.open { display: flex; }
+    .boq-bar {
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px));
+      background: var(--ink); color: var(--paper); flex: none;
+    }
+    .boq-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 18px; border-radius: 999px; cursor: pointer;
+      background: var(--green); color: #fff; border: none;
+      font-family: var(--sans); font-size: 14px; font-weight: 600;
+    }
+    .boq-back:hover { background: var(--green-light); }
+    .boq-heading {
+      flex: 1; font-family: var(--hand); font-style: italic; font-size: 18px;
+      color: var(--paper); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .boq-dl {
+      padding: 8px 16px; border-radius: 999px; text-decoration: none;
+      border: 1px solid rgba(250,246,236,0.35); color: var(--paper);
+      font-family: var(--sans); font-size: 13px; font-weight: 600; flex: none;
+    }
+    .boq-dl:hover { background: rgba(250,246,236,0.12); }
+    #boqFrame { flex: 1; width: 100%; border: none; background: #525659; }
+    @media (max-width: 600px) {
+      .boq-heading { font-size: 15px; }
+      .boq-dl { display: none; }   /* keep the bar tidy on phones; Download is on the page */
+    }
+
+    /* Floating progress panel */
+    .fprog {
+      position: fixed; right: 20px; bottom: 20px; z-index: 150;
+      width: 232px; padding: 14px 16px 15px;
+      background: var(--paper); border: 1px solid var(--ink-faint); border-radius: 14px;
+      box-shadow: 0 12px 34px rgba(26,22,18,0.16);
+      text-decoration: none; color: var(--ink);
+      opacity: 0; transform: translateY(14px); pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .fprog.show { opacity: 1; transform: none; pointer-events: auto; }
+    .fprog:hover { border-color: var(--green); }
+    .fprog__top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 9px; }
+    .fprog__label {
+      font-family: var(--mono); font-size: 9.5px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
+    }
+    .fprog__pct { font-family: var(--hand); font-style: italic; font-size: 22px; color: var(--accent); line-height: 1; }
+    .fprog__bar { height: 6px; background: #e6e1d5; border-radius: 999px; overflow: hidden; }
+    .fprog__fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--green-light)); border-radius: 999px; transition: width 0.6s ease; }
+    .fprog__ft { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); margin-top: 8px; }
+    .fprog__cta {
+      font-family: var(--sans); font-size: 12px; font-weight: 600; color: var(--green);
+      margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--ink-faint);
+    }
+    @media (max-width: 600px) {
+      .fprog { right: 12px; left: 12px; bottom: 12px; width: auto; padding: 12px 14px; }
+      .fprog__cta { display: none; }
+    }
+
     /* ---- DONATE / SUPPORT ---- */
     .support {
       padding: 100px 48px;
@@ -548,14 +624,14 @@
     .slab-legend b { color: var(--ink); }
     .slab-legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
     .dot--filled { background: var(--green); }
-    .dot--open { background: #efe7d4; border: 1px solid var(--ink-faint); }
+    .dot--open { background: #f3efe6; border: 1px solid #c4c0b6; }
     .slab-frame {
-      position: relative; background: var(--ink); padding: 12px;
+      position: relative; background: #d8d5cd; padding: 12px;   /* light grey formwork */
       border-radius: 14px; border: 1px solid var(--ink-faint);
       max-width: 420px; margin: 0 auto;      /* keep the tall portrait slab a tidy width */
     }
     .slab-grid { display: grid; grid-template-columns: repeat(40, 1fr); gap: 1px; }
-    .scell { aspect-ratio: 1; background: #efe7d4; border-radius: 1px; transition: background 0.3s; }
+    .scell { aspect-ratio: 1; background: #f3efe6; border-radius: 1px; transition: background 0.3s; }
     .slab-labels { position: absolute; inset: 12px; pointer-events: none; }
     .slab-name {
       position: absolute; transform: translate(-50%, -50%);
@@ -609,9 +685,12 @@
       A serene space for meditation, monastic life, and spiritual growth &mdash; nestled in the forest at Rideekanda Monastery. Your generous support brings this vision to life.
     </p>
     <div class="hero-btns">
-      <a href="#progress" class="btn-primary">View building progress &rarr;</a>
-      <a href="#vision" class="btn-outline">Explore the design</a>
+      <a href="#pledge" class="btn-primary">Pledge a sq ft to build the 1st floor slab &rarr;</a>
+      <a href="#vision" class="btn-outline">Learn about the project</a>
     </div>
+    <p class="hero-milestone">
+      <span class="dot"></span> Now under way &mdash; the <strong>3,000&nbsp;ft&sup2; concrete slab</strong> of the first floor, the next milestone in raising this building.
+    </p>
   </section>
 
   <!-- HERO IMAGE -->
@@ -825,11 +904,32 @@
     <div class="report-row">
       <p class="report-note">Costed from a full Bill of Quantities &mdash; rebar, cement, sand, aggregate, formwork &amp; labour.</p>
       <div class="report-btns">
-        <a class="btn-primary" href="1st-floor-slab-boq.pdf" target="_blank" rel="noopener">View BOQ &amp; cost report</a>
+        <button type="button" class="btn-primary" id="boqView">View BOQ &amp; cost report</button>
         <a class="btn-outline" href="1st-floor-slab-boq.pdf" download>Download report</a>
       </div>
     </div>
   </section>
+
+  <!-- BOQ report viewer (in-page, with a Back button) -->
+  <div class="boq-modal" id="boqModal" aria-hidden="true" role="dialog" aria-label="BOQ &amp; Cost Report">
+    <div class="boq-bar">
+      <button type="button" class="boq-back" id="boqBack">&larr; Back</button>
+      <span class="boq-heading">BOQ &amp; Cost Report &middot; 1st Floor Slab</span>
+      <a class="boq-dl" href="1st-floor-slab-boq.pdf" download>Download</a>
+    </div>
+    <iframe id="boqFrame" title="Bill of Quantities &amp; Cost Report" src="about:blank"></iframe>
+  </div>
+
+  <!-- Floating progress panel — quick view of the slab funding -->
+  <a class="fprog" id="fprog" href="#pledge" aria-label="Jump to pledge the slab">
+    <div class="fprog__top">
+      <span class="fprog__label">1st Floor Slab</span>
+      <span class="fprog__pct" id="fprogPct">0%</span>
+    </div>
+    <div class="fprog__bar"><div class="fprog__fill" id="fprogFill" style="width:0%"></div></div>
+    <div class="fprog__ft" id="fprogFt">0 / 3,000 ft&sup2; pledged</div>
+    <div class="fprog__cta">Pledge a sq ft &rarr;</div>
+  </a>
 
   <!-- PLEDGE THE SLAB -->
   <section class="pledge-section fade-in" id="pledge">
@@ -973,6 +1073,28 @@
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
     document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+
+    // BOQ report viewer (in-page, with Back button)
+    (function () {
+      var modal = document.getElementById('boqModal');
+      var frame = document.getElementById('boqFrame');
+      var openBtn = document.getElementById('boqView');
+      var backBtn = document.getElementById('boqBack');
+      if (!modal || !openBtn) return;
+      var PDF = '1st-floor-slab-boq.pdf';
+      function openBoq() {
+        if (frame.getAttribute('src') !== PDF) frame.setAttribute('src', PDF);
+        modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeBoq() {
+        modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+      openBtn.addEventListener('click', openBoq);
+      backBtn.addEventListener('click', closeBoq);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('open')) closeBoq(); });
+    })();
   </script>
 
   <!-- ============ PLEDGE THE SLAB ============ -->
@@ -1063,6 +1185,11 @@
       var bar = byId("slabBarFill"); if (bar) bar.style.width = pct + "%";
       setText("slabGoal", "LKR " + fmt(SLAB.totalCost));
 
+      // floating quick-view panel
+      var ff = byId("fprogFill"); if (ff) ff.style.width = pct + "%";
+      setText("fprogPct", Math.round(pct) + "%");
+      setText("fprogFt", fmt(used) + " / " + fmt(SLAB.totalSqft) + " ft² pledged");
+
       renderNames(labels);
       renderDonors();
       renderCard();
@@ -1117,7 +1244,7 @@
           '<input class="sp-input" id="spName" placeholder="e.g. The Silva Family" maxlength="120" autocomplete="name"></div>' +
         '<div class="sp-field"><label>Square feet</label>' +
           '<div class="sp-ftrow"><button type="button" id="spMinus" aria-label="Fewer square feet">&minus;</button>' +
-            '<input id="spSqft" type="number" min="1" value="10" inputmode="numeric" aria-label="Square feet to pledge">' +
+            '<input id="spSqft" type="number" min="1" value="1" inputmode="numeric" aria-label="Square feet to pledge">' +
             '<span class="sp-suffix">ft&sup2;</span>' +
             '<button type="button" id="spPlus" aria-label="More square feet">+</button></div>' +
           '<div class="sp-quick" id="spQuick"></div></div>' +
@@ -1131,7 +1258,7 @@
           (full ? 'The slab is fully pledged &mdash; thank you!' : fmt(rem) + ' ft² still open.') + '</p>';
 
       if (full) return;
-      [5, 10, 25, 50, 100].forEach(function (v) {
+      [1, 5, 10, 25, 50, 100].forEach(function (v) {
         var b = document.createElement("button"); b.type = "button"; b.className = "sp-chip";
         b.textContent = v + " ft²"; b.onclick = function () { setSqft(v); }; byId("spQuick").appendChild(b);
       });
@@ -1139,7 +1266,7 @@
       byId("spPlus").onclick = function () { setSqft(getSqft() + 1); };
       byId("spSqft").addEventListener("input", updateCost);
       byId("spSubmit").onclick = submit;
-      setSqft(Math.min(10, rem));
+      setSqft(Math.min(1, rem));
     }
 
     function submit() {
@@ -1186,6 +1313,25 @@
 
     render();
     fetchLive();
+
+    /* ---- floating progress panel: show once past the hero, hide while the
+       pledge section itself is on screen (so it doesn't duplicate) ---- */
+    (function () {
+      var fp = byId("fprog"); var pledgeSec = document.getElementById("pledge");
+      if (!fp || !pledgeSec) return;
+      var ticking = false;
+      function update() {
+        ticking = false;
+        var r = pledgeSec.getBoundingClientRect();
+        var pledgeInView = r.top < window.innerHeight * 0.7 && r.bottom > 80;
+        fp.classList.toggle("show", window.scrollY > 520 && !pledgeInView);
+      }
+      window.addEventListener("scroll", function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      window.addEventListener("resize", update);
+      update();
+    })();
   })();
   </script>
 <!-- eco-header -->
