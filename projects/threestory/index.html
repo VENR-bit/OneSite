@@ -1081,7 +1081,9 @@
       var openBtn = document.getElementById('boqView');
       var backBtn = document.getElementById('boqBack');
       if (!modal || !openBtn) return;
-      var PDF = '1st-floor-slab-boq.pdf';
+      // #view=FitH tells the browser PDF viewer to fit the page to the width of
+      // the frame on open, so the report fits the screen instead of loading zoomed in.
+      var PDF = '1st-floor-slab-boq.pdf#view=FitH';
       function openBoq() {
         if (frame.getAttribute('src') !== PDF) frame.setAttribute('src', PDF);
         modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
