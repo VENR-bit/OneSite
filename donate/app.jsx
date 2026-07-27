@@ -60,6 +60,35 @@ const BANK_ACCOUNTS = [
   // },
 ];
 
+/* ──────────── payment-link request backend ──────────── */
+// Google Apps Script /exec URL. It records the request to a Google Sheet and
+// emails rideekanda@gmail.com. Empty = not wired yet (form is disabled).
+const PAYLINK_ENDPOINT = "https://script.google.com/macros/s/AKfycbwnpQmrK-mLW-TN33agu-Q3ujVDy5-n993eVgSW5Fvg1_1XUpKDs8e0olv61dTYH-AIkA/exec";
+
+const COUNTRY_CODES = [
+  { c: "+94", n: "Sri Lanka" }, { c: "+1", n: "USA / Canada" }, { c: "+44", n: "United Kingdom" },
+  { c: "+61", n: "Australia" }, { c: "+91", n: "India" }, { c: "+65", n: "Singapore" },
+  { c: "+60", n: "Malaysia" }, { c: "+971", n: "UAE" }, { c: "+966", n: "Saudi Arabia" },
+  { c: "+974", n: "Qatar" }, { c: "+973", n: "Bahrain" }, { c: "+965", n: "Kuwait" },
+  { c: "+968", n: "Oman" }, { c: "+49", n: "Germany" }, { c: "+33", n: "France" },
+  { c: "+39", n: "Italy" }, { c: "+34", n: "Spain" }, { c: "+41", n: "Switzerland" },
+  { c: "+31", n: "Netherlands" }, { c: "+46", n: "Sweden" }, { c: "+47", n: "Norway" },
+  { c: "+353", n: "Ireland" }, { c: "+64", n: "New Zealand" }, { c: "+81", n: "Japan" },
+  { c: "+82", n: "South Korea" }, { c: "+86", n: "China" }, { c: "+852", n: "Hong Kong" },
+  { c: "+63", n: "Philippines" }, { c: "+62", n: "Indonesia" }, { c: "+66", n: "Thailand" },
+  { c: "+90", n: "Turkey" }, { c: "+27", n: "South Africa" }, { c: "+55", n: "Brazil" },
+];
+
+function postPaylink(p) {
+  if (!PAYLINK_ENDPOINT) return Promise.reject(new Error("no endpoint"));
+  return fetch(PAYLINK_ENDPOINT, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(Object.assign({ action: "paylink", page: "donate" }, p)),
+  });
+}
+
 /* ──────────── tiny ornaments ──────────── */
 function LotusMark({ size = 22 }) {
   return (
@@ -482,6 +511,123 @@ function Steps({ method, amount, methodNeedsAmount }) {
   );
 }
 
+/* ──────────── request a payment link ──────────── */
+function RequestLinkPanel() {
+  const [amount, setAmount] = useState("");
+  const [name, setName] = useState("");
+  const [contact, setContact] = useState("email");   // 'email' | 'whatsapp'
+  const [email, setEmail] = useState("");
+  const [cc, setCc] = useState("+94");
+  const [phone, setPhone] = useState("");
+  const [status, setStatus] = useState("idle");       // 'idle' | 'sending' | 'done'
+  const [err, setErr] = useState("");
+
+  const quick = [25, 50, 100, 250, 500];
+
+  function submit(e) {
+    e && e.preventDefault();
+    setErr("");
+    const amt = parseFloat(amount);
+    if (!amt || amt <= 0) { setErr("Please enter the amount you'd like to donate."); return; }
+    if (!name.trim()) { setErr("Please enter your name."); return; }
+    let contactVal;
+    if (contact === "email") {
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) { setErr("Please enter a valid email address."); return; }
+      contactVal = email.trim();
+    } else {
+      const digits = phone.replace(/\D/g, "");
+      if (digits.length < 6) { setErr("Please enter a valid WhatsApp number."); return; }
+      // Wrap the code in parens so the value doesn't start with "+", which
+      // Google Sheets would otherwise treat as a formula (→ #ERROR!).
+      contactVal = "(" + cc + ") " + digits;
+    }
+    setStatus("sending");
+    postPaylink({
+      amount: amt, currency: "USD", name: name.trim(),
+      contactType: contact, contact: contactVal,
+    }).then(() => setStatus("done"))
+      .catch((e) => {
+        if (e && e.message === "no endpoint") {
+          setStatus("idle");
+          setErr("Sorry — online link requests aren't available just yet. Please use Bank Transfer, or email rideekanda@gmail.com.");
+        } else {
+          setStatus("done");   // no-cors: the response is opaque, so we assume it was delivered
+        }
+      });
+  }
+
+  if (status === "done") {
+    return (
+      <div className="paylink-done fade-in">
+        <div className="paylink-tick"><LotusMark size={26} color="var(--accent)" /></div>
+        <h3>Request received — thank you, {name.trim()}.</h3>
+        <p>
+          We'll send a secure payment link for <b>${parseFloat(amount).toFixed(2)} USD</b> to your{" "}
+          {contact === "email" ? "email" : "WhatsApp"} shortly. You can then pay with Visa/Mastercard,
+          Apple&nbsp;Pay or Google&nbsp;Pay.
+        </p>
+        <p className="paylink-anumodana mono">Anumodanā 🙏</p>
+      </div>
+    );
+  }
+
+  return (
+    <form className="paylink" onSubmit={submit}>
+      <p className="paylink-intro">
+        Tell us how much you'd like to give and where to reach you, and we'll send you a
+        secure payment link. You can pay it with <b>Visa / Mastercard</b>, <b>Apple&nbsp;Pay</b> or
+        <b> Google&nbsp;Pay</b>.
+      </p>
+
+      <label className="pl-label">Donation amount (USD)</label>
+      <div className="pl-amount">
+        <span className="pl-cur">$</span>
+        <input className="pl-input pl-amt" type="number" min="1" step="1" inputMode="decimal"
+          placeholder="0" value={amount} onChange={(e) => setAmount(e.target.value)} />
+        <span className="pl-usd mono">USD</span>
+      </div>
+      <div className="pl-quick">
+        {quick.map((v) => (
+          <button type="button" key={v} className={"pl-chip" + (String(v) === String(amount) ? " on" : "")}
+            onClick={() => setAmount(String(v))}>${v}</button>
+        ))}
+      </div>
+
+      <label className="pl-label">Your name</label>
+      <input className="pl-input" type="text" maxLength="120" placeholder="Full name"
+        value={name} onChange={(e) => setName(e.target.value)} />
+
+      <label className="pl-label">Where should we send the link?</label>
+      <div className="pl-toggle">
+        <button type="button" className={"pl-tog" + (contact === "email" ? " on" : "")} onClick={() => setContact("email")}>Email</button>
+        <button type="button" className={"pl-tog" + (contact === "whatsapp" ? " on" : "")} onClick={() => setContact("whatsapp")}>WhatsApp</button>
+      </div>
+
+      {contact === "email" ? (
+        <input className="pl-input" type="email" placeholder="you@example.com"
+          value={email} onChange={(e) => setEmail(e.target.value)} />
+      ) : (
+        <div className="pl-phone">
+          <select className="pl-input pl-cc" value={cc} onChange={(e) => setCc(e.target.value)} aria-label="Country code">
+            {COUNTRY_CODES.map((o) => <option key={o.c + o.n} value={o.c}>{o.c} · {o.n}</option>)}
+          </select>
+          <input className="pl-input pl-num" type="tel" inputMode="numeric" placeholder="WhatsApp number"
+            value={phone} onChange={(e) => setPhone(e.target.value)} />
+        </div>
+      )}
+
+      {err && <div className="pl-err">{err}</div>}
+
+      <button className="btn pl-submit" type="submit" disabled={status === "sending"}>
+        {status === "sending" ? "Sending…" : "Request payment link →"}
+      </button>
+      <p className="pl-note mono">
+        No payment is taken here. A secure link is sent to you personally — pay when you're ready.
+      </p>
+    </form>
+  );
+}
+
 /* ──────────── give section (vertical sequence) ──────────── */
 function Give() {
   const [method, setMethod] = useState(null);   // 'qr' | 'wetravel' | 'bank'
@@ -513,7 +659,14 @@ function Give() {
     <section className="sec" id="give">
       <div className="frame">
         <span className="mono step-mark">Step 1 — Choose a method</span>
-        <div className="methods">
+        <div className="methods methods--two">
+          <MethodCard
+            title="Request a Payment Link"
+            sub={<>We send you a secure link — pay by Visa/Mastercard, Apple Pay or Google Pay.</>}
+            kind="card"
+            active={method === "request"}
+            onClick={() => choose("request")}
+          />
           <MethodCard
             title="Bank Transfer"
             sub="For SWIFT, ACH or local bank transfer. NSB Bank, Sri Lanka."
@@ -521,69 +674,19 @@ function Give() {
             active={method === "bank"}
             onClick={() => choose("bank")}
           />
-          <MethodCard
-            title="Donate Online"
-            sub={<>Card Pay · Apple Pay · Google Pay — handled in-page through the WeTravel gateway.</>}
-            kind="card"
-            active={method === "wetravel"}
-            onClick={() => choose("wetravel")}
-          />
-          <MethodCard
-            title="Scan a QR Code"
-            sub="Select the QR code. Scan with your camera or bank app to complete the gift in seconds."
-            kind="qr"
-            active={method === "qr"}
-            onClick={() => choose("qr")}
-          />
         </div>
 
-        {/* Step 2 — Pick amount (for QR & online) OR Bank stack */}
-        {needAmount && (
-          <div ref={stepAmountRef} className="stage-step fade-in" key={method + "-amt"}>
+        {/* Payment-link request form */}
+        {method === "request" && (
+          <div ref={stepAmountRef} className="stage-step fade-in" key="request">
             <div className="stage-step-head">
-              <span className="mono step-mark">Step 2 — Pick an amount</span>
+              <span className="mono step-mark">Step 2 — Request your payment link</span>
               <div className="stage-step-meta">
-                <span className="mono">Method · {method === "qr" ? "Scan a QR" : "Donate online"}</span>
-                <button className="link-btn" onClick={() => { setMethod(null); setAmount(null); }}>Change method</button>
+                <span className="mono">Method · Payment link</span>
+                <button className="link-btn" onClick={() => setMethod(null)}>Change method</button>
               </div>
             </div>
-            <AmountGrid value={amount} onChange={pickAmount} />
-            {!amount && (
-              <p className="stage-hint">Tap an amount and your {method === "qr" ? "QR code" : "secure checkout"} will appear below.</p>
-            )}
-          </div>
-        )}
-
-        {/* Step 3 — Display QR or WeTravel embed */}
-        {needAmount && amount && (
-          <div ref={stepDisplayRef} className="stage-step fade-in" key={method + "-disp-" + amount}>
-            <div className="stage-step-head">
-              <span className="mono step-mark">Step 3 — {method === "qr" ? "Scan to pay" : "Complete checkout"}</span>
-              <div className="stage-step-meta">
-                <span className="amt-pill"><span className="mono">Donating</span> <b>${amount}.00</b> <span className="mono">USD</span></span>
-                <button className="link-btn" onClick={() => { setAmount(null); stepAmountRef.current?.scrollIntoView?.({behavior:"smooth", block:"start"}); }}>Change amount</button>
-              </div>
-            </div>
-            {method === "qr" ? (
-              <div className="display-frame qr-frame">
-                <QRPanel amount={amount} />
-                <aside className="display-aside">
-                  <span className="mono">How to scan</span>
-                  <ol>
-                    <li>Open your phone's camera or banking app.</li>
-                    <li>Point it at the code on the left.</li>
-                    <li>Confirm the amount and complete the payment.</li>
-                  </ol>
-                  <a className="btn ghost" href={AMOUNTS.find(a => a.v === amount)?.url} target="_blank" rel="noreferrer">
-                    Or open link directly ↗
-                  </a>
-                </aside>
-              </div>
-            ) : (
-              <div className="display-frame">
-                <WeTravelPanel amount={amount} onOpenExternal={() => showToast("Opening secure checkout")}/>
-              </div>
-            )}
+            <RequestLinkPanel />
           </div>
         )}
 
@@ -606,7 +709,7 @@ function Give() {
             <LotusMark size={22} color="var(--accent)"/>
             <div>
               <div className="mono" style={{color:"var(--muted)"}}>Begin when you're ready</div>
-              <div>Select one of the three methods above to continue.</div>
+              <div>Choose one of the two ways to give above to continue.</div>
             </div>
             <div className="mono empty-tag">No account · No login required</div>
           </div>
@@ -628,7 +731,7 @@ function Closing() {
         </h2>
 
         <div className="closing-foot">
-          <span className="mono">Payment gateway powered by WeTravel</span>
+          <span className="mono">Card · Apple Pay · Google Pay — via a secure payment link</span>
         </div>
       </div>
     </section>

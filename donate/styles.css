@@ -916,3 +916,42 @@ a.home-link:hover { color: var(--accent); }
   15%, 85% { opacity: 1; transform: translate(-50%, 0); }
   100% { opacity: 0; transform: translate(-50%, 10px); }
 }
+
+/* ── Payment-link request form ── */
+.methods--two { grid-template-columns: repeat(2, 1fr); max-width: 720px; margin-inline: auto; }
+@media (max-width: 640px) { .methods--two { grid-template-columns: 1fr; } }
+
+.paylink { max-width: 560px; }
+.paylink-intro { color: var(--ink-2); font-size: 15px; line-height: 1.6; margin-bottom: 22px; }
+.paylink-intro b { color: var(--ink); font-weight: 600; }
+.pl-label { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 18px 0 8px; }
+.pl-input { width: 100%; padding: 13px 15px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--ink); font-family: var(--body-font); font-size: 15px; }
+.pl-input:focus { outline: none; border-color: var(--accent); }
+.pl-amount { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 10px; background: var(--card); overflow: hidden; }
+.pl-amount:focus-within { border-color: var(--accent); }
+.pl-cur { padding: 0 4px 0 15px; font-family: var(--serif); font-size: 22px; color: var(--muted); }
+.pl-amount .pl-amt { border: none; background: transparent; font-family: var(--serif); font-size: 24px; padding: 11px 6px; -moz-appearance: textfield; }
+.pl-amount .pl-amt::-webkit-outer-spin-button, .pl-amount .pl-amt::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.pl-usd { padding: 0 15px 0 6px; color: var(--muted); }
+.pl-quick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.pl-chip { padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: transparent; font-family: var(--mono); font-size: 12px; color: var(--muted); cursor: pointer; }
+.pl-chip:hover { border-color: var(--accent); color: var(--accent); }
+.pl-chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.pl-toggle { display: flex; gap: 8px; margin-bottom: 10px; }
+.pl-tog { flex: 1; padding: 10px; border: 1px solid var(--line); border-radius: 10px; background: transparent; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; color: var(--muted); cursor: pointer; }
+.pl-tog:hover { border-color: var(--accent); color: var(--accent); }
+.pl-tog.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.pl-phone { display: flex; gap: 10px; }
+.pl-cc { flex: 0 0 44%; max-width: 210px; }
+.pl-num { flex: 1; min-width: 0; }
+.pl-err { color: var(--accent); font-size: 13px; margin-top: 14px; }
+.pl-submit { width: 100%; margin-top: 22px; background: var(--accent); border-color: var(--accent); color: #fff; justify-content: center; }
+.pl-submit:hover { background: var(--accent-2); border-color: var(--accent-2); }
+.pl-submit[disabled] { opacity: 0.6; cursor: default; }
+.pl-note { color: var(--muted); font-size: 11px; text-align: center; margin-top: 12px; letter-spacing: 0.04em; }
+.paylink-done { max-width: 560px; text-align: center; padding: 16px 0; }
+.paylink-tick { display: inline-flex; margin-bottom: 14px; }
+.paylink-done h3 { font-family: var(--serif); font-size: 26px; margin-bottom: 12px; }
+.paylink-done p { color: var(--ink-2); font-size: 15px; line-height: 1.6; margin: 0 auto 10px; max-width: 460px; }
+.paylink-done b { color: var(--ink); }
+.paylink-anumodana { color: var(--accent); margin-top: 16px; letter-spacing: 0.1em; }
