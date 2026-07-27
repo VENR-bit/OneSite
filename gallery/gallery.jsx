@@ -281,14 +281,14 @@ function Lightbox({ items, index, onClose, onPrev, onNext }) {
               {item.type === 'video' && (
                 <div className="play big"><PlayGlyph /></div>
               )}
-            </div>
-            <div className="lb-meta">
-              <div className="num">{String(index + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}</div>
-              <div className="cap">{item.caption}</div>
-              <div className="num right">
-                {item.attribution
-                  ? <span dangerouslySetInnerHTML={{ __html: item.attribution }} />
-                  : 'Photograph'}
+              <div className="lb-meta">
+                <div className="num">{String(index + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}</div>
+                <div className="cap">{item.caption}</div>
+                <div className="num right">
+                  {item.attribution
+                    ? <span dangerouslySetInnerHTML={{ __html: item.attribution }} />
+                    : 'Photograph'}
+                </div>
               </div>
             </div>
           </div>
