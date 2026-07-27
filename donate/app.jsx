@@ -63,7 +63,7 @@ const BANK_ACCOUNTS = [
 /* ──────────── payment-link request backend ──────────── */
 // Google Apps Script /exec URL. It records the request to a Google Sheet and
 // emails rideekanda@gmail.com. Empty = not wired yet (form is disabled).
-const PAYLINK_ENDPOINT = "https://script.google.com/macros/s/AKfycbwnpQmrK-mLW-TN33agu-Q3ujVDy5-n993eVgSW5Fvg1_1XUpKDs8e0olv61dTYH-AIkA/exec";
+const PAYLINK_ENDPOINT = "https://script.google.com/macros/s/AKfycby9Z6ZG-AoaIQY9l7u4LfmqwvMaIeAhaqbgl2x6vjCVbQ5_rztaEHbPfiXGj_rkZyMp-g/exec";
 
 // Sri Lanka first (default), then every country/territory, alphabetical.
 const COUNTRY_CODES = [
