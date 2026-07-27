@@ -80,7 +80,7 @@ function useLocalPhotos() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch('photos/manifest.json?v=4')
+    fetch('photos/manifest.json?v=5')
       .then((res) => res.json())
       .then((list) => {
         if (cancelled) return;
