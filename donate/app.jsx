@@ -522,7 +522,7 @@ function RequestLinkPanel() {
   const [status, setStatus] = useState("idle");       // 'idle' | 'sending' | 'done'
   const [err, setErr] = useState("");
 
-  const quick = [25, 50, 100, 250, 500];
+  const quick = [5, 10, 25, 50, 100, 250, 500];
 
   function submit(e) {
     e && e.preventDefault();
@@ -575,7 +575,7 @@ function RequestLinkPanel() {
     <form className="paylink" onSubmit={submit}>
       <p className="paylink-intro">
         Tell us how much you'd like to give and where to reach you, and we'll send you a
-        secure payment link. You can pay it with <b>Visa / Mastercard</b>, <b>Apple&nbsp;Pay</b> or
+        secure payment link. You can donate by <b>Visa / Mastercard</b>, <b>Apple&nbsp;Pay</b> or
         <b> Google&nbsp;Pay</b>.
       </p>
 
@@ -662,7 +662,7 @@ function Give() {
         <div className="methods methods--two">
           <MethodCard
             title="Request a Payment Link"
-            sub={<>We send you a secure link — pay by Visa/Mastercard, Apple Pay or Google Pay.</>}
+            sub={<>We send you a secure link — donate by Visa/Mastercard, Apple Pay or Google Pay.</>}
             kind="card"
             active={method === "request"}
             onClick={() => choose("request")}
