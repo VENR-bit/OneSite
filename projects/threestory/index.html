@@ -363,7 +363,16 @@
       font-family: var(--sans); font-size: 13px; font-weight: 600; flex: none;
     }
     .boq-dl:hover { background: rgba(250,246,236,0.12); }
-    #boqFrame { flex: 1; width: 100%; border: none; background: #525659; }
+    .boq-body {
+      flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch;
+      background: #3a3a3c; padding: 16px;
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+      padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    }
+    .boq-body img {
+      width: 100%; max-width: 900px; height: auto; display: block;
+      border-radius: 4px; box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+    }
     @media (max-width: 600px) {
       .boq-heading { font-size: 15px; }
       .boq-dl { display: none; }   /* keep the bar tidy on phones; Download is on the page */
@@ -917,7 +926,7 @@
       <span class="boq-heading">BOQ &amp; Cost Report &middot; 1st Floor Slab</span>
       <a class="boq-dl" href="1st-floor-slab-boq.pdf" download>Download</a>
     </div>
-    <iframe id="boqFrame" title="Bill of Quantities &amp; Cost Report" src="about:blank"></iframe>
+    <div class="boq-body" id="boqBody" aria-label="Bill of Quantities &amp; Cost Report pages"></div>
   </div>
 
   <!-- Floating progress panel — quick view of the slab funding -->
@@ -1077,17 +1086,26 @@
     // BOQ report viewer (in-page, with Back button)
     (function () {
       var modal = document.getElementById('boqModal');
-      var frame = document.getElementById('boqFrame');
+      var body = document.getElementById('boqBody');
       var openBtn = document.getElementById('boqView');
       var backBtn = document.getElementById('boqBack');
       if (!modal || !openBtn) return;
-      // #view=FitH tells the browser PDF viewer to fit the page to the width of
-      // the frame on open, so the report fits the screen instead of loading zoomed in.
-      var PDF = '1st-floor-slab-boq.pdf#view=FitH';
+      // Show the report as scrollable page images — an <iframe> PDF won't scroll
+      // on mobile. The Download button still serves the real PDF.
+      var PAGES = ['boq-page-1.jpg', 'boq-page-2.jpg', 'boq-page-3.jpg'];
+      var built = false;
+      function build() {
+        if (built) return;
+        body.innerHTML = PAGES.map(function (p, i) {
+          return '<img src="' + p + '" alt="BOQ & Cost Report — page ' + (i + 1) + '" decoding="async">';
+        }).join('');
+        built = true;
+      }
       function openBoq() {
-        if (frame.getAttribute('src') !== PDF) frame.setAttribute('src', PDF);
+        build();
         modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+        body.scrollTop = 0;
       }
       function closeBoq() {
         modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true');
