@@ -22,19 +22,29 @@
   var CURRENT = (tag && tag.getAttribute("data-current")) || "";
 
   // ── Kiosk idle return ───────────────────────────────────────
-  // In the installed kiosk app (PWA standalone), if a visitor wanders off the
-  // dashboard and leaves a page idle, return them to the dashboard so the next
-  // person starts fresh. Any interaction resets the timer; normal browser
-  // visitors (not standalone) are never redirected.
+  // In the installed kiosk app, if a visitor wanders off the dashboard and
+  // leaves a page idle, return them to the dashboard so the next person starts
+  // fresh. Any interaction resets the timer; normal browser visitors are never
+  // redirected.
   (function kioskIdleReturn() {
+    // Same kiosk test the QR uses: installed PWA (standalone) OR a fullscreen /
+    // minimal-ui kiosk browser, remembered via localStorage so it also works on
+    // mobile kiosks that don't report display-mode:standalone on every page.
+    var kparam = new URLSearchParams(location.search).get("kiosk");
+    var mm = window.matchMedia;
     var standalone =
-      (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
+      (mm && (mm("(display-mode: standalone)").matches ||
+              mm("(display-mode: fullscreen)").matches ||
+              mm("(display-mode: minimal-ui)").matches)) ||
       window.navigator.standalone === true;
-    if (!standalone) return;                                     // installed kiosk only
+    var remembered = false;
+    try { remembered = localStorage.getItem("rk-kiosk") === "1"; } catch (e) {}
+    var isKiosk = kparam === "1" || (kparam !== "0" && (standalone || remembered));
+    if (!isKiosk) return;                                        // installed kiosk only
     if (location.pathname.indexOf("/dashboard") !== -1) return;  // already on the dashboard
     var IDLE_MS = 120000;                                        // 2 minutes of no interaction
     var DASH = ROOT + "dashboard/";
-    var timer;
+    var timer, last = Date.now();
     function go() {
       // Don't interrupt an open media player. Audio/video plays inside a
       // cross-origin iframe (Google Drive /preview in the audio library and
@@ -45,11 +55,19 @@
       if (document.querySelector('iframe[src*="drive.google.com"], iframe[src*="youtube"], iframe[src*="youtu.be"]')) { reset(); return; }
       location.href = DASH;
     }
-    function reset() { clearTimeout(timer); timer = setTimeout(go, IDLE_MS); }
+    function reset() { last = Date.now(); clearTimeout(timer); timer = setTimeout(go, IDLE_MS); }
     ["pointerdown", "touchstart", "mousemove", "keydown", "scroll", "wheel", "click"].forEach(function (ev) {
       window.addEventListener(ev, reset, { passive: true });
     });
-    document.addEventListener("visibilitychange", function () { if (!document.hidden) reset(); });
+    // Mobile OSes throttle/pause timers when the screen sleeps or the app is
+    // backgrounded, so the 2-minute timer alone is unreliable there. When the
+    // page becomes visible again, check the elapsed time directly and return to
+    // the dashboard if it's been idle long enough.
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) return;
+      if (Date.now() - last >= IDLE_MS) go();
+      else reset();
+    });
     reset();
   })();
 
