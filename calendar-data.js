@@ -45,8 +45,7 @@ window.RK_CALENDAR = {
     { start: "2026-08-17", end: "2026-08-24", name: "7-Day Concentration & Vipassana Retreat" },
     { start: "2026-09-02", end: "2026-09-09", name: "7-Day Concentration & Vipassana Retreat" },
     { start: "2026-09-15", end: "2026-09-22", name: "7-Day Concentration & Vipassana Retreat" },
-    { start: "2026-10-02", end: "2026-10-09", name: "7-Day Concentration & Vipassana Retreat" },
-    { start: "2026-11-26", end: "2026-12-03", name: "7-Day Concentration & Vipassana Retreat" },
+    { start: "2026-10-07", end: "2026-10-14", name: "7-Day Concentration & Vipassana Retreat" },
     { start: "2026-12-07", end: "2026-12-14", name: "7-Day Concentration & Vipassana Retreat" },
 
     { start: "2027-01-16", end: "2027-01-23", name: "7-Day Concentration & Vipassana Retreat" },
