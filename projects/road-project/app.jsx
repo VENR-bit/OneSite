@@ -332,18 +332,39 @@ function VRoad({ pledges }) {
     return () => { clearTimeout(tm); window.removeEventListener("resize", measure); };
   }, []);
 
-  // Stack labels with a minimum vertical gap so neighbouring pledges don't overlap.
-  const LABEL_GAP = 24; // px between label centres
+  // Stack labels with a vertical gap so neighbouring pledges don't overlap.
+  // The gap ADAPTS: with few pledges it stays roomy, but as more names come in
+  // it squeezes them together so they all fit within the road height instead of
+  // spilling off the top. The font shrinks in step so tight rows stay legible.
+  const GAP_MAX = 24; // roomy spacing when there are only a handful of names
+  const GAP_MIN = 11; // tightest we'll normally squeeze to before shrinking type
   const labelPos = {};
-  if (roadH > 0) {
+  let labelGap = GAP_MAX;
+  if (roadH > 0 && spans.length) {
+    const sorted = spans.slice().sort((a, b) => a.mid - b.mid);
+    const n = sorted.length;
+    // Largest gap that still lets every label fit inside the road height; capped
+    // at GAP_MAX. min() shrinks it as n grows so the names pack in.
+    const fitGap = n > 1 ? roadH / (n - 1) : GAP_MAX;
+    labelGap = Math.min(GAP_MAX, fitGap);
+
+    // Bottom-up pass: keep at least labelGap between neighbouring centres. Since
+    // labelGap <= fitGap, the whole stack fits within roadH by construction.
     let last = -Infinity;
-    spans.slice().sort((a, b) => a.mid - b.mid).forEach((s) => {
+    sorted.forEach((s) => {
       let c = (s.mid / total) * roadH;
-      if (c - last < LABEL_GAP) c = last + LABEL_GAP;
+      if (c - last < labelGap) c = last + labelGap;
       labelPos[s.id] = c;
       last = c;
     });
+    // Guard: if the bottom-most natural position nudged the top past the road,
+    // pull the whole stack down so nothing spills off the top edge.
+    const overflow = labelPos[sorted[n - 1].id] - roadH;
+    if (overflow > 0) sorted.forEach((s) => { labelPos[s.id] -= overflow; });
   }
+  // Scale the label type down once the rows get tight so squeezed names don't
+  // collide vertically (kept between ~8.5px and the default 12px).
+  const labelFs = Math.max(8.5, Math.min(12, labelGap * 0.85));
 
   function locate(e) {
     const el = stageRef.current; if (!el) return;
@@ -413,7 +434,7 @@ function VRoad({ pledges }) {
             <div key={"l" + s.id}
               data-seg-id={s.id}
               className={"vlabel vlabel--pledged" + (isActive ? " is-active" : "")}
-              style={{ bottom: (roadH > 0 && labelPos[s.id] != null ? labelPos[s.id] + "px" : (s.mid / total) * 100 + "%"), transform: "translateY(50%)" + (isActive ? " scale(1.16)" : ""), animationDelay: delay + "ms" }}>
+              style={{ bottom: (roadH > 0 && labelPos[s.id] != null ? labelPos[s.id] + "px" : (s.mid / total) * 100 + "%"), transform: "translateY(50%)" + (isActive ? " scale(1.16)" : ""), fontSize: (isActive ? undefined : labelFs + "px"), animationDelay: delay + "ms" }}>
               <span><span className="vlabel__ft">{s.feet}m</span> {s.name}</span>
               <span className="vlabel__dot" />
               <span className="vlabel__tick" style={{ top: "50%" }} />
