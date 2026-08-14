@@ -390,14 +390,19 @@ function VRoad({ pledges }) {
   function clear() { setActive(null); setCaret(null); }
   function start(e) {
     const el = stageRef.current;
-    if (el && el.setPointerCapture) { try { el.setPointerCapture(e.pointerId); } catch (_) {} }
+    // Don't capture the pointer for touch — that would swallow the vertical
+    // scroll gesture the mobile road now relies on to reveal every name.
+    if (e.pointerType !== "touch" && el && el.setPointerCapture) { try { el.setPointerCapture(e.pointerId); } catch (_) {} }
     locate(e);
   }
+  // On touch, let a drag scroll the road instead of scrubbing the caret; a tap
+  // (pointerdown) still highlights its segment.
+  function move(e) { if (e.pointerType !== "touch") locate(e); }
   function leave(e) { if (!e || e.pointerType !== "touch") clear(); }
 
   return (
-    <div className="vstage" ref={stageRef}
-      onPointerDown={start} onPointerMove={locate}
+    <div className="vstage" ref={stageRef} style={{ "--vn": spans.length }}
+      onPointerDown={start} onPointerMove={move}
       onPointerCancel={clear} onPointerLeave={leave}>
       <div className="vlegend">
         <span><i className="vleg--pledged" /> {t("vleg_pledged")} <b>{fmt(pledgedFeet)}{" "}m</b></span>
