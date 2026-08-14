@@ -888,31 +888,34 @@ textarea.input { resize: vertical; min-height: 64px; }
 .lotus--mark { width: 56px; height: auto; }
 
 /* ──────────────────────────────────────────────────────────────
-   Mobile: with many pledges the road no longer crushes or clips the
-   names. The road GROWS with the number of pledges (--vn) so each name
-   keeps a readable spacing, and the road area scrolls so no name at the
-   bottom hides behind the panel edge.
+   With many pledges the road no longer crushes or clips the names.
+   The road GROWS with the number of pledges (--vn) so each name keeps a
+   readable spacing, and the road area scrolls so no name at the bottom
+   hides behind the panel edge. Applies on BOTH desktop and mobile.
      • Floating modal — fixed-height panel → the road scrolls inside it.
      • Inline in-page panel — the stage grows and the whole page scrolls.
    Placed last so it wins over the earlier `.vstage` height caps.
    ────────────────────────────────────────────────────────────── */
+.vstage { touch-action: pan-y; }
+/* Road height scales with the pledge count (~26px per name) with a floor,
+   so names sit at a comfortable spacing rather than being squeezed. */
+.vroad {
+  flex: none;
+  height: auto;
+  min-height: max(360px, calc(var(--vn, 18) * 26px + 30px));
+}
+/* Modal: the panel is a fixed height, so scroll the road area within it. */
+.pmodal__panel .vstage {
+  flex: 1 1 auto; min-height: 0; height: auto;
+  overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+/* Inline panel: let the stage grow with the road; the page scrolls. */
+.progress-inline__panel .vstage {
+  height: auto; min-height: 0; overflow: visible;
+}
+
+/* Mobile keeps its column layout tweaks (road on the left, extra padding). */
 @media (max-width: 560px){
-  .vstage { touch-action: pan-y; padding: 16px 0 24px 6px; }
-  /* Road height scales with the pledge count (~26px per name) with a floor,
-     so names sit at a comfortable spacing rather than being squeezed. */
-  .vroad {
-    flex: none;
-    height: auto;
-    min-height: max(360px, calc(var(--vn, 18) * 26px + 30px));
-  }
-  /* Modal: the panel is a fixed height, so scroll the road area within it. */
-  .pmodal__panel .vstage {
-    flex: 1 1 auto; min-height: 0; height: auto;
-    overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-  }
-  /* Inline panel: let the stage grow with the road; the page scrolls. */
-  .progress-inline__panel .vstage {
-    height: auto; min-height: 0; overflow: visible;
-  }
+  .vstage { padding: 16px 0 24px 6px; }
 }
