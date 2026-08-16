@@ -79,14 +79,15 @@ function AdminApp() {
   }, [authed]);
 
   const stats = useMemo(() => {
-    let qty = 0, value = 0, pledgedValue = 0, urgent = 0;
+    let qty = 0, value = 0, pledgedValue = 0, urgent = 0, fulfilled = 0;
     for (const it of items) {
       qty += it.qty;
       value += it.qty * it.price;
       pledgedValue += (it.pledged || 0) * it.price;
       if (it.priority === "urgent") urgent += 1;
+      if ((it.pledged || 0) >= it.qty) fulfilled += 1;
     }
-    return { qty, value, pledgedValue, urgent, count: items.length };
+    return { qty, value, pledgedValue, urgent, fulfilled, count: items.length };
   }, [items]);
 
   if (!authed) return <PasscodeGate onUnlock={() => setAuthed(true)} />;
@@ -119,6 +120,18 @@ function AdminApp() {
     const ok = await window.sbDeleteItem(id);
     if (ok) setItems(items.filter(i => i.id !== id));
     if (editingId === id) cancel();
+  }
+  // Fully pledged items drop off the public page (it filters on pledged < qty).
+  // This clears the pledged count so the item is listed publicly again — used
+  // for recurring needs (rice, oil, candles…) once the previous lot is used up.
+  // Past pledges stay on record in the `pledges` table; only the counter resets.
+  async function republish(item) {
+    const msg = `Push "${item.en}" back to the public requirements page?\n\n` +
+      `Its pledge count (${item.pledged || 0} of ${item.qty}) resets to zero, so the full ` +
+      `quantity is requested again. The record of who pledged before is kept.`;
+    if (!confirm(msg)) return;
+    const updated = await window.sbUpdateItem(item.id, { pledged: 0 });
+    if (updated) setItems(items.map(i => i.id === item.id ? updated : i));
   }
   function onPhotoPick(e) {
     const f = e.target.files && e.target.files[0];
@@ -183,6 +196,10 @@ function AdminApp() {
           <div className="stat-block">
             <div className="summary-label">Urgent flag</div>
             <div className="summary-value mono" style={{color:"var(--priority-urgent)"}}>{pad2(stats.urgent)}</div>
+          </div>
+          <div className="stat-block">
+            <div className="summary-label">Fulfilled</div>
+            <div className="summary-value mono" style={{color:"var(--priority-routine)"}}>{pad2(stats.fulfilled)}</div>
           </div>
           <div className="stat-block">
             <div className="summary-label">Total qty</div>
@@ -295,8 +312,11 @@ function AdminApp() {
               {items.length === 0 && (
                 <div className="empty" style={{padding:"40px 0"}}>No items yet. Add one using the form on the left.</div>
               )}
-              {items.map(it => (
-                <div className="admin-list-row" key={it.id}
+              {items.map(it => {
+                const pledged = it.pledged || 0;
+                const fulfilled = pledged >= it.qty;
+                return (
+                <div className={`admin-list-row${fulfilled ? " is-fulfilled" : ""}`} key={it.id}
                   style={editingId === it.id ? {background:"var(--accent-tint)", padding:"14px 12px"} : null}>
                   <div className="thumb">
                     {it.photo ? <img src={it.photo} alt="" /> : (ICONS[it.icon] || ICONS.bowl)}
@@ -304,11 +324,27 @@ function AdminApp() {
                   <div>
                     <div className="name">{it.en}</div>
                     <div className="name-si si">{it.si}</div>
-                    <div style={{display:"flex", gap:8, marginTop:4, alignItems:"center"}}>
+                    <div style={{display:"flex", gap:8, marginTop:4, alignItems:"center", flexWrap:"wrap"}}>
                       <span className={`priority-pill priority-${it.priority}`}>{it.priority === "urgent" ? "Urgent" : it.priority === "need" ? "Needed" : "Routine"}</span>
                       <span style={{fontSize:11, color:"var(--muted)", fontFeatureSettings:'"tnum"'}}>
                         · LKR {fmtLKR(it.price)} ea
                       </span>
+                      {fulfilled && <span className="priority-pill pill-fulfilled">Fulfilled</span>}
+                    </div>
+                    {/* Pledge state — and, once fulfilled, why the item is no longer
+                        on the public page plus the way to put it back. */}
+                    <div className="admin-pledge-line">
+                      <span className="mono">{pledged}/{it.qty} pledged</span>
+                      {fulfilled && <span className="off-web">· hidden from the public page</span>}
+                      {fulfilled && (
+                        <button className="btn-republish" onClick={() => republish(it)}
+                          title="Clear the pledge count so this item is listed publicly again">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 6.7 3H15" /><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-6.7-3H9" />
+                          </svg>
+                          Push back to web
+                        </button>
+                      )}
                     </div>
                   </div>
                   <div>
@@ -332,7 +368,8 @@ function AdminApp() {
                     </button>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </section>
         </div>

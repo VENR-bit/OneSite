@@ -1016,6 +1016,29 @@ footer .footer-inner {
 .admin-list-row .name-si { font-family: var(--sinhala); font-size: 12px; color: var(--muted); }
 .admin-list-row .mini-num { font-family: var(--serif); font-feature-settings: "tnum"; font-size: 16px; text-align: right; }
 .admin-list-row .mini-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); text-align: right; }
+/* Pledge state under each admin row. Once an item is fully pledged the public
+   page stops listing it, so the row says so and offers a way to put it back. */
+.admin-pledge-line {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-top: 6px; font-size: 11px; color: var(--muted);
+  font-feature-settings: "tnum";
+}
+.admin-pledge-line .off-web { color: var(--priority-routine); }
+.pill-fulfilled { background: rgba(107, 122, 85, 0.14); color: var(--priority-routine); }
+.admin-list-row.is-fulfilled .thumb { opacity: 0.6; }
+.btn-republish {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent-tint);
+  border: 1px solid var(--accent);
+  color: var(--accent-deep);
+  font-family: inherit; font-size: 10px; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 5px 10px; border-radius: 2px; cursor: pointer; white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.btn-republish:hover { background: var(--accent); color: var(--paper); }
+.btn-republish svg { width: 12px; height: 12px; flex-shrink: 0; }
+
 .admin-actions { display: flex; gap: 6px; justify-content: flex-end; }
 .icon-btn {
   background: transparent;
