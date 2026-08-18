@@ -85,10 +85,10 @@
   ];
   var PROJECTS = [
     { id: "projects",     href: "projects/",                en: "All Projects",  si: "ව්‍යාපෘති" },
-    { id: "library-cafe", href: "projects/library-cafe/",   en: "Library Café",  si: "පුස්තකාල කැෆේ" },
-    { id: "threestory",   href: "projects/threestory/",     en: "ThreeStory",    si: "තෙමහල් ගොඩනැගිල්ල" },
     { id: "road-project", href: "projects/road-project/",   en: "Road Project",  si: "මාර්ග ව්‍යාපෘතිය" },
-    { id: "requirements", href: "requirements/",            en: "Monastery Requirements", si: "ආරණ්‍ය අවශ්‍යතා" }
+    { id: "threestory",   href: "projects/threestory/",     en: "ThreeStory",    si: "තෙමහල් ගොඩනැගිල්ල" },
+    { id: "requirements", href: "requirements/",            en: "Monastery Requirements", si: "ආරණ්‍ය අවශ්‍යතා" },
+    { id: "library-cafe", href: "projects/library-cafe/",   en: "Library Café",  si: "පුස්තකාල කැෆේ" }
   ];
   // Libraries — its own labelled section near the bottom.
   var LIBRARIES = [
