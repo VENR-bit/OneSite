@@ -97,6 +97,21 @@ section[id]{scroll-margin-top:92px}
 .thanks-content p{font-family:var(--sans);font-size:16px;line-height:1.78;color:var(--ink-soft);margin:0 0 16px}
 .thanks-blessing{font-family:var(--serif)!important;font-style:italic;font-size:20px!important;color:var(--muted)!important;line-height:1.55!important;margin-top:24px!important}
 .sadhu{margin-top:28px;padding-top:26px;border-top:1px solid var(--line);font-family:var(--serif);font-size:23px;letter-spacing:.05em;color:var(--gold)}
+/* BOOKS FOR THE LIBRARY */
+.books{padding:0 28px 96px;max-width:1280px;margin:0 auto;position:relative;z-index:1}
+.books-card{position:relative;background:var(--bg-deep);border:1px solid var(--line);border-radius:22px;padding:52px 56px;box-shadow:var(--shadow-sm)}
+.books-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+.books-text h2{font-family:var(--serif);font-weight:500;font-size:clamp(30px,3.4vw,42px);line-height:1.06;letter-spacing:-.015em;margin:12px 0 18px;text-wrap:balance}
+.books-text h2 em{font-style:italic;font-weight:400;color:var(--accent)}
+.books-text p{font-family:var(--sans);font-size:15.5px;line-height:1.75;color:var(--ink-soft);margin:0 0 14px}
+.books-note{font-family:var(--serif)!important;font-style:italic;font-size:18.5px!important;color:var(--muted)!important;margin-bottom:0!important}
+.books-note strong{font-weight:500;color:var(--accent);font-style:normal}
+.books-cta{margin-top:24px}
+.books-subjects{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 26px 28px}
+.books-subjects-label{font-family:var(--sans);font-size:10.5px;letter-spacing:2.2px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:16px}
+.subject-tags{list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.subject-tags li{font-family:var(--sans);font-size:13px;font-weight:500;color:var(--ink-soft);background:var(--bg-deep);border:1px solid var(--line);border-radius:999px;padding:7px 14px}
+.subject-tags li.more{background:transparent;border-style:dashed;color:var(--muted);font-style:italic}
 
 /* LIGHTBOX */
 .lightbox{position:fixed;inset:0;background:rgba(31,26,20,.86);backdrop-filter:blur(8px);z-index:100;display:grid;place-items:center;padding:48px 24px;animation:lbfade .35s ease}
@@ -243,6 +258,12 @@ section[id]{scroll-margin-top:92px}
 .thanks-content p{font-size:15px}
 .thanks-blessing{font-size:18px!important}
 .sadhu{font-size:20px}
+.books{padding:0 18px 56px}
+.books-card{padding:32px 22px 36px}
+.books-grid{grid-template-columns:1fr;gap:26px}
+.books-text p{font-size:15px}
+.books-note{font-size:17px!important}
+.books-subjects{padding:22px}
 .g-span-8,.g-span-4,.g-span-6{grid-column:span 1}
 .gallery-grid .img-wrap{aspect-ratio:4/3!important}
 .gallery-grid .img-caption{bottom:12px;left:14px;right:14px}
@@ -327,6 +348,25 @@ section[id]{scroll-margin-top:92px}
     <div class="reveal g-span-4"><figure onclick="openLightbox(18)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(18)}"><div class="img-wrap" style="aspect-ratio:4/3"><img src="completed/approach.jpg" alt="The Approach" loading="lazy" decoding="async"><div class="img-overlay"></div><div class="img-caption"><div class="img-num">No. 10</div><div class="img-title">The Approach</div></div></div></figure></div>
     <div class="reveal g-span-4" style="transition-delay:.08s"><figure onclick="openLightbox(19)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(19)}"><div class="img-wrap" style="aspect-ratio:4/3"><img src="completed/deck-forest.jpg" alt="Held by the Forest" loading="lazy" decoding="async"><div class="img-overlay"></div><div class="img-caption"><div class="img-num">No. 11</div><div class="img-title">Held by the Forest</div></div></div></figure></div>
     <div class="reveal g-span-4" style="transition-delay:.16s"><figure onclick="openLightbox(20)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(20)}"><div class="img-wrap" style="aspect-ratio:4/3"><img src="completed/pantry-corridor.jpg" alt="Pantry and Passage" loading="lazy" decoding="async"><div class="img-overlay"></div><div class="img-caption"><div class="img-num">No. 12</div><div class="img-title">Pantry &amp; Passage</div></div></div></figure></div>
+  </div>
+</section>
+
+<!-- BOOKS FOR THE LIBRARY -->
+<section class="books" id="books">
+  <div class="reveal books-card">
+    <div class="books-grid">
+      <div class="books-text">
+        <div class="eyebrow">An open invitation</div>
+        <h2>Help us fill the <em>shelves</em>.</h2>
+        <p>The shelves are built and waiting. If you have books you would like to offer the library, they will be catalogued, cared for, and made freely available to everyone who reads here — monastics, retreatants, and visitors alike.</p>
+        <p class="books-note">Books in <strong>both Sinhala and English</strong> are equally welcome.</p>
+        <div class="books-cta"><a href="../../contact/" class="btn-primary">Offer books to the library <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      </div>
+      <div class="books-subjects">
+        <div class="books-subjects-label">Subjects we are looking for</div>
+        <ul class="subject-tags"><li>Buddhism</li><li>Psychology</li><li>Neuroscience</li><li>Mindfulness</li><li>Meditation</li><li>Mental health</li><li>Counselling</li><li>Ayurveda</li><li>Yoga</li><li>History</li><li>Sri Lankan tourism</li><li class="more">and related subjects</li></ul>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -689,7 +729,7 @@ fetch(SHEET_CSV).then(function(r){return r.text()}).then(function(csv){render(pa
 </script>
 <!-- eco-header -->
   <link rel="stylesheet" href="../../eco-header.css?v=6">
-  <script id="eco-header" src="../../eco-header.js?v=2" data-root="../../" data-links='[{"label": "Completed", "href": "#completed"}, {"label": "Vision", "href": "#about"}, {"label": "3D Model", "href": "#model"}, {"label": "Gallery", "href": "#gallery"}, {"label": "Furnishings", "href": "#furniture"}, {"label": "Video", "href": "#video"}, {"label": "Budget", "href": "#expenditure"}, {"label": "Support", "href": "../../donate/", "cta": true, "external": true}]' defer></script>
+  <script id="eco-header" src="../../eco-header.js?v=2" data-root="../../" data-links='[{"label": "Completed", "href": "#completed"}, {"label": "Donate Books", "href": "#books"}, {"label": "Vision", "href": "#about"}, {"label": "3D Model", "href": "#model"}, {"label": "Gallery", "href": "#gallery"}, {"label": "Furnishings", "href": "#furniture"}, {"label": "Video", "href": "#video"}, {"label": "Budget", "href": "#expenditure"}, {"label": "Support", "href": "../../donate/", "cta": true, "external": true}]' defer></script>
 <!-- eco-nav -->
   <link rel="stylesheet" href="../../eco-nav.css?v=10">
   <script id="eco-nav" src="../../eco-nav.js?v=22" data-root="../../" data-current="library-cafe" defer></script>
