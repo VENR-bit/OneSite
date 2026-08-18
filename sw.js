@@ -8,7 +8,7 @@
        paint from cache, refreshed in the background.
    Bump CACHE_VERSION to force clients to drop old caches.
    ────────────────────────────────────────────────────────────── */
-var CACHE_VERSION = "rk-v33";
+var CACHE_VERSION = "rk-v34";
 var CACHE = "rideekanda-" + CACHE_VERSION;
 
 // Core shell to precache so the dashboard works offline on first launch.
@@ -56,6 +56,34 @@ self.addEventListener("activate", function (e) {
   );
 });
 
+// Shown only when a page is requested that we have never cached and the
+// network is unreachable. Deliberately self-contained (no CSS/JS fetches).
+function offlineResponse() {
+  var html = '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">' +
+    '<title>Offline \u2014 Rideekanda</title><style>' +
+    'html,body{margin:0;height:100%;background:#1f1a14;color:#f3ecdb;' +
+    "font-family:system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}" +
+    'main{min-height:100%;display:flex;flex-direction:column;align-items:center;' +
+    'justify-content:center;text-align:center;padding:32px;box-sizing:border-box;gap:14px}' +
+    'h1{font-size:22px;font-weight:500;margin:0;color:#f3ecdb}' +
+    'p{margin:0;max-width:32ch;line-height:1.6;color:#9d8d72;font-size:14px}' +
+    '.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px}' +
+    'a,button{font:inherit;font-size:14px;padding:11px 20px;border-radius:999px;cursor:pointer;' +
+    'text-decoration:none;border:1px solid rgba(224,183,106,.45);background:transparent;color:#e0b76a}' +
+    'button{background:#c08a3e;border-color:#c08a3e;color:#1f1a14}' +
+    '</style></head><body><main>' +
+    '<h1>This page didn\u2019t load</h1>' +
+    '<p>The connection dropped before the page could be fetched. It hasn\u2019t been saved for offline use yet.</p>' +
+    '<div class="row"><button onclick="location.reload()">Try again</button>' +
+    '<a href="/dashboard/">Go to the dashboard</a></div>' +
+    '</main></body></html>';
+  return new Response(html, {
+    status: 503,
+    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" }
+  });
+}
+
 self.addEventListener("fetch", function (e) {
   var req = e.request;
   if (req.method !== "GET") return;
@@ -76,8 +104,14 @@ self.addEventListener("fetch", function (e) {
         }
         return res;
       }).catch(function () {
+        // Network failed. Serve a cached copy of THIS page if we have one.
+        // We must never substitute a DIFFERENT page: falling back to the
+        // dashboard here made any uncached page (e.g. /projects/library-cafe/)
+        // silently render the dashboard under the original URL, which looks
+        // exactly like "the page won't load". Show an honest offline notice
+        // instead, so a retry is one tap away once the link is back.
         return caches.match(req).then(function (hit) {
-          return hit || caches.match("dashboard/index.html") || caches.match("./");
+          return hit || offlineResponse();
         });
       })
     );
