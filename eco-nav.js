@@ -86,7 +86,7 @@
   var PROJECTS = [
     { id: "projects",     href: "projects/",                en: "All Projects",  si: "ව්‍යාපෘති" },
     { id: "road-project", href: "projects/road-project/",   en: "Road Project",  si: "මාර්ග ව්‍යාපෘතිය" },
-    { id: "threestory",   href: "projects/threestory/",     en: "ThreeStory",    si: "තෙමහල් ගොඩනැගිල්ල" },
+    { id: "threestory",   href: "projects/threestory/",     en: "ThreeStory Building", si: "තෙමහල් ගොඩනැගිල්ල" },
     { id: "requirements", href: "requirements/",            en: "Monastery Requirements", si: "ආරණ්‍ය අවශ්‍යතා" },
     { id: "library-cafe", href: "projects/library-cafe/",   en: "Library Café",  si: "පුස්තකාල කැෆේ" }
   ];
