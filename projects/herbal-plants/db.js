@@ -29,35 +29,38 @@
       });
   }
 
+  // Writes go through a security-definer function: the anon role has no
+  // rights on the table itself, so the caller gets back only its own token
+  // and nobody can read anyone else's.
   function createPledge(p) {
-    return sb.from("plant_pledges")
-      .insert({
-        plant_no: p.no || null,
-        plant_list: p.list,
-        sinhala: p.sinhala || null,
-        sinhala_script: p.script || null,
-        english: p.english || null,
-        scientific: p.scientific,
-        pledger_name: p.name,
-        contact: p.contact || null,
-        qty: p.qty || 1,
-        note: p.note || null
-      })
-      .select("id, token")
-      .single()
-      .then(function (res) {
-        if (res.error) { console.error("createPledge:", res.error.message); return null; }
-        return res.data;
-      });
+    return sb.rpc("create_plant_pledge", {
+      p_plant_no: p.no || null,
+      p_plant_list: p.list,
+      p_sinhala: p.sinhala || null,
+      p_sinhala_script: p.script || null,
+      p_english: p.english || null,
+      p_scientific: p.scientific,
+      p_name: p.name,
+      p_contact: p.contact || null,
+      p_qty: p.qty || 1,
+      p_note: p.note || null
+    }).then(function (res) {
+      if (res.error) { console.error("createPledge:", res.error.message); return null; }
+      return { token: res.data };
+    });
   }
 
-  // Upload the photo under the secret token, then let the DB verify the
-  // token and mark the pledge as awaiting approval.
+  // Upload the photo under a RANDOM name, then let the DB verify the token
+  // and link the two. The token travels in the request body, never in the
+  // public URL — a photo URL must not leak the key to its own pledge.
   function uploadPhoto(token, file) {
     var ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
     if (["jpg", "jpeg", "png", "webp", "heic"].indexOf(ext) === -1) ext = "jpg";
-    var path = "pledges/" + token + "-" + Date.now() + "." + ext;
-    return sb.storage.from(BUCKET).upload(path, file, { upsert: true, contentType: file.type || "image/jpeg" })
+    var rand = (window.crypto && window.crypto.randomUUID)
+      ? window.crypto.randomUUID()
+      : (Date.now().toString(36) + Math.random().toString(36).slice(2, 12));
+    var path = "pledges/" + rand + "." + ext;
+    return sb.storage.from(BUCKET).upload(path, file, { upsert: false, contentType: file.type || "image/jpeg" })
       .then(function (res) {
         if (res.error) throw new Error(res.error.message);
         return sb.rpc("attach_plant_photo", { p_token: token, p_path: path });
@@ -76,10 +79,10 @@
 
   // Admin: change a submitted photo's moderation state.
   function setPhotoStatus(id, status) {
-    return sb.from("plant_pledges").update({ photo_status: status }).eq("id", id)
+    return sb.rpc("set_plant_photo_status", { p_id: id, p_status: status })
       .then(function (res) {
         if (res.error) { console.error("setPhotoStatus:", res.error.message); return false; }
-        return true;
+        return res.data === true;
       });
   }
 

@@ -42,10 +42,56 @@ create or replace view public.plant_pledges_public as
          pledger_name, qty, note, photo_path, photo_status, planted_at, created_at
   from public.plant_pledges;
 
--- ── 3. Attaching a planting photo ──────────────────────────────
--- Called by the pledger's private link. Verifies the token server-side,
--- so a photo can only ever be attached to the matching pledge, and marks
--- it 'pending' so it stays hidden until the monastery approves it.
+-- ── 3. Writing — through functions only ───────────────────────
+-- The anon role gets NO direct rights on plant_pledges. Every write goes
+-- through a security-definer function, so the token can be returned to
+-- the person who just pledged without making all tokens readable.
+
+-- Create a pledge and hand back only that pledge's own token.
+create or replace function public.create_plant_pledge(
+  p_plant_no       integer,
+  p_plant_list     text,
+  p_sinhala        text,
+  p_sinhala_script text,
+  p_english        text,
+  p_scientific     text,
+  p_name           text,
+  p_contact        text,
+  p_qty            integer,
+  p_note           text
+) returns uuid
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_token uuid;
+begin
+  if coalesce(trim(p_name), '') = '' then
+    raise exception 'A name is required';
+  end if;
+  if p_plant_list not in ('programme', 'reference') then
+    raise exception 'Unknown plant list';
+  end if;
+
+  insert into public.plant_pledges
+    (plant_no, plant_list, sinhala, sinhala_script, english, scientific,
+     pledger_name, contact, qty, note)
+  values
+    (p_plant_no, p_plant_list, p_sinhala, p_sinhala_script, p_english, p_scientific,
+     left(trim(p_name), 80),
+     nullif(left(trim(coalesce(p_contact, '')), 120), ''),
+     greatest(1, least(50, coalesce(p_qty, 1))),
+     nullif(left(trim(coalesce(p_note, '')), 300), ''))
+  returning token into v_token;
+
+  return v_token;
+end;
+$$;
+
+-- Attach a planting photo. The token is verified server-side, so a photo
+-- can only ever land on the matching pledge, and it stays 'pending' until
+-- the monastery approves it.
 create or replace function public.attach_plant_photo(p_token uuid, p_path text)
 returns boolean
 language plpgsql
@@ -62,24 +108,35 @@ begin
 end;
 $$;
 
+-- Moderation, called from the admin page.
+create or replace function public.set_plant_photo_status(p_id bigint, p_status text)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if p_status not in ('pending', 'approved', 'rejected') then
+    return false;
+  end if;
+  update public.plant_pledges set photo_status = p_status where id = p_id;
+  return found;
+end;
+$$;
+
 -- ── 4. Permissions ─────────────────────────────────────────────
 alter table public.plant_pledges enable row level security;
 
--- Visitors may create a pledge, and nothing else on the base table.
-drop policy if exists "anon can pledge" on public.plant_pledges;
-create policy "anon can pledge" on public.plant_pledges
-  for insert to anon with check (true);
-
--- Moderation (approve / reject a submitted photo) from the admin page.
-drop policy if exists "anon can moderate photos" on public.plant_pledges;
-create policy "anon can moderate photos" on public.plant_pledges
-  for update to anon using (true) with check (true);
-
+-- No direct table access for visitors at all — writes go through the
+-- functions above, reads go through the token-free view.
 revoke all on public.plant_pledges from anon;
-grant insert on public.plant_pledges to anon;
-grant update (photo_status) on public.plant_pledges to anon;  -- moderation only
+drop policy if exists "anon can pledge" on public.plant_pledges;
+drop policy if exists "anon can moderate photos" on public.plant_pledges;
+
 grant select on public.plant_pledges_public to anon;
+grant execute on function public.create_plant_pledge(integer, text, text, text, text, text, text, text, integer, text) to anon;
 grant execute on function public.attach_plant_photo(uuid, text) to anon;
+grant execute on function public.set_plant_photo_status(bigint, text) to anon;
 
 -- ── 5. Photo storage ───────────────────────────────────────────
 -- A public-read bucket; uploads are named after the secret token, so
@@ -92,9 +149,11 @@ drop policy if exists "anon can upload plant photos" on storage.objects;
 create policy "anon can upload plant photos" on storage.objects
   for insert to anon with check (bucket_id = 'plant-photos');
 
+-- Deliberately NO select policy: the bucket is public, so files are served
+-- over their public URL anyway. A select policy would additionally let
+-- anyone LIST the bucket and read every filename, which Supabase warns
+-- about — and filenames should never be enumerable.
 drop policy if exists "anyone can view plant photos" on storage.objects;
-create policy "anyone can view plant photos" on storage.objects
-  for select using (bucket_id = 'plant-photos');
 
 -- ═══════════════════════════════════════════════════════════════
 --  Done. Check it worked:
