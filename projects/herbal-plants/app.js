@@ -89,7 +89,20 @@
     $("list-count").textContent = rows.length
       ? ("Showing " + Math.min(state.shown, rows.length) + " of " + rows.length)
       : "";
-    $("load-more").hidden = rows.length <= state.shown;
+    // The button pages through the current list; once everything in the
+    // planting list is on screen it turns into the door to the full flora.
+    var more = $("load-more");
+    if (rows.length > state.shown) {
+      more.hidden = false;
+      more.textContent = "Show more plants";
+      more.dataset.act = "page";
+    } else if (state.list === "programme") {
+      more.hidden = false;
+      more.textContent = "Show the full medicinal flora · " + ((LISTS.reference || []).length).toLocaleString() + " plants";
+      more.dataset.act = "next-list";
+    } else {
+      more.hidden = true;
+    }
   }
 
   function findPlant(list, no) {
@@ -284,14 +297,17 @@
   });
 
   /* ── wiring ──────────────────────────────────────────────── */
-  [].slice.call(document.querySelectorAll(".list-tab")).forEach(function (tab) {
-    tab.addEventListener("click", function () {
-      document.querySelectorAll(".list-tab").forEach(function (t) { t.classList.remove("on"); });
-      tab.classList.add("on");
-      state.list = tab.getAttribute("data-list");
-      state.shown = PAGE;
-      renderList();
+  function switchList(name) {
+    state.list = name;
+    state.shown = PAGE;
+    [].slice.call(document.querySelectorAll(".list-tab")).forEach(function (t) {
+      t.classList.toggle("on", t.getAttribute("data-list") === name);
     });
+    renderList();
+  }
+
+  [].slice.call(document.querySelectorAll(".list-tab")).forEach(function (tab) {
+    tab.addEventListener("click", function () { switchList(tab.getAttribute("data-list")); });
   });
 
   var t = null;
@@ -301,7 +317,15 @@
     t = setTimeout(function () { state.q = v; state.shown = PAGE; renderList(); }, 140);
   });
 
-  $("load-more").addEventListener("click", function () { state.shown += PAGE; renderList(); });
+  $("load-more").addEventListener("click", function () {
+    if (this.dataset.act === "next-list") {
+      switchList("reference");
+      $("lists").scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    state.shown += PAGE;
+    renderList();
+  });
 
   /* ── boot ────────────────────────────────────────────────── */
   $("tab-count-programme").textContent = (LISTS.programme || []).length + " plants";
