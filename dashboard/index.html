@@ -487,6 +487,11 @@
     .wx-grid div { display: flex; justify-content: space-between; font-size: 0.85rem; border-bottom: 1px solid var(--line); padding-bottom: 5px; }
     .wx-grid span { color: var(--muted); }
     .wx-grid b { color: var(--ink); font-weight: 600; }
+    .wx-sun { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0 2px; }
+    .wx-sun-item { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 6px; border: 1px solid var(--line); border-radius: 12px; background: color-mix(in srgb, var(--accent) 6%, transparent); }
+    .wx-sun-item svg { width: 22px; height: 22px; color: var(--accent); }
+    .wx-sun-l { font-family: 'JetBrains Mono', monospace; font-size: 8.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+    .wx-sun-item b { font-size: 0.95rem; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
     .wx-sec { font-family: 'JetBrains Mono', monospace; font-size: 8.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin: 14px 0 6px; }
     .wx-hourly { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
     .wx-hourly .h { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 36px; }
@@ -681,6 +686,18 @@
         <div><span>Wind</span><b id="wx-wind">–</b></div>
         <div><span>Rain</span><b id="wx-rain">–</b></div>
       </div>
+      <div class="wx-sun">
+        <div class="wx-sun-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v5M5.6 10.6 4.2 9.2M18.4 10.6l1.4-1.4M3 18h18M8 18a4 4 0 0 1 8 0"/><path d="m9 6 3-3 3 3"/></svg>
+          <span class="wx-sun-l">Sunrise</span>
+          <b id="wx-sunrise">&ndash;</b>
+        </div>
+        <div class="wx-sun-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V3M5.6 10.6 4.2 9.2M18.4 10.6l1.4-1.4M3 18h18M8 18a4 4 0 0 1 8 0"/><path d="m9 5 3 3 3-3"/></svg>
+          <span class="wx-sun-l">Sunset</span>
+          <b id="wx-sunset">&ndash;</b>
+        </div>
+      </div>
       <div class="wx-sec">Hourly &middot; today</div>
       <div class="wx-hourly" id="wx-hourly"></div>
       <div class="wx-sec">Next 5 days</div>
@@ -819,6 +836,14 @@
     function setIcon(el, key) { if (el) el.innerHTML = ICONS[key] || ICONS.cloud; }
     function pad(n){ return (n<10?'0':'')+n; }
     function fmtHour(h){ var ap = h < 12 ? 'AM' : 'PM'; var x = h % 12; if (x === 0) x = 12; return x + ap; }
+    // Open-Meteo returns local wall-clock strings like "2026-08-19T05:57";
+    // read them as text so no timezone conversion shifts the time.
+    function fmtClock(iso) {
+      if (!iso || iso.length < 16) return '\u2013';
+      var h = parseInt(iso.slice(11, 13), 10), m = iso.slice(14, 16);
+      var ap = h < 12 ? 'AM' : 'PM', x = h % 12; if (x === 0) x = 12;
+      return x + ':' + m + ' ' + ap;
+    }
 
     function render() {
       if (!data || !data.current) return;
@@ -835,6 +860,9 @@
       document.getElementById('wx-wind').textContent = Math.round(c.wind_speed_10m) + ' km/h';
       document.getElementById('wx-rain').textContent = (c.precipitation || 0) + ' mm';
       var d = data.daily, html = '';
+      var srEl = document.getElementById('wx-sunrise'), ssEl = document.getElementById('wx-sunset');
+      if (srEl) srEl.textContent = fmtClock(d.sunrise && d.sunrise[0]);
+      if (ssEl) ssEl.textContent = fmtClock(d.sunset && d.sunset[0]);
       for (var i = 0; i < Math.min(5, d.time.length); i++) {
         var dt = new Date(d.time[i] + 'T00:00:00');
         html += '<div class="d"><span class="dn">' + (i === 0 ? 'Today' : DOW[dt.getDay()]) + '</span>' +
@@ -869,7 +897,7 @@
       var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT + '&longitude=' + LON +
         '&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m' +
         '&hourly=temperature_2m,weather_code,is_day' +
-        '&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=5';
+        '&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto&forecast_days=5';
       fetch(url).then(function (r) { return r.json(); }).then(function (j) {
         if (!j || !j.current) return;
         data = j;
