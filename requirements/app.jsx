@@ -157,8 +157,28 @@ const SORTS = [
 
 const PRIORITY_RANK = { urgent: 0, need: 1, routine: 2 };
 
+/* Placeholder tiles shown while the requirements load. */
+function SkeletonTile() {
+  return (
+    <div className="skel-tile" aria-hidden="true">
+      <div className="skel-img" />
+      <div className="skel-body">
+        <div className="skel-line skel-title" />
+        <div className="skel-line skel-sub" />
+        <div className="skel-line skel-desc" />
+        <div className="skel-pill" />
+        <div className="skel-line skel-nums" />
+        <div className="skel-btn" />
+      </div>
+    </div>
+  );
+}
+
 function App() {
-  const [items, setItems] = useState(ITEMS);
+  // Start empty, not with the data.js demo list — seeding it here made the
+  // sample items (robes, alms bowls…) flash on screen before the real
+  // requirements arrived from Supabase. Skeletons cover the wait instead.
+  const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState("urgent");
   const [search, setSearch] = useState("");
@@ -263,12 +283,23 @@ function App() {
       </div>
 
       <main className="items">
-        {filtered.length === 0 && (
-          <div className="empty">No items match. Try clearing the search.</div>
+        {loading ? (
+          <div className="items-grid" role="status" aria-label="Loading requirements">
+            {[0,1,2,3,4,5].map((i) => <SkeletonTile key={i} />)}
+          </div>
+        ) : (
+          <React.Fragment>
+            {items.length === 0 && (
+              <div className="empty">The requirements list is being updated. Please check back shortly.</div>
+            )}
+            {items.length > 0 && filtered.length === 0 && (
+              <div className="empty">No items match. Try clearing the search.</div>
+            )}
+            <div className="items-grid">
+              {filtered.map((it) => <ItemTile key={it.id} item={it} onPledge={setPledgeFor} />)}
+            </div>
+          </React.Fragment>
         )}
-        <div className="items-grid">
-          {filtered.map((it) => <ItemTile key={it.id} item={it} onPledge={setPledgeFor} />)}
-        </div>
       </main>
 
       <footer>
@@ -285,10 +316,10 @@ function App() {
               </thead>
               <tbody>
                 <tr>
-                  <td className="mono" data-label="Items">{pad2(totals.count)}</td>
-                  <td className="mono" data-label="Total Qty">{totals.qty}</td>
-                  <td data-label="Approx. Grand Total">LKR {fmtLKR(totals.value)}</td>
-                  <td className="td-accent" data-label="Already Pledged">LKR {fmtLKR(totals.pledgedValue)}</td>
+                  <td className="mono" data-label="Items">{loading ? "—" : pad2(totals.count)}</td>
+                  <td className="mono" data-label="Total Qty">{loading ? "—" : totals.qty}</td>
+                  <td data-label="Approx. Grand Total">{loading ? "—" : <React.Fragment>LKR {fmtLKR(totals.value)}</React.Fragment>}</td>
+                  <td className="td-accent" data-label="Already Pledged">{loading ? "—" : <React.Fragment>LKR {fmtLKR(totals.pledgedValue)}</React.Fragment>}</td>
                 </tr>
               </tbody>
             </table>

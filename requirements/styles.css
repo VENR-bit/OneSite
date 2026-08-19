@@ -339,6 +339,43 @@ body::before {
   gap: 24px;
 }
 .category-block { margin-top: 36px; }
+
+/* ── LOADING SKELETONS ────────────────────────────────────── */
+/* Shown while the requirements are fetched, so the real items appear
+   without the data.js demo seed flashing first. Mirrors .item-tile. */
+.skel-tile {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.skel-img { width: 100%; aspect-ratio: 4 / 3; background: var(--accent-tint); }
+.skel-body { padding: 18px 20px 20px; }
+.skel-line { height: 11px; border-radius: 3px; background: var(--rule-soft); margin-bottom: 11px; }
+.skel-title { height: 16px; width: 70%; }
+.skel-sub { width: 42%; }
+.skel-desc { width: 90%; }
+.skel-pill { height: 16px; width: 72px; border-radius: 999px; background: var(--accent-tint); margin: 14px 0 16px; }
+.skel-nums { width: 58%; margin-bottom: 20px; }
+.skel-btn { height: 38px; border-radius: 2px; background: var(--rule-soft); }
+.skel-img, .skel-line, .skel-pill, .skel-btn { position: relative; overflow: hidden; }
+.skel-img::after, .skel-line::after, .skel-pill::after, .skel-btn::after {
+  content: "";
+  position: absolute; inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
+  animation: skelShimmer 1.5s infinite;
+}
+[data-mode="night"] .skel-img::after,
+[data-mode="night"] .skel-line::after,
+[data-mode="night"] .skel-pill::after,
+[data-mode="night"] .skel-btn::after {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.07), transparent);
+}
+@keyframes skelShimmer { 100% { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) {
+  .skel-img::after, .skel-line::after, .skel-pill::after, .skel-btn::after { animation: none; }
+}
 .category-header {
   display: flex;
   align-items: baseline;
