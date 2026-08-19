@@ -1,0 +1,308 @@
+/* ──────────────────────────────────────────────────────────────
+   Rideekanda — Herbal Plant Planting Programme
+   Public page: browse the plant lists, pledge one, and (via a private
+   link) attach the photograph once it is in the ground.
+   ────────────────────────────────────────────────────────────── */
+(function () {
+  var DB = window.RK_PLANTS_DB;
+  var LISTS = window.RK_PLANTS || { programme: [], reference: [] };
+  var PAGE = 60;                 // plants rendered per "show more" step
+
+  var state = { list: "programme", q: "", shown: PAGE, pledges: [], byPlant: {} };
+
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+  // [no, sinhala, script, english, scientific]
+  function P(row) { return { no: row[0], sinhala: row[1], script: row[2], english: row[3], scientific: row[4] }; }
+  function keyOf(p) { return (p.scientific || p.sinhala || "").toLowerCase(); }
+
+  /* ── reveal-on-scroll (same behaviour as the other project pages) ── */
+  function initReveal() {
+    var els = [].slice.call(document.querySelectorAll(".reveal"));
+    if (!("IntersectionObserver" in window)) { els.forEach(function (e) { e.classList.add("in"); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    els.forEach(function (el) {
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.92) el.classList.add("in");
+      else io.observe(el);
+    });
+  }
+
+  /* ── plant list rendering ────────────────────────────────── */
+  function matches(p, q) {
+    if (!q) return true;
+    return (p.sinhala + " " + p.script + " " + p.english + " " + p.scientific).toLowerCase().indexOf(q) !== -1;
+  }
+
+  function filtered() {
+    var q = state.q.trim().toLowerCase();
+    var rows = LISTS[state.list] || [];
+    var out = [];
+    for (var i = 0; i < rows.length; i++) {
+      var p = P(rows[i]);
+      if (matches(p, q)) out.push(p);
+    }
+    return out;
+  }
+
+  function pledgeSummary(p) {
+    var rec = state.byPlant[keyOf(p)];
+    if (!rec) return '<span class="plant-pledged none">Not yet claimed</span>';
+    var planted = rec.planted;
+    var label = planted
+      ? (planted + (planted === 1 ? " planted" : " planted"))
+      : (rec.qty + (rec.qty === 1 ? " pledged" : " pledged"));
+    return '<span class="plant-pledged">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' +
+      esc(label) + '</span>';
+  }
+
+  function renderList() {
+    var rows = filtered();
+    var grid = $("plant-grid");
+    var slice = rows.slice(0, state.shown);
+    var html = "";
+    for (var i = 0; i < slice.length; i++) {
+      var p = slice[i];
+      html += '<div class="plant-card">' +
+        '<div class="plant-no">No. ' + esc(p.no) + '</div>' +
+        (p.script ? '<div class="plant-si">' + esc(p.script) + '</div>' : '') +
+        '<div class="plant-name">' + esc(p.sinhala) + '</div>' +
+        (p.english ? '<div class="plant-en">' + esc(p.english) + '</div>' : '') +
+        (p.scientific ? '<div class="plant-sci">' + esc(p.scientific) + '</div>' : '') +
+        '<div class="plant-foot">' + pledgeSummary(p) +
+        '<button class="btn-pledge" type="button" data-pledge="' + esc(state.list) + ':' + esc(p.no) + '">Pledge</button>' +
+        '</div></div>';
+    }
+    grid.innerHTML = html;
+    $("list-empty").hidden = rows.length !== 0;
+    $("list-count").textContent = rows.length
+      ? ("Showing " + Math.min(state.shown, rows.length) + " of " + rows.length)
+      : "";
+    $("load-more").hidden = rows.length <= state.shown;
+  }
+
+  function findPlant(list, no) {
+    var rows = LISTS[list] || [];
+    for (var i = 0; i < rows.length; i++) if (String(rows[i][0]) === String(no)) return P(rows[i]);
+    return null;
+  }
+
+  /* ── pledge + planted data ───────────────────────────────── */
+  function indexPledges(rows) {
+    var by = {}, people = {}, pledged = 0, planted = 0;
+    rows.forEach(function (r) {
+      var k = (r.scientific || r.sinhala || "").toLowerCase();
+      if (!by[k]) by[k] = { qty: 0, planted: 0 };
+      by[k].qty += r.qty || 1;
+      pledged += r.qty || 1;
+      if (r.photo_status === "approved") { by[k].planted += r.qty || 1; planted += r.qty || 1; }
+      if (r.pledger_name) people[r.pledger_name.trim().toLowerCase()] = 1;
+    });
+    state.byPlant = by;
+    return { pledged: pledged, planted: planted, people: Object.keys(people).length };
+  }
+
+  function renderStats(t) {
+    var species = (LISTS.programme || []).length;
+    $("st-species").textContent = species;
+    $("st-pledged").textContent = t ? t.pledged : "0";
+    $("st-planted").textContent = t ? t.planted : "0";
+    $("st-people").textContent = t ? t.people : "0";
+    var pct = (t && t.pledged) ? Math.min(100, (t.planted / t.pledged) * 100) : 0;
+    $("st-bar").style.width = pct + "%";
+  }
+
+  function renderPlanted(rows) {
+    var done = rows.filter(function (r) { return r.photo_status === "approved" && r.photo_path; });
+    var grid = $("planted-grid"), empty = $("planted-empty");
+    if (!done.length) { grid.innerHTML = ""; empty.hidden = false; return; }
+    empty.hidden = true;
+    grid.innerHTML = done.map(function (r) {
+      return '<div class="planted-card">' +
+        '<img src="' + esc(DB.publicUrl(r.photo_path)) + '" alt="' + esc(r.sinhala || r.scientific) + '" loading="lazy" decoding="async">' +
+        '<div class="planted-body">' +
+          (r.sinhala_script ? '<div class="planted-si">' + esc(r.sinhala_script) + '</div>' : '') +
+          '<div class="planted-name">' + esc(r.sinhala || r.english || r.scientific) + '</div>' +
+          '<div class="planted-by">Planted by ' + esc(r.pledger_name) + '</div>' +
+        '</div></div>';
+    }).join("");
+  }
+
+  function loadPledges() {
+    return DB.fetchPledges().then(function (rows) {
+      if (!rows) { renderStats(null); renderList(); return; }   // backend not set up yet
+      state.pledges = rows;
+      renderStats(indexPledges(rows));
+      renderPlanted(rows);
+      renderList();
+    });
+  }
+
+  /* ── modals ──────────────────────────────────────────────── */
+  function openModal(id) { $(id).classList.add("is-open"); $(id).setAttribute("aria-hidden", "false"); document.body.style.overflow = "hidden"; }
+  function closeModal(id) { $(id).classList.remove("is-open"); $(id).setAttribute("aria-hidden", "true"); document.body.style.overflow = ""; }
+  document.addEventListener("click", function (e) {
+    var c = e.target.closest("[data-close]");
+    if (c) { closeModal(c.closest(".modal").id); }
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    [].slice.call(document.querySelectorAll(".modal.is-open")).forEach(function (m) { closeModal(m.id); });
+  });
+
+  var current = null;
+
+  function openPledge(list, no) {
+    var p = findPlant(list, no);
+    if (!p) return;
+    current = { plant: p, list: list };
+    $("pledge-form-view").hidden = false;
+    $("pledge-done-view").hidden = true;
+    $("pledge-err").hidden = true;
+    $("pl-name").value = ""; $("pl-qty").value = 1; $("pl-contact").value = ""; $("pl-note").value = "";
+    $("pledge-plant").innerHTML =
+      (p.script ? '<div class="plant-si">' + esc(p.script) + '</div>' : '') +
+      '<div class="plant-name">' + esc(p.sinhala) + '</div>' +
+      (p.english ? '<div class="plant-en">' + esc(p.english) + '</div>' : '') +
+      (p.scientific ? '<div class="plant-sci">' + esc(p.scientific) + '</div>' : '');
+    openModal("pledge-modal");
+    setTimeout(function () { $("pl-name").focus(); }, 60);
+  }
+
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-pledge]");
+    if (!b) return;
+    var parts = b.getAttribute("data-pledge").split(":");
+    openPledge(parts[0], parts[1]);
+  });
+
+  $("pl-submit").addEventListener("click", function () {
+    var name = $("pl-name").value.trim();
+    var qty = Math.max(1, Math.min(50, parseInt($("pl-qty").value, 10) || 1));
+    var err = $("pledge-err");
+    if (!name) { err.textContent = "Please tell us your name so we can record the pledge."; err.hidden = false; return; }
+    err.hidden = true;
+    var btn = this; btn.disabled = true; btn.textContent = "Recording…";
+
+    DB.createPledge({
+      no: current.plant.no, list: current.list,
+      sinhala: current.plant.sinhala, script: current.plant.script,
+      english: current.plant.english, scientific: current.plant.scientific,
+      name: name, qty: qty,
+      contact: $("pl-contact").value.trim(), note: $("pl-note").value.trim()
+    }).then(function (row) {
+      btn.disabled = false; btn.textContent = "Pledge this plant";
+      if (!row) {
+        err.textContent = "Could not save the pledge. Please check your connection and try again.";
+        err.hidden = false; return;
+      }
+      var link = location.origin + location.pathname + "?claim=" + row.token;
+      $("claim-link").textContent = link;
+      $("claim-link").href = link;
+      $("pledge-form-view").hidden = true;
+      $("pledge-done-view").hidden = false;
+      loadPledges();
+    });
+  });
+
+  $("copy-link").addEventListener("click", function () {
+    var t = $("claim-link").textContent, btn = this;
+    var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy link"; }, 1800); };
+    if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, done);
+    else done();
+  });
+
+  /* ── claim flow: ?claim=<token> ──────────────────────────── */
+  var claimFile = null;
+
+  function shrink(file) {
+    return new Promise(function (resolve) {
+      if (!/^image\//.test(file.type) || file.size < 900 * 1024) return resolve(file);
+      var img = new Image(), url = URL.createObjectURL(file);
+      img.onload = function () {
+        var max = 1600, r = Math.min(1, max / Math.max(img.width, img.height));
+        var cv = document.createElement("canvas");
+        cv.width = Math.round(img.width * r); cv.height = Math.round(img.height * r);
+        cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+        URL.revokeObjectURL(url);
+        cv.toBlob(function (b) {
+          resolve(b ? new File([b], "planted.jpg", { type: "image/jpeg" }) : file);
+        }, "image/jpeg", 0.82);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); resolve(file); };
+      img.src = url;
+    });
+  }
+
+  $("cl-file").addEventListener("change", function (e) {
+    var f = e.target.files && e.target.files[0];
+    $("cl-submit").disabled = !f;
+    if (!f) return;
+    shrink(f).then(function (out) {
+      claimFile = out;
+      var pv = $("cl-preview");
+      pv.src = URL.createObjectURL(out);
+      pv.style.display = "block";
+    });
+  });
+
+  $("cl-submit").addEventListener("click", function () {
+    var token = new URLSearchParams(location.search).get("claim");
+    var err = $("claim-err"), btn = this;
+    if (!claimFile || !token) return;
+    err.hidden = true; btn.disabled = true; btn.textContent = "Sending…";
+    DB.uploadPhoto(token, claimFile).then(function () {
+      $("claim-title").textContent = "Thank you — received.";
+      document.querySelector("#claim-modal .modal-panel").innerHTML =
+        '<button class="modal-x" type="button" aria-label="Close" data-close>&times;</button>' +
+        '<div style="text-align:center">' +
+        '<div class="ok-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>' +
+        '<h3>Thank you — received.</h3>' +
+        '<p style="color:var(--ink-soft);margin-top:8px">Your photograph has been sent to the monastery. Once a monk has looked at it, it will appear in the planting record on this page. Your pledge is complete.</p>' +
+        '</div>';
+      loadPledges();
+    }).catch(function (e) {
+      btn.disabled = false; btn.textContent = "Send photograph";
+      err.textContent = e && e.message ? e.message : "Upload failed. Please try again.";
+      err.hidden = false;
+    });
+  });
+
+  /* ── wiring ──────────────────────────────────────────────── */
+  [].slice.call(document.querySelectorAll(".list-tab")).forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      document.querySelectorAll(".list-tab").forEach(function (t) { t.classList.remove("on"); });
+      tab.classList.add("on");
+      state.list = tab.getAttribute("data-list");
+      state.shown = PAGE;
+      renderList();
+    });
+  });
+
+  var t = null;
+  $("plant-search").addEventListener("input", function (e) {
+    clearTimeout(t);
+    var v = e.target.value;
+    t = setTimeout(function () { state.q = v; state.shown = PAGE; renderList(); }, 140);
+  });
+
+  $("load-more").addEventListener("click", function () { state.shown += PAGE; renderList(); });
+
+  /* ── boot ────────────────────────────────────────────────── */
+  $("tab-count-programme").textContent = (LISTS.programme || []).length + " plants";
+  $("tab-count-reference").textContent = (LISTS.reference || []).length + " plants";
+  renderStats(null);
+  renderList();
+  initReveal();
+  loadPledges();
+
+  if (new URLSearchParams(location.search).get("claim")) {
+    openModal("claim-modal");
+  }
+})();
