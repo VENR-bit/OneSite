@@ -168,6 +168,13 @@ a { color: inherit; }
   transition: background .15s, color .15s;
 }
 .btn-pledge:hover { background: var(--accent); color: #fdfbf6; }
+.btn-pledge.is-taken {
+  background: transparent; border-color: var(--line);
+  color: var(--muted); cursor: default;
+}
+.btn-pledge.is-taken:hover { background: transparent; color: var(--muted); }
+.plant-card:has(.is-taken) { opacity: .72; }
+.plant-card:has(.is-taken):hover { transform: none; border-color: var(--line); box-shadow: var(--shadow-sm); }
 
 .more-row { text-align: center; margin-top: 28px; }
 .list-empty { text-align: center; padding: 60px 20px; color: var(--muted); font-family: var(--serif); font-style: italic; font-size: 20px; }

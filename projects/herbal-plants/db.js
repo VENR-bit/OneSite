@@ -45,7 +45,12 @@
       p_qty: p.qty || 1,
       p_note: p.note || null
     }).then(function (res) {
-      if (res.error) { console.error("createPledge:", res.error.message); return null; }
+      if (res.error) {
+        console.error("createPledge:", res.error.message);
+        // The unique index fired — someone claimed this plant first.
+        if ((res.error.message || "").indexOf("ALREADY_CLAIMED") !== -1) return { claimed: true };
+        return null;
+      }
       return { token: res.data };
     });
   }

@@ -34,6 +34,14 @@ create index if not exists plant_pledges_scientific_idx on public.plant_pledges 
 create index if not exists plant_pledges_created_idx    on public.plant_pledges (created_at desc);
 create unique index if not exists plant_pledges_token_idx on public.plant_pledges (token);
 
+-- Each plant may be claimed ONCE, and the two lists are kept separate: an
+-- entry in the planting list and the same species in the reference list are
+-- two different plants, each claimable once. A unique index (not just a UI
+-- check) is what makes this safe when two people pledge at the same moment.
+drop index if exists public.plant_pledges_one_per_species;
+create unique index if not exists plant_pledges_one_per_plant
+  on public.plant_pledges (plant_list, lower(scientific));
+
 -- ── 2. Public view — everything EXCEPT the token ───────────────
 -- The site reads this. Because a view runs with its owner's rights,
 -- visitors can read pledges without being able to read tokens.
@@ -81,11 +89,14 @@ begin
     (p_plant_no, p_plant_list, p_sinhala, p_sinhala_script, p_english, p_scientific,
      left(trim(p_name), 80),
      nullif(left(trim(coalesce(p_contact, '')), 120), ''),
-     greatest(1, least(50, coalesce(p_qty, 1))),
+     1,   -- one plant per pledge; the species is then closed to others
      nullif(left(trim(coalesce(p_note, '')), 300), ''))
   returning token into v_token;
 
   return v_token;
+exception
+  when unique_violation then
+    raise exception 'ALREADY_CLAIMED';
 end;
 $$;
 

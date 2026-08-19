@@ -18,7 +18,10 @@
   }
   // [no, sinhala, script, english, scientific]
   function P(row) { return { no: row[0], sinhala: row[1], script: row[2], english: row[3], scientific: row[4] }; }
-  function keyOf(p) { return (p.scientific || p.sinhala || "").toLowerCase(); }
+  // A plant is identified by its list AND its name — the planting list and
+  // the reference list are kept separate, so the same species can be
+  // claimed once in each.
+  function keyOf(p, list) { return (list || state.list) + "|" + (p.scientific || p.sinhala || "").toLowerCase(); }
 
   /* ── reveal-on-scroll (same behaviour as the other project pages) ── */
   function initReveal() {
@@ -50,16 +53,16 @@
     return out;
   }
 
+  function claimOf(p, list) { return state.byPlant[keyOf(p, list)] || null; }
+
   function pledgeSummary(p) {
-    var rec = state.byPlant[keyOf(p)];
+    var rec = claimOf(p);
     if (!rec) return '<span class="plant-pledged none">Not yet claimed</span>';
-    var planted = rec.planted;
-    var label = planted
-      ? (planted + (planted === 1 ? " planted" : " planted"))
-      : (rec.qty + (rec.qty === 1 ? " pledged" : " pledged"));
+    var who = rec.name ? esc(rec.name) : "someone";
+    var label = rec.planted ? ("Planted by " + who) : ("Claimed by " + who);
     return '<span class="plant-pledged">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' +
-      esc(label) + '</span>';
+      label + '</span>';
   }
 
   function renderList() {
@@ -76,7 +79,9 @@
         (p.english ? '<div class="plant-en">' + esc(p.english) + '</div>' : '') +
         (p.scientific ? '<div class="plant-sci">' + esc(p.scientific) + '</div>' : '') +
         '<div class="plant-foot">' + pledgeSummary(p) +
-        '<button class="btn-pledge" type="button" data-pledge="' + esc(state.list) + ':' + esc(p.no) + '">Pledge</button>' +
+        (claimOf(p)
+          ? '<button class="btn-pledge is-taken" type="button" disabled>Taken</button>'
+          : '<button class="btn-pledge" type="button" data-pledge="' + esc(state.list) + ':' + esc(p.no) + '">Pledge</button>') +
         '</div></div>';
     }
     grid.innerHTML = html;
@@ -97,11 +102,10 @@
   function indexPledges(rows) {
     var by = {}, people = {}, pledged = 0, planted = 0;
     rows.forEach(function (r) {
-      var k = (r.scientific || r.sinhala || "").toLowerCase();
-      if (!by[k]) by[k] = { qty: 0, planted: 0 };
-      by[k].qty += r.qty || 1;
-      pledged += r.qty || 1;
-      if (r.photo_status === "approved") { by[k].planted += r.qty || 1; planted += r.qty || 1; }
+      var k = r.plant_list + "|" + (r.scientific || r.sinhala || "").toLowerCase();
+      if (!by[k]) by[k] = { name: r.pledger_name, planted: 0 };
+      pledged += 1;
+      if (r.photo_status === "approved") { by[k].planted = 1; planted += 1; }
       if (r.pledger_name) people[r.pledger_name.trim().toLowerCase()] = 1;
     });
     state.byPlant = by;
@@ -165,7 +169,7 @@
     $("pledge-form-view").hidden = false;
     $("pledge-done-view").hidden = true;
     $("pledge-err").hidden = true;
-    $("pl-name").value = ""; $("pl-qty").value = 1; $("pl-contact").value = ""; $("pl-note").value = "";
+    $("pl-name").value = ""; $("pl-contact").value = ""; $("pl-note").value = "";
     $("pledge-plant").innerHTML =
       (p.script ? '<div class="plant-si">' + esc(p.script) + '</div>' : '') +
       '<div class="plant-name">' + esc(p.sinhala) + '</div>' +
@@ -184,7 +188,6 @@
 
   $("pl-submit").addEventListener("click", function () {
     var name = $("pl-name").value.trim();
-    var qty = Math.max(1, Math.min(50, parseInt($("pl-qty").value, 10) || 1));
     var err = $("pledge-err");
     if (!name) { err.textContent = "Please tell us your name so we can record the pledge."; err.hidden = false; return; }
     err.hidden = true;
@@ -194,10 +197,16 @@
       no: current.plant.no, list: current.list,
       sinhala: current.plant.sinhala, script: current.plant.script,
       english: current.plant.english, scientific: current.plant.scientific,
-      name: name, qty: qty,
+      name: name, qty: 1,
       contact: $("pl-contact").value.trim(), note: $("pl-note").value.trim()
     }).then(function (row) {
       btn.disabled = false; btn.textContent = "Pledge this plant";
+      if (row && row.claimed) {
+        err.textContent = "Someone claimed this plant just before you. Please choose another — the list has refreshed.";
+        err.hidden = false;
+        loadPledges();
+        return;
+      }
       if (!row) {
         err.textContent = "Could not save the pledge. Please check your connection and try again.";
         err.hidden = false; return;
