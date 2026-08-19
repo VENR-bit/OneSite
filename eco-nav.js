@@ -102,6 +102,15 @@
   var BOTTOM = [
     { id: "dashboard",   href: "dashboard/",            en: "Dashboard",           si: "උපකරණ පුවරුව" }
   ];
+  // The planting-programme admin sits beside the Dashboard, but only on a
+  // device that has already unlocked it (the flag is set when the passcode
+  // is entered). Ordinary visitors and the public kiosk never see it.
+  try {
+    if (localStorage.getItem("rk-plants-admin-device") === "1") {
+      BOTTOM.push({ id: "plants-admin", href: "projects/herbal-plants/admin.html",
+                    en: "Planting Admin", si: "රෝපණ පරිපාලනය" });
+    }
+  } catch (e) {}
 
   // Explore mark = the official Rideekanda logo, rendered via CSS mask so it
   // inherits currentColor (the accent) and themes correctly — same logo the
