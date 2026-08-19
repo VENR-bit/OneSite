@@ -74,6 +74,7 @@
     <h1>Planting approvals</h1>
     <span class="admin-sub">· photographs sent in by pledgers</span>
     <button class="mini" id="refresh" style="margin-left:auto">↺ Refresh</button>
+    <button class="mini" id="lock" title="Hide the Admin link on this device and re-lock">Lock this device</button>
   </div>
 
   <div class="admin-tabs">
@@ -157,8 +158,20 @@
   function unlock() { $("gate").hidden = true; $("shell").hidden = false; load(); }
   $("gate-form").addEventListener("submit", function (e) {
     e.preventDefault();
-    if ($("code").value === PASSCODE) { sessionStorage.setItem("rk-plants-admin", "1"); unlock(); }
-    else { $("gate-err").style.display = "block"; $("code").value = ""; }
+    if ($("code").value === PASSCODE) {
+      sessionStorage.setItem("rk-plants-admin", "1");
+      // Remembering the device is what makes the Admin link appear in the
+      // public page's menu — only here, never for ordinary visitors.
+      try { localStorage.setItem("rk-plants-admin-device", "1"); } catch (err) {}
+      unlock();
+    } else { $("gate-err").style.display = "block"; $("code").value = ""; }
+  });
+
+  // Forget this device: hides the Admin link again and re-locks.
+  $("lock").addEventListener("click", function () {
+    if (!confirm("Lock this device? The Admin link will disappear from the planting page until you enter the passcode again.")) return;
+    try { sessionStorage.removeItem("rk-plants-admin"); localStorage.removeItem("rk-plants-admin-device"); } catch (err) {}
+    location.reload();
   });
   if (sessionStorage.getItem("rk-plants-admin") === "1") unlock();
   else $("code").focus();
