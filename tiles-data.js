@@ -50,6 +50,18 @@ window.RK_TILES = [
     "icon": "list"
   },
   {
+    "id": "herbal-plants",
+    "label": "Herbal Plant Planting",
+    "sub": "Choose a medicinal plant, bring it, and plant it in the monastery grounds",
+    "url": "../projects/herbal-plants/",
+    "size": 82,
+    "ring": 2,
+    "bg": "radial-gradient(circle at 30% 25%, #3c5a30 0%, #16240f 85%)",
+    "halo": "rgba(140, 190, 110, 0.34)",
+    "fg": "#dcecc9",
+    "icon": "herbalPlant"
+  },
+  {
     "id": "library",
     "label": "Project Library Cafe",
     "sub": "Ongoing Project to build a Library Cafe in Rideekanda",

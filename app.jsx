@@ -32,6 +32,11 @@ const DEFAULT_TILES = [
     bg: 'radial-gradient(circle at 30% 25%, #6a4e26 0%, #2e1f0c 85%)',
     halo: 'rgba(204, 160, 92, 0.32)', fg: '#f0e0bd', icon: 'list' },
 
+  { id: 'herbal-plants', label: 'Herbal Plant Planting', sub: 'Choose a medicinal plant, bring it, and plant it in the monastery grounds',
+    url: '../projects/herbal-plants/', size: 82, ring: 2,
+    bg: 'radial-gradient(circle at 30% 25%, #3c5a30 0%, #16240f 85%)',
+    halo: 'rgba(140, 190, 110, 0.34)', fg: '#dcecc9', icon: 'herbalPlant' },
+
   { id: 'library', label: 'Project Library Cafe', sub: 'Ongoing Project to build a Library Cafe in Rideekanda',
     url: '../projects/library-cafe/', size: 82, ring: 2,
     bg: 'radial-gradient(circle at 30% 25%, #4a5a30 0%, #1e2812 85%)',

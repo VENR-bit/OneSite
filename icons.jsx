@@ -215,6 +215,14 @@ const Icons = {
   google: svgIcon('icon-google.svg', 'Google'),
   threeStory: svgIcon('icon-threestory.svg', 'ThreeStory Building'),
   road: svgIcon('icon-road.svg', 'Road'),
+  // Seedling — two leaves rising from a stem, for the herbal planting programme.
+  herbalPlant: ({size=32}) => (
+    <svg width={size} height={size} viewBox="-12 -12 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M0 9V-1"/>
+      <path d="M0 -1c0-5 3.4-8.8 9-9.6C9.5-4.8 6.1-1 0-1Z"/>
+      <path d="M0 3c-4.6 0-7.7-3-8.4-7.6C-3.5-3.9-0.6-1.2 0 3Z"/>
+    </svg>
+  ),
   library: svgIcon('icon-library.svg', 'Library'),
   projects: svgIcon('icon-projects.svg', 'Projects'),
 };
