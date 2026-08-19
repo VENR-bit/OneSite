@@ -176,18 +176,33 @@
 <!-- eco-header -->
 <link rel="stylesheet" href="../../eco-header.css?v=6">
 <script id="eco-header" src="../../eco-header.js?v=2" data-root="../../" data-links='[{"label": "How it works", "href": "#how"}, {"label": "The plants", "href": "#lists"}, {"label": "Planted", "href": "#planted"}, {"label": "Donate", "href": "../../donate/", "cta": true, "external": true}]' data-pad="true" defer></script>
-<!-- The Admin entry is added to the header menu only on a device that has
-     already unlocked the admin page, so it isn't advertised to visitors.
-     This runs during parsing, before the deferred eco-header script, so it
-     simply extends the link list eco-header is about to read. -->
+<!-- Admin entry in the header menu. Shown when either:
+       • this is the installed kiosk app — it has no address bar, so the link
+         is the ONLY way in, and without it the admin page is unreachable; or
+       • this device has already unlocked the admin page.
+     In an ordinary browser it stays hidden until first unlock, so it is not
+     advertised to visitors. Runs during parsing, before the deferred
+     eco-header script, so it simply extends the list eco-header will read. -->
 <script>
   (function () {
     try {
-      if (localStorage.getItem("rk-plants-admin-device") !== "1") return;
+      var unlocked = localStorage.getItem("rk-plants-admin-device") === "1";
+
+      // Same kiosk test the dashboard and eco-nav use.
+      var mm = window.matchMedia;
+      var standalone = (mm && (mm("(display-mode: standalone)").matches ||
+                               mm("(display-mode: fullscreen)").matches ||
+                               mm("(display-mode: minimal-ui)").matches)) ||
+                       window.navigator.standalone === true;
+      var remembered = localStorage.getItem("rk-kiosk") === "1";
+      var kparam = new URLSearchParams(location.search).get("kiosk");
+      var isApp = kparam === "1" || (kparam !== "0" && (standalone || remembered));
+
+      if (!unlocked && !isApp) return;
+
       var tag = document.getElementById("eco-header");
       if (!tag) return;
       var links = JSON.parse(tag.getAttribute("data-links") || "[]");
-      // slot it in just before the Donate call-to-action
       var at = links.length;
       for (var i = 0; i < links.length; i++) if (links[i].cta) { at = i; break; }
       links.splice(at, 0, { label: "Admin", href: "admin.html" });
