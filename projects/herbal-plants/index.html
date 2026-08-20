@@ -38,6 +38,10 @@
     padding-top: 12px; border-top: 1px solid var(--line); margin-top: 20px;
   }
   @media (max-width: 560px) { .hero-body p { font-size: 15px; line-height: 1.9; } }
+  /* The prose column was removed, so the four steps take the full width. */
+  .about-grid { grid-template-columns: 1fr; gap: 0; }
+  .steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
   .lang-switch {
     display: inline-flex; align-items: center; gap: 7px;
     margin-top: 18px; padding: 8px 16px; border-radius: 999px;
@@ -90,14 +94,10 @@
 
 <!-- ══════════ වැඩසටහන ══════════ -->
 <section class="about" id="how">
+  <div class="section-heading reveal" style="margin-bottom:34px">
+    <div class="eyebrow">වැඩසටහන</div>
+  </div>
   <div class="about-grid">
-    <div class="about-text">
-      <div class="reveal"><div class="eyebrow">වැඩසටහන</div></div>
-      <div class="reveal" style="transition-delay:.06s"><h2>නැවත <em>වැඩෙන ඖෂධ</em>.</h2></div>
-      <div class="reveal" style="transition-delay:.12s"><p>ශ්‍රී ලංකාවේ වනාන්තර තුළ අසාමාන්‍ය ඖෂධ සම්භාරයක් ඇත — වසර දෙදහසක් තිස්සේ උණ, තුවාල හා නින්ද නොයාම සුව කළ ගස් හා පැළෑටි. ඉන් බොහොමයක් වනයේ දුර්ලභ වෙමින් පවතී.</p></div>
-      <div class="reveal" style="transition-delay:.16s"><p>ආරණ්‍යය සිය බෑවුම් හා විවෘත බිම් ඒවා නැවත වගා කිරීමට වෙන් කරමින් සිටී: මංපෙත් සෙවණ කරන, පක්ෂීන්ට ආහාර සපයන, ආරණ්‍යයේ ආයුර්වේද අවශ්‍යතා සපුරන, එමෙන්ම මෙහි ඇවිදින ඕනෑම කෙනෙකුට මෙම පැළ මොනවාද, ඒවා කරන්නේ කුමක්ද යන්න උගන්වන ජීවමාන එකතුවක්.</p></div>
-      <div class="reveal" style="transition-delay:.2s"><p>මෙහි සෑම පැළයක්ම යමෙකු විසින් රැගෙන එනු ලැබේ. තොග වශයෙන් මිලදී ගැනීමක් නොවේ, කොන්ත්‍රාත්කරුවන් විසින් රෝපණය කිරීමක් නොවේ — අමුත්තෙකු, පවුලක්, භාවනා කණ්ඩායමක් විසින් කන්ද නැගගෙන ඇවිත්, අතින්ම රෝපණය කරනු ලැබේ.</p></div>
-    </div>
     <div class="steps">
       <div class="reveal step"><div class="step-n">1</div><div><div class="step-t">ඔබේ පැළය තෝරන්න</div><div class="step-d">පහත රෝපණ ලැයිස්තුවෙන් — නැතහොත් සම්පූර්ණ ඖෂධශාක ලැයිස්තුවෙන් තෝරන්න. සිංහල, ඉංග්‍රීසි හෝ විද්‍යාත්මක නමින් සොයන්න.</div></div></div>
       <div class="reveal step" style="transition-delay:.08s"><div class="step-n">2</div><div><div class="step-t">ඔබේ නමින් වෙන් කරන්න</div><div class="step-d">පැළය එන බව අපි දැනගෙන, එකම පැළය දෙවරක් නොවන පරිදි ඔබේ නම සඳහන් කරන්න. ඔබට පෞද්ගලික සබැඳියක් ලැබේ.</div></div></div>
