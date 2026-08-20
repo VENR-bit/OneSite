@@ -26,6 +26,18 @@
   .section-heading h2, .about-text h2 { font-size: clamp(25px, 3.4vw, 40px); line-height: 1.4; }
   .hero-kicker, .section-heading .kicker, .closing-verse { font-style: normal; line-height: 1.75; }
   .plant-sci { font-family: var(--serif); font-style: italic; }   /* botanical names stay Latin */
+  /* The hero now carries a few paragraphs of Sinhala rather than one lede. */
+  .hero-body { max-width: 760px; margin: 0 auto 26px; text-align: left; }
+  .hero-body p {
+    font-family: var(--sinhala); font-size: clamp(15px, 1.5vw, 17.5px);
+    line-height: 1.95; color: var(--ink-soft); margin-bottom: 15px;
+  }
+  .hero-body p:last-child { margin-bottom: 0; }
+  .hero-body .hero-call {
+    color: var(--accent); font-weight: 600;
+    padding-top: 12px; border-top: 1px solid var(--line); margin-top: 20px;
+  }
+  @media (max-width: 560px) { .hero-body p { font-size: 15px; line-height: 1.9; } }
   .lang-switch {
     display: inline-flex; align-items: center; gap: 7px;
     margin-top: 18px; padding: 8px 16px; border-radius: 999px;
@@ -43,13 +55,14 @@
 <section class="hero" id="top">
   <div class="reveal">
     <img class="hero-lotus" src="../../library-cafe/lotus.png" alt="" />
-    <div class="eyebrow">ජීවමාන පූජාවක්</div>
   </div>
   <div class="reveal" style="transition-delay:.1s">
     <h1>වනයේ <em>ඖෂධ පැළයක්</em><br>රෝපණය කරන්න.</h1>
   </div>
-  <div class="reveal" style="transition-delay:.24s">
-    <p class="hero-kicker">රිදීකන්ද කන්දේ බෑවුම් නැවතත් ශ්‍රී ලංකාවේ ඖෂධීය ගස් හා පැළ වලින් සරසමින් තිබේ. පැළයක් තෝරන්න, එය රැගෙන එන්න, ඔබේම අතින් පොළොවේ රෝපණය කරන්න — ඔබ ගිය පසුත් එය මෙහි වැඩෙමින් පවතී.</p>
+  <div class="reveal hero-body" style="transition-delay:.24s">
+    <p>රිදීකන්ද ආරණ්‍ය සේනාසනය මගින් ක්‍රියාත්මක කෙරෙන ඖෂද පැල රෝපණ වැඩසටහන තුලින් ශ්‍රී ලංකාවේ වැවෙන ඖෂධීය ගුණයෙන් යුක්ත වටිනා සහ දුර්ලභ ඖෂද පැල සංරක්ෂණය කිරීමටත්, එමගින් වඳවී යන එම ශාක ආරක්ෂා කිරීමටත් මෙමගින් බලාපොරත්තු වේ. එලෙසෙම, පඬු චීවර සැකසීමේදී අවශ්‍ය වන ශාක සහ ඖෂද පැල කිරීම තුලින් චීවර සැකසීමේ දී මෙය පහසුවෙන් ආරණ්‍ය තුලම සොයා ගත හැකිවේ.</p>
+    <p>අනාගත පරපුරට ඖෂද පිළිබඳ දැනුවත් භාවයක් ලබා ගැනීමටත්, අවශ්‍ය වූ ඕනෑම වෙලාවක පහසුවෙන් සොයා ගැනීමත් මෙම ඖෂද පැල රෝපණ වැඩසටහන වැදගත් වේ.</p>
+    <p class="hero-call">පහත ලැයුස්තුවේ ඇති ඖෂද තෝරන්න, රැගෙනවිත් සිටවන්න.</p>
   </div>
   <div class="reveal hero-cta" style="transition-delay:.32s">
     <a href="#lists" class="btn-primary">රැගෙන එන පැළය තෝරන්න
