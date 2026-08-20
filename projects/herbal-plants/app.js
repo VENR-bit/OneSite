@@ -36,7 +36,7 @@
       uploadFail:  "Upload failed. Please try again.",
       badLink:     "That link is not valid. Please check you copied all of it.",
       no:          "No. ",
-      nPlants:     function (n) { return n + " plants"; },
+      nPlants:     function (n) { return Number(n).toLocaleString() + " plants"; },
       listProgramme: "Planting list",
       listReference: "Medicinal flora",
       searchingBoth: "Searching both lists"
@@ -64,7 +64,7 @@
       uploadFail:  "උඩුගත කිරීම අසාර්ථක විය. කරුණාකර නැවත උත්සාහ කරන්න.",
       badLink:     "එම සබැඳිය වලංගු නොවේ. ඔබ එය සම්පූර්ණයෙන් පිටපත් කළාදැයි පරීක්ෂා කරන්න.",
       no:          "අංක ",
-      nPlants:     function (n) { return "පැළ " + n + " ක්"; },
+      nPlants:     function (n) { return "පැළ " + Number(n).toLocaleString() + " ක්"; },
       listProgramme: "රෝපණ ලැයිස්තුව",
       listReference: "ඖෂධශාක ලැයිස්තුව",
       searchingBoth: "ලැයිස්තු දෙකෙහිම සොයයි"
