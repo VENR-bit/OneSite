@@ -17,6 +17,8 @@ record on the page and the pledge is complete.
 | `app.js` | Page behaviour: browse, search, pledge, photo upload. Holds the Sinhala/English wording table, keyed off `<html lang>` — both pages share this one script |
 | `admin.html` | Passcode-gated page for approving submitted photos |
 | `supabase-setup.sql` | **Run this once** to create the database |
+| `rideekanda-herbal-plants.pdf` | Downloadable list of all 1,405 plants, linked from both pages' menus |
+| `tools/` | Generator for that PDF — see the header of `build-pdf.py` |
 
 ## The plant lists
 
@@ -83,3 +85,10 @@ markup differs, and the interface wording comes from the `STR` table in
 or the two will drift apart.
 
 Pledges are shared: a plant claimed on either page shows as claimed on both.
+
+## Rebuilding the PDF
+
+`rideekanda-herbal-plants.pdf` is generated from `plants-data.js`, so it must be
+rebuilt whenever the lists change — see the instructions at the top of
+`tools/build-pdf.py`. It is rendered with headless Chrome rather than a Python
+PDF library because Chrome shapes Sinhala correctly using the system font.
