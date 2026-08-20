@@ -85,6 +85,15 @@ a { color: inherit; }
   color: var(--muted); max-width: 620px; margin: 0 auto 28px; line-height: 1.55;
 }
 .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.lang-switch {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-top: 18px; padding: 8px 16px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--card);
+  font-family: var(--sans); font-size: 13px; font-weight: 600;
+  color: var(--ink-soft); text-decoration: none;
+  transition: border-color .15s, color .15s;
+}
+.lang-switch:hover { border-color: var(--accent-soft); color: var(--accent); }
 
 /* ── PROGRESS STATS ───────────────────────────────────────── */
 .stats { max-width: 1000px; margin: 0 auto; padding: 0 28px clamp(48px, 7vw, 88px); }

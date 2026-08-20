@@ -10,6 +10,62 @@
 
   var state = { list: "programme", q: "", shown: PAGE, pledges: [], byPlant: {} };
 
+  /* ── Wording. The Sinhala page under /si/ sets <html lang="si">; both
+        pages share this one script. ────────────────────────────────── */
+  var STR = {
+    en: {
+      unclaimed:   "Not yet claimed",
+      claimedBy:   function (n) { return "Claimed by " + n; },
+      plantedBy:   function (n) { return "Planted by " + n; },
+      pledge:      "Pledge",
+      taken:       "Taken",
+      showing:     function (a, b) { return "Showing " + a + " of " + b; },
+      moreInList:  "Show more plants",
+      nextList:    function (n) { return "Show the full medicinal flora · " + n + " plants"; },
+      needName:    "Please tell us your name so we can record the pledge.",
+      recording:   "Recording…",
+      pledgeBtn:   "Pledge this plant",
+      raceLost:    "Someone claimed this plant just before you. Please choose another — the list has refreshed.",
+      saveFailed:  "Could not save the pledge. Please check your connection and try again.",
+      copied:      "Copied",
+      copyLink:    "Copy link",
+      sending:     "Sending…",
+      sendPhoto:   "Send photograph",
+      thanksTitle: "Thank you — received.",
+      thanksBody:  "Your photograph has been sent to the monastery. Once a monk has looked at it, it will appear in the planting record on this page. Your pledge is complete.",
+      uploadFail:  "Upload failed. Please try again.",
+      badLink:     "That link is not valid. Please check you copied all of it.",
+      no:          "No. ",
+      nPlants:     function (n) { return n + " plants"; }
+    },
+    si: {
+      unclaimed:   "තවම වෙන් කර නැත",
+      claimedBy:   function (n) { return n + " විසින් වෙන් කර ඇත"; },
+      plantedBy:   function (n) { return n + " විසින් රෝපණය කර ඇත"; },
+      pledge:      "වෙන් කරන්න",
+      taken:       "වෙන් කර ඇත",
+      showing:     function (a, b) { return b + " කින් " + a + " ක් පෙන්වයි"; },
+      moreInList:  "තවත් පැළ පෙන්වන්න",
+      nextList:    function (n) { return "සම්පූර්ණ ඖෂධශාක ලැයිස්තුව · පැළ " + n + " ක්"; },
+      needName:    "වෙන් කිරීම සටහන් කිරීමට ඔබගේ නම සඳහන් කරන්න.",
+      recording:   "සටහන් කරමින්…",
+      pledgeBtn:   "මෙම පැළය වෙන් කරන්න",
+      raceLost:    "ඔබට පෙර වෙනත් අයෙක් මෙම පැළය වෙන් කර ගෙන ඇත. කරුණාකර වෙනත් පැළයක් තෝරන්න — ලැයිස්තුව යාවත්කාලීන කර ඇත.",
+      saveFailed:  "වෙන් කිරීම සුරැකීමට නොහැකි විය. ඔබගේ සම්බන්ධතාවය පරීක්ෂා කර නැවත උත්සාහ කරන්න.",
+      copied:      "පිටපත් විය",
+      copyLink:    "සබැඳිය පිටපත් කරන්න",
+      sending:     "යවමින්…",
+      sendPhoto:   "ඡායාරූපය යවන්න",
+      thanksTitle: "ස්තූතියි — ලැබුණි.",
+      thanksBody:  "ඔබගේ ඡායාරූපය ආරණ්‍යයට යවා ඇත. භික්ෂූන් වහන්සේ නමක් එය පරීක්ෂා කළ පසු, එය මෙම පිටුවේ රෝපණ වාර්තාවට එකතු වේ. ඔබගේ වෙන් කිරීම සම්පූර්ණයි.",
+      uploadFail:  "උඩුගත කිරීම අසාර්ථක විය. කරුණාකර නැවත උත්සාහ කරන්න.",
+      badLink:     "එම සබැඳිය වලංගු නොවේ. ඔබ එය සම්පූර්ණයෙන් පිටපත් කළාදැයි පරීක්ෂා කරන්න.",
+      no:          "අංක ",
+      nPlants:     function (n) { return "පැළ " + n + " ක්"; }
+    }
+  };
+  var L = STR[(document.documentElement.lang || "en").slice(0, 2) === "si" ? "si" : "en"];
+
   var $ = function (id) { return document.getElementById(id); };
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
@@ -57,9 +113,9 @@
 
   function pledgeSummary(p) {
     var rec = claimOf(p);
-    if (!rec) return '<span class="plant-pledged none">Not yet claimed</span>';
+    if (!rec) return '<span class="plant-pledged none">' + L.unclaimed + '</span>';
     var who = rec.name ? esc(rec.name) : "someone";
-    var label = rec.planted ? ("Planted by " + who) : ("Claimed by " + who);
+    var label = rec.planted ? L.plantedBy(who) : L.claimedBy(who);
     return '<span class="plant-pledged">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' +
       label + '</span>';
@@ -73,32 +129,32 @@
     for (var i = 0; i < slice.length; i++) {
       var p = slice[i];
       html += '<div class="plant-card">' +
-        '<div class="plant-no">No. ' + esc(p.no) + '</div>' +
+        '<div class="plant-no">' + L.no + esc(p.no) + '</div>' +
         (p.script ? '<div class="plant-si">' + esc(p.script) + '</div>' : '') +
         '<div class="plant-name">' + esc(p.sinhala) + '</div>' +
         (p.english ? '<div class="plant-en">' + esc(p.english) + '</div>' : '') +
         (p.scientific ? '<div class="plant-sci">' + esc(p.scientific) + '</div>' : '') +
         '<div class="plant-foot">' + pledgeSummary(p) +
         (claimOf(p)
-          ? '<button class="btn-pledge is-taken" type="button" disabled>Taken</button>'
-          : '<button class="btn-pledge" type="button" data-pledge="' + esc(state.list) + ':' + esc(p.no) + '">Pledge</button>') +
+          ? '<button class="btn-pledge is-taken" type="button" disabled>' + L.taken + '</button>'
+          : '<button class="btn-pledge" type="button" data-pledge="' + esc(state.list) + ':' + esc(p.no) + '">' + L.pledge + '</button>') +
         '</div></div>';
     }
     grid.innerHTML = html;
     $("list-empty").hidden = rows.length !== 0;
     $("list-count").textContent = rows.length
-      ? ("Showing " + Math.min(state.shown, rows.length) + " of " + rows.length)
+      ? L.showing(Math.min(state.shown, rows.length), rows.length)
       : "";
     // The button pages through the current list; once everything in the
     // planting list is on screen it turns into the door to the full flora.
     var more = $("load-more");
     if (rows.length > state.shown) {
       more.hidden = false;
-      more.textContent = "Show more plants";
+      more.textContent = L.moreInList;
       more.dataset.act = "page";
     } else if (state.list === "programme") {
       more.hidden = false;
-      more.textContent = "Show the full medicinal flora · " + ((LISTS.reference || []).length).toLocaleString() + " plants";
+      more.textContent = L.nextList(((LISTS.reference || []).length).toLocaleString());
       more.dataset.act = "next-list";
     } else {
       more.hidden = true;
@@ -146,7 +202,7 @@
         '<div class="planted-body">' +
           (r.sinhala_script ? '<div class="planted-si">' + esc(r.sinhala_script) + '</div>' : '') +
           '<div class="planted-name">' + esc(r.sinhala || r.english || r.scientific) + '</div>' +
-          '<div class="planted-by">Planted by ' + esc(r.pledger_name) + '</div>' +
+          '<div class="planted-by">' + L.plantedBy(esc(r.pledger_name)) + '</div>' +
         '</div></div>';
     }).join("");
   }
@@ -202,9 +258,9 @@
   $("pl-submit").addEventListener("click", function () {
     var name = $("pl-name").value.trim();
     var err = $("pledge-err");
-    if (!name) { err.textContent = "Please tell us your name so we can record the pledge."; err.hidden = false; return; }
+    if (!name) { err.textContent = L.needName; err.hidden = false; return; }
     err.hidden = true;
-    var btn = this; btn.disabled = true; btn.textContent = "Recording…";
+    var btn = this; btn.disabled = true; btn.textContent = L.recording;
 
     DB.createPledge({
       no: current.plant.no, list: current.list,
@@ -213,15 +269,15 @@
       name: name, qty: 1,
       contact: $("pl-contact").value.trim(), note: $("pl-note").value.trim()
     }).then(function (row) {
-      btn.disabled = false; btn.textContent = "Pledge this plant";
+      btn.disabled = false; btn.textContent = L.pledgeBtn;
       if (row && row.claimed) {
-        err.textContent = "Someone claimed this plant just before you. Please choose another — the list has refreshed.";
+        err.textContent = L.raceLost;
         err.hidden = false;
         loadPledges();
         return;
       }
       if (!row) {
-        err.textContent = "Could not save the pledge. Please check your connection and try again.";
+        err.textContent = L.saveFailed;
         err.hidden = false; return;
       }
       var link = location.origin + location.pathname + "?claim=" + row.token;
@@ -235,7 +291,7 @@
 
   $("copy-link").addEventListener("click", function () {
     var t = $("claim-link").textContent, btn = this;
-    var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy link"; }, 1800); };
+    var done = function () { btn.textContent = L.copied; setTimeout(function () { btn.textContent = L.copyLink; }, 1800); };
     if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, done);
     else done();
   });
@@ -278,20 +334,20 @@
     var token = new URLSearchParams(location.search).get("claim");
     var err = $("claim-err"), btn = this;
     if (!claimFile || !token) return;
-    err.hidden = true; btn.disabled = true; btn.textContent = "Sending…";
+    err.hidden = true; btn.disabled = true; btn.textContent = L.sending;
     DB.uploadPhoto(token, claimFile).then(function () {
-      $("claim-title").textContent = "Thank you — received.";
+      $("claim-title").textContent = L.thanksTitle;
       document.querySelector("#claim-modal .modal-panel").innerHTML =
         '<button class="modal-x" type="button" aria-label="Close" data-close>&times;</button>' +
         '<div style="text-align:center">' +
         '<div class="ok-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>' +
-        '<h3>Thank you — received.</h3>' +
-        '<p style="color:var(--ink-soft);margin-top:8px">Your photograph has been sent to the monastery. Once a monk has looked at it, it will appear in the planting record on this page. Your pledge is complete.</p>' +
+        '<h3>' + L.thanksTitle + '</h3>' +
+        '<p style="color:var(--ink-soft);margin-top:8px">' + L.thanksBody + '</p>' +
         '</div>';
       loadPledges();
     }).catch(function (e) {
-      btn.disabled = false; btn.textContent = "Send photograph";
-      err.textContent = e && e.message ? e.message : "Upload failed. Please try again.";
+      btn.disabled = false; btn.textContent = L.sendPhoto;
+      err.textContent = (e && e.message && e.message.indexOf("not valid") !== -1) ? L.badLink : (e && e.message ? e.message : L.uploadFail);
       err.hidden = false;
     });
   });
@@ -328,8 +384,8 @@
   });
 
   /* ── boot ────────────────────────────────────────────────── */
-  $("tab-count-programme").textContent = (LISTS.programme || []).length + " plants";
-  $("tab-count-reference").textContent = (LISTS.reference || []).length + " plants";
+  $("tab-count-programme").textContent = L.nPlants((LISTS.programme || []).length);
+  $("tab-count-reference").textContent = L.nPlants((LISTS.reference || []).length);
   renderStats(null);
   renderList();
   initReveal();
