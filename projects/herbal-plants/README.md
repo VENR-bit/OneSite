@@ -8,11 +8,13 @@ record on the page and the pledge is complete.
 
 | File | Purpose |
 |---|---|
-| `index.html` | The public page — hero, how it works, plant lists, planting record |
+| `index.html` | The public page, **in Sinhala** — this is the default |
+| `en/index.html` | The same page in English |
+| `si/index.html` | Redirect to the root, kept so links shared while the Sinhala page lived at `/si/` still work (it preserves `?claim=` tokens) |
 | `styles.css` | All styling (paper palette, forest-green accent) |
 | `plants-data.js` | Both plant lists, transcribed from the monastery's Google Sheet |
 | `db.js` | Supabase access layer, shared by the page and the admin |
-| `app.js` | Page behaviour: browse, search, pledge, photo upload |
+| `app.js` | Page behaviour: browse, search, pledge, photo upload. Holds the Sinhala/English wording table, keyed off `<html lang>` — both pages share this one script |
 | `admin.html` | Passcode-gated page for approving submitted photos |
 | `supabase-setup.sql` | **Run this once** to create the database |
 
@@ -71,3 +73,13 @@ Pledger **name** and any **note** are public. **Contact details are never shown*
 on the page — they are stored so the monastery can reach the pledger, and the
 public view deliberately excludes the token so nobody can hijack another
 person's pledge.
+
+## Languages
+
+Sinhala is the default at `/projects/herbal-plants/`; English lives at
+`/en/`. Both pages share `app.js`, `db.js` and `plants-data.js` — only the
+markup differs, and the interface wording comes from the `STR` table in
+`app.js` selected by `<html lang>`. Add a string there, not in the markup,
+or the two will drift apart.
+
+Pledges are shared: a plant claimed on either page shows as claimed on both.
