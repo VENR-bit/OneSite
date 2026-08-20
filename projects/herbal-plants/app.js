@@ -182,8 +182,10 @@
   }
 
   function renderStats(t) {
-    var species = (LISTS.programme || []).length;
-    $("st-species").textContent = species;
+    // Both lists together — they are kept separate, and each entry is
+    // claimable once, so the two counts add up rather than merge.
+    var species = (LISTS.programme || []).length + (LISTS.reference || []).length;
+    $("st-species").textContent = species.toLocaleString();
     $("st-pledged").textContent = t ? t.pledged : "0";
     $("st-planted").textContent = t ? t.planted : "0";
     $("st-people").textContent = t ? t.people : "0";
