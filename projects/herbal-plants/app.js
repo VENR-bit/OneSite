@@ -36,7 +36,10 @@
       uploadFail:  "Upload failed. Please try again.",
       badLink:     "That link is not valid. Please check you copied all of it.",
       no:          "No. ",
-      nPlants:     function (n) { return n + " plants"; }
+      nPlants:     function (n) { return n + " plants"; },
+      listProgramme: "Planting list",
+      listReference: "Medicinal flora",
+      searchingBoth: "Searching both lists"
     },
     si: {
       unclaimed:   "තවම වෙන් කර නැත",
@@ -61,7 +64,10 @@
       uploadFail:  "උඩුගත කිරීම අසාර්ථක විය. කරුණාකර නැවත උත්සාහ කරන්න.",
       badLink:     "එම සබැඳිය වලංගු නොවේ. ඔබ එය සම්පූර්ණයෙන් පිටපත් කළාදැයි පරීක්ෂා කරන්න.",
       no:          "අංක ",
-      nPlants:     function (n) { return "පැළ " + n + " ක්"; }
+      nPlants:     function (n) { return "පැළ " + n + " ක්"; },
+      listProgramme: "රෝපණ ලැයිස්තුව",
+      listReference: "ඖෂධශාක ලැයිස්තුව",
+      searchingBoth: "ලැයිස්තු දෙකෙහිම සොයයි"
     }
   };
   var L = STR[(document.documentElement.lang || "en").slice(0, 2) === "si" ? "si" : "en"];
@@ -98,21 +104,32 @@
     return (p.sinhala + " " + p.script + " " + p.english + " " + p.scientific).toLowerCase().indexOf(q) !== -1;
   }
 
+  // Searching looks through BOTH lists — someone hunting for a plant should
+  // not have to guess which list it lives in. Each result carries its own
+  // list, because the same species in the two lists is two separate claims.
+  // With no search term we show just the list whose tab is open.
+  function searching() { return state.q.trim().length > 0; }
+
   function filtered() {
     var q = state.q.trim().toLowerCase();
-    var rows = LISTS[state.list] || [];
+    var names = searching() ? ["programme", "reference"] : [state.list];
     var out = [];
-    for (var i = 0; i < rows.length; i++) {
-      var p = P(rows[i]);
-      if (matches(p, q)) out.push(p);
+    for (var n = 0; n < names.length; n++) {
+      var name = names[n], rows = LISTS[name] || [];
+      for (var i = 0; i < rows.length; i++) {
+        var p = P(rows[i]);
+        if (matches(p, q)) { p.list = name; out.push(p); }
+      }
     }
     return out;
   }
 
+  function listLabel(name) { return name === "reference" ? L.listReference : L.listProgramme; }
+
   function claimOf(p, list) { return state.byPlant[keyOf(p, list)] || null; }
 
-  function pledgeSummary(p) {
-    var rec = claimOf(p);
+  function pledgeSummary(p, list) {
+    var rec = claimOf(p, list);
     if (!rec) return '<span class="plant-pledged none">' + L.unclaimed + '</span>';
     var who = rec.name ? esc(rec.name) : "someone";
     var label = rec.planted ? L.plantedBy(who) : L.claimedBy(who);
@@ -128,22 +145,28 @@
     var html = "";
     for (var i = 0; i < slice.length; i++) {
       var p = slice[i];
+      var lst = p.list || state.list;
       html += '<div class="plant-card">' +
-        '<div class="plant-no">' + L.no + esc(p.no) + '</div>' +
+        '<div class="plant-head">' +
+          '<span class="plant-no">' + L.no + esc(p.no) + '</span>' +
+          (searching() ? '<span class="plant-list-tag' + (lst === "reference" ? " ref" : "") + '">' +
+                         esc(listLabel(lst)) + '</span>' : '') +
+        '</div>' +
         (p.script ? '<div class="plant-si">' + esc(p.script) + '</div>' : '') +
         '<div class="plant-name">' + esc(p.sinhala) + '</div>' +
         (p.english ? '<div class="plant-en">' + esc(p.english) + '</div>' : '') +
         (p.scientific ? '<div class="plant-sci">' + esc(p.scientific) + '</div>' : '') +
-        '<div class="plant-foot">' + pledgeSummary(p) +
-        (claimOf(p)
+        '<div class="plant-foot">' + pledgeSummary(p, lst) +
+        (claimOf(p, lst)
           ? '<button class="btn-pledge is-taken" type="button" disabled>' + L.taken + '</button>'
-          : '<button class="btn-pledge" type="button" data-pledge="' + esc(state.list) + ':' + esc(p.no) + '">' + L.pledge + '</button>') +
+          : '<button class="btn-pledge" type="button" data-pledge="' + esc(lst) + ':' + esc(p.no) + '">' + L.pledge + '</button>') +
         '</div></div>';
     }
     grid.innerHTML = html;
     $("list-empty").hidden = rows.length !== 0;
     $("list-count").textContent = rows.length
-      ? L.showing(Math.min(state.shown, rows.length), rows.length)
+      ? (L.showing(Math.min(state.shown, rows.length), rows.length) +
+         (searching() ? " · " + L.searchingBoth : ""))
       : "";
     // The button pages through the current list; once everything in the
     // planting list is on screen it turns into the door to the full flora.
@@ -152,7 +175,7 @@
       more.hidden = false;
       more.textContent = L.moreInList;
       more.dataset.act = "page";
-    } else if (state.list === "programme") {
+    } else if (state.list === "programme" && !searching()) {
       more.hidden = false;
       more.textContent = L.nextList(((LISTS.reference || []).length).toLocaleString());
       more.dataset.act = "next-list";
