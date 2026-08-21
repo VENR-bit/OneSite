@@ -39,7 +39,12 @@
       nPlants:     function (n) { return Number(n).toLocaleString() + " plants"; },
       listProgramme: "Planting list",
       listReference: "Medicinal flora",
-      searchingBoth: "Searching both lists"
+      searchingBoth: "Searching both lists",
+      uploadPhoto: "Upload photo",
+      photoPending: "Photo sent \u00b7 awaiting approval",
+      uploadTitle:  "Send the planting photograph",
+      uploadIntro:  "Upload a picture of this plant in the ground. The monastery will look at it, and it will then appear in the planting record below.",
+      alreadyDone:  "This plant's photograph has already been approved."
     },
     si: {
       unclaimed:   "තවම වෙන් කර නැත",
@@ -67,7 +72,12 @@
       nPlants:     function (n) { return "පැළ " + Number(n).toLocaleString() + " ක්"; },
       listProgramme: "රෝපණ ලැයිස්තුව",
       listReference: "ඖෂධශාක ලැයිස්තුව",
-      searchingBoth: "ලැයිස්තු දෙකෙහිම සොයයි"
+      searchingBoth: "ලැයිස්තු දෙකෙහිම සොයයි",
+      uploadPhoto: "ඡායාරූපය උඩුගත කරන්න",
+      photoPending: "ඡායාරූපය එවා ඇත \u00b7 අනුමැතිය බලාපොරොත්තුවෙන්",
+      uploadTitle:  "රෝපණ ඡායාරූපය එවන්න",
+      uploadIntro:  "පොළොවේ රෝපණය කළ මෙම පැළයේ ඡායාරූපයක් උඩුගත කරන්න. ආරණ්‍යය එය පරීක්ෂා කළ පසු, පහත රෝපණ වාර්තාවේ පෙන්වයි.",
+      alreadyDone:  "මෙම පැළයේ ඡායාරූපය දැනටමත් අනුමත කර ඇත."
     }
   };
   var L = STR[(document.documentElement.lang || "en").slice(0, 2) === "si" ? "si" : "en"];
@@ -138,6 +148,25 @@
       label + '</span>';
   }
 
+  // What the claimed tile offers. The pledger comes back to the page and
+  // presses Upload here — there is no private link to keep any more.
+  function tileAction(p, list) {
+    var rec = claimOf(p, list);
+    if (!rec) {
+      return '<button class="btn-pledge" type="button" data-pledge="' +
+             esc(list) + ':' + esc(p.no) + '">' + L.pledge + '</button>';
+    }
+    if (rec.status === "pending") {
+      return '<button class="btn-pledge is-taken" type="button" disabled>' + L.photoPending + '</button>';
+    }
+    if (rec.status === "approved") {
+      return '<button class="btn-pledge is-taken" type="button" disabled>' + L.taken + '</button>';
+    }
+    // 'none' or 'rejected' — a photo is still wanted
+    return '<button class="btn-pledge is-upload" type="button" data-upload="' + rec.id + '">' +
+           L.uploadPhoto + '</button>';
+  }
+
   function renderList() {
     var rows = filtered();
     var grid = $("plant-grid");
@@ -156,10 +185,7 @@
         '<div class="plant-name">' + esc(p.sinhala) + '</div>' +
         (p.english ? '<div class="plant-en">' + esc(p.english) + '</div>' : '') +
         (p.scientific ? '<div class="plant-sci">' + esc(p.scientific) + '</div>' : '') +
-        '<div class="plant-foot">' + pledgeSummary(p, lst) +
-        (claimOf(p, lst)
-          ? '<button class="btn-pledge is-taken" type="button" disabled>' + L.taken + '</button>'
-          : '<button class="btn-pledge" type="button" data-pledge="' + esc(lst) + ':' + esc(p.no) + '">' + L.pledge + '</button>') +
+        '<div class="plant-foot">' + pledgeSummary(p, lst) + tileAction(p, lst) +
         '</div></div>';
     }
     grid.innerHTML = html;
@@ -195,7 +221,7 @@
     var by = {}, people = {}, pledged = 0, planted = 0;
     rows.forEach(function (r) {
       var k = r.plant_list + "|" + (r.scientific || r.sinhala || "").toLowerCase();
-      if (!by[k]) by[k] = { name: r.pledger_name, planted: 0 };
+      if (!by[k]) by[k] = { id: r.id, name: r.pledger_name, status: r.photo_status, planted: 0 };
       pledged += 1;
       if (r.photo_status === "approved") { by[k].planted = 1; planted += 1; }
       if (r.pledger_name) people[r.pledger_name.trim().toLowerCase()] = 1;
@@ -280,6 +306,24 @@
     openPledge(parts[0], parts[1]);
   });
 
+  var uploadFor = null;   // pledge id when the dialog was opened from a tile
+
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-upload]");
+    if (!b) return;
+    uploadFor = parseInt(b.getAttribute("data-upload"), 10);
+    claimFile = null;
+    $("claim-err").hidden = true;
+    $("cl-file").value = "";
+    $("cl-preview").style.display = "none";
+    $("cl-submit").disabled = true;
+    $("cl-submit").textContent = L.sendPhoto;
+    $("claim-title").textContent = L.uploadTitle;
+    var intro = document.getElementById("claim-intro");
+    if (intro) intro.textContent = L.uploadIntro;
+    openModal("claim-modal");
+  });
+
   $("pl-submit").addEventListener("click", function () {
     var name = $("pl-name").value.trim();
     var err = $("pledge-err");
@@ -305,23 +349,13 @@
         err.textContent = L.saveFailed;
         err.hidden = false; return;
       }
-      var link = location.origin + location.pathname + "?claim=" + row.token;
-      $("claim-link").textContent = link;
-      $("claim-link").href = link;
       $("pledge-form-view").hidden = true;
       $("pledge-done-view").hidden = false;
       loadPledges();
     });
   });
 
-  $("copy-link").addEventListener("click", function () {
-    var t = $("claim-link").textContent, btn = this;
-    var done = function () { btn.textContent = L.copied; setTimeout(function () { btn.textContent = L.copyLink; }, 1800); };
-    if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, done);
-    else done();
-  });
-
-  /* ── claim flow: ?claim=<token> ──────────────────────────── */
+  /* ── photo upload: from a tile, or an older ?claim=<token> link ── */
   var claimFile = null;
 
   function shrink(file) {
@@ -358,10 +392,16 @@
   $("cl-submit").addEventListener("click", function () {
     var token = new URLSearchParams(location.search).get("claim");
     var err = $("claim-err"), btn = this;
-    if (!claimFile || !token) return;
+    if (!claimFile) return;
+    if (!uploadFor && !token) return;
     err.hidden = true; btn.disabled = true; btn.textContent = L.sending;
-    DB.uploadPhoto(token, claimFile).then(function () {
-      $("claim-title").textContent = L.thanksTitle;
+
+    // From a tile we go by pledge id; an older private link still goes by token.
+    var job = uploadFor
+      ? DB.uploadPhotoForPledge(uploadFor, claimFile)
+      : DB.uploadPhoto(token, claimFile);
+
+    job.then(function () {
       document.querySelector("#claim-modal .modal-panel").innerHTML =
         '<button class="modal-x" type="button" aria-label="Close" data-close>&times;</button>' +
         '<div style="text-align:center">' +
@@ -372,8 +412,11 @@
       loadPledges();
     }).catch(function (e) {
       btn.disabled = false; btn.textContent = L.sendPhoto;
-      err.textContent = (e && e.message && e.message.indexOf("not valid") !== -1) ? L.badLink : (e && e.message ? e.message : L.uploadFail);
+      var m = e && e.message ? e.message : "";
+      err.textContent = m === "NOT_ATTACHED" ? L.alreadyDone
+                      : (m.indexOf("not valid") !== -1 ? L.badLink : (m || L.uploadFail));
       err.hidden = false;
+      if (m === "NOT_ATTACHED") loadPledges();
     });
   });
 

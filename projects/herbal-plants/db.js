@@ -58,7 +58,7 @@
   // Upload the photo under a RANDOM name, then let the DB verify the token
   // and link the two. The token travels in the request body, never in the
   // public URL — a photo URL must not leak the key to its own pledge.
-  function uploadPhoto(token, file) {
+  function putFile(file) {
     var ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
     if (["jpg", "jpeg", "png", "webp", "heic"].indexOf(ext) === -1) ext = "jpg";
     var rand = (window.crypto && window.crypto.randomUUID)
@@ -68,13 +68,32 @@
     return sb.storage.from(BUCKET).upload(path, file, { upsert: false, contentType: file.type || "image/jpeg" })
       .then(function (res) {
         if (res.error) throw new Error(res.error.message);
-        return sb.rpc("attach_plant_photo", { p_token: token, p_path: path });
-      })
-      .then(function (res) {
-        if (res.error) throw new Error(res.error.message);
-        if (res.data !== true) throw new Error("That link is not valid. Please check you copied all of it.");
         return path;
       });
+  }
+
+  // Older private ?claim=<token> links still work.
+  function uploadPhoto(token, file) {
+    return putFile(file).then(function (path) {
+      return sb.rpc("attach_plant_photo", { p_token: token, p_path: path });
+    }).then(function (res) {
+      if (res.error) throw new Error(res.error.message);
+      if (res.data !== true) throw new Error("That link is not valid. Please check you copied all of it.");
+      return true;
+    });
+  }
+
+  // Upload straight from the plant's tile. No token: the pledger returns to
+  // the page and presses Upload. The photo still lands as 'pending', so a
+  // monk sees it before anyone else does.
+  function uploadPhotoForPledge(id, file) {
+    return putFile(file).then(function (path) {
+      return sb.rpc("attach_plant_photo_by_id", { p_id: id, p_path: path });
+    }).then(function (res) {
+      if (res.error) throw new Error(res.error.message);
+      if (res.data !== true) throw new Error("NOT_ATTACHED");
+      return true;
+    });
   }
 
   function publicUrl(path) {
@@ -95,6 +114,7 @@
     fetchPledges: fetchPledges,
     createPledge: createPledge,
     uploadPhoto: uploadPhoto,
+    uploadPhotoForPledge: uploadPhotoForPledge,
     publicUrl: publicUrl,
     setPhotoStatus: setPhotoStatus,
     isReady: function () { return ready; }

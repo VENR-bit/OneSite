@@ -119,6 +119,30 @@ begin
 end;
 $$;
 
+-- Attach a planting photo from the plant's own tile on the public page.
+-- There is no secret here: the pledge id is public. That is deliberate --
+-- the pledger comes back to the page and presses Upload rather than having
+-- to keep a private link. Two things keep it safe:
+--   * the photo always lands as 'pending', so nothing reaches the public
+--     page until a monk approves it; and
+--   * a pledge whose photo is already approved cannot be overwritten.
+create or replace function public.attach_plant_photo_by_id(p_id bigint, p_path text)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  update public.plant_pledges
+     set photo_path   = p_path,
+         photo_status = 'pending',
+         planted_at   = coalesce(planted_at, now())
+   where id = p_id
+     and photo_status <> 'approved';
+  return found;
+end;
+$$;
+
 -- Moderation, called from the admin page.
 create or replace function public.set_plant_photo_status(p_id bigint, p_status text)
 returns boolean
@@ -147,6 +171,7 @@ drop policy if exists "anon can moderate photos" on public.plant_pledges;
 grant select on public.plant_pledges_public to anon;
 grant execute on function public.create_plant_pledge(integer, text, text, text, text, text, text, text, integer, text) to anon;
 grant execute on function public.attach_plant_photo(uuid, text) to anon;
+grant execute on function public.attach_plant_photo_by_id(bigint, text) to anon;
 grant execute on function public.set_plant_photo_status(bigint, text) to anon;
 
 -- ── 5. Photo storage ───────────────────────────────────────────

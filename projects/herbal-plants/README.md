@@ -54,10 +54,9 @@ Re-running the script is safe.
 
 ## How a pledge flows
 
-1. Visitor picks a plant and leaves their name → a row is created and they get a
-   private link, `…/herbal-plants/?claim=<token>`
-2. They plant it, open that link, and upload a photo → status becomes `pending`
-   (hidden from the public page)
+1. Visitor picks a plant and leaves their name → the plant shows as claimed
+2. They plant it, come back to the page, find their plant and press **Upload
+   photo** on its tile → status becomes `pending` (hidden from the public page)
 3. A monk opens `admin.html`, reviews it, and approves → status becomes
    `approved` and the photo appears in the planting record
 
@@ -94,3 +93,17 @@ Pledges are shared: a plant claimed on either page shows as claimed on both.
 rebuilt whenever the lists change — see the instructions at the top of
 `tools/build-pdf.py`. It is rendered with headless Chrome rather than a Python
 PDF library because Chrome shapes Sinhala correctly using the system font.
+
+## Why the upload button is not secret
+
+Uploading goes by pledge id, which is public — the pledger just returns to the
+page and presses **Upload photo** on their plant, with no private link to keep.
+Two things make that safe rather than careless:
+
+- a photo always lands as `pending`, so nothing reaches the public page until a
+  monk approves it on `admin.html`; and
+- `attach_plant_photo_by_id` refuses a pledge whose photo is already approved,
+  so an approved photo cannot be replaced.
+
+The older token route (`attach_plant_photo`) is kept so any `?claim=<token>`
+links already handed out still work.

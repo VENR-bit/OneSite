@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&family=Noto+Serif+Sinhala:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css?v=4" />
+<link rel="stylesheet" href="../styles.css?v=5" />
 <!-- Google Analytics -->
 <script src="/analytics.js?v=1"></script>
 </head>
@@ -148,13 +148,8 @@
     <div id="pledge-done-view" hidden style="text-align:center">
       <div class="ok-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
       <h3>Pledged. Thank you.</h3>
-      <p style="color:var(--ink-soft);margin-top:8px">Bring the plant whenever you next visit the monastery. When it is in the ground, open the link below and send us the photograph.</p>
-      <div class="claim-box">
-        <div style="font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--accent);font-weight:600">Your private link — keep it</div>
-        <a class="claim-link" id="claim-link" href="#"></a>
-      </div>
-      <button class="btn-ghost" id="copy-link" type="button" style="width:100%;justify-content:center">Copy link</button>
-      <p class="field-hint" style="margin-top:12px">This link is the only way to attach your photo, so save it somewhere safe.</p>
+      <p style="color:var(--ink-soft);margin-top:8px">Bring the plant whenever you next visit the monastery. Once it is in the ground, come back to this page, find your plant in the list, and press <b>Upload photo</b> on it.</p>
+
     </div>
   </div>
 </div>
@@ -166,7 +161,7 @@
     <button class="modal-x" type="button" aria-label="Close" data-close>&times;</button>
     <div class="eyebrow">Complete your pledge</div>
     <h3 id="claim-title">Send the photograph</h3>
-    <p style="color:var(--ink-soft);margin:8px 0 4px">Upload a picture of the plant in the ground. The monastery will review it, and it will then appear in the planting record on this page.</p>
+    <p id="claim-intro" style="color:var(--ink-soft);margin:8px 0 4px">Upload a picture of the plant in the ground. The monastery will review it, and it will then appear in the planting record on this page.</p>
     <div class="form-err" id="claim-err" hidden></div>
     <div class="field" style="margin-top:16px">
       <label for="cl-file">Photograph</label>
@@ -225,7 +220,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../plants-data.js?v=2"></script>
-<script src="../db.js?v=2"></script>
-<script src="../app.js?v=5"></script>
+<script src="../db.js?v=3"></script>
+<script src="../app.js?v=6"></script>
 </body>
 </html>

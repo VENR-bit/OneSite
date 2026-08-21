@@ -202,6 +202,10 @@ a { color: inherit; }
   transition: background .15s, color .15s;
 }
 .btn-pledge:hover { background: var(--accent); color: #fdfbf6; }
+.btn-pledge.is-upload {
+  background: var(--accent); color: #fdfbf6; border-color: var(--accent);
+}
+.btn-pledge.is-upload:hover { background: var(--accent-soft); border-color: var(--accent-soft); }
 .btn-pledge.is-taken {
   background: transparent; border-color: var(--line);
   color: var(--muted); cursor: default;

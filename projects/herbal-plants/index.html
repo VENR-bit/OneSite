@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&family=Noto+Serif+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=4" />
+<link rel="stylesheet" href="styles.css?v=5" />
 <style>
   /* On the Sinhala page the body copy is Sinhala, so let the Sinhala face
      carry the headings and prose rather than the Latin serif. */
@@ -169,13 +169,8 @@
     <div id="pledge-done-view" hidden style="text-align:center">
       <div class="ok-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
       <h3>වෙන් කරන ලදී. ස්තූතියි.</h3>
-      <p style="color:var(--ink-soft);margin-top:8px">ඊළඟ වතාවේ ආරණ්‍යයට එන විට පැළය රැගෙන එන්න. එය පොළොවේ රෝපණය කළ පසු, පහත සබැඳිය විවෘත කර ඡායාරූපය එවන්න.</p>
-      <div class="claim-box">
-        <div style="font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--accent);font-weight:600">ඔබේ පෞද්ගලික සබැඳිය — සුරකින්න</div>
-        <a class="claim-link" id="claim-link" href="#"></a>
-      </div>
-      <button class="btn-ghost" id="copy-link" type="button" style="width:100%;justify-content:center">සබැඳිය පිටපත් කරන්න</button>
-      <p class="field-hint" style="margin-top:12px">ඡායාරූපය එවිය හැක්කේ මෙම සබැඳියෙන් පමණි, එබැවින් එය ආරක්ෂිත තැනක සුරකින්න.</p>
+      <p style="color:var(--ink-soft);margin-top:8px">ඊළඟ වතාවේ ආරණ්‍යයට එන විට පැළය රැගෙන එන්න. එය පොළොවේ රෝපණය කළ පසු, මෙම පිටුවට නැවත පැමිණ, ලැයිස්තුවෙන් ඔබේ පැළය සොයාගෙන, එහි ඇති <b>ඡායාරූපය උඩුගත කරන්න</b> බොත්තම ඔබන්න.</p>
+
     </div>
   </div>
 </div>
@@ -187,7 +182,7 @@
     <button class="modal-x" type="button" aria-label="වසන්න" data-close>&times;</button>
     <div class="eyebrow">වෙන් කිරීම සම්පූර්ණ කරන්න</div>
     <h3 id="claim-title">ඡායාරූපය එවන්න</h3>
-    <p style="color:var(--ink-soft);margin:8px 0 4px">පොළොවේ රෝපණය කළ පැළයේ ඡායාරූපයක් උඩුගත කරන්න. ආරණ්‍යය එය පරීක්ෂා කර අනුමත කළ පසු, එය මෙම පිටුවේ රෝපණ වාර්තාවේ පෙන්වයි.</p>
+    <p id="claim-intro" style="color:var(--ink-soft);margin:8px 0 4px">පොළොවේ රෝපණය කළ පැළයේ ඡායාරූපයක් උඩුගත කරන්න. ආරණ්‍යය එය පරීක්ෂා කර අනුමත කළ පසු, එය මෙම පිටුවේ රෝපණ වාර්තාවේ පෙන්වයි.</p>
     <div class="form-err" id="claim-err" hidden></div>
     <div class="field" style="margin-top:16px">
       <label for="cl-file">ඡායාරූපය</label>
@@ -239,7 +234,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="plants-data.js?v=2"></script>
-<script src="db.js?v=2"></script>
-<script src="app.js?v=5"></script>
+<script src="db.js?v=3"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>
