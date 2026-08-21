@@ -8,7 +8,7 @@
   var LISTS = window.RK_PLANTS || { programme: [], reference: [] };
   var PAGE = 60;                 // plants rendered per "show more" step
 
-  var state = { list: "programme", q: "", shown: PAGE, pledges: [], byPlant: {},
+  var state = { list: "programme", q: "", shown: PAGE, pledges: [], byPlant: {}, filter: "all",
                 view: (function () {
                   try { return localStorage.getItem("rk-plants-view") === "list" ? "list" : "tiles"; }
                   catch (e) { return "tiles"; }
@@ -50,7 +50,13 @@
       uploadIntro:  "Upload a picture of this plant in the ground. The monastery will look at it, and it will then appear in the planting record below.",
       alreadyDone:  "This plant's photograph has already been approved.",
       viewTiles:    "Tile view",
-      viewList:     "List view"
+      viewList:     "List view",
+      fAll:      "All plants",
+      fOpen:     "To be pledged",
+      fClaimed:  "Already pledged",
+      fPlanted:  "Planted",
+      noMatch:   "Nothing here yet.",
+      noResults: "No plant matches that search."
     },
     si: {
       unclaimed:   "තවම වෙන් කර නැත",
@@ -85,7 +91,13 @@
       uploadIntro:  "පොළොවේ රෝපණය කළ මෙම පැළයේ ඡායාරූපයක් උඩුගත කරන්න. ආරණ්‍යය එය පරීක්ෂා කළ පසු, පහත රෝපණ වාර්තාවේ පෙන්වයි.",
       alreadyDone:  "මෙම පැළයේ ඡායාරූපය දැනටමත් අනුමත කර ඇත.",
       viewTiles:    "කොටු ලෙස",
-      viewList:     "ලැයිස්තුවක් ලෙස"
+      viewList:     "ලැයිස්තුවක් ලෙස",
+      fAll:      "සියලුම පැළ",
+      fOpen:     "වෙන් කිරීමට ඇති",
+      fClaimed:  "වෙන් කර ඇති",
+      fPlanted:  "රෝපණය කර ඇති",
+      noMatch:   "මෙහි තවම කිසිවක් නැත.",
+      noResults: "එම සෙවීමට ගැළපෙන පැළයක් නොමැත."
     }
   };
   var L = STR[(document.documentElement.lang || "en").slice(0, 2) === "si" ? "si" : "en"];
@@ -128,7 +140,9 @@
   // With no search term we show just the list whose tab is open.
   function searching() { return state.q.trim().length > 0; }
 
-  function filtered() {
+  // Everything in scope: the open list (or both when searching), before the
+  // claim-status filter is applied. The filter counts are taken from here.
+  function inScope() {
     var q = state.q.trim().toLowerCase();
     var names = searching() ? ["programme", "reference"] : [state.list];
     var out = [];
@@ -140,6 +154,39 @@
       }
     }
     return out;
+  }
+
+  function passesFilter(p) {
+    var rec = claimOf(p, p.list || state.list);
+    switch (state.filter) {
+      case "open":    return !rec;
+      case "claimed": return !!rec;
+      case "planted": return !!rec && rec.status === "approved";
+      default:        return true;
+    }
+  }
+
+  function filtered() {
+    var out = [], all = inScope();
+    for (var i = 0; i < all.length; i++) if (passesFilter(all[i])) out.push(all[i]);
+    return out;
+  }
+
+  // Counts shown beside each option, so the numbers the count line used to
+  // give are still there — just attached to the choice they describe.
+  function refreshFilterCounts() {
+    var sel = $("plant-filter");
+    if (!sel) return;
+    var all = inScope(), n = { all: all.length, open: 0, claimed: 0, planted: 0 };
+    for (var i = 0; i < all.length; i++) {
+      var rec = claimOf(all[i], all[i].list || state.list);
+      if (!rec) n.open++;
+      else { n.claimed++; if (rec.status === "approved") n.planted++; }
+    }
+    var label = { all: L.fAll, open: L.fOpen, claimed: L.fClaimed, planted: L.fPlanted };
+    [].slice.call(sel.options).forEach(function (o) {
+      o.textContent = label[o.value] + "  (" + Number(n[o.value]).toLocaleString() + ")";
+    });
   }
 
   function listLabel(name) { return name === "reference" ? L.listReference : L.listProgramme; }
@@ -214,10 +261,8 @@
     grid.className = list ? "plant-rows" : "plant-grid";
     grid.innerHTML = html;
     $("list-empty").hidden = rows.length !== 0;
-    $("list-count").textContent = rows.length
-      ? (L.showing(Math.min(state.shown, rows.length), rows.length) +
-         (searching() ? " · " + L.searchingBoth : ""))
-      : "";
+    $("list-empty").textContent = state.filter === "all" ? L.noResults : L.noMatch;
+    refreshFilterCounts();
     // The button pages through the current list; once everything in the
     // planting list is on screen it turns into the door to the full flora.
     var more = $("load-more");
@@ -457,6 +502,16 @@
   [].slice.call(document.querySelectorAll(".list-tab")).forEach(function (tab) {
     tab.addEventListener("click", function () { switchList(tab.getAttribute("data-list")); });
   });
+
+  (function () {
+    var sel = $("plant-filter");
+    if (!sel) return;
+    sel.addEventListener("change", function () {
+      state.filter = sel.value;
+      state.shown = PAGE;
+      renderList();
+    });
+  })();
 
   function setView(v) {
     state.view = v;
