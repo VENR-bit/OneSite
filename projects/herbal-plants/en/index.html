@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&family=Noto+Serif+Sinhala:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css?v=5" />
+<link rel="stylesheet" href="../styles.css?v=8" />
 <!-- Google Analytics -->
 <script src="/analytics.js?v=1"></script>
 </head>
@@ -92,6 +92,14 @@
       <input type="search" id="plant-search" placeholder="Search by Sinhala, English or botanical name…" autocomplete="off" />
     </div>
     <div class="list-count" id="list-count"></div>
+      <div class="view-switch" role="group">
+        <button type="button" data-view="tiles" class="on" aria-pressed="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>
+        </button>
+        <button type="button" data-view="list" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
+        </button>
+      </div>
   </div>
 
   <div class="plant-grid" id="plant-grid"></div>
@@ -221,6 +229,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../plants-data.js?v=2"></script>
 <script src="../db.js?v=3"></script>
-<script src="../app.js?v=6"></script>
+<script src="../app.js?v=7"></script>
 </body>
 </html>

@@ -8,7 +8,11 @@
   var LISTS = window.RK_PLANTS || { programme: [], reference: [] };
   var PAGE = 60;                 // plants rendered per "show more" step
 
-  var state = { list: "programme", q: "", shown: PAGE, pledges: [], byPlant: {} };
+  var state = { list: "programme", q: "", shown: PAGE, pledges: [], byPlant: {},
+                view: (function () {
+                  try { return localStorage.getItem("rk-plants-view") === "list" ? "list" : "tiles"; }
+                  catch (e) { return "tiles"; }
+                })() };
 
   /* ── Wording. The Sinhala page under /si/ sets <html lang="si">; both
         pages share this one script. ────────────────────────────────── */
@@ -44,7 +48,9 @@
       photoPending: "Photo sent \u00b7 awaiting approval",
       uploadTitle:  "Send the planting photograph",
       uploadIntro:  "Upload a picture of this plant in the ground. The monastery will look at it, and it will then appear in the planting record below.",
-      alreadyDone:  "This plant's photograph has already been approved."
+      alreadyDone:  "This plant's photograph has already been approved.",
+      viewTiles:    "Tile view",
+      viewList:     "List view"
     },
     si: {
       unclaimed:   "තවම වෙන් කර නැත",
@@ -77,7 +83,9 @@
       photoPending: "ඡායාරූපය එවා ඇත \u00b7 අනුමැතිය බලාපොරොත්තුවෙන්",
       uploadTitle:  "රෝපණ ඡායාරූපය එවන්න",
       uploadIntro:  "පොළොවේ රෝපණය කළ මෙම පැළයේ ඡායාරූපයක් උඩුගත කරන්න. ආරණ්‍යය එය පරීක්ෂා කළ පසු, පහත රෝපණ වාර්තාවේ පෙන්වයි.",
-      alreadyDone:  "මෙම පැළයේ ඡායාරූපය දැනටමත් අනුමත කර ඇත."
+      alreadyDone:  "මෙම පැළයේ ඡායාරූපය දැනටමත් අනුමත කර ඇත.",
+      viewTiles:    "කොටු ලෙස",
+      viewList:     "ලැයිස්තුවක් ලෙස"
     }
   };
   var L = STR[(document.documentElement.lang || "en").slice(0, 2) === "si" ? "si" : "en"];
@@ -171,23 +179,39 @@
     var rows = filtered();
     var grid = $("plant-grid");
     var slice = rows.slice(0, state.shown);
+    var list = state.view === "list";
     var html = "";
     for (var i = 0; i < slice.length; i++) {
       var p = slice[i];
       var lst = p.list || state.list;
-      html += '<div class="plant-card">' +
-        '<div class="plant-head">' +
-          '<span class="plant-no">' + L.no + esc(p.no) + '</span>' +
-          (searching() ? '<span class="plant-list-tag' + (lst === "reference" ? " ref" : "") + '">' +
-                         esc(listLabel(lst)) + '</span>' : '') +
-        '</div>' +
-        (p.script ? '<div class="plant-si">' + esc(p.script) + '</div>' : '') +
-        '<div class="plant-name">' + esc(p.sinhala) + '</div>' +
-        (p.english ? '<div class="plant-en">' + esc(p.english) + '</div>' : '') +
-        (p.scientific ? '<div class="plant-sci">' + esc(p.scientific) + '</div>' : '') +
-        '<div class="plant-foot">' + pledgeSummary(p, lst) + tileAction(p, lst) +
-        '</div></div>';
+      var tag = searching()
+        ? '<span class="plant-list-tag' + (lst === "reference" ? " ref" : "") + '">' + esc(listLabel(lst)) + '</span>'
+        : '';
+      if (list) {
+        html += '<div class="plant-row">' +
+          '<div class="pr-no">' + L.no + esc(p.no) + '</div>' +
+          '<div class="pr-name">' +
+            (p.script ? '<span class="plant-si">' + esc(p.script) + '</span>' : '') +
+            '<span class="pr-roman">' + esc(p.sinhala) + '</span>' + tag +
+          '</div>' +
+          '<div class="pr-en">' + esc(p.english || "") + '</div>' +
+          '<div class="pr-sci">' + esc(p.scientific || "") + '</div>' +
+          '<div class="pr-act">' + pledgeSummary(p, lst) + tileAction(p, lst) + '</div>' +
+        '</div>';
+      } else {
+        html += '<div class="plant-card">' +
+          '<div class="plant-head">' +
+            '<span class="plant-no">' + L.no + esc(p.no) + '</span>' + tag +
+          '</div>' +
+          (p.script ? '<div class="plant-si">' + esc(p.script) + '</div>' : '') +
+          '<div class="plant-name">' + esc(p.sinhala) + '</div>' +
+          (p.english ? '<div class="plant-en">' + esc(p.english) + '</div>' : '') +
+          (p.scientific ? '<div class="plant-sci">' + esc(p.scientific) + '</div>' : '') +
+          '<div class="plant-foot">' + pledgeSummary(p, lst) + tileAction(p, lst) +
+          '</div></div>';
+      }
     }
+    grid.className = list ? "plant-rows" : "plant-grid";
     grid.innerHTML = html;
     $("list-empty").hidden = rows.length !== 0;
     $("list-count").textContent = rows.length
@@ -434,6 +458,21 @@
     tab.addEventListener("click", function () { switchList(tab.getAttribute("data-list")); });
   });
 
+  function setView(v) {
+    state.view = v;
+    try { localStorage.setItem("rk-plants-view", v); } catch (e) {}
+    [].slice.call(document.querySelectorAll("[data-view]")).forEach(function (b) {
+      b.classList.toggle("on", b.getAttribute("data-view") === v);
+      b.setAttribute("aria-pressed", b.getAttribute("data-view") === v ? "true" : "false");
+    });
+    renderList();
+  }
+  [].slice.call(document.querySelectorAll("[data-view]")).forEach(function (b) {
+    b.title = b.getAttribute("data-view") === "list" ? L.viewList : L.viewTiles;
+    b.setAttribute("aria-label", b.title);
+    b.addEventListener("click", function () { setView(b.getAttribute("data-view")); });
+  });
+
   var t = null;
   $("plant-search").addEventListener("input", function (e) {
     clearTimeout(t);
@@ -455,7 +494,7 @@
   $("tab-count-programme").textContent = L.nPlants((LISTS.programme || []).length);
   $("tab-count-reference").textContent = L.nPlants((LISTS.reference || []).length);
   renderStats(null);
-  renderList();
+  setView(state.view);
   initReveal();
   loadPledges();
 
