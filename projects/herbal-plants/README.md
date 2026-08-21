@@ -25,7 +25,7 @@ record on the page and the pledge is complete.
 Taken from [the monastery's sheet](https://docs.google.com/spreadsheets/d/1mCAQ4xcG3hjyvvt2lQSa--9KeH-G567gNCXKDiOo38g/edit):
 
 - **`programme`** — 81 plants, the current planting drive (sheet tab 2)
-- **`reference`** — 1,259 plants, the medicinal flora reference (sheet tab 1). The 65
+- **`reference`** — 1,259 plants, shown as the *balance* medicinal flora (sheet tab 1). The 65
   species that also appear in the planting list are not repeated here; the row
   numbers are the sheet's own, so they skip where those were removed.
 
