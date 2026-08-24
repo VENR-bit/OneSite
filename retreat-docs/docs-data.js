@@ -28,7 +28,7 @@ window.RK_DOCS = [
     items: [
       { title: "මාර්ග උපදෙස්",
         desc: "සේනාසනයට පැමිණෙන ආකාරය",
-        file: "route-guidance-si.pdf", size: "91 KB" },
+        file: "route-guidance-si.pdf", size: "90 KB" },
       { title: "දෛනික වැඩසටහන",
         desc: "වැඩසටහනේ දෛනික කාලසටහන",
         file: "daily-routine-schedule-si.pdf", size: "56 KB" },
