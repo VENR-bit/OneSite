@@ -7,7 +7,7 @@ window.RK_DOCS = [
     items: [
       { title: "Route Guidance",
         desc: "How to reach the monastery — directions and landmarks",
-        file: "route-guidance-en.pdf", size: "88 KB" },
+        file: "route-guidance-en.pdf", size: "104 KB" },
       { title: "Daily Routine Schedule",
         desc: "The retreat day, hour by hour",
         file: "daily-routine-schedule-en.pdf", size: "59 KB" },
@@ -28,7 +28,7 @@ window.RK_DOCS = [
     items: [
       { title: "මාර්ග උපදෙස්",
         desc: "සේනාසනයට පැමිණෙන ආකාරය",
-        file: "route-guidance-si.pdf", size: "99 KB" },
+        file: "route-guidance-si.pdf", size: "91 KB" },
       { title: "දෛනික වැඩසටහන",
         desc: "වැඩසටහනේ දෛනික කාලසටහන",
         file: "daily-routine-schedule-si.pdf", size: "56 KB" },
