@@ -28,6 +28,16 @@
    ────────────────────────────────────────────────────────────── */
 window.NEWS_POSTS = [
   {
+    title: "7-Day Vipassanā Retreat — August 2026",
+    date: "2026-08-23",
+    type: "Event",
+    when: "Late August 2026 · 7 days",
+    excerpt: "Our late August Vipassanā & Concentration Meditation Retreat has concluded. Over seven days of immersive practice amidst the misty mountaintops of Matale, local and international practitioners came together to explore the Dhamma, cultivate concentration (Samādhi), and gain direct insight (Vipassanā) into the nature of mind and body.",
+    body: "Finding peace in the present moment. 🌿✨\nOur late August Vipassana & Concentration Meditation Retreat at Rideekanda Forest Monastery has officially concluded! Over seven days of immersive practice amidst the misty mountaintops of Matale, local and international practitioners came together to explore the Dhamma, cultivate concentration (Samādhi), and gain direct insight (Vipassanā) into the nature of mind and body.\nFrom peaceful sunrise sessions overlooking the forest canopy to small-group Dhamma discussions with our venerated monks, every moment was an opportunity to pause, look inward, and nourish the soul. 🧘‍♂️🧘‍♀️\nA deep Bow of gratitude to our resident monks, dedicated volunteers, generous Dāna supporters, and every practitioner who brought their sincere effort and quiet mindfulness to this retreat. May the peace, clarity, and merit cultivated here continue to light your path forward! 🙏✨\n📍 Rideekanda Forest Monastery | Matale, Sri Lanka\n✨ Offered freely in the ancient tradition of Dāna.\n📩 Interested in joining our next monthly residential retreat? A seven-day retreat is held every month — write to rideekanda@gmail.com or call +94 74 225 2980 to book your stay.\n#RideekandaForestMonastery #VipassanaRetreat #Dhamma #MeditationSriLanka #Mindfulness #SamathaVipassana #TheravadaBuddhism #SilentRetreat #Matale #InnerPeace #MeditationPractice",
+    image: "post-40.jpg",
+    images: ["post-40.jpg", "post-40b.jpg", "post-40c.jpg", "post-40d.jpg", "post-40e.jpg", "post-40f.jpg", "post-40g.jpg", "post-40h.jpg", "post-40i.jpg", "post-40j.jpg"]
+  },
+  {
     title: "7-Day Vipassanā Retreat — July 2026",
     date: "2026-07-26",
     type: "Event",
