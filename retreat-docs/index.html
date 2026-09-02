@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+Sinhala:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1">
+  <link rel="stylesheet" href="styles.css?v=2">
   <!-- Google Analytics -->
   <script src="/analytics.js?v=1"></script>
 </head>
@@ -35,6 +35,24 @@
     <section id="library"></section>
   </main>
 
+  <!-- in-page PDF reader: a new tab is not a reliable way to *show* a PDF
+       (an installed app / kiosk browser downloads it instead), so we render
+       the pages here. Same reader as the ebooks library. -->
+  <div class="reader" id="reader" aria-hidden="true">
+    <div class="reader__bar">
+      <button class="rbtn rbtn--back" id="r-close" title="Back to documents"><span aria-hidden="true">←</span><span class="rbtn__lbl">&nbsp;Documents</span></button>
+      <div class="reader__meta"><b id="r-title"></b><span id="r-sub"></span></div>
+      <div class="reader__actions">
+        <button class="rbtn" id="r-zoomout" aria-label="Zoom out" title="Zoom out">A−</button>
+        <button class="rbtn" id="r-zoomin" aria-label="Zoom in" title="Zoom in">A+</button>
+        <button class="rbtn" id="r-night" aria-label="Toggle night mode" title="Day / night">🌙</button>
+        <a class="rbtn" id="r-open" href="#" target="_blank" rel="noopener" title="Open in a new tab">Open&nbsp;↗</a>
+        <a class="rbtn rbtn--cta" id="r-dl" href="#" download>Download</a>
+      </div>
+    </div>
+    <div class="reader__stage" id="r-stage"><div class="reader__pages" id="r-pages"></div></div>
+  </div>
+
   <!-- QR modal (kiosk) -->
   <div class="qrm" id="qrm" aria-hidden="true">
     <div class="qrm__card">
@@ -46,8 +64,9 @@
   </div>
 
   <script src="/ebooks/vendor/qrcode.js"></script>
+  <script src="/ebooks/vendor/pdf.min.js"></script>
   <script src="docs-data.js?v=4"></script>
-  <script src="docs.js?v=1"></script>
+  <script src="docs.js?v=2"></script>
 
   <!-- eco-header -->
   <link rel="stylesheet" href="../eco-header.css?v=6">
