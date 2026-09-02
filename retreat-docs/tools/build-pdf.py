@@ -14,45 +14,45 @@ renders each with headless Chrome:
 Chrome is used because it shapes Sinhala correctly via the system font, and
 --no-pdf-header-footer suppresses the date/URL furniture it adds by default.
 
-The two sheets carry the same eleven periods in the same order; the rows are
-still listed separately rather than shared, so each keeps its own wording.
+Both sheets are generated from ../../daily-routine/routine-data.js, which is
+the one place the routine is written down -- the same file the Daily Routine
+page reads. Change a time there and rerun this script.
 """
-import io, os, subprocess
+import io, os, re, subprocess
 
 HERE   = os.path.dirname(os.path.abspath(__file__))
 FILES  = os.path.join(HERE, "..", "files")
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 SEP    = "…" * 12          # the dotted rule between entries
 
-EN_TITLE = ["Daily Routine of the Retreat", "Rideekanda Forest Monastery"]
-EN_ROWS = [
-    ("5.30 AM",               "Waking up & Getting Ready"),
-    ("7.00 AM - 8.00 AM",     "Breakfast"),
-    ("8.00 AM - 9.00 AM",     "Morning Dhamma Session/ Learning Session"),
-    ("9.00 AM - 12.00 Noon",  "Meditation Practice"),
-    ("12.00 Noon - 01.00 PM", "Lunch"),
-    ("01.00 PM - 2.00 PM",    "Afternoon Rest"),
-    ("2.00 PM - 4.30 PM",     "Meditation Practice"),
-    ("4.30 PM - 6.00 PM",     "Evening Dhamma Session/ Learning Session"),
-    ("6.00 PM - 7.00 PM",     "Chanting Session & Evening Dhamma Discussion"),
-    ("7:00 PM - 10.00 PM",    "Meditation Practice"),
-    ("10:00 PM",              "Night Rest"),
-]
+# The schedule itself lives in one place, so the page and these PDFs cannot
+# drift apart. See ../../daily-routine/routine-data.js.
+DATA = os.path.abspath(os.path.join(HERE, "..", "..", "daily-routine", "routine-data.js"))
 
-SI_TITLE = ["ආරණ්‍යයේ දින චර්යාව"]
-SI_ROWS = [
-    ("පෙ.ව. 5.30",                     "අවදි වී සූදානම් වීම"),
-    ("පෙ.ව. 7.00 - පෙ.ව. 8.00",        "උදේ ආහාරය"),
-    ("පෙ.ව. 8.00 - පෙ.ව. 9.00",        "උදෑසන ධර්ම සැසිය/ ඉගෙනුම් සැසිය"),
-    ("පෙ.ව. 9.00 - දහවල් 12.00",       "භාවනා අභ්‍යාසය"),
-    ("දහවල් 12.00 - ප.ව. 01.00",       "දිවා ආහාරය"),
-    ("ප.ව. 01.00 - ප.ව. 2.00",         "දහවල් විවේකය"),
-    ("ප.ව. 2:00 - ප.ව. 4:30",          "භාවනා අභ්‍යාසය"),
-    ("ප.ව. 4:30 - ප.ව. 6:00",          "සවස ධර්ම සැසිය/ ඉගෙනුම් සැසිය"),
-    ("ප.ව. 6:00 - ප.ව. 7:00",            "සජ්ඣායනා සැසිය සහ සන්ධ්‍යා ධර්ම සාකච්ඡාව"),
-    ("ප.ව. 7:00 - ප.ව. 10:00",           "භාවනා අභ්‍යාසය"),
-    ("ප.ව. 10:00",                     "රාත්‍රී විවේකය"),
-]
+def load():
+    src = io.open(DATA, encoding="utf-8").read()
+    def field(block, name):
+        m = re.search(r'%s:\s*\{\s*en:\s*"((?:[^"\\]|\\.)*)",\s*\n?\s*si:\s*"((?:[^"\\]|\\.)*)"\s*\}' % name,
+                      block, re.S)
+        if not m:
+            raise SystemExit("could not read %s from routine-data.js" % name)
+        return m.group(1), m.group(2)
+
+    tm = re.search(r'title:\s*\{(.*?)\n  \}', src, re.S)
+    t  = tm.group(1)
+    def one(name):
+        return re.search(r'%s:\s*"([^"]*)"' % name, t).group(1)
+    titles = {"en": [one("en"), one("sub_en")], "si": [one("si")]}
+
+    rows = {"en": [], "si": []}
+    for block in re.findall(r'\{ t: \{.*?\n           si: "[^"]*" \} \}', src, re.S):
+        te, ts = field(block, "t")
+        ae, a_s = field(block, "a")
+        rows["en"].append((te, ae))
+        rows["si"].append((ts, a_s))
+    if len(rows["en"]) != 11:
+        raise SystemExit("expected 11 periods, read %d" % len(rows["en"]))
+    return titles, rows
 
 CSS = """
   /* Metrics traced from the original sheets: the dotted rule belongs to the
@@ -108,5 +108,6 @@ def build(lang, title_lines, rows, pdf_name):
           ("%d KB" % round(os.path.getsize(pdf_path) / 1024)) if ok else "FAILED\n" + r.stderr[-800:]))
 
 if __name__ == "__main__":
-    build("en", EN_TITLE, EN_ROWS, "daily-routine-schedule-en.pdf")
-    build("si", SI_TITLE, SI_ROWS, "daily-routine-schedule-si.pdf")
+    titles, rows = load()
+    build("en", titles["en"], rows["en"], "daily-routine-schedule-en.pdf")
+    build("si", titles["si"], rows["si"], "daily-routine-schedule-si.pdf")

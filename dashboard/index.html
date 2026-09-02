@@ -577,6 +577,22 @@
       .theme-toggle { bottom: 49px; }
     }
 
+    /* Daily routine button — round icon button, same shape as the calendar
+       and weather ones. Opens the routine page. Position is set by the dock. */
+    .routine-btn {
+      position: fixed; bottom: 49px; left: calc(50% + 194px); z-index: 500;
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; padding: 0;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--card) 70%, transparent);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      color: var(--muted); cursor: pointer; text-decoration: none;
+      transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
+    }
+    .routine-btn:hover { transform: translateY(-1px); color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    .routine-btn svg { display: block; width: 17px; height: 17px; }
+
     /* ── Bottom dock ──────────────────────────────────────────────
        All bottom controls live in one centred flex row (assembled by JS).
        This neutralises each control's individual fixed positioning so they
@@ -630,6 +646,16 @@
       if (el) el.innerHTML = (h >= 6 && h < 18) ? SUN : MOON;
     })();
   </script>
+
+  <!-- Daily routine button — the retreat day, hour by hour, in both languages.
+       An agenda icon, not a clock: the digital clock sits right beside it. -->
+  <a class="routine-btn" id="routine-btn" href="/daily-routine/" aria-label="Daily routine of the retreat" title="Daily routine">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="5" cy="7" r="1.35" fill="currentColor" stroke="none"/><path d="M9.5 7H19"/>
+      <circle cx="5" cy="12" r="1.35" fill="currentColor" stroke="none"/><path d="M9.5 12H19"/>
+      <circle cx="5" cy="17" r="1.35" fill="currentColor" stroke="none"/><path d="M9.5 17H19"/>
+    </svg>
+  </a>
 
   <!-- Calendar button (Poya days, holidays, retreat schedule) -->
   <button class="cal-btn" id="cal-btn" aria-label="Open calendar" aria-haspopup="dialog">
@@ -780,7 +806,7 @@
     tick();
     setInterval(tick, 10000);
 
-    // Assemble the bottom dock in order: weather · date · time · radar ·
+    // Assemble the bottom dock in order: weather · date · routine · time · radar ·
     // Explore · day/night. The Explore launcher is injected by eco-nav.js
     // (deferred), so retry until it appears, then enforce the final order.
     var dock = document.getElementById('dock');
@@ -788,6 +814,7 @@
       if (!dock) return true;
       [ document.getElementById('wx-btn'),
         document.getElementById('cal-btn'),
+        document.getElementById('routine-btn'),
         document.getElementById('clock'),
         document.querySelector('.compass'),
         document.querySelector('.eco-launch'),
