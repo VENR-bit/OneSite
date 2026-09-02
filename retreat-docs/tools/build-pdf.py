@@ -14,10 +14,8 @@ renders each with headless Chrome:
 Chrome is used because it shapes Sinhala correctly via the system font, and
 --no-pdf-header-footer suppresses the date/URL furniture it adds by default.
 
-The two sheets are NOT translations of one another: the Sinhala one carries a
-6-7 AM period for cleaning the lodgings that the English one does not. So the
-rows are listed separately rather than shared, and each keeps its own wording
-and its own punctuation quirks.
+The two sheets carry the same eleven periods in the same order; the rows are
+still listed separately rather than shared, so each keeps its own wording.
 """
 import io, os, subprocess
 
@@ -44,7 +42,6 @@ EN_ROWS = [
 SI_TITLE = ["ආරණ්‍යයේ දින චර්යාව"]
 SI_ROWS = [
     ("පෙ.ව. 5.30",                     "අවදි වී සූදානම් වීම"),
-    ("පෙ.ව. 6.00 - පෙ.ව. 7.00",        "නවාතැන් සහ අවට පිරිසිදු කිරීම"),
     ("පෙ.ව. 7.00 - පෙ.ව. 8.00",        "උදේ ආහාරය"),
     ("පෙ.ව. 8.00 - පෙ.ව. 9.00",        "උදෑසන ධර්ම සැසිය/ ඉගෙනුම් සැසිය"),
     ("පෙ.ව. 9.00 - දහවල් 12.00",       "භාවනා අභ්‍යාසය"),
@@ -52,8 +49,8 @@ SI_ROWS = [
     ("ප.ව. 01.00 - ප.ව. 2.00",         "දහවල් විවේකය"),
     ("ප.ව. 2:00 - ප.ව. 4:30",          "භාවනා අභ්‍යාසය"),
     ("ප.ව. 4:30 - ප.ව. 6:00",          "සවස ධර්ම සැසිය/ ඉගෙනුම් සැසිය"),
-    ("ප.ව 6:00 - ප.ව 7:00",            "සජ්ඣායනා සැසිය සහ සන්ධ්‍යා ධර්ම සාකච්ඡාව"),
-    ("ප.ව 7:00 - ප.ව 10:00",           "භාවනා අභ්‍යාසය"),
+    ("ප.ව. 6:00 - ප.ව. 7:00",            "සජ්ඣායනා සැසිය සහ සන්ධ්‍යා ධර්ම සාකච්ඡාව"),
+    ("ප.ව. 7:00 - ප.ව. 10:00",           "භාවනා අභ්‍යාසය"),
     ("ප.ව. 10:00",                     "රාත්‍රී විවේකය"),
 ]
 

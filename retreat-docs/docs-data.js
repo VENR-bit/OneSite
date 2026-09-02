@@ -31,7 +31,7 @@ window.RK_DOCS = [
         file: "route-guidance-si.pdf", size: "90 KB" },
       { title: "දෛනික වැඩසටහන",
         desc: "වැඩසටහනේ දෛනික කාලසටහන",
-        file: "daily-routine-schedule-si.pdf", size: "35 KB" },
+        file: "daily-routine-schedule-si.pdf", size: "34 KB" },
       { title: "අයදුම්පත — දින 07 වැඩසටහන",
         desc: "දින 07 භාවනා වැඩසටහන සඳහා ලියාපදිංචි වීමේ අයදුම්පත",
         file: "application-form-7day-si.pdf", size: "216 KB" }
