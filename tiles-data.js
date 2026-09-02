@@ -315,6 +315,18 @@ window.RK_TILES = [
     "icon": "docs"
   },
   {
+    "id": "daily-routine",
+    "label": "Daily Routine",
+    "sub": "The retreat day hour by hour, in English & Sinhala",
+    "url": "../daily-routine/",
+    "size": 82,
+    "ring": 2,
+    "bg": "radial-gradient(circle at 30% 25%, #46503a 0%, #1b2013 85%)",
+    "halo": "rgba(176, 190, 140, 0.32)",
+    "fg": "#e6e6c8",
+    "icon": "dailyRoutine"
+  },
+  {
     "id": "youtube",
     "label": "YouTube",
     "sub": "/RideekandaForestMonastery",
