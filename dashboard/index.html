@@ -591,7 +591,54 @@
       transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
     }
     .routine-btn:hover { transform: translateY(-1px); color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
-    .routine-btn svg { display: block; width: 17px; height: 17px; }
+    /* The icon is the tile's own artwork, tinted by currentColor through a
+       mask — the same trick icons.jsx uses, so the two never diverge. */
+    .routine-btn .rb-ico {
+      display: block; width: 19px; height: 19px;
+      background-color: currentColor;
+      -webkit-mask-image: url(/icon-daily-routine.svg); mask-image: url(/icon-daily-routine.svg);
+      -webkit-mask-size: contain; mask-size: contain;
+      -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+      -webkit-mask-position: center; mask-position: center;
+    }
+
+    /* Daily routine panel — same shape as the calendar popup */
+    .rt-modal { position: fixed; inset: 0; z-index: 99600; display: none; }
+    .rt-modal.is-open { display: block; }
+    .rt-overlay { position: absolute; inset: 0; background: color-mix(in srgb, var(--bg) 50%, rgba(0,0,0,0.5)); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+    .rt-panel {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      width: min(460px, calc(100vw - 32px)); max-height: calc(100vh - 48px); overflow-y: auto;
+      background: var(--card); color: var(--ink);
+      border: 1px solid var(--line); border-radius: 18px;
+      box-shadow: 0 40px 90px -30px rgba(0,0,0,0.55);
+      padding: 18px 18px 14px;
+      font-family: 'Spectral', Georgia, serif;
+    }
+    .rt-x { position: absolute; top: 10px; right: 12px; width: 30px; height: 30px; border: 0; background: transparent; color: var(--muted); font-size: 22px; line-height: 1; cursor: pointer; border-radius: 50%; }
+    .rt-x:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink); }
+    .rt-head { margin: 2px 32px 4px 0; }
+    .rt-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.5rem; font-weight: 500; }
+    .rt-title-si { font-family: 'Noto Serif Sinhala', Georgia, serif; font-size: 0.86rem; color: var(--accent); margin-top: 2px; }
+    .rt-list { margin-top: 12px; }
+    .rt-row { display: grid; grid-template-columns: 158px 1fr; gap: 0 14px; padding: 9px 10px; border-radius: 11px; align-items: start; }
+    .rt-row + .rt-row { border-top: 1px solid var(--line); }
+    .rt-row.now { background: color-mix(in srgb, var(--accent) 12%, transparent); border-top-color: transparent; }
+    .rt-row.now + .rt-row { border-top-color: transparent; }
+    /* wide enough that "9.00 AM - 12.00 Noon" and its Sinhala stay on one line */
+    .rt-t { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0; color: var(--ink); text-align: right; padding-top: 2px; white-space: nowrap; }
+    .rt-t i { display: block; font-family: 'Noto Serif Sinhala', Georgia, serif; font-style: normal; font-size: 9.5px; color: var(--muted); margin-top: 3px; }
+    .rt-a { font-size: 0.95rem; line-height: 1.35; }
+    .rt-a i { display: block; font-family: 'Noto Serif Sinhala', Georgia, serif; font-style: normal; font-size: 0.78rem; color: var(--muted); margin-top: 3px; line-height: 1.6; }
+    .rt-now { display: inline-block; margin-left: 7px; vertical-align: 1px; font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 1px 6px; }
+    .rt-foot { margin: 12px 4px 0; text-align: center; }
+    .rt-foot a { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); text-decoration: none; border-bottom: 1px solid transparent; }
+    .rt-foot a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    @media (max-width: 520px) {
+      .rt-row { grid-template-columns: 1fr; gap: 3px; }
+      .rt-t { text-align: left; }
+      .rt-t i { display: inline; margin-left: 7px; }
+    }
 
     /* ── Bottom dock ──────────────────────────────────────────────
        All bottom controls live in one centred flex row (assembled by JS).
@@ -647,15 +694,11 @@
     })();
   </script>
 
-  <!-- Daily routine button — the retreat day, hour by hour, in both languages.
-       An agenda icon, not a clock: the digital clock sits right beside it. -->
-  <a class="routine-btn" id="routine-btn" href="/daily-routine/" aria-label="Daily routine of the retreat" title="Daily routine">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <circle cx="5" cy="7" r="1.35" fill="currentColor" stroke="none"/><path d="M9.5 7H19"/>
-      <circle cx="5" cy="12" r="1.35" fill="currentColor" stroke="none"/><path d="M9.5 12H19"/>
-      <circle cx="5" cy="17" r="1.35" fill="currentColor" stroke="none"/><path d="M9.5 17H19"/>
-    </svg>
-  </a>
+  <!-- Daily routine button — opens the routine panel. Carries the same icon
+       as the Daily Routine tile, drawn from the same file. -->
+  <button class="routine-btn" id="routine-btn" type="button" aria-label="Daily routine of the retreat" aria-haspopup="dialog" title="Daily routine">
+    <span class="rb-ico" aria-hidden="true"></span>
+  </button>
 
   <!-- Calendar button (Poya days, holidays, retreat schedule) -->
   <button class="cal-btn" id="cal-btn" aria-label="Open calendar" aria-haspopup="dialog">
@@ -682,6 +725,20 @@
         <span><i class="dot retreat"></i>Retreat</span>
         <span><i class="dot today-dot"></i>Today</span>
       </div>
+    </div>
+  </div>
+
+  <!-- Daily routine popup -->
+  <div class="rt-modal" id="rt-modal" aria-hidden="true">
+    <div class="rt-overlay" data-rt-close></div>
+    <div class="rt-panel" role="dialog" aria-modal="true" aria-label="Daily routine of the retreat">
+      <button class="rt-x" type="button" aria-label="Close" data-rt-close>&times;</button>
+      <div class="rt-head">
+        <div class="rt-title">Daily Routine</div>
+        <div class="rt-title-si">ආරණ්‍යයේ දින චර්යාව</div>
+      </div>
+      <div class="rt-list" id="rt-list"></div>
+      <div class="rt-foot"><a href="../daily-routine/">Open the full page</a></div>
     </div>
   </div>
 
@@ -956,6 +1013,7 @@
 
   <!-- Calendar: Poya days, Sri Lanka holidays, retreat schedule -->
   <script src="../calendar-data.js?v=26"></script>
+  <script src="../daily-routine/routine-data.js?v=1"></script>
   <script>
   (function () {
     var DATA = window.RK_CALENDAR || { poya: [], holidays: [], retreats: [], bookingUrl: 'book-your-stay/' };
@@ -1045,6 +1103,69 @@
     document.getElementById('cal-prev').addEventListener('click', function (){ view.setMonth(view.getMonth()-1); render(); });
     document.getElementById('cal-next').addEventListener('click', function (){ view.setMonth(view.getMonth()+1); render(); });
     modal.addEventListener('click', function (e){ if (e.target.hasAttribute('data-cal-close')) close(); });
+    document.addEventListener('keydown', function (e){ if (e.key === 'Escape') close(); });
+  })();
+  </script>
+
+  <!-- Daily routine panel — reads the same routine-data.js the routine page does -->
+  <script>
+  (function () {
+    var btn   = document.getElementById('routine-btn');
+    var modal = document.getElementById('rt-modal');
+    var list  = document.getElementById('rt-list');
+    if (!btn || !modal || !list) return;
+
+    var R = (window.RK_ROUTINE || {}).rows || [];
+    // Nothing to show without the data file; leave the button as a plain link
+    // to the page rather than opening an empty panel.
+    if (!R.length) {
+      btn.addEventListener('click', function () { location.href = '../daily-routine/'; });
+      return;
+    }
+
+    function esc(t){ return String(t == null ? '' : t).replace(/[&<>"]/g, function (c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); }
+    function mins(hhmm){ var p = String(hhmm || '').split(':'); return (+p[0]) * 60 + (+p[1] || 0); }
+    // The night period wraps past midnight, so `to` is smaller than `from`.
+    function covers(r, now){
+      var a = mins(r.from), b = mins(r.to);
+      return a <= b ? (now >= a && now < b) : (now >= a || now < b);
+    }
+
+    list.innerHTML = R.map(function (r) {
+      return '<div class="rt-row">' +
+        '<div class="rt-t">' + esc(r.t.en) + '<i>' + esc(r.t.si) + '</i></div>' +
+        '<div class="rt-a">' + esc(r.a.en) + '<span class="rt-slot"></span>' +
+          '<i>' + esc(r.a.si) + '</i></div>' +
+      '</div>';
+    }).join('');
+    var rows = [].slice.call(list.children);
+
+    function markNow(){
+      var d = new Date(), now = d.getHours() * 60 + d.getMinutes();
+      rows.forEach(function (el, i) {
+        var on = covers(R[i], now);
+        el.classList.toggle('now', on);
+        var slot = el.querySelector('.rt-slot');
+        if (slot) slot.innerHTML = on ? '<span class="rt-now">Now</span>' : '';
+      });
+    }
+
+    var timer = null;
+    function open(){
+      markNow();
+      timer = setInterval(markNow, 30000);
+      modal.classList.add('is-open'); modal.setAttribute('aria-hidden', 'false');
+      var cur = list.querySelector('.rt-row.now');
+      if (cur && cur.scrollIntoView) cur.scrollIntoView({ block: 'nearest' });
+    }
+    function close(){
+      modal.classList.remove('is-open'); modal.setAttribute('aria-hidden', 'true');
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    btn.addEventListener('click', open);
+    modal.addEventListener('click', function (e){ if (e.target.hasAttribute('data-rt-close')) close(); });
     document.addEventListener('keydown', function (e){ if (e.key === 'Escape') close(); });
   })();
   </script>
