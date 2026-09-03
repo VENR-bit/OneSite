@@ -511,12 +511,22 @@
     .wx-foot { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 12px 0 0; }
 
     /* Calendar popup */
+    /* Both popups centre inside the SAFE area, not the raw viewport. On the
+       installed iOS app a panel tall enough to hit max-height otherwise runs
+       up under the status bar, taking its close button with it. The insets go
+       through variables so the geometry can be tested on a desktop browser. */
+    .cal-modal, .rt-modal { --safe-t: env(safe-area-inset-top, 0px); --safe-b: env(safe-area-inset-bottom, 0px); }
+
     .cal-modal { position: fixed; inset: 0; z-index: 99600; display: none; }
     .cal-modal.is-open { display: block; }
     .cal-overlay { position: absolute; inset: 0; background: color-mix(in srgb, var(--bg) 50%, rgba(0,0,0,0.5)); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
     .cal-panel {
-      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-      width: min(380px, calc(100vw - 32px)); max-height: calc(100vh - 48px); overflow-y: auto;
+      position: absolute; left: 50%;
+      top: calc(50% + (var(--safe-t) - var(--safe-b)) / 2);
+      transform: translate(-50%, -50%);
+      width: min(380px, calc(100vw - 32px)); overflow-y: auto;
+      max-height: calc(100vh  - 48px - var(--safe-t) - var(--safe-b));
+      max-height: calc(100dvh - 48px - var(--safe-t) - var(--safe-b));
       background: var(--card); color: var(--ink);
       border: 1px solid var(--line); border-radius: 18px;
       box-shadow: 0 40px 90px -30px rgba(0,0,0,0.55);
@@ -607,8 +617,12 @@
     .rt-modal.is-open { display: block; }
     .rt-overlay { position: absolute; inset: 0; background: color-mix(in srgb, var(--bg) 50%, rgba(0,0,0,0.5)); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
     .rt-panel {
-      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-      width: min(460px, calc(100vw - 32px)); max-height: calc(100vh - 48px); overflow-y: auto;
+      position: absolute; left: 50%;
+      top: calc(50% + (var(--safe-t) - var(--safe-b)) / 2);
+      transform: translate(-50%, -50%);
+      width: min(460px, calc(100vw - 32px)); overflow-y: auto;
+      max-height: calc(100vh  - 48px - var(--safe-t) - var(--safe-b));
+      max-height: calc(100dvh - 48px - var(--safe-t) - var(--safe-b));
       background: var(--card); color: var(--ink);
       border: 1px solid var(--line); border-radius: 18px;
       box-shadow: 0 40px 90px -30px rgba(0,0,0,0.55);
