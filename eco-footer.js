@@ -63,7 +63,8 @@
         '<div><h4>Visit &amp; Support</h4><ul>' + VISIT.map(li).join("") + '</ul></div>' +
       '</div>' +
       '<div class="eco-f-base">' +
-        '<span>© ' + year + ' Rideekanda Forest Monastery</span>' +
+        '<span>© ' + year + ' Rideekanda Forest Monastery' +
+          ' · <a href="' + ROOT + 'terms/">Terms &amp; Conditions</a></span>' +
         '<span>Sabbadānaṃ dhammadānaṃ jināti — the gift of dhamma surpasses all gifts</span>' +
       '</div>' +
     '</div>';
