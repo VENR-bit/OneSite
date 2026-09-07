@@ -3,7 +3,8 @@
 
    Update once a year (or when the retreat schedule changes):
      • poya      — Sri Lanka Full Moon Poya days
-     • holidays  — other Sri Lanka public holidays
+     • holidays  — other Sri Lanka public holidays (the day after Vesak is
+                   gazetted as a holiday but is not a poya, so it lives here)
      • retreats  — retreat schedule (mirrors the booking page /
                    WeTravel listings: title + start/end, inclusive)
 
@@ -22,7 +23,21 @@ window.RK_CALENDAR = {
     { date: "2026-09-26", name: "Binara Poya" },
     { date: "2026-10-25", name: "Vap Poya" },
     { date: "2026-11-24", name: "Ill Poya" },
-    { date: "2026-12-23", name: "Unduvap Poya" }
+    { date: "2026-12-23", name: "Unduvap Poya" },
+
+    // ── 2027 ──
+    { date: "2027-01-22", name: "Duruthu Poya" },
+    { date: "2027-02-20", name: "Navam Poya" },
+    { date: "2027-03-22", name: "Madin Poya" },
+    { date: "2027-04-20", name: "Bak Poya" },
+    { date: "2027-05-19", name: "Vesak Poya" },
+    { date: "2027-06-18", name: "Poson Poya" },
+    { date: "2027-07-18", name: "Esala Poya" },
+    { date: "2027-08-16", name: "Nikini Poya" },
+    { date: "2027-09-15", name: "Binara Poya" },
+    { date: "2027-10-15", name: "Vap Poya" },
+    { date: "2027-11-13", name: "Ill Poya" },
+    { date: "2027-12-13", name: "Unduvap Poya" }
   ],
   holidays: [
     { date: "2026-01-15", name: "Tamil Thai Pongal Day" },
@@ -36,7 +51,22 @@ window.RK_CALENDAR = {
     { date: "2026-05-28", name: "Id-Ul-Alha (Hadji)" },
     { date: "2026-08-26", name: "Milad-Un-Nabi" },
     { date: "2026-11-08", name: "Deepavali Festival Day" },
-    { date: "2026-12-25", name: "Christmas Day" }
+    { date: "2026-12-25", name: "Christmas Day" },
+
+    // ── 2027 ──
+    { date: "2027-01-15", name: "Tamil Thai Pongal Day" },
+    { date: "2027-02-04", name: "Independence Day" },
+    { date: "2027-03-06", name: "Mahasivarathri Day" },
+    { date: "2027-03-10", name: "Id-Ul-Fitr (Ramazan)" },
+    { date: "2027-03-26", name: "Good Friday" },
+    { date: "2027-04-13", name: "Sinhala & Tamil New Year Eve" },
+    { date: "2027-04-14", name: "Sinhala & Tamil New Year" },
+    { date: "2027-05-01", name: "May Day" },
+    { date: "2027-05-17", name: "Id-Ul-Alha (Hadji)" },
+    { date: "2027-05-20", name: "Day Following Vesak" },
+    { date: "2027-08-15", name: "Milad-Un-Nabi" },
+    { date: "2027-10-28", name: "Deepavali Festival Day" },
+    { date: "2027-12-25", name: "Christmas Day" }
   ],
   retreats: [
     { start: "2026-06-02", end: "2026-06-09", name: "7-Day Concentration & Vipassana Retreat" },
