@@ -5,6 +5,16 @@ const ITEMS = window.RIDEEKANDA_ITEMS;
 const ICONS = window.ICONS;
 
 const fmtLKR = (n) => n.toLocaleString("en-LK", { maximumFractionDigits: 0 });
+
+// The pledge quantity holds whatever is typed, including "", so the field can
+// be cleared and retyped; clamping a number on every keystroke meant the 1
+// could never be deleted and the next digit landed beside it (1 -> 10, 11).
+// Coerced to a number on blur and again on submit.
+const asQty = (v, max) => {
+  const n = Math.round(parseFloat(v));
+  if (!Number.isFinite(n)) return 1;
+  return Math.max(1, Math.min(max, n));
+};
 const pad2 = (n) => String(n).padStart(2, "0");
 
 function ItemThumb({ photo, icon, priority }) {
@@ -86,7 +96,11 @@ function PledgeModal({ item, onClose, onConfirm }) {
   if (!item) return null;
   const submit = (e) => {
     e.preventDefault();
-    onConfirm(item, qty, name);
+    // Settle the typed value once, here, so the pledge sent and the receipt
+    // shown are the same number even after `remaining` shrinks behind us.
+    const n = asQty(qty, remaining);
+    setQty(n);
+    onConfirm(item, n, name);
     setPhase("success");
   };
   return (
@@ -112,15 +126,18 @@ function PledgeModal({ item, onClose, onConfirm }) {
                 <input
                   type="number"
                   min={1}
+                  step={1}
                   max={remaining}
                   value={qty}
-                  onChange={(e) => setQty(Math.max(1, Math.min(remaining, +e.target.value || 1)))}
+                  onFocus={(e) => e.target.select()}
+                  onChange={(e) => setQty(e.target.value)}
+                  onBlur={() => setQty(q => asQty(q, remaining))}
                 />
               </div>
             </div>
             <div style={{marginTop:18, padding:"14px 16px", background:"var(--accent-tint)", display:"flex", justifyContent:"space-between", alignItems:"baseline"}}>
               <span style={{fontSize:11, letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--accent-deep)"}}>Approximate value</span>
-              <span style={{fontFamily:"var(--serif)", fontSize:22, color:"var(--accent-deep)", fontFeatureSettings:"\"tnum\""}}>LKR {fmtLKR(item.price * qty)}</span>
+              <span style={{fontFamily:"var(--serif)", fontSize:22, color:"var(--accent-deep)", fontFeatureSettings:"\"tnum\""}}>LKR {fmtLKR(item.price * asQty(qty, remaining))}</span>
             </div>
             <div className="modal-actions">
               <button type="button" className="btn-ghost" onClick={onClose}>Cancel</button>

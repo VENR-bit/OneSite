@@ -5,6 +5,20 @@ const ICONS = window.ICONS;
 const fmtLKR = (n) => n.toLocaleString("en-LK", { maximumFractionDigits: 0 });
 const pad2 = (n) => String(n).padStart(2, "0");
 
+// Number fields hold whatever is typed, INCLUDING the empty string, so the
+// value can be cleared and retyped. Storing a number instead is what made the
+// old quantity field impossible to edit: clearing it gave "", `+""` is 0,
+// `0 || 1` snapped it straight back to 1, and the next keystroke landed beside
+// that 1 — type 0 and you got 10, type 1 and you got 11. The value is coerced
+// back to a number on blur and again on save, so nothing downstream sees text.
+const numOr = (v, fallback, min) => {
+  const n = parseFloat(v);
+  if (!Number.isFinite(n)) return fallback;
+  return n < min ? min : n;
+};
+const asQty   = (v) => Math.round(numOr(v, 1, 1));
+const asPrice = (v) => numOr(v, 0, 0);
+
 
 const PRIORITIES = [
   { id: "urgent", label: "Urgent" },
@@ -104,11 +118,14 @@ function AdminApp() {
   }
   async function save() {
     if (!draft.en.trim()) return;
+    // Blur may not have fired (Publish clicked straight from the field), so
+    // coerce here too rather than trusting the form to have tidied itself.
+    const clean = { ...draft, qty: asQty(draft.qty), price: asPrice(draft.price) };
     if (editingId === "new") {
-      const created = await window.sbInsertItem(draft);
+      const created = await window.sbInsertItem(clean);
       if (created) setItems([created, ...items]);
     } else {
-      const updated = await window.sbUpdateItem(editingId, draft);
+      const updated = await window.sbUpdateItem(editingId, clean);
       if (updated) setItems(items.map(i => i.id === editingId ? updated : i));
     }
     setEditingId(null);
@@ -269,11 +286,17 @@ function AdminApp() {
                   <div className="field-row">
                     <div className="field">
                       <label>Quantity</label>
-                      <input type="number" min={1} value={draft.qty} onChange={(e) => setDraft({...draft, qty: +e.target.value || 1})} />
+                      <input type="number" min={1} step={1} value={draft.qty}
+                             onFocus={(e) => e.target.select()}
+                             onChange={(e) => setDraft({...draft, qty: e.target.value})}
+                             onBlur={() => setDraft(d => ({...d, qty: asQty(d.qty)}))} />
                     </div>
                     <div className="field">
                       <label>Per cost (LKR)</label>
-                      <input type="number" min={0} value={draft.price} onChange={(e) => setDraft({...draft, price: +e.target.value || 0})} />
+                      <input type="number" min={0} value={draft.price}
+                             onFocus={(e) => e.target.select()}
+                             onChange={(e) => setDraft({...draft, price: e.target.value})}
+                             onBlur={() => setDraft(d => ({...d, price: asPrice(d.price)}))} />
                     </div>
                   </div>
                   <div className="field">
