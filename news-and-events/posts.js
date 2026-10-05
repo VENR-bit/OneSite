@@ -28,6 +28,16 @@
    ────────────────────────────────────────────────────────────── */
 window.NEWS_POSTS = [
   {
+    title: "Two 7-Day Retreats — September 2026",
+    date: "2026-09-22",
+    type: "Event",
+    when: "September 2026 · two 7-day retreats",
+    excerpt: "Two separate 7-day retreats were held at Rideekanda Forest Monastery during September. Practitioners from all walks of life gathered in the hills of Matale to embrace noble silence and immerse themselves in the Buddha’s teachings of Concentration & Vipassanā.",
+    body: "🌸 Reflecting on a Month of Peace, Stillness, and Inner Transformation 🌿\n\nWe are deeply grateful to share that Rideekanda Forest Monastery successfully conducted two separate retreats, each lasting 7 days, during the month of September.\n\nOver these two distinct programs, practitioners from all walks of life gathered in the tranquil hills of Matale to step away from daily distractions, embrace noble silence, and immerse themselves in the Buddha’s timeless teachings of Concentration & Vipassana (insight meditation).\n\nFrom peaceful sunrise reflections overlooking the mist-covered valleys to guided Dhamma sessions, mindful walking, yoga/stretching, and community meals, each retreat was a testament to the dedication and effort of all participants.\n\n🙏 Sincere Gratitude:\n· To the venerable monks for their compassionate guidance and wisdom.\n· To our retreat participants for their sincere dedication, patience, and practice.\n· To all volunteers, donors, and supporters whose generosity (dāna) made both retreats possible.\n\nMay the merit gathered during these retreats bring peace, clarity, and liberation to all beings. ✨\n\n📌 Join Us for Upcoming Retreats\nAre you ready to step into the forest and deepen your practice? We host monthly 7-day residential retreats.\n\n🌐 Learn More & Book: www.rideekanda.com/retreat-center\n💬 WhatsApp: +94 74 225 2980\n📧 Email: rideekanda@gmail.com",
+    image: "post-41b.jpg",
+    images: ["post-41b.jpg", "post-41.jpg", "post-41c.jpg", "post-41d.jpg", "post-41e.jpg", "post-41f.jpg", "post-41g.jpg", "post-41h.jpg", "post-41i.jpg", "post-41j.jpg", "post-41k.jpg"]
+  },
+  {
     title: "7-Day Vipassanā Retreat — August 2026",
     date: "2026-08-23",
     type: "Event",
