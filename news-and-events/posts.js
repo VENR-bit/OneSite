@@ -28,6 +28,16 @@
    ────────────────────────────────────────────────────────────── */
 window.NEWS_POSTS = [
   {
+    title: "Inaugural Opening of the New Meditation Kuti",
+    date: "2026-10-02",
+    type: "Event",
+    when: "2 October 2026",
+    excerpt: "A simple and solemn ceremony marked the opening and offering of a newly built meditation shelter, nestled in the forest canopy — a dedicated, serene space for resident monks to engage in intensive meditation practice.",
+    body: "On October 2, 2026, Rideekanda Forest Monastery hosted a simple and solemn religious ceremony to mark the inaugural opening and offering of a newly constructed meditation shelter (kuti).\n\nNestled amidst the natural tranquility of the forest canopy, this new shelter offers a dedicated, serene space for resident monks to engage in intensive meditation practice.\n\nA Sacred Offering to the Sangha\n\nThe event was led by Venerable Bhante Rewatha, who conducted the traditional Buddhist rites to formally offer the kuti to the Maha Sangha. The ceremony was attended by the primary supporters who made this project possible — especially Miss S — alongside local meditation practitioners and the dedicated construction team whose hard work brought this vision to life.\n\nMay the merit generated from offering this shelter bring peace, happiness, and progress on the Dhamma path to all who contributed to its realization.",
+    image: "post-42.jpg",
+    images: ["post-42.jpg", "post-42b.jpg", "post-42c.jpg", "post-42d.jpg", "post-42e.jpg", "post-42f.jpg", "post-42g.jpg", "post-42h.jpg", "post-42i.jpg", "post-42j.jpg"]
+  },
+  {
     title: "Two 7-Day Retreats — September 2026",
     date: "2026-09-22",
     type: "Event",
