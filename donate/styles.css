@@ -955,3 +955,41 @@ a.home-link:hover { color: var(--accent); }
 .paylink-done p { color: var(--ink-2); font-size: 15px; line-height: 1.6; margin: 0 auto 10px; max-width: 460px; }
 .paylink-done b { color: var(--ink); }
 .paylink-anumodana { color: var(--accent); margin-top: 16px; letter-spacing: 0.1em; }
+
+/* ── pay panel — QR beside a direct link ─────────────────────────────── */
+.pay-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 48px);
+  align-items: center;
+}
+.pay-qr { display: grid; place-items: center; }
+/* the supplied code is square, so drop the slightly tall default card ratio */
+.pay-qr-card { aspect-ratio: auto; max-width: 320px; }
+/* the QR is dark-on-white and must stay that way to scan in either theme */
+.pay-qr-card img {
+  width: 100%; height: auto; display: block;
+  background: #fff; padding: 10px; border-radius: 4px;
+}
+.pay-side { min-width: 0; }
+.pay-lede { color: var(--ink-soft, var(--muted)); line-height: 1.75; margin: 0 0 22px; }
+.pay-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 15px 26px; border-radius: 999px;
+  background: var(--accent); color: #fff; text-decoration: none;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+  box-shadow: 0 10px 26px -14px var(--accent);
+}
+.pay-cta:hover { transform: translateY(-1px); filter: brightness(1.06); }
+.pay-cta .arrow { font-size: 14px; }
+.pay-meta { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); }
+.pay-methods { font-size: 11px; letter-spacing: 0.12em; color: var(--ink); text-transform: uppercase; }
+.pay-cur { font-size: 11px; letter-spacing: 0.08em; color: var(--muted); margin-top: 7px; }
+
+@media (max-width: 760px) {
+  .pay-panel { grid-template-columns: 1fr; gap: 28px; }
+  .pay-side { text-align: center; }
+  .pay-cta { width: 100%; justify-content: center; }
+  .pay-methods, .pay-cur { text-align: center; }
+}

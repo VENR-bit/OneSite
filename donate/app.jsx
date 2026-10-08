@@ -686,6 +686,45 @@ function RequestLinkPanel() {
   );
 }
 
+/* ──────────── pay by card — QR + direct link ──────────── */
+// One WeTravel payment link, as a QR to scan from a phone and as a button to
+// tap on the device you are already holding. The QR encodes exactly the URL
+// in PAY_URL — if one changes, change both, or the printed code and the
+// button will quietly send people to different places.
+const PAY_URL = "https://www.wetravel.com/pay/3144631321";
+
+function PayPanel() {
+  return (
+    <div className="pay-panel">
+      <div className="pay-qr">
+        <div className="qr-card pay-qr-card">
+          <div className="qr-card-title">Scan <span style={{color:"var(--accent)", fontStyle:"italic", fontWeight:400}}>to pay</span></div>
+          <img src="qr/donate.png?v=1" alt="QR code — pay to Rideekanda Forest Monastery" />
+          <div className="qr-card-foot">wetravel.com/pay</div>
+        </div>
+      </div>
+
+      <div className="pay-side">
+        <p className="pay-lede">
+          Point your phone's camera at the code, or tap the button below on the
+          device you're holding. You'll choose the amount on the secure payment
+          page — no account and no login needed.
+        </p>
+
+        <a className="pay-cta" href={PAY_URL} target="_blank" rel="noopener noreferrer">
+          Open the payment page
+          <span className="arrow">↗</span>
+        </a>
+
+        <div className="pay-meta">
+          <div className="pay-methods mono">Visa · Mastercard · Amex · Apple&nbsp;Pay · Google&nbsp;Pay</div>
+          <div className="pay-cur mono">Pay in 15+ currencies, including USD, EUR and GBP</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ──────────── give section (vertical sequence) ──────────── */
 function Give() {
   const [method, setMethod] = useState(null);   // 'qr' | 'wetravel' | 'bank'
@@ -719,8 +758,8 @@ function Give() {
         <span className="mono step-mark">Step 1 — Choose a method</span>
         <div className="methods methods--two">
           <MethodCard
-            title="Request a Payment Link"
-            sub={<>We send you a secure link — donate by Visa/Mastercard, Apple Pay or Google Pay.</>}
+            title="Card, Apple Pay or Google Pay"
+            sub={<>Scan the QR with your phone, or tap through to the secure payment page.</>}
             kind="card"
             active={method === "request"}
             onClick={() => choose("request")}
@@ -734,17 +773,17 @@ function Give() {
           />
         </div>
 
-        {/* Payment-link request form */}
+        {/* Scan the QR, or tap straight through to the payment page */}
         {method === "request" && (
           <div ref={stepAmountRef} className="stage-step fade-in" key="request">
             <div className="stage-step-head">
-              <span className="mono step-mark">Step 2 — Request your payment link</span>
+              <span className="mono step-mark">Step 2 — Scan or tap to pay</span>
               <div className="stage-step-meta">
-                <span className="mono">Method · Payment link</span>
+                <span className="mono">Method · Card · Apple Pay · Google Pay</span>
                 <button className="link-btn" onClick={() => setMethod(null)}>Change method</button>
               </div>
             </div>
-            <RequestLinkPanel />
+            <PayPanel />
           </div>
         )}
 
@@ -789,7 +828,7 @@ function Closing() {
         </h2>
 
         <div className="closing-foot">
-          <span className="mono">Card · Apple Pay · Google Pay — via a secure payment link</span>
+          <span className="mono">Card · Apple Pay · Google Pay — scan the code or tap through</span>
         </div>
       </div>
     </section>
