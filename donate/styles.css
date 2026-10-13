@@ -561,16 +561,23 @@ a { color: inherit; text-decoration: none; }
   gap: clamp(24px, 4vw, 44px);
   align-items: start;
 }
-/* The payment form itself, served by WeTravel. Its own content scrolls, so a
-   fixed height here keeps the page from growing a second scrollbar. */
+/* The payment form itself, served by WeTravel.
+   The height is fixed and measured, not computed: the frame is another origin,
+   so its content height cannot be read, and WeTravel publishes none — their own
+   widget sidesteps this by opening checkout over the whole viewport. Found by
+   bisection at each width: the form needs ~1000px at 500px wide and ~1060px at
+   330px, below which a scrollbar appears and "Powered by WeTravel" is cut off.
+   Scrolling is deliberately left enabled: a later step or a validation message
+   can make the content taller, and a clipped Continue button would be worse
+   than a scrollbar. */
 .pay-embed {
   border: 1px solid var(--line);
   border-radius: 14px;
   overflow: hidden;
   background: #fff;
-  min-height: 980px;
+  min-height: 1015px;
 }
-.pay-embed iframe { display: block; width: 100%; height: 980px; border: 0; }
+.pay-embed iframe { display: block; width: 100%; height: 1015px; border: 0; }
 .pay-open {
   display: inline-flex; align-items: center; gap: 7px; margin-top: 16px;
   font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
@@ -610,7 +617,7 @@ a { color: inherit; text-decoration: none; }
 /* On a phone the embedded form is the whole point; give it the height it
    needs and let the page scroll rather than the frame. */
 @media (max-width: 560px) {
-  .pay-embed, .pay-embed iframe { height: 1000px; min-height: 1000px; }
+  .pay-embed, .pay-embed iframe { height: 1075px; min-height: 1075px; }
 }
 /* ── "Purpose of payment" hint ───────────────────────────────────────────
    Floats above the page once someone starts filling the embedded form.
