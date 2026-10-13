@@ -1,4 +1,4 @@
-const { useState, useRef } = React;
+const { useState, useEffect, useRef } = React;
 
 /* ──────────── data ──────────── */
 
@@ -192,7 +192,65 @@ function BankStack({ onCopy }) {
 // button will quietly send people to different places.
 const PAY_URL = "https://www.wetravel.com/pay/3144631321";
 
+// Wording offered for WeTravel's "Purpose of payment" box. Add or change
+// these freely — they are only suggestions shown beside the form.
+const PURPOSES = ["Pay for the retreat", "Pay for the project", "Dāna offering"];
+
 function PayPanel() {
+  const [hint, setHint] = useState(false);
+  const [copied, setCopied] = useState(null);
+  const frameRef = useRef(null);
+
+  // We cannot reach inside the WeTravel frame — it is another origin — so the
+  // "Purpose of payment" box cannot be filled or turned into a menu from here.
+  // What we CAN see is the moment someone starts: a click into a cross-origin
+  // frame takes focus off this window and makes the frame itself
+  // document.activeElement. That is the cue to offer the wording.
+  useEffect(() => {
+    try { if (sessionStorage.getItem("rk-purpose-hint") === "done") return; } catch (e) {}
+    function onBlur() {
+      // the event fires before activeElement settles, so read it next tick
+      setTimeout(() => {
+        if (document.activeElement === frameRef.current) setHint(true);
+      }, 0);
+    }
+    window.addEventListener("blur", onBlur);
+    return () => window.removeEventListener("blur", onBlur);
+  }, []);
+
+  function dismiss() {
+    setHint(false);
+    try { sessionStorage.setItem("rk-purpose-hint", "done"); } catch (e) {}
+  }
+
+  // Only say "copied" once it actually is. The async clipboard needs a user
+  // gesture and a permission the browser may refuse, so fall back to the old
+  // execCommand route, and if both fail say so rather than claiming success.
+  function copy(text) {
+    function done(ok) {
+      setCopied(ok ? text : "fail:" + text);
+      setTimeout(() => setCopied(null), ok ? 1800 : 2600);
+    }
+    function legacy() {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.cssText = "position:fixed;top:0;left:-9999px;opacity:0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        done(ok);
+      } catch (e) { done(false); }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => done(true), legacy);
+    } else {
+      legacy();
+    }
+  }
+
   return (
     <div className="pay-panel">
       {/* WeTravel serves this form from /popups/ and allows cross-origin
@@ -201,6 +259,7 @@ function PayPanel() {
           never sees them, and cannot read the frame either. */}
       <div className="pay-embed">
         <iframe
+          ref={frameRef}
           src={PAY_URL}
           title="Pay to Rideekanda Forest Monastery — secure payment by WeTravel"
           loading="lazy"
@@ -213,6 +272,8 @@ function PayPanel() {
         <p className="pay-lede">
           Enter the amount and your details in the form, and pay by card,
           Apple&nbsp;Pay or Google&nbsp;Pay. No account and no login needed.
+          In <b>Purpose of payment</b>, please say what your gift is for —
+          for example “{PURPOSES[0]}”.
         </p>
 
         <div className="qr-card pay-qr-card">
@@ -230,6 +291,25 @@ function PayPanel() {
           <div className="pay-cur mono">Pay in 15+ currencies, including USD, EUR and GBP</div>
         </div>
       </div>
+
+      {hint && ReactDOM.createPortal((
+        <div className="pay-hint" role="status">
+          <button className="pay-hint-x" type="button" aria-label="Dismiss" onClick={dismiss}>&times;</button>
+          <div className="pay-hint-t mono">In “Purpose of payment”, please write</div>
+          <div className="pay-hint-opts">
+            {PURPOSES.map(t => (
+              <button key={t} type="button"
+                      className={"pay-hint-opt" + (copied === t ? " copied" : "") + (copied === "fail:" + t ? " failed" : "")}
+                      onClick={() => copy(t)}>
+                {copied === t ? "Copied — now paste it in"
+                  : copied === "fail:" + t ? "Couldn’t copy — please type it"
+                  : t}
+              </button>
+            ))}
+          </div>
+          <div className="pay-hint-n">Tap one to copy it, or just type your own.</div>
+        </div>
+      ), document.body)}
     </div>
   );
 }
