@@ -991,17 +991,33 @@
       }
       document.getElementById('wx-fc').innerHTML = html;
 
-      // Hourly forecast for today (horizontal scroll, current hour highlighted)
-      var H = data.hourly, today = d.time[0], nowH = new Date().getHours(), hh = '';
+      // Hourly forecast for today (horizontal scroll, current hour highlighted).
+      //
+      // Which slot is "now" comes from the API's own clock, not the browser's.
+      // The request asks for timezone=auto, so these timestamps are the
+      // monastery's local time; new Date().getHours() is the *viewer's*, and
+      // anyone outside Sri Lanka would mark an hour that is hours adrift.
+      var H = data.hourly, today = d.time[0], hh = '';
+      var nowIso = c.time || '';
+      var nowDay = nowIso ? nowIso.slice(0, 10) : today;
+      var nowH   = nowIso ? parseInt(nowIso.slice(11, 13), 10) : new Date().getHours();
       if (H && H.time) {
         for (var j = 0; j < H.time.length; j++) {
           if (H.time[j].indexOf(today) !== 0) continue;           // present day only
           var hr = parseInt(H.time[j].slice(11, 13), 10);
-          var isNow = (hr === nowH);
+          var isNow = (hr === nowH && H.time[j].indexOf(nowDay) === 0);
+          // The "now" cell repeats the reading above it. The hourly series is
+          // the model's forecast for the top of the hour and the current block
+          // is a nowcast refreshed every 15 minutes, so the two drift apart by
+          // a degree or three -- which reads as a bug when they sit together.
+          var hTemp = isNow ? c.temperature_2m : H.temperature_2m[j];
+          var hCode = isNow ? c.weather_code   : H.weather_code[j];
+          var hDay  = isNow ? c.is_day
+                            : (H.is_day ? H.is_day[j] : (hr >= 6 && hr < 18 ? 1 : 0));
           hh += '<div class="h' + (isNow ? ' now' : '') + '">' +
                 '<span class="ht">' + (isNow ? 'Now' : fmtHour(hr)) + '</span>' +
-                ICONS[keyFor(H.weather_code[j], H.is_day ? H.is_day[j] : (hr >= 6 && hr < 18 ? 1 : 0))] +
-                '<span class="htemp">' + Math.round(H.temperature_2m[j]) + '°</span></div>';
+                ICONS[keyFor(hCode, hDay)] +
+                '<span class="htemp">' + Math.round(hTemp) + '°</span></div>';
         }
       }
       var hEl = document.getElementById('wx-hourly');
