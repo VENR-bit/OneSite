@@ -67,33 +67,12 @@ a { color: inherit; text-decoration: none; }
   padding: 28px 0 18px;
   border-bottom: 1px solid var(--line-soft);
 }
-.brand { display: flex; align-items: center; gap: 14px; }
-.brand-mark {
-  width: 52px; height: 52px;
-  display: grid; place-items: center;
-  background: transparent;
-}
-.brand-mark img { width: 100%; height: auto; display: block; }
-.brand-name { display: flex; flex-direction: column; line-height: 1.05; }
-.brand-name b { font-weight: 600; font-size: 16px; letter-spacing: 0.01em; }
-.brand-name span { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
-.nav-right { display: flex; align-items: center; gap: 28px; }
-.nav-right .mono { color: var(--muted); }
-a.home-link, a.home-link:visited, a.home-link:hover, a.home-link:active { text-decoration: none !important; transition: color 0.2s; }
-a.home-link:hover { color: var(--accent); }
-.brand-name .phone-mobile { display: none; }
-@media (max-width: 720px) {
-  .nav-right { display: flex; }
-  .nav-right .mono:not(.home-link) { display: none; }
-  .brand-name .phone-mobile { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
-}
 
 /* hero */
 .hero { padding: 32px 0 8px; position: relative; text-align: center; }
 /* Colored lotus mark at the top of the hero (matches the contact page). */
 .hero .lotus-mark { display: block; height: 64px; width: auto; margin: 0 auto 1.3rem; opacity: 0.95; position: relative; z-index: 1; }
 .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--muted); margin-bottom: 28px; }
-.eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 .hero h1 {
   font-family: var(--serif);
   font-weight: 500;
@@ -109,8 +88,6 @@ a.home-link:hover { color: var(--accent); }
   font-style: italic;
   font-weight: 400;
 }
-.hero-meta .mono { color: var(--muted); }
-.hero-meta .val { font-size: 16px; }
 @media (max-width: 720px) {
   .hero { padding: 28px 0 12px; }
   .hero h1 { max-width: 100%; margin-bottom: 16px; font-size: clamp(28px, 7vw, 40px); }
@@ -118,7 +95,6 @@ a.home-link:hover { color: var(--accent); }
 
 /* section heading */
 .sec { padding: 24px 0 32px; border-top: 1px solid var(--line-soft); }
-.sec-head .mono { color: var(--muted); }
 @media (max-width: 720px) {
   .sec { padding: 56px 0; }
 }
@@ -222,7 +198,6 @@ a.home-link:hover { color: var(--accent); }
   display: flex; align-items: center; gap: 20px;
   color: var(--muted);
 }
-.amt-pill .mono { color: var(--muted); font-size: 10px; }
 .link-btn {
   font-family: var(--mono);
   font-size: 10px;
@@ -235,8 +210,6 @@ a.home-link:hover { color: var(--accent); }
   padding: 6px 0;
   border-bottom: 1px solid currentColor;
 }
-.display-aside .mono { color: var(--muted); }
-.display-aside .btn { align-self: flex-start; margin-top: 10px; }
 
 /* empty-hint */
 .empty-hint {
@@ -269,14 +242,6 @@ a.home-link:hover { color: var(--accent); }
 @media (max-width: 900px) {
   .panel { grid-template-columns: 1fr; min-height: 0; }
 }
-
-/* full-width variant for bank */
-.panel.full { grid-template-columns: 1fr; min-height: 0; }
-.panel.full .panel-left { border-right: 0; border-bottom: 1px solid var(--line-soft); padding: 36px 40px 28px; }
-.panel.full .panel-right { padding: 36px 40px 40px; background: var(--bg); }
-@media (max-width: 900px) {
-  .panel.full .panel-left, .panel.full .panel-right { padding: 28px; }
-}
 .amount {
   font: inherit;
   background: transparent;
@@ -294,7 +259,6 @@ a.home-link:hover { color: var(--accent); }
 .amount:nth-last-child(-n+4) { border-bottom: 0; }
 .amount:hover { background: rgba(177,74,47,0.06); }
 .amount.selected { background: var(--ink); color: var(--bg); }
-.amount.selected .amount-curr { color: rgba(244,239,226,0.6); }
 .amount.selected::after {
   content: "";
   position: absolute;
@@ -334,8 +298,6 @@ a.home-link:hover { color: var(--accent); }
   text-transform: uppercase;
   margin-top: 8px;
 }
-.wt-fallback .mono { color: var(--muted); }
-.wt-external-option .mono { color: var(--muted); font-size: 12px; }
 .btn {
   font-family: var(--mono);
   font-size: 11px;
@@ -395,12 +357,10 @@ a.home-link:hover { color: var(--accent); }
 .bank-tab-row { display: flex; align-items: center; gap: 12px; }
 .bank-tab-flag { font-size: 22px; line-height: 1; }
 .bank-tab-label { font-family: var(--serif); font-weight: 500; font-size: 20px; line-height: 1.15; letter-spacing: -0.005em; }
-.wt-mobile .btn { width: 100%; text-align: center; justify-content: center; }
 @media (max-width: 720px) {
   .bank-tabs { grid-template-columns: 1fr; gap: 10px; }
   .bank-tab.active::after { display: none; }
 }
-.bank-row .mono { color: var(--muted); }
 .copy-btn {
   font-family: var(--mono);
   font-size: 10px;
@@ -415,7 +375,6 @@ a.home-link:hover { color: var(--accent); }
 }
 .copy-btn:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .copy-btn.copied { background: var(--leaf); color: #fff; border-color: var(--leaf); }
-.bank-aside .mono { color: var(--muted); }
 .bank-phone { font-family: var(--serif); font-weight: 500; font-size: 26px; letter-spacing: -0.01em; line-height: 1.1; margin-top: 6px; }
 .bank-name { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
 @media (max-width: 1100px) {
@@ -567,23 +526,6 @@ a.home-link:hover { color: var(--accent); }
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: none; }
 }
-.summary .left { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.summary .amt .mono { font-size: 10px; }
-.summary .mono { color: var(--muted); }
-.summary .change {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  color: var(--accent);
-  padding: 6px 0;
-  border-bottom: 1px solid currentColor;
-  white-space: nowrap;
-  align-self: center;
-}
 
 /* toast */
 .toast {
@@ -611,8 +553,6 @@ a.home-link:hover { color: var(--accent); }
 .methods--two { grid-template-columns: repeat(2, 1fr); max-width: 720px; margin-inline: auto; }
 @media (max-width: 640px) { .methods--two { grid-template-columns: 1fr; }
 }
-.pl-chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.pl-tog.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
 /* ── pay panel — QR beside a direct link ─────────────────────────────── */
 .pay-panel {

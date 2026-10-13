@@ -72,27 +72,6 @@ function LotusOrnament() {
   );
 }
 
-/* ──────────── header ──────────── */
-function Header() {
-  return (
-    <header className="nav">
-      <div className="brand">
-        <div className="brand-mark"><LotusMark size={22} /></div>
-        <div className="brand-name">
-          <b>Rideekanda Forest Monastery</b>
-          <span>Udasgiriya · Matale · Sri Lanka</span>
-          <span className="phone-mobile">+94 74 225 2980</span>
-        </div>
-      </div>
-      <div className="nav-right">
-        <a href="../index.html" className="mono home-link">← Home</a>
-        <span className="mono hide-sm">rideekanda@gmail.com</span>
-        <span className="mono">+94 74 225 2980</span>
-      </div>
-    </header>
-  );
-}
-
 /* ──────────── hero ──────────── */
 function Hero({ onJump }) {
   return (
@@ -358,7 +337,7 @@ function App() {
   return (
     <div className="page">
       <div className="frame">
-        {/* Header removed — unified shared header (eco-header) is used instead */}
+        {/* No header here: index.html injects the shared eco-header */}
         <Hero />
       </div>
       <Give />
