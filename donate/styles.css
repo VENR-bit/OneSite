@@ -621,10 +621,13 @@ a { color: inherit; text-decoration: none; }
   bottom: calc(22px + env(safe-area-inset-bottom, 0px));
   z-index: 9000;
   width: min(430px, calc(100vw - 28px));
-  /* --card / --ink, not a hard-coded cream: the shared eco-theme swaps these
-     for the dark palette, and a fixed cream card under cream text is unreadable. */
-  background: var(--card); color: var(--ink);
-  border: 1px solid var(--line-soft, var(--line));
+  /* The monastery's forest green, fixed rather than themed: --leaf flips
+     from a deep green in light to a pale sage in dark, which would flip the
+     text colour with it. One deep green reads against both page grounds. */
+  --hint-green: #33431f;
+  --hint-ink: #f4efe0;
+  background: var(--hint-green); color: var(--hint-ink);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 16px;
   padding: 16px 18px 14px;
   box-shadow: 0 24px 60px -22px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.08);
@@ -639,24 +642,26 @@ a { color: inherit; text-decoration: none; }
   border: 0; background: none; cursor: pointer;
   font-size: 19px; line-height: 1; color: var(--muted);
 }
-.pay-hint-x:hover { color: var(--ink); }
+.pay-hint-x { color: rgba(244, 239, 224, 0.62); }
+.pay-hint-x:hover { color: var(--hint-ink); }
 .pay-hint-t {
   font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--muted); margin: 0 26px 10px 0;
+  color: rgba(244, 239, 224, 0.72); margin: 0 26px 10px 0;
 }
 .pay-hint-opts { display: flex; flex-wrap: wrap; gap: 7px; }
 .pay-hint-opt {
-  border: 1px solid var(--line-soft, var(--line)); background: transparent; cursor: pointer;
+  border: 1px solid rgba(244, 239, 224, 0.5); background: transparent; cursor: pointer;
   border-radius: 999px; padding: 8px 14px;
-  font-family: var(--body); font-size: 13.5px; color: var(--ink);
+  font-family: var(--body-font, var(--body)); font-size: 13.5px; color: var(--hint-ink);
   transition: border-color .15s, color .15s, background .15s;
 }
-.pay-hint-opt:hover { border-color: var(--accent); color: var(--accent); }
-.pay-hint-opt.copied { background: var(--accent); border-color: var(--accent); color: #fff; }
-.pay-hint-n { margin-top: 10px; font-size: 12px; color: var(--muted); }
+.pay-hint-opt:hover { border-color: var(--hint-ink); background: rgba(244, 239, 224, 0.12); }
+/* inverted on success, so "copied" is unmistakable against the green */
+.pay-hint-opt.copied { background: var(--hint-ink); border-color: var(--hint-ink); color: var(--hint-green); }
+.pay-hint-n { margin-top: 10px; font-size: 12px; color: rgba(244, 239, 224, 0.66); }
 
 @media (max-width: 480px) {
   .pay-hint { padding: 14px 16px 12px; }
   .pay-hint-opt { font-size: 13px; padding: 8px 12px; }
 }
-.pay-hint-opt.failed { border-color: #a8351a; color: #a8351a; }
+.pay-hint-opt.failed { border-color: #ffc2b4; color: #ffc2b4; background: transparent; }
