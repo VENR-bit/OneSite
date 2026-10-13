@@ -509,6 +509,19 @@
     .wx-fc .d .t { font-size: 0.8rem; color: var(--ink); text-align: center; line-height: 1.15; }
     .wx-fc .d .t small { display: block; color: var(--muted); font-size: 0.85em; }
     .wx-foot { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 12px 0 0; }
+    /* Through to Microsoft's precipitation map. It cannot be embedded here --
+       msn.com sends x-frame-options: sameorigin -- so this opens it instead. */
+    .wx-link {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      margin: 12px 0 0; padding: 10px 14px;
+      border: 1px solid var(--line); border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace; font-size: 9px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink); text-decoration: none;
+      transition: border-color .2s ease, color .2s ease, background .2s ease;
+    }
+    .wx-link:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    .wx-link svg { width: 13px; height: 13px; }
 
     /* Calendar popup */
     /* Both popups centre inside the SAFE area, not the raw viewport. On the
@@ -799,6 +812,13 @@
       <div class="wx-hourly" id="wx-hourly"></div>
       <div class="wx-sec">Next 5 days</div>
       <div class="wx-fc" id="wx-fc"></div>
+      <a class="wx-link" id="wx-msn" href="https://www.msn.com/en-us/weather/maps/precipitation/in-Dombawela,Central-Province?loc=eyJsIjoiRG9tYmF3ZWxhIiwiciI6IkNlbnRyYWwgUHJvdmluY2UiLCJjIjoiU3JpIExhbmthIiwiaSI6IkxLIiwiZyI6ImVuLXVzIiwieCI6IjgwLjU4MzUwNTY4IiwieSI6IjcuNTY3MDEyNzIifQ%3D%3D&amp;weadegreetype=C&amp;zoom=14" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 15.5a4 4 0 0 1 1.1-7.8 5.5 5.5 0 0 1 10.6-1.2A4.2 4.2 0 0 1 20 10.6"/>
+          <path d="M8 19.5l-.7 1.4M12 19.5l-.7 1.4M16 19.5l-.7 1.4M20 14.5a3.5 3.5 0 0 0-3.5-3.5H15"/>
+        </svg>
+        Rain radar on MSN
+      </a>
       <p class="wx-foot" id="wx-foot"></p>
     </div>
   </div>
