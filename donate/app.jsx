@@ -223,13 +223,25 @@ function PayPanel() {
     try { sessionStorage.setItem("rk-purpose-hint", "done"); } catch (e) {}
   }
 
+  // It floats at the foot of the screen, and on a phone that is exactly where
+  // the form's Continue button lands once you scroll to it — measured at 119px
+  // of the form covered on a 375px screen. So it leaves on its own.
+  useEffect(() => {
+    if (!hint) return;
+    const t = setTimeout(dismiss, 14000);
+    return () => clearTimeout(t);
+  }, [hint]);
+
   // Only say "copied" once it actually is. The async clipboard needs a user
   // gesture and a permission the browser may refuse, so fall back to the old
   // execCommand route, and if both fail say so rather than claiming success.
   function copy(text) {
     function done(ok) {
       setCopied(ok ? text : "fail:" + text);
-      setTimeout(() => setCopied(null), ok ? 1800 : 2600);
+      setTimeout(() => {
+        setCopied(null);
+        if (ok) dismiss();        // wording is on the clipboard; stop covering the form
+      }, ok ? 1500 : 2600);
     }
     function legacy() {
       try {
