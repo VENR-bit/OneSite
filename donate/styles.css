@@ -557,13 +557,29 @@ a { color: inherit; text-decoration: none; }
 /* ── pay panel — QR beside a direct link ─────────────────────────────── */
 .pay-panel {
   display: grid;
-  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
-  gap: clamp(24px, 4vw, 48px);
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 300px);
+  gap: clamp(24px, 4vw, 44px);
+  align-items: start;
 }
-.pay-qr { display: grid; place-items: center; }
+/* The payment form itself, served by WeTravel. Its own content scrolls, so a
+   fixed height here keeps the page from growing a second scrollbar. */
+.pay-embed {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  min-height: 980px;
+}
+.pay-embed iframe { display: block; width: 100%; height: 980px; border: 0; }
+.pay-open {
+  display: inline-flex; align-items: center; gap: 7px; margin-top: 16px;
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.pay-open:hover { color: var(--accent); border-bottom-color: var(--accent); }
 /* the supplied code is square, so drop the slightly tall default card ratio */
-.pay-qr-card { aspect-ratio: auto; max-width: 320px; }
+.pay-qr-card { aspect-ratio: auto; max-width: 300px; margin-top: 20px; }
 /* the QR is dark-on-white and must stay that way to scan in either theme */
 .pay-qr-card img {
   width: 100%; height: auto; display: block;
@@ -585,9 +601,14 @@ a { color: inherit; text-decoration: none; }
 .pay-methods { font-size: 11px; letter-spacing: 0.12em; color: var(--ink); text-transform: uppercase; }
 .pay-cur { font-size: 11px; letter-spacing: 0.08em; color: var(--muted); margin-top: 7px; }
 
-@media (max-width: 760px) {
-  .pay-panel { grid-template-columns: 1fr; gap: 28px; }
+@media (max-width: 860px) {
+  .pay-panel { grid-template-columns: 1fr; gap: 26px; }
   .pay-side { text-align: center; }
-  .pay-cta { width: 100%; justify-content: center; }
+  .pay-qr-card { margin-left: auto; margin-right: auto; }
   .pay-methods, .pay-cur { text-align: center; }
+}
+/* On a phone the embedded form is the whole point; give it the height it
+   needs and let the page scroll rather than the frame. */
+@media (max-width: 560px) {
+  .pay-embed, .pay-embed iframe { height: 1000px; min-height: 1000px; }
 }

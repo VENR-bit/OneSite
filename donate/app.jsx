@@ -195,24 +195,34 @@ const PAY_URL = "https://www.wetravel.com/pay/3144631321";
 function PayPanel() {
   return (
     <div className="pay-panel">
-      <div className="pay-qr">
-        <div className="qr-card pay-qr-card">
-          <div className="qr-card-title">Scan <span style={{color:"var(--accent)", fontStyle:"italic", fontWeight:400}}>to pay</span></div>
-          <img src="qr/donate.png?v=1" alt="QR code — pay to Rideekanda Forest Monastery" />
-          <div className="qr-card-foot">wetravel.com/pay</div>
-        </div>
+      {/* WeTravel serves this form from /popups/ and allows cross-origin
+          framing, so it runs here rather than sending people away. Card
+          details are entered on wetravel.com inside the frame; this page
+          never sees them, and cannot read the frame either. */}
+      <div className="pay-embed">
+        <iframe
+          src={PAY_URL}
+          title="Pay to Rideekanda Forest Monastery — secure payment by WeTravel"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          allow="payment"
+        ></iframe>
       </div>
 
       <div className="pay-side">
         <p className="pay-lede">
-          Point your phone's camera at the code, or tap the button below on the
-          device you're holding. You'll choose the amount on the secure payment
-          page — no account and no login needed.
+          Enter the amount and your details in the form, and pay by card,
+          Apple&nbsp;Pay or Google&nbsp;Pay. No account and no login needed.
         </p>
 
-        <a className="pay-cta" href={PAY_URL} target="_blank" rel="noopener noreferrer">
-          Open the payment page
-          <span className="arrow">↗</span>
+        <div className="qr-card pay-qr-card">
+          <div className="qr-card-title">Or scan <span style={{color:"var(--accent)", fontStyle:"italic", fontWeight:400}}>to pay</span></div>
+          <img src="qr/donate.png?v=1" alt="QR code — pay to Rideekanda Forest Monastery" />
+          <div className="qr-card-foot">wetravel.com/pay</div>
+        </div>
+
+        <a className="pay-open mono" href={PAY_URL} target="_blank" rel="noopener noreferrer">
+          Open in a new tab <span className="arrow">↗</span>
         </a>
 
         <div className="pay-meta">
