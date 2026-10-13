@@ -194,7 +194,7 @@ const PAY_URL = "https://www.wetravel.com/pay/3144631321";
 
 // Wording offered for WeTravel's "Purpose of payment" box. Add or change
 // these freely — they are only suggestions shown beside the form.
-const PURPOSES = ["Pay for the retreat", "Pay for the project", "Dāna offering"];
+const PURPOSES = ["Pay for the retreat", "Pay for the project"];
 
 function PayPanel() {
   const [hint, setHint] = useState(false);
