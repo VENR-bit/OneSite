@@ -218,19 +218,15 @@ function PayPanel() {
     return () => window.removeEventListener("blur", onBlur);
   }, []);
 
+  // No timer: the card stays until the wording is actually copied, or until
+  // it is closed by hand. It floats at the foot of the screen, which on a
+  // phone is where the Pay button lands, so the × matters — but a hint that
+  // vanishes before it has been used is worse than one that must be shut.
   function dismiss() {
     setHint(false);
     try { sessionStorage.setItem("rk-purpose-hint", "done"); } catch (e) {}
   }
 
-  // It floats at the foot of the screen, and on a phone that is exactly where
-  // the form's Continue button lands once you scroll to it — measured at 119px
-  // of the form covered on a 375px screen. So it leaves on its own.
-  useEffect(() => {
-    if (!hint) return;
-    const t = setTimeout(dismiss, 14000);
-    return () => clearTimeout(t);
-  }, [hint]);
 
   // Only say "copied" once it actually is. The async clipboard needs a user
   // gesture and a permission the browser may refuse, so fall back to the old
