@@ -237,11 +237,12 @@ function PayPanel() {
   // execCommand route, and if both fail say so rather than claiming success.
   function copy(text) {
     function done(ok) {
-      setCopied(ok ? text : "fail:" + text);
-      setTimeout(() => {
-        setCopied(null);
-        if (ok) dismiss();        // wording is on the clipboard; stop covering the form
-      }, ok ? 1500 : 2600);
+      // Copied: go at once. The card vanishing is the acknowledgement, and it
+      // stops sitting over the form a moment longer than it has earned.
+      if (ok) { dismiss(); return; }
+      // Failed: stay, and say so — there is nothing on the clipboard to paste.
+      setCopied("fail:" + text);
+      setTimeout(() => setCopied(null), 2600);
     }
     function legacy() {
       try {
@@ -311,11 +312,9 @@ function PayPanel() {
           <div className="pay-hint-opts">
             {PURPOSES.map(t => (
               <button key={t} type="button"
-                      className={"pay-hint-opt" + (copied === t ? " copied" : "") + (copied === "fail:" + t ? " failed" : "")}
+                      className={"pay-hint-opt" + (copied === "fail:" + t ? " failed" : "")}
                       onClick={() => copy(t)}>
-                {copied === t ? "Copied — now paste it in"
-                  : copied === "fail:" + t ? "Couldn’t copy — please type it"
-                  : t}
+                {copied === "fail:" + t ? "Couldn’t copy — please type it" : t}
               </button>
             ))}
           </div>
