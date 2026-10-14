@@ -192,6 +192,20 @@ function BankStack({ onCopy }) {
 // button will quietly send people to different places.
 const PAY_URL = "https://www.wetravel.com/pay/3144631321";
 
+// Embedding the WeTravel form is OFF while Apple Pay is broken inside it.
+//
+// Apple only offers Apple Pay when the TOP-LEVEL page's domain is registered
+// as a merchant domain for the payment provider. In the frame the top-level
+// domain is rideekanda.com, not wetravel.com, so Safari hides the button —
+// allow="payment" on the frame is necessary but not sufficient. Google Pay is
+// not bound this way, which is why it still appeared. Fixing it means asking
+// WeTravel to register rideekanda.com as an Apple Pay merchant domain for the
+// monastery's account; not something this page can do on its own.
+//
+// Until then the panel just links out, where Apple Pay works normally.
+// Set this back to true once WeTravel confirms the domain is registered.
+const EMBED_PAYMENT_FORM = false;
+
 // Wording offered for WeTravel's "Purpose of payment" box. Add or change
 // these freely — they are only suggestions shown beside the form.
 const PURPOSES = ["Pay for the retreat", "Pay for the project"];
@@ -207,6 +221,7 @@ function PayPanel() {
   // frame takes focus off this window and makes the frame itself
   // document.activeElement. That is the cue to offer the wording.
   useEffect(() => {
+    if (!EMBED_PAYMENT_FORM) return;          // no frame to watch
     try { if (sessionStorage.getItem("rk-purpose-hint") === "done") return; } catch (e) {}
     function onBlur() {
       // the event fires before activeElement settles, so read it next tick
@@ -227,6 +242,13 @@ function PayPanel() {
     try { sessionStorage.setItem("rk-purpose-hint", "done"); } catch (e) {}
   }
 
+
+  // Without the frame there is no "started filling" moment to catch, so the
+  // wording is offered as they leave for WeTravel — copy it here, paste it there.
+  function offerWording() {
+    try { if (sessionStorage.getItem("rk-purpose-hint") === "done") return; } catch (e) {}
+    setHint(true);
+  }
 
   // Only say "copied" once it actually is. The async clipboard needs a user
   // gesture and a permission the browser may refuse, so fall back to the old
@@ -261,29 +283,40 @@ function PayPanel() {
   }
 
   return (
-    <div className="pay-panel">
+    <div className={"pay-panel" + (EMBED_PAYMENT_FORM ? "" : " pay-panel--link")}>
       {/* WeTravel serves this form from /popups/ and allows cross-origin
-          framing, so it runs here rather than sending people away. Card
-          details are entered on wetravel.com inside the frame; this page
-          never sees them, and cannot read the frame either. */}
-      <div className="pay-embed">
-        <iframe
-          ref={frameRef}
-          src={PAY_URL}
-          title="Pay to Rideekanda Forest Monastery — secure payment by WeTravel"
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          allow="payment"
-        ></iframe>
-      </div>
+          framing. Card details would be entered on wetravel.com inside the
+          frame; this page never sees them, and cannot read the frame either.
+          Off for now — see EMBED_PAYMENT_FORM. */}
+      {EMBED_PAYMENT_FORM && (
+        <div className="pay-embed">
+          <iframe
+            ref={frameRef}
+            src={PAY_URL}
+            title="Pay to Rideekanda Forest Monastery — secure payment by WeTravel"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allow="payment"
+          ></iframe>
+        </div>
+      )}
 
       <div className="pay-side">
         <p className="pay-lede">
-          Enter the amount and your details in the form, and pay by card,
-          Apple&nbsp;Pay or Google&nbsp;Pay. No account and no login needed.
-          In <b>Purpose of payment</b>, please say what your gift is for —
+          {EMBED_PAYMENT_FORM
+            ? "Enter the amount and your details in the form, and pay by card, Apple Pay or Google Pay. No account and no login needed."
+            : "Open the secure payment page to give by card, Apple Pay or Google Pay. You choose the amount there — no account and no login needed."}
+          {" "}In <b>Purpose of payment</b>, please say what your gift is for —
           for example “{PURPOSES[0]}”.
         </p>
+
+        {!EMBED_PAYMENT_FORM && (
+          <a className="pay-cta" href={PAY_URL} target="_blank" rel="noopener noreferrer"
+             onClick={offerWording}>
+            Open the payment page
+            <span className="arrow">↗</span>
+          </a>
+        )}
 
         <div className="qr-card pay-qr-card">
           <div className="qr-card-title">Or scan <span style={{color:"var(--accent)", fontStyle:"italic", fontWeight:400}}>to pay</span></div>
@@ -291,9 +324,11 @@ function PayPanel() {
           <div className="qr-card-foot">wetravel.com/pay</div>
         </div>
 
-        <a className="pay-open mono" href={PAY_URL} target="_blank" rel="noopener noreferrer">
-          Open in a new tab <span className="arrow">↗</span>
-        </a>
+        {EMBED_PAYMENT_FORM && (
+          <a className="pay-open mono" href={PAY_URL} target="_blank" rel="noopener noreferrer">
+            Open in a new tab <span className="arrow">↗</span>
+          </a>
+        )}
 
         <div className="pay-meta">
           <div className="pay-methods mono">Visa · Mastercard · Amex · Apple&nbsp;Pay · Google&nbsp;Pay</div>

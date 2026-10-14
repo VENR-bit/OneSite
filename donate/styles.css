@@ -672,3 +672,11 @@ a { color: inherit; text-decoration: none; }
   .pay-hint-opt { font-size: 13px; padding: 8px 12px; }
 }
 .pay-hint-opt.failed { border-color: #ffc2b4; color: #ffc2b4; background: transparent; }
+
+/* Link-out layout, used while EMBED_PAYMENT_FORM is off: one centred column
+   instead of form-beside-QR. */
+.pay-panel--link { grid-template-columns: minmax(0, 520px); justify-content: center; }
+.pay-panel--link .pay-side { text-align: center; }
+.pay-panel--link .pay-cta { width: 100%; justify-content: center; margin-bottom: 4px; }
+.pay-panel--link .pay-qr-card { margin-left: auto; margin-right: auto; }
+.pay-panel--link .pay-methods, .pay-panel--link .pay-cur { text-align: center; }
