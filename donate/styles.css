@@ -564,20 +564,22 @@ a { color: inherit; text-decoration: none; }
 /* The payment form itself, served by WeTravel.
    The height is fixed and measured, not computed: the frame is another origin,
    so its content height cannot be read, and WeTravel publishes none — their own
-   widget sidesteps this by opening checkout over the whole viewport. Found by
-   bisection at each width: the form needs ~1000px at 500px wide and ~1060px at
-   330px, below which a scrollbar appears and "Powered by WeTravel" is cut off.
-   Scrolling is deliberately left enabled: a later step or a validation message
-   can make the content taller, and a clipped Continue button would be worse
-   than a scrollbar. */
+   widget sidesteps this by opening checkout over the whole viewport.
+   Measured against a ruler at each step: step one (amount and details) needs
+   ~1000px, step two (card number, billing address, summary) ~1730px at 330px
+   wide. The height below fits STEP TWO, because that is the step carrying the
+   Pay button — sizing to step one left people scrolling inside the frame to
+   reach it. The cost is empty white below step one; the frame and WeTravel's
+   page are both white, so it reads as a tall panel. Scrolling stays enabled
+   as a backstop: a clipped Pay button would be far worse than a scrollbar. */
 .pay-embed {
   border: 1px solid var(--line);
   border-radius: 14px;
   overflow: hidden;
   background: #fff;
-  min-height: 1015px;
+  min-height: 1700px;
 }
-.pay-embed iframe { display: block; width: 100%; height: 1015px; border: 0; }
+.pay-embed iframe { display: block; width: 100%; height: 1700px; border: 0; }
 .pay-open {
   display: inline-flex; align-items: center; gap: 7px; margin-top: 16px;
   font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
@@ -617,7 +619,7 @@ a { color: inherit; text-decoration: none; }
 /* On a phone the embedded form is the whole point; give it the height it
    needs and let the page scroll rather than the frame. */
 @media (max-width: 560px) {
-  .pay-embed, .pay-embed iframe { height: 1075px; min-height: 1075px; }
+  .pay-embed, .pay-embed iframe { height: 1780px; min-height: 1780px; }
 }
 /* ── "Purpose of payment" hint ───────────────────────────────────────────
    Floats above the page once someone starts filling the embedded form.
