@@ -307,7 +307,7 @@ function PayPanel() {
             ? "Enter the amount and your details in the form, and pay by card, Apple Pay or Google Pay. No account and no login needed."
             : "Open the secure payment page to give by card, Apple Pay or Google Pay. You choose the amount there — no account and no login needed."}
           {" "}In <b>Purpose of payment</b>, please say what your gift is for —
-          for example “{PURPOSES[0]}”.
+          for example {PURPOSES.map(t => "\u201c" + t + "\u201d").join(" or ")}.
         </p>
 
         {!EMBED_PAYMENT_FORM && (
