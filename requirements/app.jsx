@@ -259,11 +259,15 @@ function App() {
   }, [items, search, sort]);
 
   const onConfirmPledge = async (item, addQty, pledgeName) => {
-    const newPledged = Math.min(item.qty, (item.pledged || 0) + addQty);
-    const next = items.map(it => it.id === item.id ? { ...it, pledged: newPledged } : it);
-    setItems(next);
-    await window.sbUpdateItem(item.id, { pledged: newPledged });
-    await window.sbInsertPledge(item.id, pledgeName, addQty);
+    // Show it at once, then let the database decide the real total: it
+    // records the pledge and moves the item's count in one call, clamping
+    // the quantity to whatever is actually left.
+    const optimistic = Math.min(item.qty, (item.pledged || 0) + addQty);
+    setItems(items.map(it => it.id === item.id ? { ...it, pledged: optimistic } : it));
+    const confirmed = await window.sbInsertPledge(item.id, pledgeName, addQty);
+    if (typeof confirmed === "number") {
+      setItems(prev => prev.map(it => it.id === item.id ? { ...it, pledged: confirmed } : it));
+    }
   };
 
   return (

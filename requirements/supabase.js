@@ -52,67 +52,63 @@ async function sbFetchItems() {
   return data.map(dbToItem);
 }
 
+// ── Writes go through database functions, never straight at the tables ──
+// The anon key below is in every visitor's browser, so anything the key may
+// do, anyone may do. It can now only read `items`; each write is a function
+// that validates server-side, and the admin ones demand a passcode checked
+// in the database rather than in this file.
+
+// The admin passcode, typed by whoever is using the admin page. Held for the
+// tab's lifetime only — never written to the source, never to localStorage.
+let adminCode = null;
+function sbSetAdminCode(code) { adminCode = code; }
+async function sbCheckAdminCode(code) {
+  const { data, error } = await window.sbClient.rpc("admin_ok", { p_code: code });
+  if (error) { console.error("admin_ok:", error.message); return false; }
+  return data === true;
+}
+
 async function sbInsertItem(item) {
-  const row = itemToDb(item);
-  row.added_at = new Date().toISOString();
-  const { error } = await window.sbClient
-    .from("items")
-    .insert(row);
-  if (error) { console.error("sbInsertItem:", error); return null; }
-  // Fetch the newly inserted item (last by id)
-  const { data: fetched, error: fetchErr } = await window.sbClient
-    .from("items")
-    .select("*")
-    .order("id", { ascending: false })
-    .limit(1)
-    .single();
-  if (fetchErr) { console.error("sbInsertItem fetch:", fetchErr); return null; }
-  return dbToItem(fetched);
+  const patch = itemToDb(item);
+  const { data, error } = await window.sbClient
+    .rpc("admin_insert_item", { p_code: adminCode, p_patch: patch });
+  if (error) { console.error("sbInsertItem:", error.message); return null; }
+  return data && data[0] ? dbToItem(data[0]) : null;
 }
 
 async function sbUpdateItem(id, updates) {
-  const row = {};
-  if (updates.en !== undefined) row.en = updates.en;
-  if (updates.si !== undefined) row.si = updates.si;
-  if (updates.desc !== undefined) row.description = updates.desc;
-  if (updates.price !== undefined) row.price = updates.price;
-  if (updates.qty !== undefined) row.qty = updates.qty;
-  if (updates.pledged !== undefined) row.pledged = updates.pledged;
-  if (updates.category !== undefined) row.category = updates.category || null;
-  if (updates.priority !== undefined) row.priority = updates.priority;
-  if (updates.icon !== undefined) row.icon = updates.icon;
-  if (updates.photo !== undefined) row.photo = updates.photo;
-  row.updated_at = new Date().toISOString();
-  const { error } = await window.sbClient
-    .from("items")
-    .update(row)
-    .eq("id", id);
-  if (error) { console.error("sbUpdateItem:", error); return null; }
-  // Fetch the updated item separately
-  const { data: fetched, error: fetchErr } = await window.sbClient
-    .from("items")
-    .select("*")
-    .eq("id", id)
-    .single();
-  if (fetchErr) { console.error("sbUpdateItem fetch:", fetchErr); return null; }
-  return dbToItem(fetched);
+  const patch = {};
+  if (updates.en !== undefined)       patch.en = updates.en;
+  if (updates.si !== undefined)       patch.si = updates.si;
+  if (updates.desc !== undefined)     patch.description = updates.desc;
+  if (updates.price !== undefined)    patch.price = updates.price;
+  if (updates.qty !== undefined)      patch.qty = updates.qty;
+  if (updates.pledged !== undefined)  patch.pledged = updates.pledged;
+  if (updates.category !== undefined) patch.category = updates.category || null;
+  if (updates.priority !== undefined) patch.priority = updates.priority;
+  if (updates.icon !== undefined)     patch.icon = updates.icon;
+  if (updates.photo !== undefined)    patch.photo = updates.photo;
+  const { data, error } = await window.sbClient
+    .rpc("admin_update_item", { p_code: adminCode, p_id: id, p_patch: patch });
+  if (error) { console.error("sbUpdateItem:", error.message); return null; }
+  return data && data[0] ? dbToItem(data[0]) : null;
 }
 
 async function sbDeleteItem(id) {
-  const { error } = await window.sbClient
-    .from("items")
-    .delete()
-    .eq("id", id);
-  if (error) { console.error("sbDeleteItem:", error); return false; }
-  return true;
+  const { data, error } = await window.sbClient
+    .rpc("admin_delete_item", { p_code: adminCode, p_id: id });
+  if (error) { console.error("sbDeleteItem:", error.message); return false; }
+  return data === true;
 }
 
+// One call: records the pledge AND moves the item's total, with the quantity
+// clamped to what is actually left. The browser no longer needs permission to
+// touch either table.
 async function sbInsertPledge(itemId, name, qty) {
-  const { error } = await window.sbClient
-    .from("pledges")
-    .insert({ item_id: itemId, name: name || "Anonymous", qty });
-  if (error) { console.error("sbInsertPledge:", error); return false; }
-  return true;
+  const { data, error } = await window.sbClient
+    .rpc("make_pledge", { p_item_id: itemId, p_name: name || "Anonymous", p_qty: qty });
+  if (error) { console.error("sbInsertPledge:", error.message); return null; }
+  return data;            // the item's new pledged total
 }
 
 window.sbFetchItems = sbFetchItems;
@@ -120,3 +116,5 @@ window.sbInsertItem = sbInsertItem;
 window.sbUpdateItem = sbUpdateItem;
 window.sbDeleteItem = sbDeleteItem;
 window.sbInsertPledge = sbInsertPledge;
+window.sbSetAdminCode = sbSetAdminCode;
+window.sbCheckAdminCode = sbCheckAdminCode;

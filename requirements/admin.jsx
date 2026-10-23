@@ -32,17 +32,25 @@ function emptyDraft() {
   return { en: "", si: "", desc: "", price: 0, qty: 1, priority: "need", icon: "bowl", photo: "" };
 }
 
-const ADMIN_HASH = "92424";
+// No passcode here any more. It lives in the database, where a visitor
+// cannot read it, and is checked by admin_ok(). What is typed below is kept
+// in memory for this tab and sent with each admin write, so the database —
+// not this file — decides whether the write happens.
 
 function PasscodeGate({ onUnlock }) {
   const [code, setCode] = useState("");
   const [error, setError] = useState(false);
+  const [busy, setBusy] = useState(false);
   const inputRef = useRef(null);
   useEffect(() => { inputRef.current && inputRef.current.focus(); }, []);
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    if (code === ADMIN_HASH) {
-      sessionStorage.setItem("rk-admin-auth", "1");
+    if (busy) return;
+    setBusy(true);
+    const ok = await window.sbCheckAdminCode(code);
+    setBusy(false);
+    if (ok) {
+      window.sbSetAdminCode(code);
       onUnlock();
     } else {
       setError(true);
@@ -76,7 +84,10 @@ function PasscodeGate({ onUnlock }) {
 }
 
 function AdminApp() {
-  const [authed, setAuthed] = useState(sessionStorage.getItem("rk-admin-auth") === "1");
+  // Not remembered across a reload, deliberately: the passcode is held in
+  // memory only, and a tab that believed it was unlocked without it would
+  // meet NOT_AUTHORISED on every save.
+  const [authed, setAuthed] = useState(false);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState(null);
