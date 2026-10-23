@@ -68,13 +68,11 @@ function PasscodeGate({ onUnlock }) {
         <input
           ref={inputRef}
           type="password"
-          inputMode="numeric"
-          maxLength={5}
           value={code}
-          onChange={(e) => { setCode(e.target.value.replace(/\D/g, "")); setError(false); }}
-          placeholder="•••••"
+          onChange={(e) => { setCode(e.target.value); setError(false); }}
+          placeholder="••••••••••••"
           autoComplete="off"
-          style={{width:"100%", textAlign:"center", fontSize:28, letterSpacing:"0.5em", padding:"12px 0", fontFamily:"var(--mono)", boxSizing:"border-box"}}
+          style={{width:"100%", textAlign:"center", fontSize:18, letterSpacing:"0.12em", padding:"12px 10px", fontFamily:"var(--mono)", boxSizing:"border-box"}}
         />
         {error && <div style={{color:"var(--priority-urgent)", fontSize:13, marginTop:10}}>Incorrect passcode. Try again.</div>}
         <button type="submit" className="btn-primary" style={{marginTop:20, width:"100%"}}>Unlock</button>
