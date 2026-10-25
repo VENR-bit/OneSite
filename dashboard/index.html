@@ -38,7 +38,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&family=Noto+Sans+Sinhala:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+Sinhala:wght@400;600&display=swap">
 
   <style>
     /* ─────────────────────────────────────────────────────────
@@ -48,6 +48,9 @@
        ───────────────────────────────────────────────────────── */
     html, body { margin: 0; height: 100%; background: #1f1a14; overflow: hidden;
                  overscroll-behavior: none; -webkit-text-size-adjust: 100%; }
+    /* The site's body face. The kiosk artboard sets its own on the root, but
+       the phone layout is ordinary flow and inherits from here. */
+    body { font-family: 'Spectral', Georgia, serif; color: #f3ecdb; }
     /* Inset by the safe area: on iOS the page runs under the status bar, and
        anything beneath it is dimmed and blurred by the system. */
     #fit   { position: fixed;
@@ -61,26 +64,26 @@
        stretches to the bottom instead of leaving a gap. */
     #stage { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
 
-    a { color: #E8894A; }
-    a:hover { color: #F3ECE1; }
+    a { color: #e0b76a; }
+    a:hover { color: #f3ecdb; }
     button { font: inherit; color: inherit; border: 0; margin: 0; cursor: pointer;
              text-align: left; background: none; -webkit-tap-highlight-color: transparent; }
-    .si { font-family: 'Noto Sans Sinhala', 'Inter', sans-serif; }
+    .si { font-family: 'Noto Serif Sinhala', Georgia, serif; }
 
     .tile  { transition: transform .18s ease, filter .18s ease,
                          background-color .25s ease, color .25s ease; }
     .tile:active { transform: scale(.975); filter: brightness(1.08); }
-    .tile.pressed { background: #F3ECE1 !important; color: #1f1a14 !important;
-                    transform: scale(.96); box-shadow: 0 0 0 4px #C49A6D; }
+    .tile.pressed { background: #f3ecdb !important; color: #1f1a14 !important;
+                    transform: scale(.96); box-shadow: 0 0 0 4px #c79a5c; }
     .tile.pressed *   { color: #1f1a14 !important; }
     .tile.pressed svg { stroke: #1f1a14; }
-    a.tile:active     { background: #F3ECE1 !important; transform: scale(.97);
-                        box-shadow: 0 0 0 4px #C49A6D; }
+    a.tile:active     { background: #f3ecdb !important; transform: scale(.97);
+                        box-shadow: 0 0 0 4px #c79a5c; }
     a.tile:active *   { color: #1f1a14 !important; }
     a.tile:active svg { stroke: #1f1a14; }
 
     .chip { transition: transform .18s ease, background-color .2s ease; }
-    .chip.pressed, .chip:active { background: #F3ECE1 !important; color: #1f1a14 !important;
+    .chip.pressed, .chip:active { background: #f3ecdb !important; color: #1f1a14 !important;
                                   transform: scale(.95); }
     .chip.pressed * { color: #1f1a14 !important; }
 
@@ -137,7 +140,7 @@
     /* header ------------------------------------------------- */
     .m-head { position: sticky; top: 0; z-index: 30; background: #1f1a14;
               padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 10px;
-              border-bottom: 1px solid #332b22; }
+              border-bottom: 1px solid #3a3025; }
     .m-head-row { max-width: 640px; margin: 0 auto; display: flex;
                   align-items: center; gap: 10px; }
     .m-logo { height: 34px; width: auto; flex: none; }
@@ -145,23 +148,23 @@
     .m-name b { display: block; font-family: 'Cormorant Garamond', serif;
                 font-size: 19px; font-weight: 600; line-height: 1.1;
                 white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .m-name span { display: block; font-size: 11.5px; color: #B8A994;
+    .m-name span { display: block; font-size: 11.5px; color: #9d8d72;
                    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .m-pill { flex: none; display: flex; align-items: center; gap: 6px;
               height: 38px; padding: 0 12px; border-radius: 999px;
-              background: #2b241c; border: 1px solid #4a3f33;
-              font-size: 14px; font-weight: 600; color: #F3ECE1; }
-    .m-pill svg, .m-pill span[aria-hidden] { width: 20px; height: 20px; color: #C49A6D; }
+              background: #2a241c; border: 1px solid #3a3025;
+              font-size: 14px; font-weight: 600; color: #f3ecdb; }
+    .m-pill svg, .m-pill span[aria-hidden] { width: 20px; height: 20px; color: #c79a5c; }
     .m-clock { text-align: right; line-height: 1.1; }
     .m-clock b { display: block; font-size: 19px; font-weight: 600;
                  font-variant-numeric: tabular-nums; }
-    .m-clock span { display: block; font-size: 11px; color: #B8A994;
-                    white-space: nowrap; border-bottom: 1px dotted #6b5c49; }
+    .m-clock span { display: block; font-size: 11px; color: #9d8d72;
+                    white-space: nowrap; border-bottom: 1px dotted #5c4f3c; }
     @media (max-width: 379px) { .m-logo { display: none; } }
 
     /* hero --------------------------------------------------- */
     .m-hero { position: relative; margin: 14px 0; border-radius: 18px;
-              overflow: hidden; aspect-ratio: 16 / 10; background: #2b241c; }
+              overflow: hidden; aspect-ratio: 16 / 10; background: #2a241c; }
     .m-hero img { position: absolute; inset: 0; width: 100%; height: 100%;
                   object-fit: cover; }
     .m-hero-tag { position: absolute; right: 10px; bottom: 10px; display: flex;
@@ -172,33 +175,33 @@
     .m-status { display: grid; grid-template-columns: 1fr 1fr; gap: 11px;
                 margin-bottom: 14px; }
     .m-stat { display: flex; flex-direction: column; gap: 7px; padding: 13px 15px;
-              border-radius: 18px; background: #2b241c; border: 1px solid #3a3129;
-              color: #F3ECE1; text-align: left; }
+              border-radius: 18px; background: #2a241c; border: 1px solid #3a3025;
+              color: #f3ecdb; text-align: left; }
     .m-stat:active { transform: scale(.975); }
     .m-stat-head { display: flex; align-items: baseline; gap: 7px; font-size: 11px;
-                   letter-spacing: .14em; text-transform: uppercase; color: #C49A6D;
+                   letter-spacing: .14em; text-transform: uppercase; color: #c79a5c;
                    font-weight: 600; }
     .m-stat-head i { font-style: normal; font-size: 11px; letter-spacing: 0;
-                     text-transform: none; color: #B8A994; }
+                     text-transform: none; color: #9d8d72; }
     .m-stat-main { display: flex; align-items: center; gap: 9px; }
-    .m-stat-main .ico { width: 30px; height: 30px; color: #C49A6D; flex: none; }
+    .m-stat-main .ico { width: 30px; height: 30px; color: #c79a5c; flex: none; }
     .m-stat-main b { font-size: 29px; font-weight: 500; line-height: 1;
                      font-variant-numeric: tabular-nums; }
-    .m-stat-sub { font-size: 12.5px; color: #B8A994; white-space: nowrap;
+    .m-stat-sub { font-size: 12.5px; color: #9d8d72; white-space: nowrap;
                   overflow: hidden; text-overflow: ellipsis; }
 
     /* now on retreat ----------------------------------------- */
-    .m-now { width: 100%; text-align: left; background: #4a3f33;
+    .m-now { width: 100%; text-align: left; background: #3a3025;
              border-radius: 18px; padding: 13px 15px; margin-bottom: 14px; }
     .m-now-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
     .m-now-top b { font-family: 'Cormorant Garamond', serif; font-size: 19px;
                    font-weight: 600; }
-    .m-now-top i { font-style: normal; font-size: 12px; color: #B8A994; }
+    .m-now-top i { font-style: normal; font-size: 12px; color: #9d8d72; }
     .m-now-main { display: flex; align-items: baseline; justify-content: space-between;
                   gap: 10px; }
     .m-now-main b { font-family: 'Cormorant Garamond', serif; font-size: 25px;
                     font-weight: 600; line-height: 1.1; }
-    .m-now-main span { font-size: 12.5px; color: #D9CEBF; text-align: right; }
+    .m-now-main span { font-size: 12.5px; color: #d8ccb4; text-align: right; }
     .m-bars { display: flex; gap: 3px; margin-top: 10px; }
     .m-bars i { flex: 1; height: 7px; border-radius: 999px; }
 
@@ -206,34 +209,34 @@
     .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
     .m-tile { display: flex; flex-direction: column; justify-content: space-between;
               gap: 14px; min-height: 112px; padding: 15px; border-radius: 18px;
-              background: #2b241c; color: #F3ECE1; text-decoration: none;
+              background: #2a241c; color: #f3ecdb; text-decoration: none;
               text-align: left; }
     .m-tile:active { transform: scale(.975); }
-    .m-tile svg { width: 26px; height: 26px; stroke: #C49A6D; }
+    .m-tile svg { width: 26px; height: 26px; stroke: #c79a5c; }
     .m-tile b { display: block; font-family: 'Cormorant Garamond', serif;
                 font-size: 21px; font-weight: 600; line-height: 1.1; }
-    .m-tile span { display: block; font-size: 12.5px; color: #B8A994; margin-top: 2px; }
+    .m-tile span { display: block; font-size: 12.5px; color: #9d8d72; margin-top: 2px; }
     .m-tile.wide { grid-column: 1 / -1; }
     .m-tile.hero-tile { background: #836443; min-height: 150px; }
-    .m-tile.hero-tile svg, .m-tile.accent svg { stroke: #F3ECE1; }
+    .m-tile.hero-tile svg, .m-tile.accent svg { stroke: #f3ecdb; }
     .m-tile.hero-tile b { font-size: 27px; }
-    .m-tile.hero-tile span, .m-tile.accent span { color: #EADFCF; }
+    .m-tile.hero-tile span, .m-tile.accent span { color: #d8ccb4; }
     .m-tile.accent { background: #624D3F; }
     .m-badge { align-self: flex-start; font-size: 10.5px; font-weight: 600;
                letter-spacing: .09em; text-transform: uppercase; background: #1f1a14;
-               color: #F3ECE1; padding: 5px 10px; border-radius: 999px; }
+               color: #f3ecdb; padding: 5px 10px; border-radius: 999px; }
     .m-tile.photo { padding: 0; overflow: hidden; min-height: 132px; }
     .m-tile.photo img { width: 100%; height: 76px; object-fit: cover; display: block; }
     .m-tile.photo .m-tile-foot { padding: 11px 14px 13px; }
 
     .m-sect { font-size: 11.5px; letter-spacing: .15em; text-transform: uppercase;
-              color: #C49A6D; font-weight: 600; margin: 20px 0 9px; }
+              color: #c79a5c; font-weight: 600; margin: 20px 0 9px; }
     .m-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .m-chip { padding: 9px 14px; border-radius: 999px; background: #3a3129;
-              color: #F3ECE1; font-size: 13.5px; text-decoration: none;
+    .m-chip { padding: 9px 14px; border-radius: 999px; background: #3a3025;
+              color: #f3ecdb; font-size: 13.5px; text-decoration: none;
               line-height: 1.25; }
-    .m-chip span { display: block; font-size: 11px; color: #B8A994; }
-    .m-foot { text-align: center; font-size: 11.5px; color: #8d7f6f; margin-top: 22px; }
+    .m-chip span { display: block; font-size: 11px; color: #9d8d72; }
+    .m-foot { text-align: center; font-size: 11.5px; color: #9d8d72; margin-top: 22px; }
 
     /* sheets ------------------------------------------------- */
     .m-sheet { position: fixed; inset: 0; z-index: 60; background: #1f1a14;
@@ -242,51 +245,51 @@
     .m-sheet-bar { position: sticky; top: 0; z-index: 2; background: #1f1a14;
                    padding: calc(10px + env(safe-area-inset-top, 0px)) 0 10px;
                    display: flex; align-items: center; gap: 10px;
-                   border-bottom: 1px solid #332b22; margin-bottom: 14px; }
+                   border-bottom: 1px solid #3a3025; margin-bottom: 14px; }
     .m-back { display: flex; align-items: center; gap: 7px; height: 40px;
-              padding: 0 15px 0 11px; border-radius: 999px; background: #2b241c;
-              font-size: 14.5px; font-weight: 600; color: #F3ECE1; }
+              padding: 0 15px 0 11px; border-radius: 999px; background: #2a241c;
+              font-size: 14.5px; font-weight: 600; color: #f3ecdb; }
     .m-back svg { width: 19px; height: 19px; stroke: currentColor; }
     .m-sheet-in { max-width: 640px; margin: 0 auto; }
     .m-kicker { font-size: 11.5px; letter-spacing: .15em; text-transform: uppercase;
-                color: #C49A6D; font-weight: 600; }
+                color: #c79a5c; font-weight: 600; }
     .m-h1 { font-family: 'Cormorant Garamond', serif; font-size: 34px;
             font-weight: 600; line-height: 1.04; margin: 6px 0 3px; }
-    .m-si { font-size: 14px; color: #B8A994; }
-    .m-lede { font-size: 15.5px; line-height: 1.55; color: #E8DFD2; margin: 13px 0 0; }
-    .m-facts { margin-top: 16px; border-top: 1px solid #3a3129; }
+    .m-si { font-size: 14px; color: #9d8d72; }
+    .m-lede { font-size: 15.5px; line-height: 1.55; color: #d8ccb4; margin: 13px 0 0; }
+    .m-facts { margin-top: 16px; border-top: 1px solid #3a3025; }
     .m-fact { display: flex; gap: 12px; padding: 11px 0;
-              border-bottom: 1px solid #3a3129; font-size: 14px; }
-    .m-fact b { flex: none; width: 108px; color: #B8A994; font-weight: 400; }
-    .m-qr { display: flex; align-items: center; gap: 14px; background: #F3ECE1;
+              border-bottom: 1px solid #3a3025; font-size: 14px; }
+    .m-fact b { flex: none; width: 108px; color: #9d8d72; font-weight: 400; }
+    .m-qr { display: flex; align-items: center; gap: 14px; background: #f3ecdb;
             color: #1f1a14; border-radius: 18px; padding: 13px 15px; margin-top: 18px; }
     .m-qr img { width: 92px; height: 92px; flex: none; }
     .m-qr b { font-family: 'Cormorant Garamond', serif; font-size: 18px;
               font-weight: 600; line-height: 1.15; display: block; }
-    .m-qr span { font-size: 12px; color: #4a3f33; word-break: break-all; }
+    .m-qr span { font-size: 12px; color: #3a3025; word-break: break-all; }
     .m-cta { display: flex; align-items: center; justify-content: center; gap: 8px;
              height: 50px; margin-top: 12px; border-radius: 999px;
-             border: 1.5px solid #C4996A; color: #F3ECE1; font-size: 15.5px;
+             border: 1.5px solid #c79a5c; color: #f3ecdb; font-size: 15.5px;
              font-weight: 600; text-decoration: none; }
-    .m-card { display: block; background: #2b241c; border-radius: 16px;
-              padding: 13px; margin-top: 11px; color: #F3ECE1;
+    .m-card { display: block; background: #2a241c; border-radius: 16px;
+              padding: 13px; margin-top: 11px; color: #f3ecdb;
               text-decoration: none; text-align: left; width: 100%;
               box-sizing: border-box; }
     .m-card > div { min-width: 0; }
     .m-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 19px;
                  font-weight: 600; margin: 0 0 4px; line-height: 1.15; }
-    .m-card p { margin: 0; font-size: 13.5px; line-height: 1.45; color: #C9BCAC; }
+    .m-card p { margin: 0; font-size: 13.5px; line-height: 1.45; color: #d8ccb4; }
     .m-row { display: flex; gap: 12px; align-items: stretch; }
     .m-row img { width: 104px; height: 78px; object-fit: cover; border-radius: 11px;
                  flex: none; }
-    .m-tag { display: inline-block; background: #C49A6D; color: #1f1a14;
+    .m-tag { display: inline-block; background: #c79a5c; color: #1f1a14;
              font-size: 10px; font-weight: 700; letter-spacing: .07em;
              text-transform: uppercase; padding: 3px 8px; border-radius: 999px;
              margin-bottom: 5px; }
     .m-shot { width: 100%; border-radius: 14px; display: block; margin-top: 12px; }
     .m-body { font-size: 15.5px; line-height: 1.65; white-space: pre-line;
-              color: #E8DFD2; margin-top: 14px; }
-    .m-photo { width: 100%; border-radius: 16px; display: block; background: #2b241c; }
+              color: #d8ccb4; margin-top: 14px; }
+    .m-photo { width: 100%; border-radius: 16px; display: block; background: #2a241c; }
     .m-thumbs { display: flex; gap: 7px; overflow-x: auto; margin-top: 9px;
                 padding-bottom: 4px; }
     .m-thumbs button { flex: none; width: 74px; height: 54px; border-radius: 9px;
@@ -295,9 +298,9 @@
     .m-navrow { display: flex; align-items: center; justify-content: space-between;
                 gap: 10px; margin-top: 9px; }
     .m-navrow button { width: 44px; height: 44px; border-radius: 999px;
-                       background: #2b241c; display: flex; align-items: center;
+                       background: #2a241c; display: flex; align-items: center;
                        justify-content: center; }
-    .m-navrow svg { width: 20px; height: 20px; stroke: #F3ECE1; }
+    .m-navrow svg { width: 20px; height: 20px; stroke: #f3ecdb; }
 
     /* routine + calendar ------------------------------------- */
     .m-rt { display: flex; gap: 12px; align-items: center; padding: 12px 14px;
@@ -309,7 +312,7 @@
     .m-rt small { display: block; font-size: 12px; opacity: .8; }
     .m-cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
     .m-cal .dow { text-align: center; font-size: 10.5px; letter-spacing: .08em;
-                  text-transform: uppercase; color: #B8A994; padding-bottom: 2px; }
+                  text-transform: uppercase; color: #9d8d72; padding-bottom: 2px; }
     .m-cal button { aspect-ratio: 1; border-radius: 11px; display: flex;
                     flex-direction: column; align-items: center;
                     justify-content: center; gap: 3px; font-size: 14px;
@@ -321,32 +324,32 @@
     .m-cal-head b { font-family: 'Cormorant Garamond', serif; font-size: 22px;
                     font-weight: 600; }
     .m-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 13px;
-                font-size: 12px; color: #B8A994; }
+                font-size: 12px; color: #9d8d72; }
     .m-legend i { width: 9px; height: 9px; border-radius: 999px;
                   display: inline-block; margin-right: 5px; }
 
     /* weather ------------------------------------------------ */
     .m-wx-now { display: flex; align-items: center; gap: 16px; margin: 14px 0; }
-    .m-wx-now .ico { width: 62px; height: 62px; color: #C49A6D; flex: none; }
+    .m-wx-now .ico { width: 62px; height: 62px; color: #c79a5c; flex: none; }
     .m-wx-now b { font-size: 50px; font-weight: 300; line-height: 1; }
     .m-wx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 18px; }
     .m-wx-grid div { display: flex; justify-content: space-between; font-size: 14px;
-                     border-bottom: 1px solid #3a3129; padding-bottom: 6px; }
-    .m-wx-grid span { color: #B8A994; }
+                     border-bottom: 1px solid #3a3025; padding-bottom: 6px; }
+    .m-wx-grid span { color: #9d8d72; }
     .m-hours { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; }
     .m-hours div { flex: none; min-width: 54px; padding: 9px 4px; border-radius: 12px;
                    display: flex; flex-direction: column; align-items: center;
                    gap: 4px; font-size: 12px; }
-    .m-hours .ico { width: 24px; height: 24px; color: #C49A6D; }
+    .m-hours .ico { width: 24px; height: 24px; color: #c79a5c; }
     .m-days { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
-              border-top: 1px solid #3a3129; padding-top: 11px; }
+              border-top: 1px solid #3a3025; padding-top: 11px; }
     .m-days div { display: flex; flex-direction: column; align-items: center; gap: 4px;
                   font-size: 12px; }
-    .m-days .ico { width: 28px; height: 28px; color: #C49A6D; }
+    .m-days .ico { width: 28px; height: 28px; color: #c79a5c; }
     .m-ico svg { width: 100%; height: 100%; display: block; }
 
     /* inline weather glyphs */
-    span[style*="color:#C49A6D"] > svg { width: 100%; height: 100%; display: block; }
+    span[style*="color:#c79a5c"] > svg { width: 100%; height: 100%; display: block; }
   </style>
 </head>
 <body>
@@ -362,29 +365,29 @@ var EXPLORE = [{"title": "Explore the Monastery", "items": [{"en": "Home", "si":
 function view(V, H) {
   with (V) {
     return `
-<div style="width: 100%; height: 100%; position: relative; display: flex; flex-direction: column; overflow: hidden; background: #1f1a14; color: #F3ECE1; font-family: 'Inter', system-ui, sans-serif">
+<div style="width: 100%; height: 100%; position: relative; display: flex; flex-direction: column; overflow: hidden; background: #1f1a14; color: #f3ecdb; font-family: 'Spectral', Georgia, serif">
 
   <!-- Header -->
   <div class="hdr-bar" style="height: 136px; box-sizing: border-box; padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-shrink: 0">
     <div style="display: flex; align-items: center; gap: 20px">
-      <button class="tile" data-h="${H(openExplore)}" aria-label="Explore Rideekanda" style="height: 60px; padding: 0 24px 0 16px; border-radius: 999px; background: #F3ECE1; color: #1f1a14; border: 1px solid #C49A6D; display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; flex-shrink: 0">
+      <button class="tile" data-h="${H(openExplore)}" aria-label="Explore Rideekanda" style="height: 60px; padding: 0 24px 0 16px; border-radius: 999px; background: #f3ecdb; color: #1f1a14; border: 1px solid #c79a5c; display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; flex-shrink: 0">
         <img src="kiosk/ccdfd77b7b5333a5414270ab6eee73c5.png" alt="" style="height: 26px; width: auto">
         Explore
       </button>
       <img class="hdr-logo" src="kiosk/7f193d9120a7243f62e2c416768bb75d.png" alt="Rideekanda lotus logo" style="height: 60px; width: auto">
       <div style="display: flex; flex-direction: column; gap: 2px">
         <div class="hdr-title" style="font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; line-height: 1">Rideekanda Forest Monastery</div>
-        <div class="si" style="font-size: 17px; color: #B8A994">රිදීකන්ද ආරණ්‍ය සේනාසනය · Udasgiriya, Matale</div>
+        <div class="si" style="font-size: 17px; color: #9d8d72">රිදීකන්ද ආරණ්‍ය සේනාසනය · Udasgiriya, Matale</div>
       </div>
     </div>
     <div style="display: flex; align-items: center; gap: 14px; flex-shrink: 0">
-    <button class="tile" data-h="${H(openWx)}" aria-label="Weather report: ${wx.temp} degrees, ${wx.cond}" style="width: 78px; height: 72px; border-radius: 18px; background: #2b241c; border: 1px solid #4a3f33; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; flex-shrink: 0">
-      <span aria-hidden="true" style="display:inline-block;width:32px;height:32px;color:#C49A6D">${wx.ico}</span>
-      <span style="font-size: 18px; font-weight: 600; line-height: 1; color: #F3ECE1">${wx.temp}°</span>
+    <button class="tile" data-h="${H(openWx)}" aria-label="Weather report: ${wx.temp} degrees, ${wx.cond}" style="width: 78px; height: 72px; border-radius: 18px; background: #2a241c; border: 1px solid #3a3025; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; flex-shrink: 0">
+      <span aria-hidden="true" style="display:inline-block;width:32px;height:32px;color:#c79a5c">${wx.ico}</span>
+      <span style="font-size: 18px; font-weight: 600; line-height: 1; color: #f3ecdb">${wx.temp}°</span>
     </button>
     <button class="tile" data-h="${H(openCal)}" aria-label="Monastery calendar" aria-haspopup="dialog" style="background: transparent; padding: 0; border-radius: 16px; display: flex; flex-direction: column; align-items: flex-end; gap: 2px">
       <span style="font-size: 44px; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1">${clock}</span>
-      <span style="font-size: 15px; color: #B8A994; white-space: nowrap; border-bottom: 1px dotted #6b5c49; padding-bottom: 1px">${dateLabel}</span>
+      <span style="font-size: 15px; color: #9d8d72; white-space: nowrap; border-bottom: 1px dotted #5c4f3c; padding-bottom: 1px">${dateLabel}</span>
     </button>
     </div>
   </div>
@@ -394,31 +397,31 @@ function view(V, H) {
     ${(slides || []).map((sl, sl_i) => `
       <img class="slide" data-layer="${sl_i}" ${sl.src ? `src="${sl.src}"` : ""} decoding="async" alt="${sl_i === 0 ? "Rideekanda Forest Monastery — photo from the gallery" : ""}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: ${sl.op}; transform: scale(${sl.scale})">
     `).join("")}
-    <div style="position: absolute; right: 24px; bottom: 24px; display: flex; align-items: center; gap: 8px; background: rgba(31,26,20,0.88); color: #F3ECE1; border-radius: 999px; padding: 8px 16px; font-size: 14px">
-      <svg width="16" height="16" viewBox="0 0 32 32" fill="none" stroke="#C4996A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="6" width="24" height="20" rx="3"></rect><circle cx="11" cy="12" r="2"></circle><path d="M4 22l7-6 5 4 4-3 8 6"></path></svg>
+    <div style="position: absolute; right: 24px; bottom: 24px; display: flex; align-items: center; gap: 8px; background: rgba(31,26,20,0.88); color: #f3ecdb; border-radius: 999px; padding: 8px 16px; font-size: 14px">
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="none" stroke="#c79a5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="6" width="24" height="20" rx="3"></rect><circle cx="11" cy="12" r="2"></circle><path d="M4 22l7-6 5 4 4-3 8 6"></path></svg>
       From our gallery · <span data-slide-count>${slideNum} / ${slideCount}</span>
     </div>
     
   </div>
 
   <!-- Now strip -->
-  <div style="margin: 32px 48px 18px; display: flex; align-items: center; gap: 12px; font-size: 18px; color: #B8A994; flex-shrink: 0">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4996A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11V5a1.5 1.5 0 0 1 3 0v5"></path><path d="M12 10V9a1.5 1.5 0 0 1 3 0v2"></path><path d="M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.5a6 6 0 0 1-4.9-2.5L4.3 15a1.5 1.5 0 0 1 2.4-1.8L9 15.5"></path></svg>
+  <div style="margin: 32px 48px 18px; display: flex; align-items: center; gap: 12px; font-size: 18px; color: #9d8d72; flex-shrink: 0">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c79a5c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11V5a1.5 1.5 0 0 1 3 0v5"></path><path d="M12 10V9a1.5 1.5 0 0 1 3 0v2"></path><path d="M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.5a6 6 0 0 1-4.9-2.5L4.3 15a1.5 1.5 0 0 1 2.4-1.8L9 15.5"></path></svg>
     Touch a card to explore
-  </div><div style="margin: 24px 48px 0; border-radius: 24px; padding: 24px 32px; display: flex; flex-direction: column; gap: 16px; flex-shrink: 0; background-color: #4a3f33; margin-bottom: 15px; margin-top: 5px">
+  </div><div style="margin: 24px 48px 0; border-radius: 24px; padding: 24px 32px; display: flex; flex-direction: column; gap: 16px; flex-shrink: 0; background-color: #3a3025; margin-bottom: 15px; margin-top: 5px">
     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: -6px">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C49A6D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
-      <span style="font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 600; line-height: 1; color: #F3ECE1">Daily Routine</span>
-      <span class="si" style="font-size: 16px; color: #B8A994">දෛනික චර්යාව</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c79a5c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+      <span style="font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 600; line-height: 1; color: #f3ecdb">Daily Routine</span>
+      <span class="si" style="font-size: 16px; color: #9d8d72">දෛනික චර්යාව</span>
     </div>
     <button class="tile" data-h="${H(openRoutine)}" aria-label="Show the full daily routine" style="width: 100%; background: transparent; padding: 0; min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
       <span style="display: flex; align-items: baseline; gap: 18px">
-        <span style="font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: #B8A994">Now on retreat</span>
+        <span style="font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: #9d8d72">Now on retreat</span>
         <span style="font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 600; line-height: 1">${nowLabel}</span>
       </span>
-      <span style="display: flex; align-items: center; gap: 14px; font-size: 17px; color: #B8A994">
+      <span style="display: flex; align-items: center; gap: 14px; font-size: 17px; color: #9d8d72">
         Next: ${nextLabel} at ${nextTime}
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C49A6D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c79a5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
       </span>
     </button>
     <div style="display: flex; gap: 6px">
@@ -428,7 +431,7 @@ function view(V, H) {
         </button>
       `).join("")}
     </div>
-    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #B8A994">
+    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #9d8d72">
       <span>5:30 Wake</span>
       
       <span>22:00 Rest</span>
@@ -441,64 +444,64 @@ function view(V, H) {
   <!-- Grid -->
   <div style="flex: 1; min-height: 0; margin: 0 48px 48px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(6, minmax(0, 1fr)); gap: 18px">
 
-    <a class="tile" href="../retreat-center/" style="text-decoration: none; box-sizing: border-box; text-align: left; grid-column: 1 / span 2; grid-row: 1 / span 2; background: #C49A6D; color: #1f1a14; border-radius: 24px; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; background-color: #836443">
+    <a class="tile" href="../retreat-center/" style="text-decoration: none; box-sizing: border-box; text-align: left; grid-column: 1 / span 2; grid-row: 1 / span 2; background: #c79a5c; color: #1f1a14; border-radius: 24px; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; background-color: #836443">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%">
-        <svg width="44" height="44" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="stroke: #f3ece1; width: 88px; height: 88px"><circle cx="16" cy="7" r="3"></circle><path d="M16 11c-3 0-5 2.5-5 6v2"></path><path d="M16 11c3 0 5 2.5 5 6v2"></path><path d="M5 24c3-3 7-4 11-4s8 1 11 4"></path><path d="M8 27h16"></path></svg>
-        <span style="font-size: 15px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; background: #1f1a14; color: #F3ECE1; padding: 8px 14px; border-radius: 999px">7-day residential</span>
+        <svg width="44" height="44" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="stroke: #f3ecdb; width: 88px; height: 88px"><circle cx="16" cy="7" r="3"></circle><path d="M16 11c-3 0-5 2.5-5 6v2"></path><path d="M16 11c3 0 5 2.5 5 6v2"></path><path d="M5 24c3-3 7-4 11-4s8 1 11 4"></path><path d="M8 27h16"></path></svg>
+        <span style="font-size: 15px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; background: #1f1a14; color: #f3ecdb; padding: 8px 14px; border-radius: 999px">7-day residential</span>
       </div>
       <div style="display: flex; flex-direction: column; gap: 10px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 600; line-height: 0.95; color: #f3ece1">Retreat Program</div>
-        <div class="si" style="font-size: 19px; color: #f3ece1">භාවනා වැඩසටහන</div>
-        <div style="font-size: 18px; line-height: 1.45; max-width: 520px; color: #f3ece1">Concentration and Vipassanā for men and women, lay and monastic.</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 600; line-height: 0.95; color: #f3ecdb">Retreat Program</div>
+        <div class="si" style="font-size: 19px; color: #f3ecdb">භාවනා වැඩසටහන</div>
+        <div style="font-size: 18px; line-height: 1.45; max-width: 520px; color: #f3ecdb">Concentration and Vipassanā for men and women, lay and monastic.</div>
       </div>
     </a>
 
-    <a class="tile" href="../monastery/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: #F3ECE1; grid-column: 3; grid-row: 1 / span 2; border-radius: 24px; padding: 0; overflow: hidden; display: flex; flex-direction: column; background-color: #332415">
+    <a class="tile" href="../monastery/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: #f3ecdb; grid-column: 3; grid-row: 1 / span 2; border-radius: 24px; padding: 0; overflow: hidden; display: flex; flex-direction: column; background-color: #332415">
       <img src="kiosk/0ff4e629338a98ba7d200d775764ed8c.jpg" alt="Teacher and retreat participants at the monastery sign" style="width: 100%; height: 52%; object-fit: cover; object-position: 55% 50%">
       <div style="flex: 1; padding: 24px 26px; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px">
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; line-height: 1">The Monastery</div>
-        <div class="si" style="font-size: 17px; color: #F3ECE1">ආරණ්‍ය&nbsp;පිළිබඳ</div>
-        <div style="font-size: 15px; color: #F3ECE1; padding-top: 4px">History, teachers &amp; visiting</div>
+        <div class="si" style="font-size: 17px; color: #f3ecdb">ආරණ්‍ය&nbsp;පිළිබඳ</div>
+        <div style="font-size: 15px; color: #f3ecdb; padding-top: 4px">History, teachers &amp; visiting</div>
       </div>
     </a>
 
     <a class="tile" href="../book-your-stay/" style="text-decoration: none; box-sizing: border-box; text-align: left; grid-column: 1; grid-row: 3; color: #1f1a14; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: #9F8367">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="stroke: #f3ece1"><rect x="5" y="7" width="22" height="20" rx="3"></rect><path d="M5 13h22"></path><path d="M11 4v5"></path><path d="M21 4v5"></path><path d="M12 20l3 3 5-6"></path></svg>
+      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="stroke: #f3ecdb"><rect x="5" y="7" width="22" height="20" rx="3"></rect><path d="M5 13h22"></path><path d="M11 4v5"></path><path d="M21 4v5"></path><path d="M12 20l3 3 5-6"></path></svg>
       <div style="display: flex; flex-direction: column; gap: 4px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1; color: #f3ece1">Book Your Stay</div>
-        <div class="si" style="font-size: 16px; color: #f3ece1">ඔබේ නවාතැන වෙන් කරන්න</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1; color: #f3ecdb">Book Your Stay</div>
+        <div class="si" style="font-size: 16px; color: #f3ecdb">ඔබේ නවාතැන වෙන් කරන්න</div>
       </div>
     </a>
 
-    <a class="tile" href="../contact/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: #F3ECE1; grid-column: 2; grid-row: 3; background: #5A4B43; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#F3ECE1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 28s-9-8.2-9-15a9 9 0 0 1 18 0c0 6.8-9 15-9 15z"></path><circle cx="16" cy="13" r="3.2"></circle></svg>
+    <a class="tile" href="../contact/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: #f3ecdb; grid-column: 2; grid-row: 3; background: #5A4B43; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between">
+      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#f3ecdb" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 28s-9-8.2-9-15a9 9 0 0 1 18 0c0 6.8-9 15-9 15z"></path><circle cx="16" cy="13" r="3.2"></circle></svg>
       <div style="display: flex; flex-direction: column; gap: 4px">
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Contact</div>
-        <div class="si" style="font-size: 16px; color: #F3ECE1">සම්බන්ධ වන්න</div>
+        <div class="si" style="font-size: 16px; color: #f3ecdb">සම්බන්ධ වන්න</div>
       </div>
     </a>
 
-    <a class="tile" href="../donate/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: #F3ECE1; grid-column: 3; grid-row: 3; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: #624D3F">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#F3ECE1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 12c-1.5-3-6-3-6 .5 0 3 6 6.5 6 6.5s6-3.5 6-6.5c0-3.5-4.5-3.5-6-.5z"></path><path d="M3 20l5 6h10l7-5a2 2 0 0 0-2.4-3.2L18 21h-5"></path></svg>
+    <a class="tile" href="../donate/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: #f3ecdb; grid-column: 3; grid-row: 3; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: #624D3F">
+      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#f3ecdb" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 12c-1.5-3-6-3-6 .5 0 3 6 6.5 6 6.5s6-3.5 6-6.5c0-3.5-4.5-3.5-6-.5z"></path><path d="M3 20l5 6h10l7-5a2 2 0 0 0-2.4-3.2L18 21h-5"></path></svg>
       <div style="display: flex; flex-direction: column; gap: 4px">
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Dāna</div>
         <div class="si" style="font-size: 16px">පරිත්‍යාග&nbsp;· Donate</div>
       </div>
     </a>
 
-    <a class="tile" href="../gallery/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: #F3ECE1; grid-column: 1; grid-row: 4; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: #6A594A">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#F3ECE1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="6" width="24" height="20" rx="3"></rect><circle cx="11" cy="12" r="2"></circle><path d="M4 22l7-6 5 4 4-3 8 6"></path></svg>
+    <a class="tile" href="../gallery/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: #f3ecdb; grid-column: 1; grid-row: 4; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: #6A594A">
+      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#f3ecdb" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="6" width="24" height="20" rx="3"></rect><circle cx="11" cy="12" r="2"></circle><path d="M4 22l7-6 5 4 4-3 8 6"></path></svg>
       <div style="display: flex; flex-direction: column; gap: 4px">
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Gallery</div>
-        <div class="si" style="font-size: 16px; color: #F3ECE1">ඡායාරූප</div>
+        <div class="si" style="font-size: 16px; color: #f3ecdb">ඡායාරූප</div>
       </div>
     </a>
 
-    <a class="tile" href="../videos/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: #F3ECE1; grid-column: 2; grid-row: 4; background: #726659; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#F3ECE1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="7" width="24" height="18" rx="4"></rect><path d="M14 12l6 4-6 4z"></path></svg>
+    <a class="tile" href="../videos/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: #f3ecdb; grid-column: 2; grid-row: 4; background: #726659; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between">
+      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#f3ecdb" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="7" width="24" height="18" rx="4"></rect><path d="M14 12l6 4-6 4z"></path></svg>
       <div style="display: flex; flex-direction: column; gap: 4px">
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Video Gallery</div>
-        <div class="si" style="font-size: 16px; color: #F3ECE1">වීඩියෝ</div>
+        <div class="si" style="font-size: 16px; color: #f3ecdb">වීඩියෝ</div>
       </div>
     </a>
 
@@ -506,49 +509,49 @@ function view(V, H) {
 
     
 
-    <button class="tile ${cls.projects}" data-h="${H(open.projects)}" style="grid-column: 1; grid-row: 5; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: #4a3f33">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#F3ECE1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 27h24"></path><path d="M7 27V15l9-7 9 7v12"></path><path d="M13 27v-7h6v7"></path></svg>
+    <button class="tile ${cls.projects}" data-h="${H(open.projects)}" style="grid-column: 1; grid-row: 5; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: #3a3025">
+      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#f3ecdb" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 27h24"></path><path d="M7 27V15l9-7 9 7v12"></path><path d="M13 27v-7h6v7"></path></svg>
       <div style="display: flex; flex-direction: column; gap: 4px">
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Projects</div>
-        <div class="si" style="font-size: 16px; color: #F3ECE1">ව්‍යාපෘති</div>
+        <div class="si" style="font-size: 16px; color: #f3ecdb">ව්‍යාපෘති</div>
       </div>
-    </button><a class="tile" href="../reviews/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: #F3ECE1; grid-column: 2; grid-row: 5; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: #836752">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#F3ECE1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h20v13H13l-6 5v-5H6z"></path><path d="M11 13h10"></path><path d="M11 17h6"></path></svg>
+    </button><a class="tile" href="../reviews/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: #f3ecdb; grid-column: 2; grid-row: 5; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: #836752">
+      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#f3ecdb" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h20v13H13l-6 5v-5H6z"></path><path d="M11 13h10"></path><path d="M11 17h6"></path></svg>
       <div style="display: flex; flex-direction: column; gap: 4px">
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Reviews</div>
-        <div class="si" style="font-size: 16px; color: #F3ECE1">අදහස්</div>
+        <div class="si" style="font-size: 16px; color: #f3ecdb">අදහස්</div>
       </div>
     </a>
 
-    <a class="tile" href="../" style="text-decoration: none; box-sizing: border-box; text-align: left; grid-column: 3; grid-row: 5; background: #F3ECE1; color: #1f1a14; border-radius: 24px; padding: 18px 20px; display: flex; align-items: center; gap: 14px">
+    <a class="tile" href="../" style="text-decoration: none; box-sizing: border-box; text-align: left; grid-column: 3; grid-row: 5; background: #f3ecdb; color: #1f1a14; border-radius: 24px; padding: 18px 20px; display: flex; align-items: center; gap: 14px">
       <img src="kiosk/ec2ea202af236ed9ad148ee9fb0af97a.svg" alt="QR code for www.rideekanda.com" style="width: 104px; height: 104px; flex-shrink: 0">
       <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; line-height: 1">Take us with you</div>
-        <div style="font-size: 14px; line-height: 1.35; color: #4a3f33">Scan for the full website</div>
+        <div style="font-size: 14px; line-height: 1.35; color: #3a3025">Scan for the full website</div>
       </div>
     </a>
 
     <!-- Libraries -->
     <button class="tile ${cls.news}" data-h="${H(open.news)}" style="grid-column: 3; grid-row: 4; background: #9B867A; color: #1f1a14; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="stroke: #f3ece1"><path d="M6 13v6h4l8 5V8l-8 5z"></path><path d="M22 11a6 6 0 0 1 0 10"></path><path d="M25 8a10 10 0 0 1 0 16"></path></svg>
+      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="stroke: #f3ecdb"><path d="M6 13v6h4l8 5V8l-8 5z"></path><path d="M22 11a6 6 0 0 1 0 10"></path><path d="M25 8a10 10 0 0 1 0 16"></path></svg>
       <div style="display: flex; flex-direction: column; gap: 4px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1; color: #f3ece1">News &amp; Events</div>
-        <div class="si" style="font-size: 16px; color: #f3ece1">පුවත් සහ සිදුවීම්</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1; color: #f3ecdb">News &amp; Events</div>
+        <div class="si" style="font-size: 16px; color: #f3ecdb">පුවත් සහ සිදුවීම්</div>
       </div>
-    </button><div class="tile ${cls.libraries}" style="grid-column: 1 / span 3; grid-row: 6; border-radius: 24px; padding: 18px 20px 18px 26px; display: flex; align-items: center; gap: 24px; background-color: #4a3f33">
+    </button><div class="tile ${cls.libraries}" style="grid-column: 1 / span 3; grid-row: 6; border-radius: 24px; padding: 18px 20px 18px 26px; display: flex; align-items: center; gap: 24px; background-color: #3a3025">
       <button class="tile lib-label" data-h="${H(open.libraries)}" style="width: 250px; align-self: stretch; flex-shrink: 0; background: transparent; padding: 0; display: flex; flex-direction: column; justify-content: center; gap: 10px">
-        <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#F3ECE1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6h7a4 4 0 0 1 4 4v16a3 3 0 0 0-3-3H5z"></path><path d="M27 6h-7a4 4 0 0 0-4 4v16a3 3 0 0 1 3-3h8z"></path></svg>
+        <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#f3ecdb" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6h7a4 4 0 0 1 4 4v16a3 3 0 0 0-3-3H5z"></path><path d="M27 6h-7a4 4 0 0 0-4 4v16a3 3 0 0 1 3-3h8z"></path></svg>
         <div style="display: flex; flex-direction: column; gap: 4px">
           <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Libraries</div>
-          <div class="si" style="font-size: 16px; color: #F3ECE1">පුස්තකාල</div>
+          <div class="si" style="font-size: 16px; color: #f3ecdb">පුස්තකාල</div>
         </div>
       </button>
       <div style="flex: 1; min-width: 0; display: flex; flex-wrap: wrap; gap: 10px">
-        <button class="chip ${lcls.ebooks}" data-h="${H(lib.ebooks)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: #F3ECE1; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: #7D685577">E-Book Library<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ඊ-පොත් පුස්තකාලය</span></button>
-        <button class="chip ${lcls.audio}" data-h="${H(lib.audio)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: #F3ECE1; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: #7D685577">Audio Library<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ශ්‍රව්‍ය පුස්තකාලය</span></button>
-        <button class="chip ${lcls.talksEn}" data-h="${H(lib.talksEn)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: #F3ECE1; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: #7D685577">Dhamma Talks · English<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ධර්ම දේශනා (ඉංග්‍රීසි)</span></button>
-        <button class="chip ${lcls.talksSi}" data-h="${H(lib.talksSi)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: #F3ECE1; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: #7D685577">Dhamma Talks · Sinhala<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ධර්ම දේශනා (සිංහල)</span></button>
-        <button class="chip ${lcls.docs}" data-h="${H(lib.docs)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: #F3ECE1; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: #7D685577">Retreat Documents<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">වැඩසටහන් ලේඛන</span></button>
+        <button class="chip ${lcls.ebooks}" data-h="${H(lib.ebooks)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: #f3ecdb; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: #7D685577">E-Book Library<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ඊ-පොත් පුස්තකාලය</span></button>
+        <button class="chip ${lcls.audio}" data-h="${H(lib.audio)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: #f3ecdb; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: #7D685577">Audio Library<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ශ්‍රව්‍ය පුස්තකාලය</span></button>
+        <button class="chip ${lcls.talksEn}" data-h="${H(lib.talksEn)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: #f3ecdb; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: #7D685577">Dhamma Talks · English<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ධර්ම දේශනා (ඉංග්‍රීසි)</span></button>
+        <button class="chip ${lcls.talksSi}" data-h="${H(lib.talksSi)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: #f3ecdb; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: #7D685577">Dhamma Talks · Sinhala<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ධර්ම දේශනා (සිංහල)</span></button>
+        <button class="chip ${lcls.docs}" data-h="${H(lib.docs)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: #f3ecdb; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: #7D685577">Retreat Documents<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">වැඩසටහන් ලේඛන</span></button>
       </div>
     </div>
   </div>
@@ -557,20 +560,20 @@ function view(V, H) {
   ${(hasCur) ? `
     <div class="panel-in" style="position: absolute; left: 0; right: 0; top: 136px; bottom: 0; background: #1f1a14; box-sizing: border-box; padding: 24px 48px 48px; display: flex; flex-direction: column; gap: 36px">
       <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px">
-        <button data-h="${H(close)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: #2b241c; display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
+        <button data-h="${H(close)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: #2a241c; display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
           All pages
         </button>
-        <div style="font-size: 16px; color: #B8A994; text-align: right">Returns to the start after ${idleSeconds} s without a touch</div>
+        <div style="font-size: 16px; color: #9d8d72; text-align: right">Returns to the start after ${idleSeconds} s without a touch</div>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 12px">
-        <div style="font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; color: #C4996A; font-weight: 500">${cur.kicker}</div>
+        <div style="font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; color: #c79a5c; font-weight: 500">${cur.kicker}</div>
         <h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 96px; font-weight: 600; line-height: 0.95">${cur.title}</h2>
-        <div class="si" style="font-size: 26px; color: #B8A994">${cur.si}</div>
+        <div class="si" style="font-size: 26px; color: #9d8d72">${cur.si}</div>
       </div>
       <p style="margin: 0; font-size: 26px; line-height: 1.5">${cur.summary}</p>
-      <div role="tablist" aria-label="View" style="display: flex; gap: 8px; background: #2b241c; padding: 6px; border-radius: 999px; align-self: flex-start; margin-top: -8px">
+      <div role="tablist" aria-label="View" style="display: flex; gap: 8px; background: #2a241c; padding: 6px; border-radius: 999px; align-self: flex-start; margin-top: -8px">
         <button role="tab" aria-selected="${cur.tabSumSel}" data-h="${H(showSummary)}" style="height: 56px; padding: 0 26px; border-radius: 999px; font-size: 18px; font-weight: 600; background: ${cur.tabSumBg}; color: ${cur.tabSumFg}; display: flex; align-items: center; gap: 10px">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h10"></path></svg>
           Summary
@@ -581,9 +584,9 @@ function view(V, H) {
         </button>
       </div>
       ${(cur.showPage) ? `
-        <div style="flex: 1; min-height: 0; overflow-y: auto; border-radius: 24px; background: #F3ECE1; border: 1px solid #4a3f33">
-          <div style="position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 10px; padding: 12px 18px; background: #2b241c; color: #B8A994; font-size: 15px">
-            <span style="width: 10px; height: 10px; border-radius: 5px; background: #C49A6D"></span>
+        <div style="flex: 1; min-height: 0; overflow-y: auto; border-radius: 24px; background: #f3ecdb; border: 1px solid #3a3025">
+          <div style="position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 10px; padding: 12px 18px; background: #2a241c; color: #9d8d72; font-size: 15px">
+            <span style="width: 10px; height: 10px; border-radius: 5px; background: #c79a5c"></span>
             ${cur.urlShort} · scroll to explore the page
           </div>
           <img src="${cur.shot}" alt="Preview of the ${cur.title} page on rideekanda.com" style="display: block; width: 100%; height: auto">
@@ -594,23 +597,23 @@ function view(V, H) {
           ${(cur.hasPhotos) ? `
             <div style="flex-shrink: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
               ${(cur.photos || []).map((ph, ph_i) => `
-                <img loading="lazy" decoding="async" src="${ph}" alt="Photo from the Rideekanda gallery" style="width: 100%; height: 170px; object-fit: cover; border-radius: 14px; background: #2b241c">
+                <img loading="lazy" decoding="async" src="${ph}" alt="Photo from the Rideekanda gallery" style="width: 100%; height: 170px; object-fit: cover; border-radius: 14px; background: #2a241c">
               `).join("")}
             </div>
           ` : ""}
           ${(cur.hasVideos) ? `
             <div style="flex: 1; min-height: 0; overflow-y: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-content: start; padding-right: 6px">
               ${(videos || []).map((v, v_i) => `
-                <a class="tile" href="${v.href}" style="text-decoration: none; color: #F3ECE1; background: #2b241c; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
+                <a class="tile" href="${v.href}" style="text-decoration: none; color: #f3ecdb; background: #2a241c; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
                   <span style="position: relative; display: block">
                     <img loading="lazy" decoding="async" src="${v.thumb}" alt="${v.title}" style="display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #3C2517">
                     <span style="position: absolute; left: 50%; top: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 999px; background: rgba(31,26,20,0.82); display: flex; align-items: center; justify-content: center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="#F3ECE1"></path></svg>
+                      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="#f3ecdb"></path></svg>
                     </span>
                   </span>
                   <span style="padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px">
                     <span class="si" style="font-size: 16px; font-weight: 500; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">${v.title}</span>
-                    <span style="font-size: 13px; color: #B8A994">${v.date} · YouTube</span>
+                    <span style="font-size: 13px; color: #9d8d72">${v.date} · YouTube</span>
                   </span>
                 </a>
               `).join("")}
@@ -618,25 +621,25 @@ function view(V, H) {
           ` : ""}
           ${(cur.sections || []).map((sec, sec_i) => `
             ${(sec.isLink) ? `
-              <a class="tile" href="${sec.href}" style="text-decoration: none; box-sizing: border-box; flex: 1 1 0; min-height: 0; max-height: 220px; overflow: hidden; width: 100%; border-radius: 20px; padding: 12px 26px 12px 12px; display: flex; align-items: stretch; gap: 22px; background-color: #4a3f33">
+              <a class="tile" href="${sec.href}" style="text-decoration: none; box-sizing: border-box; flex: 1 1 0; min-height: 0; max-height: 220px; overflow: hidden; width: 100%; border-radius: 20px; padding: 12px 26px 12px 12px; display: flex; align-items: stretch; gap: 22px; background-color: #3a3025">
                 <img src="${sec.feat}" alt="${sec.h}" style="width: 220px; flex-shrink: 0; object-fit: cover; border-radius: 14px; background: #3C2517">
                 <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 6px">
-                  <span style="font-family: 'Cormorant Garamond', serif; font-size: 29px; font-weight: 600; line-height: 1.05; color: #F3ECE1">${sec.h}</span>
-                  <span style="font-size: 18px; line-height: 1.45; color: #F3ECE1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">${sec.t}</span>
+                  <span style="font-family: 'Cormorant Garamond', serif; font-size: 29px; font-weight: 600; line-height: 1.05; color: #f3ecdb">${sec.h}</span>
+                  <span style="font-size: 18px; line-height: 1.45; color: #f3ecdb; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">${sec.t}</span>
                 </span>
-                <span style="flex-shrink: 0; align-self: center; width: 56px; height: 56px; border-radius: 999px; background: #C49A6D; display: flex; align-items: center; justify-content: center">
+                <span style="flex-shrink: 0; align-self: center; width: 56px; height: 56px; border-radius: 999px; background: #c79a5c; display: flex; align-items: center; justify-content: center">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1f1a14" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M8 7h9v9"></path></svg>
                 </span>
               </a>
             ` : ""}
             ${(sec.isText) ? `
-              <a class="tile" href="${sec.href}" style="text-decoration: none; box-sizing: border-box; flex: 1 1 0; min-height: 0; max-height: 220px; overflow: hidden; width: 100%; background: #2b241c; border-radius: 20px; padding: 16px 26px; display: flex; align-items: center; gap: 22px">
+              <a class="tile" href="${sec.href}" style="text-decoration: none; box-sizing: border-box; flex: 1 1 0; min-height: 0; max-height: 220px; overflow: hidden; width: 100%; background: #2a241c; border-radius: 20px; padding: 16px 26px; display: flex; align-items: center; gap: 22px">
                 <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
-                  <span style="font-family: 'Cormorant Garamond', serif; font-size: 29px; font-weight: 600; line-height: 1.05; color: #F3ECE1">${sec.h}</span>
-                  <span style="font-size: 18px; line-height: 1.45; color: #D9CEBF; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">${sec.t}</span>
+                  <span style="font-family: 'Cormorant Garamond', serif; font-size: 29px; font-weight: 600; line-height: 1.05; color: #f3ecdb">${sec.h}</span>
+                  <span style="font-size: 18px; line-height: 1.45; color: #d8ccb4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">${sec.t}</span>
                 </span>
-                <span style="flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; color: #C49A6D; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase">
-                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C49A6D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 8h8"></path><path d="M8 12h8"></path><path d="M8 16h5"></path></svg>
+                <span style="flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; color: #c79a5c; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase">
+                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#c79a5c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 8h8"></path><path d="M8 12h8"></path><path d="M8 16h5"></path></svg>
                   Open page
                 </span>
               </a>
@@ -661,41 +664,41 @@ function view(V, H) {
 
       ${(cur.showNews) ? `
         <div style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; margin-top: -12px; padding-right: 6px">
-          <div style="font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: #B8A994">Latest from rideekanda.com · tap a story to read</div>
+          <div style="font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: #9d8d72">Latest from rideekanda.com · tap a story to read</div>
           ${(news || []).map((n, n_i) => `
-            <button class="tile" data-h="${H(n.pick)}" style="flex-shrink: 0; border-radius: 22px; padding: 16px; background: #2b241c; display: flex; gap: 22px; align-items: stretch">
+            <button class="tile" data-h="${H(n.pick)}" style="flex-shrink: 0; border-radius: 22px; padding: 16px; background: #2a241c; display: flex; gap: 22px; align-items: stretch">
               <img loading="lazy" decoding="async" src="${n.img}" alt="${n.title}" style="width: 240px; height: 168px; object-fit: cover; border-radius: 14px; flex-shrink: 0">
               <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; justify-content: center">
-                <span style="display: flex; gap: 10px; align-items: center; font-size: 14px; color: #B8A994">
-                  <span style="background: #C49A6D; color: #1f1a14; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; font-size: 12px">${n.type}</span>
+                <span style="display: flex; gap: 10px; align-items: center; font-size: 14px; color: #9d8d72">
+                  <span style="background: #c79a5c; color: #1f1a14; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; font-size: 12px">${n.type}</span>
                   ${n.date}
                 </span>
                 <span style="font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 600; line-height: 1.05">${n.title}</span>
-                <span style="font-size: 16px; line-height: 1.45; color: #D9CEBF; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">${n.excerpt}</span>
+                <span style="font-size: 16px; line-height: 1.45; color: #d8ccb4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">${n.excerpt}</span>
               </span>
             </button>
           `).join("")}
         </div>
       ` : ""}
       <div style="margin-top: auto; display: flex; gap: 16px; align-items: stretch; flex-shrink: 0">
-        <div style="flex: 1; background: #F3ECE1; color: #1f1a14; border-radius: 20px; padding: 14px 18px; display: flex; align-items: center; gap: 18px">
+        <div style="flex: 1; background: #f3ecdb; color: #1f1a14; border-radius: 20px; padding: 14px 18px; display: flex; align-items: center; gap: 18px">
           <img src="${cur.qr}" alt="QR code for ${cur.url}" style="width: 128px; height: 128px; flex-shrink: 0">
           <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
             <div style="font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; line-height: 1.05">Scan to continue on your phone</div>
-            <div style="font-size: 15px; color: #4a3f33; word-break: break-all">${cur.urlShort}</div>
+            <div style="font-size: 15px; color: #3a3025; word-break: break-all">${cur.urlShort}</div>
           </div>
         </div>
         <div style="width: 280px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px">
           ${(cur.hasWa) ? `
-            <div style="flex: 1; background: #2b241c; border-radius: 18px; padding: 10px 14px; display: flex; align-items: center; gap: 12px">
+            <div style="flex: 1; background: #2a241c; border-radius: 18px; padding: 10px 14px; display: flex; align-items: center; gap: 12px">
               <img src="kiosk/de9312e3e759a1a887ae75434f8b01ad.svg" alt="QR code to message on WhatsApp" style="width: 64px; height: 64px; border-radius: 6px">
               <div style="display: flex; flex-direction: column; gap: 4px">
                 <div style="font-size: 18px; font-weight: 600">WhatsApp us</div>
-                <div style="font-size: 15px; color: #B8A994">+94 74 225 2980</div>
+                <div style="font-size: 15px; color: #9d8d72">+94 74 225 2980</div>
               </div>
             </div>
           ` : ""}
-          <a href="${cur.url}" style="height: 56px; border-radius: 999px; border: 1.5px solid #C4996A; color: #F3ECE1; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 18px; font-weight: 500; text-decoration: none; margin-top: auto">
+          <a href="${cur.url}" style="height: 56px; border-radius: 999px; border: 1.5px solid #c79a5c; color: #f3ecdb; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 18px; font-weight: 500; text-decoration: none; margin-top: auto">
             Open the full page
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
           </a>
@@ -704,24 +707,24 @@ function view(V, H) {
       ${(hasProj) ? `
         <div class="panel-in" style="position: absolute; inset: 0; z-index: 2; background: #1f1a14; box-sizing: border-box; padding: 24px 48px 48px; display: flex; flex-direction: column; gap: 22px">
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px">
-            <button data-h="${H(closeProj)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: #2b241c; display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
+            <button data-h="${H(closeProj)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: #2a241c; display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
               Back to Projects
             </button>
-            <span style="font-size: 16px; color: #B8A994">${proj.urlShort}</span>
+            <span style="font-size: 16px; color: #9d8d72">${proj.urlShort}</span>
           </div>
           <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px">
             <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
-              <div style="font-size: 17px; letter-spacing: 0.14em; text-transform: uppercase; color: #C4996A; font-weight: 500">Project</div>
+              <div style="font-size: 17px; letter-spacing: 0.14em; text-transform: uppercase; color: #c79a5c; font-weight: 500">Project</div>
               <h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 72px; font-weight: 600; line-height: 0.95">${proj.title}</h2>
-              <div class="si" style="font-size: 24px; color: #B8A994">${proj.si}</div>
+              <div class="si" style="font-size: 24px; color: #9d8d72">${proj.si}</div>
             </div>
-            <div style="flex-shrink: 0; background: #F3ECE1; color: #1f1a14; border-radius: 22px; padding: 14px 18px; display: flex; align-items: center; gap: 14px">
+            <div style="flex-shrink: 0; background: #f3ecdb; color: #1f1a14; border-radius: 22px; padding: 14px 18px; display: flex; align-items: center; gap: 14px">
               <img src="${proj.qr}" alt="QR code for the ${proj.title} page" style="width: 120px; height: 120px">
               <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; line-height: 1.05; width: 130px">Scan to open on your phone</div>
             </div>
           </div>
-          <div style="flex: 1; min-height: 0; overflow-y: auto; border-radius: 24px; background: #F3ECE1; border: 1px solid #4a3f33">
+          <div style="flex: 1; min-height: 0; overflow-y: auto; border-radius: 24px; background: #f3ecdb; border: 1px solid #3a3025">
             <img src="${proj.shot}" alt="Preview of the ${proj.title} page on rideekanda.com" style="display: block; width: 100%; height: auto">
           </div>
         </div>
@@ -729,22 +732,22 @@ function view(V, H) {
       ${(hasPost) ? `
         <div class="panel-in" style="position: absolute; inset: 0; background: #1f1a14; box-sizing: border-box; padding: 24px 48px 48px; display: flex; flex-direction: column; gap: 24px">
           <div style="display: flex; align-items: center; justify-content: space-between">
-            <button data-h="${H(closePost)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: #2b241c; display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
+            <button data-h="${H(closePost)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: #2a241c; display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
               Back to News &amp; Events
             </button>
-            <span style="background: #C49A6D; color: #1f1a14; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 14px; border-radius: 999px; font-size: 14px">${post.type} · ${post.date}</span>
+            <span style="background: #c79a5c; color: #1f1a14; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 14px; border-radius: 999px; font-size: 14px">${post.type} · ${post.date}</span>
           </div>
           <div style="position: relative; flex-shrink: 0">
-            <img src="${photo}" alt="${post.title} — photo ${photoNum} of ${photoCount}" style="display: block; width: 100%; height: 600px; object-fit: cover; border-radius: 24px; background: #2b241c">
+            <img src="${photo}" alt="${post.title} — photo ${photoNum} of ${photoCount}" style="display: block; width: 100%; height: 600px; object-fit: cover; border-radius: 24px; background: #2a241c">
             ${(multiPhoto) ? `
               <button data-h="${H(prevPhoto)}" aria-label="Previous photo" style="position: absolute; left: 18px; top: 50%; margin-top: -32px; width: 64px; height: 64px; border-radius: 999px; background: rgba(31,26,20,0.85); display: flex; align-items: center; justify-content: center">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F3ECE1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f3ecdb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
               </button>
               <button data-h="${H(nextPhoto)}" aria-label="Next photo" style="position: absolute; right: 18px; top: 50%; margin-top: -32px; width: 64px; height: 64px; border-radius: 999px; background: rgba(31,26,20,0.85); display: flex; align-items: center; justify-content: center">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F3ECE1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f3ecdb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
               </button>
-              <span style="position: absolute; right: 18px; bottom: 18px; background: rgba(31,26,20,0.88); color: #F3ECE1; font-size: 15px; padding: 6px 14px; border-radius: 999px">${photoNum} / ${photoCount}</span>
+              <span style="position: absolute; right: 18px; bottom: 18px; background: rgba(31,26,20,0.88); color: #f3ecdb; font-size: 15px; padding: 6px 14px; border-radius: 999px">${photoNum} / ${photoCount}</span>
             ` : ""}
           </div>
           ${(multiPhoto) ? `
@@ -757,7 +760,7 @@ function view(V, H) {
             </div>
           ` : ""}
           <h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 60px; font-weight: 600; line-height: 1">${post.title}</h2>
-          <div style="flex: 1; min-height: 0; overflow-y: auto; font-size: 22px; line-height: 1.6; white-space: pre-line; color: #E8DFD2; padding-right: 8px">${post.body}</div>
+          <div style="flex: 1; min-height: 0; overflow-y: auto; font-size: 22px; line-height: 1.6; white-space: pre-line; color: #d8ccb4; padding-right: 8px">${post.body}</div>
         </div>
       ` : ""}
     </div>
@@ -766,16 +769,16 @@ function view(V, H) {
   ${(hasRoutine) ? `
     <div class="panel-in" style="position: absolute; left: 0; right: 0; top: 136px; bottom: 0; background: #1f1a14; box-sizing: border-box; padding: 24px 48px 48px; display: flex; flex-direction: column; gap: 28px">
       <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px">
-        <button data-h="${H(closeRoutine)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: #2b241c; display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
+        <button data-h="${H(closeRoutine)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: #2a241c; display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
           Back
         </button>
-        <div style="font-size: 16px; color: #B8A994; text-align: right">Returns to the start after ${idleSeconds} s without a touch</div>
+        <div style="font-size: 16px; color: #9d8d72; text-align: right">Returns to the start after ${idleSeconds} s without a touch</div>
       </div>
       <div style="display: flex; flex-direction: column; gap: 10px">
-        <div style="font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; color: #C4996A; font-weight: 500">7-day residential retreat</div>
+        <div style="font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; color: #c79a5c; font-weight: 500">7-day residential retreat</div>
         <h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 88px; font-weight: 600; line-height: 0.95">The daily routine</h2>
-        <div class="si" style="font-size: 24px; color: #B8A994">දෛනික චර්යාව</div>
+        <div class="si" style="font-size: 24px; color: #9d8d72">දෛනික චර්යාව</div>
       </div>
       <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px">
         ${(routine || []).map((r, r_i) => `
@@ -786,15 +789,15 @@ function view(V, H) {
               <span class="si" style="font-size: 17px; line-height: 1.2; opacity: 0.8">${r.si}</span>
             </span>
             ${(r.isNow) ? `
-              <span style="font-size: 14px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; background: #C49A6D; color: #1f1a14; padding: 6px 12px; border-radius: 999px">Now</span>
+              <span style="font-size: 14px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; background: #c79a5c; color: #1f1a14; padding: 6px 12px; border-radius: 999px">Now</span>
             ` : ""}
             <span style="width: 110px; text-align: right; font-size: 17px; opacity: 0.8">${r.dur}</span>
           </button>
         `).join("")}
       </div>
       <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-top: 4px">
-        <div style="font-size: 18px; line-height: 1.45; color: #B8A994; max-width: 560px">Vegetarian meals — breakfast and lunch, with a light evening soup or porridge.</div>
-        <a class="tile" href="../retreat-center/" style="text-decoration: none; box-sizing: border-box; height: 68px; padding: 0 28px; border-radius: 999px; background: #C49A6D; color: #1f1a14; font-size: 20px; font-weight: 600; display: flex; align-items: center; gap: 10px; flex-shrink: 0">
+        <div style="font-size: 18px; line-height: 1.45; color: #9d8d72; max-width: 560px">Vegetarian meals — breakfast and lunch, with a light evening soup or porridge.</div>
+        <a class="tile" href="../retreat-center/" style="text-decoration: none; box-sizing: border-box; height: 68px; padding: 0 28px; border-radius: 999px; background: #c79a5c; color: #1f1a14; font-size: 20px; font-weight: 600; display: flex; align-items: center; gap: 10px; flex-shrink: 0">
           About the retreat
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M8 7h9v9"></path></svg>
         </a>
@@ -809,131 +812,131 @@ function view(V, H) {
           <img src="kiosk/ccdfd77b7b5333a5414270ab6eee73c5.png" alt="" style="height: 56px; width: auto">
           <div style="display: flex; flex-direction: column; gap: 4px">
             <div style="font-family: 'Cormorant Garamond', serif; font-size: 52px; font-weight: 600; line-height: 1">Rideekanda</div>
-            <div class="si" style="font-size: 20px; color: #B8A994">රිදීකන්ද ආරණ්‍ය සේනාසනය</div>
+            <div class="si" style="font-size: 20px; color: #9d8d72">රිදීකන්ද ආරණ්‍ය සේනාසනය</div>
           </div>
         </div>
-        <button data-h="${H(closeExplore)}" aria-label="Close menu" style="width: 72px; height: 72px; border-radius: 999px; background: #2b241c; display: flex; align-items: center; justify-content: center">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#F3ECE1" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
+        <button data-h="${H(closeExplore)}" aria-label="Close menu" style="width: 72px; height: 72px; border-radius: 999px; background: #2a241c; display: flex; align-items: center; justify-content: center">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#f3ecdb" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
         </button>
       </div>
       ${(explore || []).map((grp, grp_i) => `
         <div style="display: flex; flex-direction: column; gap: 14px; flex-shrink: 0">
-          <div style="font-size: 16px; letter-spacing: 0.16em; text-transform: uppercase; color: #C49A6D; font-weight: 600">${grp.title}</div>
+          <div style="font-size: 16px; letter-spacing: 0.16em; text-transform: uppercase; color: #c79a5c; font-weight: 600">${grp.title}</div>
           <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
             ${(grp.items || []).map((it, it_i) => `
-              <a class="tile" href="${it.href}" style="text-decoration: none; box-sizing: border-box; min-height: 88px; padding: 14px 20px; border-radius: 18px; background: #2b241c; border: 1px solid #4a3f33; color: #F3ECE1; display: flex; flex-direction: column; justify-content: center; gap: 4px">
+              <a class="tile" href="${it.href}" style="text-decoration: none; box-sizing: border-box; min-height: 88px; padding: 14px 20px; border-radius: 18px; background: #2a241c; border: 1px solid #3a3025; color: #f3ecdb; display: flex; flex-direction: column; justify-content: center; gap: 4px">
                 <span style="font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; line-height: 1.05">${it.en}</span>
-                <span class="si" style="font-size: 15px; color: #B8A994">${it.si}</span>
+                <span class="si" style="font-size: 15px; color: #9d8d72">${it.si}</span>
               </a>
             `).join("")}
           </div>
         </div>
       `).join("")}
-      <div style="margin-top: auto; padding-top: 8px; font-size: 15px; color: #B8A994; text-align: center">Rideekanda Forest Monastery · Matale, Sri Lanka</div>
+      <div style="margin-top: auto; padding-top: 8px; font-size: 15px; color: #9d8d72; text-align: center">Rideekanda Forest Monastery · Matale, Sri Lanka</div>
     </div>
   ` : ""}
   <!-- WEATHER PANEL -->
   ${(hasWx) ? `
     <div style="position: absolute; inset: 0; z-index: 11; background: rgba(15,12,9,0.72); display: flex; align-items: flex-start; justify-content: center; padding-top: 150px">
-      <div class="panel-in" role="dialog" aria-modal="true" aria-label="Weather report" style="position: relative; width: 760px; box-sizing: border-box; background: #2b241c; border: 1px solid #4a3f33; border-radius: 28px; padding: 36px 40px 30px; display: flex; flex-direction: column; gap: 22px; text-align: center; color: #F3ECE1">
-        <button data-h="${H(closeWx)}" aria-label="Close weather report" style="position: absolute; top: 18px; right: 18px; width: 60px; height: 60px; border-radius: 999px; background: #362d23; display: flex; align-items: center; justify-content: center">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F3ECE1" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
+      <div class="panel-in" role="dialog" aria-modal="true" aria-label="Weather report" style="position: relative; width: 760px; box-sizing: border-box; background: #2a241c; border: 1px solid #3a3025; border-radius: 28px; padding: 36px 40px 30px; display: flex; flex-direction: column; gap: 22px; text-align: center; color: #f3ecdb">
+        <button data-h="${H(closeWx)}" aria-label="Close weather report" style="position: absolute; top: 18px; right: 18px; width: 60px; height: 60px; border-radius: 999px; background: #342c22; display: flex; align-items: center; justify-content: center">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f3ecdb" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
         </button>
         <div style="display: flex; flex-direction: column; gap: 4px">
-          <div style="font-size: 14px; letter-spacing: 0.22em; text-transform: uppercase; color: #C49A6D; font-weight: 600">Weather · <span class="si" style="letter-spacing: 0; text-transform: none">කාලගුණය</span></div>
+          <div style="font-size: 14px; letter-spacing: 0.22em; text-transform: uppercase; color: #c79a5c; font-weight: 600">Weather · <span class="si" style="letter-spacing: 0; text-transform: none">කාලගුණය</span></div>
           <div style="font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 600; line-height: 1.1">Rideekanda · Matale</div>
         </div>
         <div style="display: flex; align-items: center; justify-content: center; gap: 22px">
-          <span aria-hidden="true" style="display:inline-block;width:96px;height:96px;color:#C49A6D">${wx.ico}</span>
+          <span aria-hidden="true" style="display:inline-block;width:96px;height:96px;color:#c79a5c">${wx.ico}</span>
           <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px">
-            <div style="font-size: 84px; font-weight: 300; line-height: 1">${wx.temp}<span style="font-size: 30px; color: #B8A994; vertical-align: top">°C</span></div>
-            <div style="font-size: 22px; color: #D9CEBF">${wx.cond}</div>
+            <div style="font-size: 84px; font-weight: 300; line-height: 1">${wx.temp}<span style="font-size: 30px; color: #9d8d72; vertical-align: top">°C</span></div>
+            <div style="font-size: 22px; color: #d8ccb4">${wx.cond}</div>
           </div>
         </div>
         <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 28px; text-align: left">
-          <div style="display: flex; justify-content: space-between; font-size: 20px; border-bottom: 1px solid #4a3f33; padding-bottom: 8px"><span style="color: #B8A994">Feels like</span><b>${wx.feels}</b></div>
-          <div style="display: flex; justify-content: space-between; font-size: 20px; border-bottom: 1px solid #4a3f33; padding-bottom: 8px"><span style="color: #B8A994">Humidity</span><b>${wx.hum}</b></div>
-          <div style="display: flex; justify-content: space-between; font-size: 20px; border-bottom: 1px solid #4a3f33; padding-bottom: 8px"><span style="color: #B8A994">Wind</span><b>${wx.wind}</b></div>
-          <div style="display: flex; justify-content: space-between; font-size: 20px; border-bottom: 1px solid #4a3f33; padding-bottom: 8px"><span style="color: #B8A994">Rain</span><b>${wx.rain}</b></div>
+          <div style="display: flex; justify-content: space-between; font-size: 20px; border-bottom: 1px solid #3a3025; padding-bottom: 8px"><span style="color: #9d8d72">Feels like</span><b>${wx.feels}</b></div>
+          <div style="display: flex; justify-content: space-between; font-size: 20px; border-bottom: 1px solid #3a3025; padding-bottom: 8px"><span style="color: #9d8d72">Humidity</span><b>${wx.hum}</b></div>
+          <div style="display: flex; justify-content: space-between; font-size: 20px; border-bottom: 1px solid #3a3025; padding-bottom: 8px"><span style="color: #9d8d72">Wind</span><b>${wx.wind}</b></div>
+          <div style="display: flex; justify-content: space-between; font-size: 20px; border-bottom: 1px solid #3a3025; padding-bottom: 8px"><span style="color: #9d8d72">Rain</span><b>${wx.rain}</b></div>
         </div>
         <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 16px; border: 1px solid #4a3f33; border-radius: 18px; background: #362d23">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C49A6D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v5M5.6 10.6 4.2 9.2M18.4 10.6l1.4-1.4M3 18h18M8 18a4 4 0 0 1 8 0"></path><path d="m9 6 3-3 3 3"></path></svg>
-            <span style="font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: #B8A994">Sunrise</span>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 16px; border: 1px solid #3a3025; border-radius: 18px; background: #342c22">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#c79a5c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v5M5.6 10.6 4.2 9.2M18.4 10.6l1.4-1.4M3 18h18M8 18a4 4 0 0 1 8 0"></path><path d="m9 6 3-3 3 3"></path></svg>
+            <span style="font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: #9d8d72">Sunrise</span>
             <b style="font-size: 22px">${wx.sunrise}</b>
           </div>
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 16px; border: 1px solid #4a3f33; border-radius: 18px; background: #362d23">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C49A6D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V3M5.6 10.6 4.2 9.2M18.4 10.6l1.4-1.4M3 18h18M8 18a4 4 0 0 1 8 0"></path><path d="m9 5 3 3 3-3"></path></svg>
-            <span style="font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: #B8A994">Sunset</span>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 16px; border: 1px solid #3a3025; border-radius: 18px; background: #342c22">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#c79a5c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V3M5.6 10.6 4.2 9.2M18.4 10.6l1.4-1.4M3 18h18M8 18a4 4 0 0 1 8 0"></path><path d="m9 5 3 3 3-3"></path></svg>
+            <span style="font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: #9d8d72">Sunset</span>
             <b style="font-size: 22px">${wx.sunset}</b>
           </div>
         </div>
         <div style="display: flex; flex-direction: column; gap: 10px">
-          <div style="font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: #B8A994; text-align: left">Hourly · today</div>
+          <div style="font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: #9d8d72; text-align: left">Hourly · today</div>
           <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px">
             ${(wx.hourly || []).map((h, h_i) => `
               <div style="flex: 0 0 auto; min-width: 62px; padding: 10px 4px; border-radius: 14px; background: ${h.bg}; display: flex; flex-direction: column; align-items: center; gap: 6px">
                 <span style="font-size: 13px; color: ${h.tc}; font-weight: ${h.fw}; white-space: nowrap">${h.t}</span>
-                <span aria-hidden="true" style="display:inline-block;width:28px;height:28px;color:#C49A6D">${h.ico}</span>
+                <span aria-hidden="true" style="display:inline-block;width:28px;height:28px;color:#c79a5c">${h.ico}</span>
                 <span style="font-size: 17px; font-weight: ${h.fw}">${h.temp}</span>
               </div>
             `).join("")}
           </div>
         </div>
         <div style="display: flex; flex-direction: column; gap: 10px">
-          <div style="font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: #B8A994; text-align: left">Next 5 days</div>
-          <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; border-top: 1px solid #4a3f33; padding-top: 14px">
+          <div style="font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: #9d8d72; text-align: left">Next 5 days</div>
+          <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; border-top: 1px solid #3a3025; padding-top: 14px">
             ${(wx.days || []).map((dd, dd_i) => `
               <div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
-                <span style="font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: #B8A994">${dd.d}</span>
-                <span aria-hidden="true" style="display:inline-block;width:36px;height:36px;color:#C49A6D">${dd.ico}</span>
-                <span style="font-size: 20px; line-height: 1.1">${dd.hi}<span style="display: block; font-size: 16px; color: #B8A994">${dd.lo}</span></span>
+                <span style="font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: #9d8d72">${dd.d}</span>
+                <span aria-hidden="true" style="display:inline-block;width:36px;height:36px;color:#c79a5c">${dd.ico}</span>
+                <span style="font-size: 20px; line-height: 1.1">${dd.hi}<span style="display: block; font-size: 16px; color: #9d8d72">${dd.lo}</span></span>
               </div>
             `).join("")}
           </div>
         </div>
-        <a class="tile" href="https://www.msn.com/en-us/weather/maps/precipitation/in-Rideekanda,Central-Province?loc=eyJsIjoiUmlkZWVrYW5kYSIsInIiOiJDZW50cmFsIFByb3ZpbmNlIiwiYyI6IlNyaSBMYW5rYSIsImkiOiJMSyIsImciOiJlbi11cyIsIngiOiI4MC41NjAyIiwieSI6IjcuNTM0OCJ9&amp;weadegreetype=C&amp;zoom=14" style="text-decoration: none; height: 58px; border-radius: 999px; border: 1px solid #4a3f33; color: #F3ECE1; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 16px; letter-spacing: 0.1em; text-transform: uppercase">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C49A6D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15.5a4 4 0 0 1 1.1-7.8 5.5 5.5 0 0 1 10.6-1.2A4.2 4.2 0 0 1 20 10.6"></path><path d="M8 19.5l-.7 1.4M12 19.5l-.7 1.4M16 19.5l-.7 1.4M20 14.5a3.5 3.5 0 0 0-3.5-3.5H15"></path></svg>
+        <a class="tile" href="https://www.msn.com/en-us/weather/maps/precipitation/in-Rideekanda,Central-Province?loc=eyJsIjoiUmlkZWVrYW5kYSIsInIiOiJDZW50cmFsIFByb3ZpbmNlIiwiYyI6IlNyaSBMYW5rYSIsImkiOiJMSyIsImciOiJlbi11cyIsIngiOiI4MC41NjAyIiwieSI6IjcuNTM0OCJ9&amp;weadegreetype=C&amp;zoom=14" style="text-decoration: none; height: 58px; border-radius: 999px; border: 1px solid #3a3025; color: #f3ecdb; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 16px; letter-spacing: 0.1em; text-transform: uppercase">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c79a5c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15.5a4 4 0 0 1 1.1-7.8 5.5 5.5 0 0 1 10.6-1.2A4.2 4.2 0 0 1 20 10.6"></path><path d="M8 19.5l-.7 1.4M12 19.5l-.7 1.4M16 19.5l-.7 1.4M20 14.5a3.5 3.5 0 0 0-3.5-3.5H15"></path></svg>
           Rain radar on MSN
         </a>
-        <div style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #B8A994">Updated ${wx.updated} · open-meteo</div>
+        <div style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #9d8d72">Updated ${wx.updated} · open-meteo</div>
       </div>
     </div>
   ` : ""}
   ${(hasCal) ? `
     <div class="panel-in" role="dialog" aria-modal="true" aria-label="Monastery calendar" style="position: absolute; left: 0; right: 0; top: 136px; bottom: 0; z-index: 9; background: #1f1a14; box-sizing: border-box; padding: 24px 48px 40px; display: flex; flex-direction: column; gap: 22px">
       <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px">
-        <button data-h="${H(closeCal)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: #2b241c; display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
+        <button data-h="${H(closeCal)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: #2a241c; display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
           Back
         </button>
-        <div style="font-size: 16px; color: #B8A994; text-align: right">Returns to the start after ${idleSeconds} s without a touch</div>
+        <div style="font-size: 16px; color: #9d8d72; text-align: right">Returns to the start after ${idleSeconds} s without a touch</div>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 8px">
-        <div style="font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; color: #C4996A; font-weight: 500">Poya days, holidays &amp; retreats</div>
+        <div style="font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; color: #c79a5c; font-weight: 500">Poya days, holidays &amp; retreats</div>
         <h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 72px; font-weight: 600; line-height: 0.95">Calendar</h2>
-        <div class="si" style="font-size: 22px; color: #B8A994">දින දර්ශනය</div>
+        <div class="si" style="font-size: 22px; color: #9d8d72">දින දර්ශනය</div>
       </div>
 
       <div style="display: flex; align-items: center; justify-content: space-between; gap: 18px">
-        <button data-h="${H(cal.prev)}" aria-label="Previous month" style="width: 68px; height: 68px; border-radius: 999px; background: #2b241c; display: flex; align-items: center; justify-content: center">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F3ECE1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+        <button data-h="${H(cal.prev)}" aria-label="Previous month" style="width: 68px; height: 68px; border-radius: 999px; background: #2a241c; display: flex; align-items: center; justify-content: center">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f3ecdb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
         </button>
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 600; line-height: 1">${cal.title}</div>
-        <button data-h="${H(cal.next)}" aria-label="Next month" style="width: 68px; height: 68px; border-radius: 999px; background: #2b241c; display: flex; align-items: center; justify-content: center">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F3ECE1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
+        <button data-h="${H(cal.next)}" aria-label="Next month" style="width: 68px; height: 68px; border-radius: 999px; background: #2a241c; display: flex; align-items: center; justify-content: center">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f3ecdb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
         </button>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; font-size: 16px; letter-spacing: 0.1em; text-transform: uppercase; color: #B8A994; text-align: center">
+      <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; font-size: 16px; letter-spacing: 0.1em; text-transform: uppercase; color: #9d8d72; text-align: center">
         <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
       </div>
 
       <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 8px">
         ${(cal.cells || []).map((c, c_i) => `
           <button ${c.day ? `data-h="${H(c.pick)}"` : ""} ${c.day ? "" : "disabled"} aria-label="${c.aria}" style="border-radius: 16px; padding: 6px; background: ${c.bg}; outline: ${c.ring}; outline-offset: -2px; opacity: ${c.op}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px">
-            <span style="font-size: 26px; font-weight: ${c.fw}; font-variant-numeric: tabular-nums; color: #F3ECE1">${c.day}</span>
+            <span style="font-size: 26px; font-weight: ${c.fw}; font-variant-numeric: tabular-nums; color: #f3ecdb">${c.day}</span>
             <span style="display: flex; gap: 4px; height: 8px">
               ${(c.dots || []).map((d, d_i) => `<i style="width: 8px; height: 8px; border-radius: 999px; background: ${d}"></i>`).join("")}
             </span>
@@ -941,9 +944,9 @@ function view(V, H) {
         `).join("")}
       </div>
 
-      <div style="min-height: 64px; border-radius: 18px; background: #2b241c; padding: 14px 24px; display: flex; align-items: center; font-size: 20px; line-height: 1.4; color: #F3ECE1">${cal.detail}</div>
+      <div style="min-height: 64px; border-radius: 18px; background: #2a241c; padding: 14px 24px; display: flex; align-items: center; font-size: 20px; line-height: 1.4; color: #f3ecdb">${cal.detail}</div>
 
-      <div style="display: flex; gap: 28px; align-items: center; font-size: 16px; color: #B8A994">
+      <div style="display: flex; gap: 28px; align-items: center; font-size: 16px; color: #9d8d72">
         <span style="display: flex; align-items: center; gap: 8px"><i style="width: 10px; height: 10px; border-radius: 999px; background: #d9a521; display: inline-block"></i> Poya day</span>
         <span style="display: flex; align-items: center; gap: 8px"><i style="width: 10px; height: 10px; border-radius: 999px; background: #c0552f; display: inline-block"></i> Public holiday</span>
         <span style="display: flex; align-items: center; gap: 8px"><i style="width: 10px; height: 10px; border-radius: 999px; background: #4a9d5b; display: inline-block"></i> Retreat</span>
@@ -1001,7 +1004,7 @@ function viewMobile(V, H) {
         '<img class="m-photo" src="' + photo + '" alt="' + esc(post.title) + '">' +
         (multiPhoto
           ? '<div class="m-navrow"><button data-h="' + H(prevPhoto) + '" aria-label="Previous photo">' + chev + '</button>' +
-            '<span style="font-size:12.5px;color:#B8A994">' + photoNum + ' / ' + photoCount + '</span>' +
+            '<span style="font-size:12.5px;color:#9d8d72">' + photoNum + ' / ' + photoCount + '</span>' +
             '<button data-h="' + H(nextPhoto) + '" aria-label="Next photo" style="transform:rotate(180deg)">' + chev + '</button></div>' +
             '<div class="m-thumbs">' + thumbs.map(function (t) {
               return '<button data-h="' + H(t.pick) + '" aria-label="Show photo ' + t.num + '" style="outline:' + t.ring + ';outline-offset:-2px;opacity:' + t.op + '">' +
@@ -1104,9 +1107,9 @@ function viewMobile(V, H) {
       '<div class="m-sheet-in">' +
         '<div class="m-kicker">Poya days, holidays &amp; retreats</div>' +
         '<h1 class="m-h1">Calendar</h1><div class="m-si">දින දර්ශනය</div>' +
-        '<div class="m-cal-head"><button data-h="' + H(cal.prev) + '" aria-label="Previous month" style="width:40px;height:40px;border-radius:999px;background:#2b241c">' + chev + '</button>' +
+        '<div class="m-cal-head"><button data-h="' + H(cal.prev) + '" aria-label="Previous month" style="width:40px;height:40px;border-radius:999px;background:#2a241c">' + chev + '</button>' +
         '<b>' + esc(cal.title) + '</b>' +
-        '<button data-h="' + H(cal.next) + '" aria-label="Next month" style="width:40px;height:40px;border-radius:999px;background:#2b241c;transform:rotate(180deg)">' + chev + '</button></div>' +
+        '<button data-h="' + H(cal.next) + '" aria-label="Next month" style="width:40px;height:40px;border-radius:999px;background:#2a241c;transform:rotate(180deg)">' + chev + '</button></div>' +
         '<div class="m-cal">' +
           ['Su','Mo','Tu','We','Th','Fr','Sa'].map(function (d) { return '<div class="dow">' + d + '</div>'; }).join('') +
           cal.cells.map(function (c) {
@@ -1147,8 +1150,8 @@ function viewMobile(V, H) {
         '</div>' +
         '<div class="m-sect">Next 5 days</div><div class="m-days">' +
           wx.days.map(function (d) {
-            return '<div><span style="color:#B8A994">' + esc(d.d) + '</span><span class="ico m-ico">' + d.ico + '</span>' +
-                   '<span>' + d.hi + '</span><span style="color:#B8A994">' + d.lo + '</span></div>';
+            return '<div><span style="color:#9d8d72">' + esc(d.d) + '</span><span class="ico m-ico">' + d.ico + '</span>' +
+                   '<span>' + d.hi + '</span><span style="color:#9d8d72">' + d.lo + '</span></div>';
           }).join('') +
         '</div>' +
         '<div class="m-foot">Updated ' + esc(wx.updated) + ' · open-meteo</div>' +
@@ -1215,7 +1218,7 @@ function viewMobile(V, H) {
 
     '<button class="m-now" data-h="' + H(openRoutine) + '">' +
       '<div class="m-now-top">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="#C49A6D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:17px;height:17px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="#c79a5c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:17px;height:17px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' +
         '<b>Daily Routine</b><i class="si">දෛනික චර්යාව</i></div>' +
       '<div class="m-now-main"><b>' + esc(nowLabel) + '</b>' +
         '<span>Next: ' + esc(nextLabel) + '<br>' + nextTime + '</span></div>' +
@@ -1248,9 +1251,9 @@ function viewMobile(V, H) {
       '<button class="m-chip" data-h="' + H(lib.docs) + '">Retreat Documents<span class="si">වැඩසටහන් ලේඛන</span></button>' +
     '</div>' +
 
-    '<a class="m-card" href="../" style="display:flex;align-items:center;gap:14px;background:#F3ECE1;color:#1f1a14;margin-top:16px">' +
+    '<a class="m-card" href="../" style="display:flex;align-items:center;gap:14px;background:#f3ecdb;color:#1f1a14;margin-top:16px">' +
       '<img src="kiosk/ec2ea202af236ed9ad148ee9fb0af97a.svg" alt="QR code for www.rideekanda.com" style="width:74px;height:74px;flex:none">' +
-      '<div style="min-width:0"><h3>Take us with you</h3><p style="color:#4a3f33">Scan for the full website</p></div></a>' +
+      '<div style="min-width:0"><h3>Take us with you</h3><p style="color:#3a3025">Scan for the full website</p></div></a>' +
 
     '<div class="m-foot">Rideekanda Forest Monastery · Udasgiriya, Matale</div>' +
   '</div>';
@@ -1512,8 +1515,8 @@ function viewMobile(V, H) {
                                                .map(function (t) { return DOTC[t]; });
       cells.push({
         day: d, dots: dots, iso: di,
-        bg: state.calSel === di ? '#603B17' : (types.retreat ? 'rgba(74,157,91,0.18)' : '#2b241c'),
-        ring: di === todayIso ? '2px solid #C49A6D' : 'none',
+        bg: state.calSel === di ? '#603B17' : (types.retreat ? 'rgba(74,157,91,0.18)' : '#2a241c'),
+        ring: di === todayIso ? '2px solid #c79a5c' : 'none',
         op: 1, fw: di === todayIso ? '700' : '400',
         aria: MONTHS[m] + ' ' + d + (ev.length ? ' — ' + ev.map(function (e) { return e.name; }).join(', ') : ''),
         pick: (function (iso2) { return function () { setState({ calSel: iso2, touched: Date.now() }); }; })(di)
@@ -1585,8 +1588,8 @@ function viewMobile(V, H) {
         libs = LIBS.map(function (l) {
           return Object.assign({}, l, {
             url: REL + l.path,
-            bg: l.id === L.id ? '#C4996A' : '#2b241c',
-            fg: l.id === L.id ? '#1f1a14' : '#F3ECE1',
+            bg: l.id === L.id ? '#c79a5c' : '#2a241c',
+            fg: l.id === L.id ? '#1f1a14' : '#f3ecdb',
             pick: function () { setState({ libSel: l.id, touched: Date.now() }); }
           });
         });
@@ -1628,17 +1631,17 @@ function viewMobile(V, H) {
       // While a story is open it covers the list, so there is no reason to
       // keep sixteen more photographs decoded behind it.
       cur.showNews    = !pageView && cur.isNews && state.post == null;
-      cur.tabPageBg = pageView ? '#C49A6D' : 'transparent';
-      cur.tabPageFg = pageView ? '#1f1a14' : '#F3ECE1';
+      cur.tabPageBg = pageView ? '#c79a5c' : 'transparent';
+      cur.tabPageFg = pageView ? '#1f1a14' : '#f3ecdb';
       cur.tabPageSel = pageView ? 'true' : 'false';
-      cur.tabSumBg = pageView ? 'transparent' : '#C49A6D';
-      cur.tabSumFg = pageView ? '#F3ECE1' : '#1f1a14';
+      cur.tabSumBg = pageView ? 'transparent' : '#c79a5c';
+      cur.tabSumFg = pageView ? '#f3ecdb' : '#1f1a14';
       cur.tabSumSel = pageView ? 'false' : 'true';
     }
 
     var timeline = S.map(function (s, i) {
       return {
-        bg: i === idx ? '#F3ECE1' : (i < idx && nowM >= mins(S[0][0]) ? '#A97D51' : '#2a231b'),
+        bg: i === idx ? '#f3ecdb' : (i < idx && nowM >= mins(S[0][0]) ? '#A97D51' : '#2a231b'),
         h: '12px', ring: 'none', cls: i === idx ? 'seg-now' : '',
         aria: s[0] + ' ' + s[1],
         pick: function () { setState({ routine: i, touched: Date.now() }); }
@@ -1652,7 +1655,7 @@ function viewMobile(V, H) {
       return {
         range: s[0] + ' – ' + fmt(b), label: s[1], si: s[2] || '', isNow: i === idx,
         dur: (h ? h + ' h' : '') + (h && m ? ' ' : '') + (m ? m + ' min' : ''),
-        bg: i === sel ? '#603B17' : (i === idx ? '#362d23' : '#2b241c'), fg: '#F3ECE1',
+        bg: i === sel ? '#603B17' : (i === idx ? '#342c22' : '#2a241c'), fg: '#f3ecdb',
         pick: function () { setState({ routine: i, touched: Date.now() }); }
       };
     });
@@ -1661,7 +1664,7 @@ function viewMobile(V, H) {
       ? Object.assign({}, WX, { hourly: WX.hourly.map(function (h) {
           return Object.assign({}, h, {
             bg: h.now ? '#603B17' : 'transparent',
-            tc: h.now ? '#C49A6D' : '#B8A994',
+            tc: h.now ? '#c79a5c' : '#9d8d72',
             fw: h.now ? '700' : '400'
           });
         }) })
@@ -1715,7 +1718,7 @@ function viewMobile(V, H) {
       nextPhoto: function () { setState({ photo: (pk + 1) % pn, touched: Date.now() }); },
       thumbs: ph.map(function (src, i) {
         return { src: (pn0.thumbs && pn0.thumbs[i]) || src, num: i + 1,
-                 ring: i === pk ? '3px solid #C49A6D' : 'none',
+                 ring: i === pk ? '3px solid #c79a5c' : 'none',
                  op: i === pk ? 1 : 0.6,
                  pick: function () { setState({ photo: i, touched: Date.now() }); } };
       }),
