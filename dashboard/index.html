@@ -31,7 +31,9 @@
   <link rel="apple-touch-icon" href="../app/apple-touch-icon.png?v=2">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- "black", not "black-translucent": translucent runs the page under the
+       status bar, where iOS dims and blurs whatever is beneath it. -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Rideekanda">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1328,14 +1330,28 @@ function view(V, H) {
         // Never shrink past the design's own proportions; whichever axis has
         // room to spare simply gets a bigger artboard.
         var s = Math.min(w / 1080, h / 1920);
-        stage.style.width  = (w / s) + 'px';
-        stage.style.height = (h / s) + 'px';
+        var sw = w / s, sh = h / s;
+        if (stage.__w === sw && stage.__h === sh) return;   // nothing moved
+        stage.__w = sw; stage.__h = sh;
+        stage.style.width  = sw + 'px';
+        stage.style.height = sh + 'px';
         stage.style.transform = 'scale(' + s + ')';
       }
       fit();
+      // iOS resizes this box when its URL bar slides in or out, and does not
+      // reliably fire `resize` for it. Left unobserved, the artboard keeps a
+      // stale height and the bottom row of tiles is clipped away.
+      if (window.ResizeObserver) new ResizeObserver(fit).observe(box);
       window.addEventListener('resize', fit);
       window.addEventListener('orientationchange', fit);
-      if (window.visualViewport) window.visualViewport.addEventListener('resize', fit);
+      window.addEventListener('pageshow', fit);
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', fit);
+        window.visualViewport.addEventListener('scroll', fit);
+      }
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      // Belt and braces for the first couple of seconds, while Safari settles.
+      [100, 300, 600, 1200, 2500].forEach(function (t) { setTimeout(fit, t); });
     })();
   </script>
 
