@@ -126,10 +126,10 @@ function view(V, H) {
       <span aria-hidden="true" style="display:inline-block;width:32px;height:32px;color:#C49A6D">${wx.ico}</span>
       <span style="font-size: 18px; font-weight: 600; line-height: 1; color: #F3ECE1">${wx.temp}°</span>
     </button>
-    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px">
-      <div style="font-size: 44px; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1">${clock}</div>
-      <div style="font-size: 15px; color: #B8A994">${dateLabel}</div>
-    </div>
+    <button class="tile" data-h="${H(openCal)}" aria-label="Monastery calendar" aria-haspopup="dialog" style="background: transparent; padding: 0; border-radius: 16px; display: flex; flex-direction: column; align-items: flex-end; gap: 2px">
+      <span style="font-size: 44px; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1">${clock}</span>
+      <span style="font-size: 15px; color: #B8A994; white-space: nowrap; border-bottom: 1px dotted #6b5c49; padding-bottom: 1px">${dateLabel}</span>
+    </button>
     </div>
   </div>
 
@@ -644,6 +644,56 @@ function view(V, H) {
       </div>
     </div>
   ` : ""}
+  ${(hasCal) ? `
+    <div class="panel-in" role="dialog" aria-modal="true" aria-label="Monastery calendar" style="position: absolute; left: 0; right: 0; top: 136px; bottom: 0; z-index: 9; background: #1f1a14; box-sizing: border-box; padding: 24px 48px 40px; display: flex; flex-direction: column; gap: 22px">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px">
+        <button data-h="${H(closeCal)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: #2b241c; display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+          Back
+        </button>
+        <div style="font-size: 16px; color: #B8A994; text-align: right">Returns to the start after ${idleSeconds} s without a touch</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; color: #C4996A; font-weight: 500">Poya days, holidays &amp; retreats</div>
+        <h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 72px; font-weight: 600; line-height: 0.95">Calendar</h2>
+        <div class="si" style="font-size: 22px; color: #B8A994">දින දර්ශනය</div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 18px">
+        <button data-h="${H(cal.prev)}" aria-label="Previous month" style="width: 68px; height: 68px; border-radius: 999px; background: #2b241c; display: flex; align-items: center; justify-content: center">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F3ECE1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+        </button>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 600; line-height: 1">${cal.title}</div>
+        <button data-h="${H(cal.next)}" aria-label="Next month" style="width: 68px; height: 68px; border-radius: 999px; background: #2b241c; display: flex; align-items: center; justify-content: center">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F3ECE1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
+        </button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; font-size: 16px; letter-spacing: 0.1em; text-transform: uppercase; color: #B8A994; text-align: center">
+        <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+      </div>
+
+      <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 8px">
+        ${(cal.cells || []).map((c, c_i) => `
+          <button ${c.day ? `data-h="${H(c.pick)}"` : ""} ${c.day ? "" : "disabled"} aria-label="${c.aria}" style="border-radius: 16px; padding: 6px; background: ${c.bg}; outline: ${c.ring}; outline-offset: -2px; opacity: ${c.op}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px">
+            <span style="font-size: 26px; font-weight: ${c.fw}; font-variant-numeric: tabular-nums; color: #F3ECE1">${c.day}</span>
+            <span style="display: flex; gap: 4px; height: 8px">
+              ${(c.dots || []).map((d, d_i) => `<i style="width: 8px; height: 8px; border-radius: 999px; background: ${d}"></i>`).join("")}
+            </span>
+          </button>
+        `).join("")}
+      </div>
+
+      <div style="min-height: 64px; border-radius: 18px; background: #2b241c; padding: 14px 24px; display: flex; align-items: center; font-size: 20px; line-height: 1.4; color: #F3ECE1">${cal.detail}</div>
+
+      <div style="display: flex; gap: 28px; align-items: center; font-size: 16px; color: #B8A994">
+        <span style="display: flex; align-items: center; gap: 8px"><i style="width: 10px; height: 10px; border-radius: 999px; background: #d9a521; display: inline-block"></i> Poya day</span>
+        <span style="display: flex; align-items: center; gap: 8px"><i style="width: 10px; height: 10px; border-radius: 999px; background: #c0552f; display: inline-block"></i> Public holiday</span>
+        <span style="display: flex; align-items: center; gap: 8px"><i style="width: 10px; height: 10px; border-radius: 999px; background: #4a9d5b; display: inline-block"></i> Retreat</span>
+      </div>
+    </div>
+  ` : ""}
 </div>
 `;
   }
@@ -674,6 +724,7 @@ function view(V, H) {
   var state = {
     slide: 0, cur: null, view: 'summary', proj: null, libSel: null,
     post: null, photo: 0, routine: null, explore: false, wx: false,
+    cal: false, calShift: 0, calSel: null,
     pressed: null, lpressed: null, ppressed: null,
     now: Date.now(), touched: Date.now()
   };
@@ -683,7 +734,7 @@ function view(V, H) {
   function H(fn) { handlers.push(fn); return handlers.length - 1; }
   function setState(p) { Object.assign(state, p); render(); }
   function panelOpen() {
-    return !!(state.cur || state.routine != null || state.explore || state.wx);
+    return !!(state.cur || state.routine != null || state.explore || state.wx || state.cal);
   }
 
   /* ── the daily rhythm of the 7-day retreat ──────────────────────
@@ -856,6 +907,79 @@ function view(V, H) {
     }).catch(function () { /* a kiosk offline for a moment simply shows no weather */ });
   }
 
+  /* ── the monastery calendar ─────────────────────────────────── */
+  var CAL = null;                       // filled from ../calendar-data.js
+  var MONTHS = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
+
+  function isoOf(y, m, d) { return y + '-' + pad(m + 1) + '-' + pad(d); }
+
+  function eventsOn(di) {
+    if (!CAL) return [];
+    var ev = [];
+    (CAL.poya || []).forEach(function (x) { if (x.date === di) ev.push({ type: 'poya', name: x.name }); });
+    (CAL.holidays || []).forEach(function (x) { if (x.date === di) ev.push({ type: 'holiday', name: x.name }); });
+    (CAL.retreats || []).forEach(function (r) {
+      if (di >= r.start && di <= r.end) ev.push({ type: 'retreat', name: r.name, start: r.start, end: r.end });
+    });
+    return ev;
+  }
+
+  var DOTC = { poya: '#d9a521', holiday: '#c0552f', retreat: '#4a9d5b' };
+
+  function fmtRange(a, b) {
+    var p = a.split('-'), q = b.split('-');
+    var ma = MONTHS[+p[1] - 1].slice(0, 3), mb = MONTHS[+q[1] - 1].slice(0, 3);
+    return p[1] === q[1] ? ma + ' ' + (+p[2]) + '–' + (+q[2])
+                         : ma + ' ' + (+p[2]) + ' – ' + mb + ' ' + (+q[2]);
+  }
+
+  function buildCalendar() {
+    var base = new Date();
+    var view = new Date(base.getFullYear(), base.getMonth() + state.calShift, 1);
+    var y = view.getFullYear(), m = view.getMonth();
+    var todayIso = isoOf(base.getFullYear(), base.getMonth(), base.getDate());
+    var startDow = new Date(y, m, 1).getDay();
+    var days = new Date(y, m + 1, 0).getDate();
+
+    var cells = [];
+    for (var i = 0; i < startDow; i++) {
+      cells.push({ day: '', dots: [], bg: 'transparent', ring: 'none', op: 0, fw: '400', aria: '' });
+    }
+    for (var d = 1; d <= days; d++) {
+      var di = isoOf(y, m, d), ev = eventsOn(di);
+      var types = {};
+      ev.forEach(function (e) { types[e.type] = 1; });
+      var dots = ['poya', 'holiday', 'retreat'].filter(function (t) { return types[t]; })
+                                               .map(function (t) { return DOTC[t]; });
+      cells.push({
+        day: d, dots: dots, iso: di,
+        bg: state.calSel === di ? '#603B17' : (types.retreat ? 'rgba(74,157,91,0.18)' : '#2b241c'),
+        ring: di === todayIso ? '2px solid #C49A6D' : 'none',
+        op: 1, fw: di === todayIso ? '700' : '400',
+        aria: MONTHS[m] + ' ' + d + (ev.length ? ' — ' + ev.map(function (e) { return e.name; }).join(', ') : ''),
+        pick: (function (iso2) { return function () { setState({ calSel: iso2, touched: Date.now() }); }; })(di)
+      });
+    }
+
+    var sel = state.calSel || todayIso;
+    var selEv = eventsOn(sel);
+    var sp = sel.split('-');
+    var detail = !CAL
+      ? 'Loading the calendar…'
+      : (selEv.length
+          ? MONTHS[+sp[1] - 1].slice(0, 3) + ' ' + (+sp[2]) + ' — ' + selEv.map(function (e) {
+              return e.type === 'retreat' ? e.name + ' (' + fmtRange(e.start, e.end) + ')' : e.name;
+            }).join(' · ')
+          : MONTHS[+sp[1] - 1].slice(0, 3) + ' ' + (+sp[2]) + ' — nothing scheduled');
+
+    return {
+      title: MONTHS[m] + ' ' + y, cells: cells, detail: detail,
+      prev: function () { setState({ calShift: state.calShift - 1, calSel: null, touched: Date.now() }); },
+      next: function () { setState({ calShift: state.calShift + 1, calSel: null, touched: Date.now() }); }
+    };
+  }
+
   /* ── everything the template needs, rebuilt for each render ─── */
   function renderVals() {
     var d = new Date(state.now);
@@ -999,6 +1123,9 @@ function view(V, H) {
       hasExplore: !!state.explore,
       openExplore: function () { setState({ explore: true, touched: Date.now() }); },
       closeExplore: function () { setState({ explore: false }); },
+      cal: buildCalendar(), hasCal: !!state.cal,
+      openCal: function () { setState({ cal: true, calShift: 0, calSel: null, touched: Date.now() }); },
+      closeCal: function () { setState({ cal: false }); },
       wx: wx, hasWx: !!state.wx,
       openWx: function () { setState({ wx: true, touched: Date.now() }); if (!WX) loadWeather(); },
       closeWx: function () { setState({ wx: false }); },
@@ -1060,6 +1187,7 @@ function view(V, H) {
       // and only step in once the screen has been left untouched.
       if (now - state.touched > IDLE * 1000) {
         setState({ cur: null, routine: null, explore: false, wx: false,
+                   cal: false, calShift: 0, calSel: null,
                    post: null, proj: null, now: now });
       }
       return;
@@ -1133,6 +1261,15 @@ function view(V, H) {
       });
       render();
     };
+    document.head.appendChild(el);
+  })();
+
+  // Poya days, holidays and the retreat schedule — the same file the
+  // orbital dashboard read, so one edit still updates both.
+  (function loadCalendar() {
+    var el = document.createElement('script');
+    el.src = '../calendar-data.js';
+    el.onload = function () { CAL = window.RK_CALENDAR || null; render(); };
     document.head.appendChild(el);
   })();
 
