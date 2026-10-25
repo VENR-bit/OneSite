@@ -100,6 +100,19 @@
       .seg-now  { animation: none; }
     }
 
+    /* On a phone the artboard is drawn 900 wide instead of 1080, which makes
+       everything ~17% larger on screen. Two pieces need a trim to still fit
+       the narrower canvas: the monastery's full name, and the library chips,
+       which would otherwise wrap onto a third row and spill out of the card. */
+    #stage[data-compact] .hdr-bar   { padding: 24px 30px !important; gap: 14px !important; }
+    #stage[data-compact] .hdr-logo  { height: 46px !important; }
+    #stage[data-compact] .hdr-title { font-size: 26px !important; white-space: nowrap; }
+    #stage[data-compact] .lib-label { width: 170px !important; }
+    #stage[data-compact] .chip      { min-height: 44px !important;
+                                      padding: 3px 11px !important;
+                                      font-size: 14px !important; }
+    #stage[data-compact] .chip span { font-size: 11px !important; }
+
     /* inline weather glyphs */
     span[style*="color:#C49A6D"] > svg { width: 100%; height: 100%; display: block; }
   </style>
@@ -120,15 +133,15 @@ function view(V, H) {
 <div style="width: 100%; height: 100%; position: relative; display: flex; flex-direction: column; overflow: hidden; background: #1f1a14; color: #F3ECE1; font-family: 'Inter', system-ui, sans-serif">
 
   <!-- Header -->
-  <div style="height: 136px; box-sizing: border-box; padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-shrink: 0">
+  <div class="hdr-bar" style="height: 136px; box-sizing: border-box; padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-shrink: 0">
     <div style="display: flex; align-items: center; gap: 20px">
       <button class="tile" data-h="${H(openExplore)}" aria-label="Explore Rideekanda" style="height: 60px; padding: 0 24px 0 16px; border-radius: 999px; background: #F3ECE1; color: #1f1a14; border: 1px solid #C49A6D; display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; flex-shrink: 0">
         <img src="kiosk/ccdfd77b7b5333a5414270ab6eee73c5.png" alt="" style="height: 26px; width: auto">
         Explore
       </button>
-      <img src="kiosk/7f193d9120a7243f62e2c416768bb75d.png" alt="Rideekanda lotus logo" style="height: 60px; width: auto">
+      <img class="hdr-logo" src="kiosk/7f193d9120a7243f62e2c416768bb75d.png" alt="Rideekanda lotus logo" style="height: 60px; width: auto">
       <div style="display: flex; flex-direction: column; gap: 2px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; line-height: 1">Rideekanda Forest Monastery</div>
+        <div class="hdr-title" style="font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; line-height: 1">Rideekanda Forest Monastery</div>
         <div class="si" style="font-size: 17px; color: #B8A994">රිදීකන්ද ආරණ්‍ය සේනාසනය · Udasgiriya, Matale</div>
       </div>
     </div>
@@ -291,7 +304,7 @@ function view(V, H) {
         <div class="si" style="font-size: 16px; color: #f3ece1">පුවත් සහ සිදුවීම්</div>
       </div>
     </button><div class="tile ${cls.libraries}" style="grid-column: 1 / span 3; grid-row: 6; border-radius: 24px; padding: 18px 20px 18px 26px; display: flex; align-items: center; gap: 24px; background-color: #4a3f33">
-      <button class="tile" data-h="${H(open.libraries)}" style="width: 250px; align-self: stretch; flex-shrink: 0; background: transparent; padding: 0; display: flex; flex-direction: column; justify-content: center; gap: 10px">
+      <button class="tile lib-label" data-h="${H(open.libraries)}" style="width: 250px; align-self: stretch; flex-shrink: 0; background: transparent; padding: 0; display: flex; flex-direction: column; justify-content: center; gap: 10px">
         <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#F3ECE1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6h7a4 4 0 0 1 4 4v16a3 3 0 0 0-3-3H5z"></path><path d="M27 6h-7a4 4 0 0 0-4 4v16a3 3 0 0 1 3-3h8z"></path></svg>
         <div style="display: flex; flex-direction: column; gap: 4px">
           <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Libraries</div>
@@ -1327,9 +1340,20 @@ function view(V, H) {
       function fit() {
         var w = box.clientWidth, h = box.clientHeight;
         if (!w || !h) return;
+        // The artboard is drawn 1080 wide. A kiosk panel shows it near 1:1,
+        // but a phone would shrink it to about a third and the type — sized
+        // to be read from a few feet away — becomes unreadable in the hand.
+        // Narrowing the artboard on a phone scales everything up; the layout
+        // is fluid across its width, so the columns simply get narrower.
+        var compact = w < 700;
+        var BASE = compact ? 900 : 1080;
+        if (stage.hasAttribute('data-compact') !== compact) {
+          if (compact) stage.setAttribute('data-compact', ''); else stage.removeAttribute('data-compact');
+          stage.__w = null;                       // force the resize below
+        }
         // Never shrink past the design's own proportions; whichever axis has
         // room to spare simply gets a bigger artboard.
-        var s = Math.min(w / 1080, h / 1920);
+        var s = Math.min(w / BASE, h / (BASE * 16 / 9));
         var sw = w / s, sh = h / s;
         if (stage.__w === sw && stage.__h === sh) return;   // nothing moved
         stage.__w = sw; stage.__h = sh;
