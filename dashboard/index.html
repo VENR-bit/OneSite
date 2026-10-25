@@ -686,7 +686,11 @@ function view(V, H) {
     return !!(state.cur || state.routine != null || state.explore || state.wx);
   }
 
-  /* ── the daily rhythm of the 7-day retreat ──────────────────── */
+  /* ── the daily rhythm of the 7-day retreat ──────────────────────
+     These are a fallback only. daily-routine/routine-data.js is the one
+     place the routine is written down, and loadRoutine() below replaces
+     this list with whatever that file says, so changing the times there
+     changes them here too. ──────────────────────────────────────────── */
   var S = [
     ['05:30', 'Waking', 'අවදි වීම'], ['07:00', 'Breakfast', 'උදෑසන ආහාරය'],
     ['08:00', 'Morning Dhamma', 'උදෑසන ධර්ම දේශනාව'], ['09:00', 'Meditation', 'භාවනාව'],
@@ -1115,6 +1119,21 @@ function view(V, H) {
     };
     s.onerror = function () { render(); };
     document.head.appendChild(s);
+  })();
+
+  // The retreat day comes from the file the routine page and the PDFs read.
+  (function loadRoutine() {
+    var el = document.createElement('script');
+    el.src = '../daily-routine/routine-data.js';
+    el.onload = function () {
+      var r = window.RK_ROUTINE && window.RK_ROUTINE.rows;
+      if (!r || !r.length) return;
+      S = r.map(function (row) {
+        return [row.from, (row.a && row.a.en) || '', (row.a && row.a.si) || ''];
+      });
+      render();
+    };
+    document.head.appendChild(el);
   })();
 
   loadWeather();
