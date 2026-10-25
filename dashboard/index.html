@@ -140,7 +140,7 @@
               border-bottom: 1px solid #332b22; }
     .m-head-row { max-width: 640px; margin: 0 auto; display: flex;
                   align-items: center; gap: 10px; }
-    .m-logo { height: 30px; width: auto; flex: none; }
+    .m-logo { height: 34px; width: auto; flex: none; }
     .m-name { flex: 1; min-width: 0; }
     .m-name b { display: block; font-family: 'Cormorant Garamond', serif;
                 font-size: 19px; font-weight: 600; line-height: 1.1;
@@ -167,6 +167,25 @@
     .m-hero-tag { position: absolute; right: 10px; bottom: 10px; display: flex;
                   align-items: center; gap: 6px; background: rgba(31,26,20,.88);
                   border-radius: 999px; padding: 5px 11px; font-size: 11.5px; }
+
+    /* weather + date, as a pair of cards under the hero ------ */
+    .m-status { display: grid; grid-template-columns: 1fr 1fr; gap: 11px;
+                margin-bottom: 14px; }
+    .m-stat { display: flex; flex-direction: column; gap: 7px; padding: 13px 15px;
+              border-radius: 18px; background: #2b241c; border: 1px solid #3a3129;
+              color: #F3ECE1; text-align: left; }
+    .m-stat:active { transform: scale(.975); }
+    .m-stat-head { display: flex; align-items: baseline; gap: 7px; font-size: 11px;
+                   letter-spacing: .14em; text-transform: uppercase; color: #C49A6D;
+                   font-weight: 600; }
+    .m-stat-head i { font-style: normal; font-size: 11px; letter-spacing: 0;
+                     text-transform: none; color: #B8A994; }
+    .m-stat-main { display: flex; align-items: center; gap: 9px; }
+    .m-stat-main .ico { width: 30px; height: 30px; color: #C49A6D; flex: none; }
+    .m-stat-main b { font-size: 29px; font-weight: 500; line-height: 1;
+                     font-variant-numeric: tabular-nums; }
+    .m-stat-sub { font-size: 12.5px; color: #B8A994; white-space: nowrap;
+                  overflow: hidden; text-overflow: ellipsis; }
 
     /* now on retreat ----------------------------------------- */
     .m-now { width: 100%; text-align: left; background: #4a3f33;
@@ -1167,11 +1186,8 @@ function viewMobile(V, H) {
     '<button class="m-pill" data-h="' + H(openExplore) + '" aria-label="Explore Rideekanda">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>' +
     '<img class="m-logo" src="kiosk/7f193d9120a7243f62e2c416768bb75d.png" alt="">' +
-    '<div class="m-name"><b>Rideekanda</b><span class="si">රිදීකන්ද ආරණ්‍ය සේනාසනය</span></div>' +
-    '<button class="m-pill" data-h="' + H(openWx) + '" aria-label="Weather report">' +
-      '<span class="m-ico" aria-hidden="true">' + wx.ico + '</span>' + wx.temp + '°</button>' +
-    '<button class="m-clock" data-h="' + H(openCal) + '" aria-label="Monastery calendar">' +
-      '<b>' + clock + '</b><span>' + dateLabel.replace(/^(\w+)\s/, '') + '</span></button>' +
+    '<div class="m-name"><b>Rideekanda Forest Monastery</b>' +
+      '<span class="si">රිදීකන්ද ආරණ්‍ය සේනාසනය · Udasgiriya, Matale</span></div>' +
   '</div></div>' +
 
   '<div class="m-wrap">' +
@@ -1181,6 +1197,20 @@ function viewMobile(V, H) {
                ' decoding="async" alt="" style="opacity:' + sl.op + ';transform:scale(' + sl.scale + ')">';
       }).join('') +
       '<div class="m-hero-tag">From our gallery · <span data-slide-count>' + slideNum + ' / ' + slideCount + '</span></div>' +
+    '</div>' +
+
+    '<div class="m-status">' +
+      '<button class="m-stat" data-h="' + H(openWx) + '" aria-label="Weather report">' +
+        '<span class="m-stat-head">Weather<i class="si">කාලගුණය</i></span>' +
+        '<span class="m-stat-main"><span class="ico m-ico" aria-hidden="true">' + wx.ico + '</span>' +
+          '<b>' + wx.temp + '°</b></span>' +
+        '<span class="m-stat-sub">' + esc(wx.cond) + '</span>' +
+      '</button>' +
+      '<button class="m-stat" data-h="' + H(openCal) + '" aria-label="Monastery calendar">' +
+        '<span class="m-stat-head">Today<i class="si">අද</i></span>' +
+        '<span class="m-stat-main"><b>' + clock + '</b></span>' +
+        '<span class="m-stat-sub">' + esc(dateLabel) + '</span>' +
+      '</button>' +
     '</div>' +
 
     '<button class="m-now" data-h="' + H(openRoutine) + '">' +
