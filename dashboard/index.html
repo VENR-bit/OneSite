@@ -113,6 +113,219 @@
                                       font-size: 14px !important; }
     #stage[data-compact] .chip span { font-size: 11px !important; }
 
+
+    /* ─────────────────────────────────────────────────────────
+       Phone layout. The kiosk artboard is a fixed 1080 × 1920
+       scaled to the screen, which is right for a wall panel and
+       wrong in the hand. Below 700px the page switches to this
+       instead: ordinary flow, real type sizes, one thumb's reach.
+       ───────────────────────────────────────────────────────── */
+    html:has(body[data-mode="mobile"]) { height: auto; overflow: visible; }
+    body[data-mode="mobile"] { height: auto; overflow: visible;
+                               overscroll-behavior-y: none; }
+    body[data-mode="mobile"] #fit   { position: static; inset: auto; overflow: visible; }
+    body[data-mode="mobile"] #stage { position: static; width: auto !important;
+                                      height: auto !important; transform: none !important; }
+
+    .m { display: none; }
+    body[data-mode="mobile"] .m { display: block; }
+    body[data-mode="mobile"] .k { display: none !important; }
+
+    .m-wrap { max-width: 640px; margin: 0 auto;
+              padding: 0 14px calc(28px + env(safe-area-inset-bottom, 0px)); }
+
+    /* header ------------------------------------------------- */
+    .m-head { position: sticky; top: 0; z-index: 30; background: #1f1a14;
+              padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 10px;
+              border-bottom: 1px solid #332b22; }
+    .m-head-row { max-width: 640px; margin: 0 auto; display: flex;
+                  align-items: center; gap: 10px; }
+    .m-logo { height: 30px; width: auto; flex: none; }
+    .m-name { flex: 1; min-width: 0; }
+    .m-name b { display: block; font-family: 'Cormorant Garamond', serif;
+                font-size: 19px; font-weight: 600; line-height: 1.1;
+                white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .m-name span { display: block; font-size: 11.5px; color: #B8A994;
+                   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .m-pill { flex: none; display: flex; align-items: center; gap: 6px;
+              height: 38px; padding: 0 12px; border-radius: 999px;
+              background: #2b241c; border: 1px solid #4a3f33;
+              font-size: 14px; font-weight: 600; color: #F3ECE1; }
+    .m-pill svg, .m-pill span[aria-hidden] { width: 20px; height: 20px; color: #C49A6D; }
+    .m-clock { text-align: right; line-height: 1.1; }
+    .m-clock b { display: block; font-size: 19px; font-weight: 600;
+                 font-variant-numeric: tabular-nums; }
+    .m-clock span { display: block; font-size: 11px; color: #B8A994;
+                    white-space: nowrap; border-bottom: 1px dotted #6b5c49; }
+    @media (max-width: 379px) { .m-logo { display: none; } }
+
+    /* hero --------------------------------------------------- */
+    .m-hero { position: relative; margin: 14px 0; border-radius: 18px;
+              overflow: hidden; aspect-ratio: 16 / 10; background: #2b241c; }
+    .m-hero img { position: absolute; inset: 0; width: 100%; height: 100%;
+                  object-fit: cover; }
+    .m-hero-tag { position: absolute; right: 10px; bottom: 10px; display: flex;
+                  align-items: center; gap: 6px; background: rgba(31,26,20,.88);
+                  border-radius: 999px; padding: 5px 11px; font-size: 11.5px; }
+
+    /* now on retreat ----------------------------------------- */
+    .m-now { width: 100%; text-align: left; background: #4a3f33;
+             border-radius: 18px; padding: 13px 15px; margin-bottom: 14px; }
+    .m-now-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .m-now-top b { font-family: 'Cormorant Garamond', serif; font-size: 19px;
+                   font-weight: 600; }
+    .m-now-top i { font-style: normal; font-size: 12px; color: #B8A994; }
+    .m-now-main { display: flex; align-items: baseline; justify-content: space-between;
+                  gap: 10px; }
+    .m-now-main b { font-family: 'Cormorant Garamond', serif; font-size: 25px;
+                    font-weight: 600; line-height: 1.1; }
+    .m-now-main span { font-size: 12.5px; color: #D9CEBF; text-align: right; }
+    .m-bars { display: flex; gap: 3px; margin-top: 10px; }
+    .m-bars i { flex: 1; height: 7px; border-radius: 999px; }
+
+    /* tiles -------------------------------------------------- */
+    .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+    .m-tile { display: flex; flex-direction: column; justify-content: space-between;
+              gap: 14px; min-height: 112px; padding: 15px; border-radius: 18px;
+              background: #2b241c; color: #F3ECE1; text-decoration: none;
+              text-align: left; }
+    .m-tile:active { transform: scale(.975); }
+    .m-tile svg { width: 26px; height: 26px; stroke: #C49A6D; }
+    .m-tile b { display: block; font-family: 'Cormorant Garamond', serif;
+                font-size: 21px; font-weight: 600; line-height: 1.1; }
+    .m-tile span { display: block; font-size: 12.5px; color: #B8A994; margin-top: 2px; }
+    .m-tile.wide { grid-column: 1 / -1; }
+    .m-tile.hero-tile { background: #836443; min-height: 150px; }
+    .m-tile.hero-tile svg, .m-tile.accent svg { stroke: #F3ECE1; }
+    .m-tile.hero-tile b { font-size: 27px; }
+    .m-tile.hero-tile span, .m-tile.accent span { color: #EADFCF; }
+    .m-tile.accent { background: #624D3F; }
+    .m-badge { align-self: flex-start; font-size: 10.5px; font-weight: 600;
+               letter-spacing: .09em; text-transform: uppercase; background: #1f1a14;
+               color: #F3ECE1; padding: 5px 10px; border-radius: 999px; }
+    .m-tile.photo { padding: 0; overflow: hidden; min-height: 132px; }
+    .m-tile.photo img { width: 100%; height: 76px; object-fit: cover; display: block; }
+    .m-tile.photo .m-tile-foot { padding: 11px 14px 13px; }
+
+    .m-sect { font-size: 11.5px; letter-spacing: .15em; text-transform: uppercase;
+              color: #C49A6D; font-weight: 600; margin: 20px 0 9px; }
+    .m-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .m-chip { padding: 9px 14px; border-radius: 999px; background: #3a3129;
+              color: #F3ECE1; font-size: 13.5px; text-decoration: none;
+              line-height: 1.25; }
+    .m-chip span { display: block; font-size: 11px; color: #B8A994; }
+    .m-foot { text-align: center; font-size: 11.5px; color: #8d7f6f; margin-top: 22px; }
+
+    /* sheets ------------------------------------------------- */
+    .m-sheet { position: fixed; inset: 0; z-index: 60; background: #1f1a14;
+               overflow-y: auto; -webkit-overflow-scrolling: touch;
+               padding: 0 14px calc(28px + env(safe-area-inset-bottom, 0px)); }
+    .m-sheet-bar { position: sticky; top: 0; z-index: 2; background: #1f1a14;
+                   padding: calc(10px + env(safe-area-inset-top, 0px)) 0 10px;
+                   display: flex; align-items: center; gap: 10px;
+                   border-bottom: 1px solid #332b22; margin-bottom: 14px; }
+    .m-back { display: flex; align-items: center; gap: 7px; height: 40px;
+              padding: 0 15px 0 11px; border-radius: 999px; background: #2b241c;
+              font-size: 14.5px; font-weight: 600; color: #F3ECE1; }
+    .m-back svg { width: 19px; height: 19px; stroke: currentColor; }
+    .m-sheet-in { max-width: 640px; margin: 0 auto; }
+    .m-kicker { font-size: 11.5px; letter-spacing: .15em; text-transform: uppercase;
+                color: #C49A6D; font-weight: 600; }
+    .m-h1 { font-family: 'Cormorant Garamond', serif; font-size: 34px;
+            font-weight: 600; line-height: 1.04; margin: 6px 0 3px; }
+    .m-si { font-size: 14px; color: #B8A994; }
+    .m-lede { font-size: 15.5px; line-height: 1.55; color: #E8DFD2; margin: 13px 0 0; }
+    .m-facts { margin-top: 16px; border-top: 1px solid #3a3129; }
+    .m-fact { display: flex; gap: 12px; padding: 11px 0;
+              border-bottom: 1px solid #3a3129; font-size: 14px; }
+    .m-fact b { flex: none; width: 108px; color: #B8A994; font-weight: 400; }
+    .m-qr { display: flex; align-items: center; gap: 14px; background: #F3ECE1;
+            color: #1f1a14; border-radius: 18px; padding: 13px 15px; margin-top: 18px; }
+    .m-qr img { width: 92px; height: 92px; flex: none; }
+    .m-qr b { font-family: 'Cormorant Garamond', serif; font-size: 18px;
+              font-weight: 600; line-height: 1.15; display: block; }
+    .m-qr span { font-size: 12px; color: #4a3f33; word-break: break-all; }
+    .m-cta { display: flex; align-items: center; justify-content: center; gap: 8px;
+             height: 50px; margin-top: 12px; border-radius: 999px;
+             border: 1.5px solid #C4996A; color: #F3ECE1; font-size: 15.5px;
+             font-weight: 600; text-decoration: none; }
+    .m-card { display: block; background: #2b241c; border-radius: 16px;
+              padding: 13px; margin-top: 11px; color: #F3ECE1;
+              text-decoration: none; text-align: left; width: 100%;
+              box-sizing: border-box; }
+    .m-card > div { min-width: 0; }
+    .m-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 19px;
+                 font-weight: 600; margin: 0 0 4px; line-height: 1.15; }
+    .m-card p { margin: 0; font-size: 13.5px; line-height: 1.45; color: #C9BCAC; }
+    .m-row { display: flex; gap: 12px; align-items: stretch; }
+    .m-row img { width: 104px; height: 78px; object-fit: cover; border-radius: 11px;
+                 flex: none; }
+    .m-tag { display: inline-block; background: #C49A6D; color: #1f1a14;
+             font-size: 10px; font-weight: 700; letter-spacing: .07em;
+             text-transform: uppercase; padding: 3px 8px; border-radius: 999px;
+             margin-bottom: 5px; }
+    .m-shot { width: 100%; border-radius: 14px; display: block; margin-top: 12px; }
+    .m-body { font-size: 15.5px; line-height: 1.65; white-space: pre-line;
+              color: #E8DFD2; margin-top: 14px; }
+    .m-photo { width: 100%; border-radius: 16px; display: block; background: #2b241c; }
+    .m-thumbs { display: flex; gap: 7px; overflow-x: auto; margin-top: 9px;
+                padding-bottom: 4px; }
+    .m-thumbs button { flex: none; width: 74px; height: 54px; border-radius: 9px;
+                       overflow: hidden; padding: 0; }
+    .m-thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .m-navrow { display: flex; align-items: center; justify-content: space-between;
+                gap: 10px; margin-top: 9px; }
+    .m-navrow button { width: 44px; height: 44px; border-radius: 999px;
+                       background: #2b241c; display: flex; align-items: center;
+                       justify-content: center; }
+    .m-navrow svg { width: 20px; height: 20px; stroke: #F3ECE1; }
+
+    /* routine + calendar ------------------------------------- */
+    .m-rt { display: flex; gap: 12px; align-items: center; padding: 12px 14px;
+            border-radius: 14px; margin-top: 8px; width: 100%; text-align: left; }
+    .m-rt time { flex: none; width: 104px; font-size: 13.5px; font-weight: 600;
+                 font-variant-numeric: tabular-nums; }
+    .m-rt b { display: block; font-family: 'Cormorant Garamond', serif;
+              font-size: 19px; font-weight: 600; line-height: 1.1; }
+    .m-rt small { display: block; font-size: 12px; opacity: .8; }
+    .m-cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+    .m-cal .dow { text-align: center; font-size: 10.5px; letter-spacing: .08em;
+                  text-transform: uppercase; color: #B8A994; padding-bottom: 2px; }
+    .m-cal button { aspect-ratio: 1; border-radius: 11px; display: flex;
+                    flex-direction: column; align-items: center;
+                    justify-content: center; gap: 3px; font-size: 14px;
+                    font-variant-numeric: tabular-nums; }
+    .m-cal .dots { display: flex; gap: 2.5px; height: 5px; }
+    .m-cal .dots i { width: 5px; height: 5px; border-radius: 999px; }
+    .m-cal-head { display: flex; align-items: center; justify-content: space-between;
+                  margin: 4px 0 11px; }
+    .m-cal-head b { font-family: 'Cormorant Garamond', serif; font-size: 22px;
+                    font-weight: 600; }
+    .m-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 13px;
+                font-size: 12px; color: #B8A994; }
+    .m-legend i { width: 9px; height: 9px; border-radius: 999px;
+                  display: inline-block; margin-right: 5px; }
+
+    /* weather ------------------------------------------------ */
+    .m-wx-now { display: flex; align-items: center; gap: 16px; margin: 14px 0; }
+    .m-wx-now .ico { width: 62px; height: 62px; color: #C49A6D; flex: none; }
+    .m-wx-now b { font-size: 50px; font-weight: 300; line-height: 1; }
+    .m-wx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 18px; }
+    .m-wx-grid div { display: flex; justify-content: space-between; font-size: 14px;
+                     border-bottom: 1px solid #3a3129; padding-bottom: 6px; }
+    .m-wx-grid span { color: #B8A994; }
+    .m-hours { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; }
+    .m-hours div { flex: none; min-width: 54px; padding: 9px 4px; border-radius: 12px;
+                   display: flex; flex-direction: column; align-items: center;
+                   gap: 4px; font-size: 12px; }
+    .m-hours .ico { width: 24px; height: 24px; color: #C49A6D; }
+    .m-days { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+              border-top: 1px solid #3a3129; padding-top: 11px; }
+    .m-days div { display: flex; flex-direction: column; align-items: center; gap: 4px;
+                  font-size: 12px; }
+    .m-days .ico { width: 28px; height: 28px; color: #C49A6D; }
+    .m-ico svg { width: 100%; height: 100%; display: block; }
+
     /* inline weather glyphs */
     span[style*="color:#C49A6D"] > svg { width: 100%; height: 100%; display: block; }
   </style>
@@ -725,6 +938,297 @@ function view(V, H) {
   </script>
   <script>
 /* ──────────────────────────────────────────────────────────────
+   The phone layout. Same data and the same handlers as the kiosk
+   artboard — only the markup differs, so everything added to one
+   reaches the other.
+   ────────────────────────────────────────────────────────────── */
+function viewMobile(V, H) {
+  with (V) {
+
+  var ico = {
+    retreat:'<circle cx="16" cy="7" r="3"/><path d="M16 11c-3 0-5 2.5-5 6v2"/><path d="M16 11c3 0 5 2.5 5 6v2"/><path d="M5 24c3-3 7-4 11-4s8 1 11 4"/><path d="M8 27h16"/>',
+    book:'<rect x="5" y="7" width="22" height="20" rx="3"/><path d="M5 13h22"/><path d="M11 4v5"/><path d="M21 4v5"/><path d="M12 20l3 3 5-6"/>',
+    contact:'<path d="M16 28s-9-8.2-9-15a9 9 0 0 1 18 0c0 6.8-9 15-9 15z"/><circle cx="16" cy="13" r="3.2"/>',
+    dana:'<path d="M16 12c-1.5-3-6-3-6 .5 0 3 6 6.5 6 6.5s6-3.5 6-6.5c0-3.5-4.5-3.5-6-.5z"/><path d="M3 20l5 6h10l7-5a2 2 0 0 0-2.4-3.2L18 21h-5"/>',
+    gallery:'<rect x="4" y="6" width="24" height="20" rx="3"/><circle cx="11" cy="12" r="2"/><path d="M4 22l7-6 5 4 4-3 8 6"/>',
+    videos:'<rect x="4" y="7" width="24" height="18" rx="4"/><path d="M14 12l6 4-6 4z"/>',
+    news:'<path d="M6 13v6h4l8 5V8l-8 5z"/><path d="M22 11a6 6 0 0 1 0 10"/><path d="M25 8a10 10 0 0 1 0 16"/>',
+    projects:'<path d="M4 27h24"/><path d="M7 27V15l9-7 9 7v12"/><path d="M13 27v-7h6v7"/>',
+    reviews:'<path d="M6 8h20v13H13l-6 5v-5H6z"/><path d="M11 13h10"/><path d="M11 17h6"/>',
+    libraries:'<path d="M5 6h7a4 4 0 0 1 4 4v16a3 3 0 0 0-3-3H5z"/><path d="M27 6h-7a4 4 0 0 0-4 4v16a3 3 0 0 1 3-3h8z"/>'
+  };
+  var S32 = function (d, cls) {
+    return '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" ' +
+           'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="' + (cls || '') + '">' + d + '</svg>';
+  };
+  var chev = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>';
+  var esc = function (t) {
+    return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  };
+  var sheetBar = function (label, handler) {
+    return '<div class="m-sheet-bar"><button class="m-back" data-h="' + H(handler) + '">' +
+           chev + esc(label) + '</button></div>';
+  };
+
+  /* ── a sheet is open: it replaces the page ──────────────── */
+
+  if (hasPost) {
+    return '<div class="m-sheet">' + sheetBar('News & Events', closePost) +
+      '<div class="m-sheet-in">' +
+        '<span class="m-tag">' + esc(post.type) + ' · ' + esc(post.date) + '</span>' +
+        '<h1 class="m-h1">' + esc(post.title) + '</h1>' +
+        '<img class="m-photo" src="' + photo + '" alt="' + esc(post.title) + '">' +
+        (multiPhoto
+          ? '<div class="m-navrow"><button data-h="' + H(prevPhoto) + '" aria-label="Previous photo">' + chev + '</button>' +
+            '<span style="font-size:12.5px;color:#B8A994">' + photoNum + ' / ' + photoCount + '</span>' +
+            '<button data-h="' + H(nextPhoto) + '" aria-label="Next photo" style="transform:rotate(180deg)">' + chev + '</button></div>' +
+            '<div class="m-thumbs">' + thumbs.map(function (t) {
+              return '<button data-h="' + H(t.pick) + '" aria-label="Show photo ' + t.num + '" style="outline:' + t.ring + ';outline-offset:-2px;opacity:' + t.op + '">' +
+                     '<img loading="lazy" decoding="async" src="' + t.src + '" alt=""></button>';
+            }).join('') + '</div>'
+          : '') +
+        '<div class="m-body">' + esc(post.body) + '</div>' +
+      '</div></div>';
+  }
+
+  if (hasProj) {
+    return '<div class="m-sheet">' + sheetBar('Projects', closeProj) +
+      '<div class="m-sheet-in">' +
+        '<div class="m-kicker">Project</div>' +
+        '<h1 class="m-h1">' + esc(proj.title) + '</h1>' +
+        '<div class="m-si">' + esc(proj.si) + '</div>' +
+        '<div class="m-qr"><img src="' + proj.qr + '" alt="QR code for the ' + esc(proj.title) + ' page">' +
+          '<div><b>Scan to open on your phone</b><span>' + esc(proj.urlShort) + '</span></div></div>' +
+        '<img class="m-shot" loading="lazy" decoding="async" src="' + proj.shot + '" alt="Preview of the ' + esc(proj.title) + ' page">' +
+      '</div></div>';
+  }
+
+  if (hasCur) {
+    var body = '';
+    if (cur.showPage) {
+      body = '<img class="m-shot" loading="lazy" decoding="async" src="' + cur.shot + '" alt="Preview of the ' + esc(cur.title) + ' page">';
+    } else if (cur.showNews) {
+      body = '<div class="m-sect">Latest from rideekanda.com</div>' + news.map(function (n) {
+        return '<button class="m-card" data-h="' + H(n.pick) + '"><div class="m-row">' +
+          '<img loading="lazy" decoding="async" src="' + n.img + '" alt="">' +
+          '<div style="min-width:0"><span class="m-tag">' + esc(n.type) + '</span>' +
+          '<h3>' + esc(n.title) + '</h3><p>' + esc(n.date) + '</p></div></div></button>';
+      }).join('');
+    } else if (cur.showLib) {
+      body = cur.libs.map(function (l) {
+        return '<a class="m-card" href="' + l.url + '" data-h="' + H(l.pick) + '" style="background:' + l.bg + ';color:' + l.fg + '">' +
+               '<h3>' + esc(l.en) + '</h3><p style="color:inherit;opacity:.8">' + esc(l.desc) + '</p></a>';
+      }).join('');
+    } else {
+      if (cur.hasPhotos) {
+        body += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:14px">' +
+                cur.photos.map(function (p) {
+                  return '<img loading="lazy" decoding="async" src="' + p + '" alt="" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px">';
+                }).join('') + '</div>';
+      }
+      if (cur.hasVideos) {
+        body += videos.map(function (v) {
+          return '<a class="m-card" href="' + v.href + '"><div class="m-row">' +
+            '<img loading="lazy" decoding="async" src="' + v.thumb + '" alt="">' +
+            '<div style="min-width:0"><h3>' + esc(v.title) + '</h3><p>' + esc(v.date) + ' · YouTube</p></div></div></a>';
+        }).join('');
+      }
+      if (cur.facts && cur.facts.length) {
+        body += '<div class="m-facts">' + cur.facts.map(function (f) {
+          return '<div class="m-fact"><b>' + esc(f.k) + '</b><div>' + esc(f.v) + '</div></div>';
+        }).join('') + '</div>';
+      }
+      body += (cur.sections || []).map(function (sec) {
+        return '<a class="m-card" href="' + sec.href + '">' +
+          (sec.feat ? '<div class="m-row"><img loading="lazy" decoding="async" src="' + sec.feat + '" alt="">' +
+                      '<div style="min-width:0"><h3>' + esc(sec.h) + '</h3><p>' + esc(sec.t) + '</p></div></div>'
+                    : '<h3>' + esc(sec.h) + '</h3><p>' + esc(sec.t) + '</p>') + '</a>';
+      }).join('');
+    }
+
+    return '<div class="m-sheet">' + sheetBar('All pages', close) +
+      '<div class="m-sheet-in">' +
+        '<div class="m-kicker">' + esc(cur.kicker) + '</div>' +
+        '<h1 class="m-h1">' + esc(cur.title) + '</h1>' +
+        '<div class="m-si">' + esc(cur.si) + '</div>' +
+        '<p class="m-lede">' + esc(cur.summary) + '</p>' +
+        '<div class="m-chips" style="margin-top:14px">' +
+          '<button class="m-chip" data-h="' + H(showSummary) + '" style="background:' + cur.tabSumBg + ';color:' + cur.tabSumFg + '">Summary</button>' +
+          '<button class="m-chip" data-h="' + H(showPage) + '" style="background:' + cur.tabPageBg + ';color:' + cur.tabPageFg + '">Page preview</button>' +
+        '</div>' +
+        body +
+        '<div class="m-qr"><img src="' + cur.qr + '" alt="QR code for ' + esc(cur.url) + '">' +
+          '<div><b>Scan to continue on your phone</b><span>' + esc(cur.urlShort) + '</span></div></div>' +
+        '<a class="m-cta" href="' + cur.url + '">Open the full page</a>' +
+      '</div></div>';
+  }
+
+  if (hasRoutine) {
+    return '<div class="m-sheet">' + sheetBar('Back', closeRoutine) +
+      '<div class="m-sheet-in">' +
+        '<div class="m-kicker">7-day residential retreat</div>' +
+        '<h1 class="m-h1">The daily routine</h1><div class="m-si">දෛනික චර්යාව</div>' +
+        routine.map(function (r) {
+          return '<button class="m-rt" data-h="' + H(r.pick) + '" style="background:' + r.bg + ';color:' + r.fg + '">' +
+            '<time>' + esc(r.range) + '</time><div style="flex:1;min-width:0"><b>' + esc(r.label) + '</b>' +
+            '<small class="si">' + esc(r.si) + '</small></div>' +
+            (r.isNow ? '<span class="m-tag" style="margin:0">Now</span>' : '') + '</button>';
+        }).join('') +
+        '<a class="m-cta" href="../retreat-center/">About the retreat</a>' +
+      '</div></div>';
+  }
+
+  if (hasCal) {
+    return '<div class="m-sheet">' + sheetBar('Back', closeCal) +
+      '<div class="m-sheet-in">' +
+        '<div class="m-kicker">Poya days, holidays &amp; retreats</div>' +
+        '<h1 class="m-h1">Calendar</h1><div class="m-si">දින දර්ශනය</div>' +
+        '<div class="m-cal-head"><button data-h="' + H(cal.prev) + '" aria-label="Previous month" style="width:40px;height:40px;border-radius:999px;background:#2b241c">' + chev + '</button>' +
+        '<b>' + esc(cal.title) + '</b>' +
+        '<button data-h="' + H(cal.next) + '" aria-label="Next month" style="width:40px;height:40px;border-radius:999px;background:#2b241c;transform:rotate(180deg)">' + chev + '</button></div>' +
+        '<div class="m-cal">' +
+          ['Su','Mo','Tu','We','Th','Fr','Sa'].map(function (d) { return '<div class="dow">' + d + '</div>'; }).join('') +
+          cal.cells.map(function (c) {
+            return '<button ' + (c.day ? 'data-h="' + H(c.pick) + '"' : 'disabled') + ' aria-label="' + esc(c.aria) + '" ' +
+              'style="background:' + c.bg + ';outline:' + c.ring + ';outline-offset:-2px;opacity:' + c.op + ';font-weight:' + c.fw + '">' +
+              '<span>' + c.day + '</span><span class="dots">' +
+              (c.dots || []).map(function (d) { return '<i style="background:' + d + '"></i>'; }).join('') +
+              '</span></button>';
+          }).join('') +
+        '</div>' +
+        '<div class="m-card" style="margin-top:13px">' + esc(cal.detail) + '</div>' +
+        '<div class="m-legend"><span><i style="background:#d9a521"></i>Poya day</span>' +
+        '<span><i style="background:#c0552f"></i>Public holiday</span>' +
+        '<span><i style="background:#4a9d5b"></i>Retreat</span></div>' +
+      '</div></div>';
+  }
+
+  if (hasWx) {
+    return '<div class="m-sheet">' + sheetBar('Back', closeWx) +
+      '<div class="m-sheet-in">' +
+        '<div class="m-kicker">Weather · කාලගුණය</div>' +
+        '<h1 class="m-h1">Rideekanda · Matale</h1>' +
+        '<div class="m-wx-now"><span class="ico m-ico">' + wx.ico + '</span>' +
+          '<div><b>' + wx.temp + '°</b><div class="m-si">' + esc(wx.cond) + '</div></div></div>' +
+        '<div class="m-wx-grid">' +
+          '<div><span>Feels like</span><b>' + wx.feels + '</b></div>' +
+          '<div><span>Humidity</span><b>' + wx.hum + '</b></div>' +
+          '<div><span>Wind</span><b>' + wx.wind + '</b></div>' +
+          '<div><span>Rain</span><b>' + wx.rain + '</b></div>' +
+          '<div><span>Sunrise</span><b>' + wx.sunrise + '</b></div>' +
+          '<div><span>Sunset</span><b>' + wx.sunset + '</b></div>' +
+        '</div>' +
+        '<div class="m-sect">Hourly · today</div><div class="m-hours">' +
+          wx.hourly.map(function (h) {
+            return '<div style="background:' + h.bg + '"><span style="color:' + h.tc + ';font-weight:' + h.fw + '">' + esc(h.t) + '</span>' +
+                   '<span class="ico m-ico">' + h.ico + '</span><span style="font-weight:' + h.fw + '">' + h.temp + '</span></div>';
+          }).join('') +
+        '</div>' +
+        '<div class="m-sect">Next 5 days</div><div class="m-days">' +
+          wx.days.map(function (d) {
+            return '<div><span style="color:#B8A994">' + esc(d.d) + '</span><span class="ico m-ico">' + d.ico + '</span>' +
+                   '<span>' + d.hi + '</span><span style="color:#B8A994">' + d.lo + '</span></div>';
+          }).join('') +
+        '</div>' +
+        '<div class="m-foot">Updated ' + esc(wx.updated) + ' · open-meteo</div>' +
+      '</div></div>';
+  }
+
+  if (hasExplore) {
+    return '<div class="m-sheet">' + sheetBar('Close', closeExplore) +
+      '<div class="m-sheet-in">' +
+        '<h1 class="m-h1">Explore</h1><div class="m-si">රිදීකන්ද ආරණ්‍ය සේනාසනය</div>' +
+        explore.map(function (g) {
+          return '<div class="m-sect">' + esc(g.title) + '</div>' +
+            g.items.map(function (it) {
+              return '<a class="m-card" href="' + it.href + '" style="margin-top:8px">' +
+                '<h3>' + esc(it.en) + '</h3><p class="si">' + esc(it.si) + '</p></a>';
+            }).join('');
+        }).join('') +
+        '<div class="m-foot">Rideekanda Forest Monastery · Matale, Sri Lanka</div>' +
+      '</div></div>';
+  }
+
+  /* ── the home screen ────────────────────────────────────── */
+
+  var tile = function (o) {
+    var tag = o.href ? 'a' : 'button';
+    var attrs = o.href ? ' href="' + o.href + '"' : ' data-h="' + H(o.on) + '"';
+    return '<' + tag + ' class="m-tile ' + (o.cls || '') + '"' + attrs + '>' +
+      (o.badge ? '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">' + S32(ico[o.i]) + '<span class="m-badge">' + o.badge + '</span></div>'
+               : S32(ico[o.i])) +
+      '<div><b>' + o.en + '</b><span class="si">' + o.si + '</span></div></' + tag + '>';
+  };
+
+  return '' +
+  '<div class="m-head"><div class="m-head-row">' +
+    '<button class="m-pill" data-h="' + H(openExplore) + '" aria-label="Explore Rideekanda">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>' +
+    '<img class="m-logo" src="kiosk/7f193d9120a7243f62e2c416768bb75d.png" alt="">' +
+    '<div class="m-name"><b>Rideekanda</b><span class="si">රිදීකන්ද ආරණ්‍ය සේනාසනය</span></div>' +
+    '<button class="m-pill" data-h="' + H(openWx) + '" aria-label="Weather report">' +
+      '<span class="m-ico" aria-hidden="true">' + wx.ico + '</span>' + wx.temp + '°</button>' +
+    '<button class="m-clock" data-h="' + H(openCal) + '" aria-label="Monastery calendar">' +
+      '<b>' + clock + '</b><span>' + dateLabel.replace(/^(\w+)\s/, '') + '</span></button>' +
+  '</div></div>' +
+
+  '<div class="m-wrap">' +
+    '<div class="m-hero">' +
+      slides.map(function (sl, i) {
+        return '<img class="slide" data-layer="' + i + '"' + (sl.src ? ' src="' + sl.src + '"' : '') +
+               ' decoding="async" alt="" style="opacity:' + sl.op + ';transform:scale(' + sl.scale + ')">';
+      }).join('') +
+      '<div class="m-hero-tag">From our gallery · <span data-slide-count>' + slideNum + ' / ' + slideCount + '</span></div>' +
+    '</div>' +
+
+    '<button class="m-now" data-h="' + H(openRoutine) + '">' +
+      '<div class="m-now-top">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="#C49A6D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:17px;height:17px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' +
+        '<b>Daily Routine</b><i class="si">දෛනික චර්යාව</i></div>' +
+      '<div class="m-now-main"><b>' + esc(nowLabel) + '</b>' +
+        '<span>Next: ' + esc(nextLabel) + '<br>' + nextTime + '</span></div>' +
+      '<div class="m-bars">' + timeline.map(function (s) {
+        return '<i class="' + s.cls + '" style="background:' + s.bg + '"></i>';
+      }).join('') + '</div>' +
+    '</button>' +
+
+    '<div class="m-grid">' +
+      tile({ cls: 'hero-tile wide', i: 'retreat', en: 'Retreat Program', si: 'භාවනා වැඩසටහන', href: '../retreat-center/', badge: '7-day residential' }) +
+      '<a class="m-tile photo" href="../monastery/">' +
+        '<img loading="lazy" decoding="async" src="kiosk/0ff4e629338a98ba7d200d775764ed8c.jpg" alt="">' +
+        '<div class="m-tile-foot"><b>The Monastery</b><span class="si">ආරණ්‍ය පිළිබඳ</span></div></a>' +
+      tile({ cls: 'accent', i: 'book', en: 'Book Your Stay', si: 'නවාතැන වෙන් කරන්න', href: '../book-your-stay/' }) +
+      tile({ i: 'contact', en: 'Contact', si: 'සම්බන්ධ වන්න', href: '../contact/' }) +
+      tile({ cls: 'accent', i: 'dana', en: 'Dāna', si: 'පරිත්‍යාග · Donate', href: '../donate/' }) +
+      tile({ i: 'gallery', en: 'Gallery', si: 'ඡායාරූප', href: '../gallery/' }) +
+      tile({ i: 'videos', en: 'Video Gallery', si: 'වීඩියෝ', href: '../videos/' }) +
+      tile({ i: 'news', en: 'News & Events', si: 'පුවත් සහ සිදුවීම්', on: open.news }) +
+      tile({ i: 'projects', en: 'Projects', si: 'ව්‍යාපෘති', on: open.projects }) +
+      tile({ cls: 'wide', i: 'reviews', en: 'Reviews', si: 'අදහස්', href: '../reviews/' }) +
+    '</div>' +
+
+    '<div class="m-sect">Libraries · පුස්තකාල</div>' +
+    '<div class="m-chips">' +
+      '<button class="m-chip" data-h="' + H(lib.ebooks) + '">E-Book Library<span class="si">ඊ-පොත් පුස්තකාලය</span></button>' +
+      '<button class="m-chip" data-h="' + H(lib.audio) + '">Audio Library<span class="si">ශ්‍රව්‍ය පුස්තකාලය</span></button>' +
+      '<button class="m-chip" data-h="' + H(lib.talksEn) + '">Dhamma Talks · English<span class="si">ධර්ම දේශනා</span></button>' +
+      '<button class="m-chip" data-h="' + H(lib.talksSi) + '">Dhamma Talks · Sinhala<span class="si">ධර්ම දේශනා</span></button>' +
+      '<button class="m-chip" data-h="' + H(lib.docs) + '">Retreat Documents<span class="si">වැඩසටහන් ලේඛන</span></button>' +
+    '</div>' +
+
+    '<a class="m-card" href="../" style="display:flex;align-items:center;gap:14px;background:#F3ECE1;color:#1f1a14;margin-top:16px">' +
+      '<img src="kiosk/ec2ea202af236ed9ad148ee9fb0af97a.svg" alt="QR code for www.rideekanda.com" style="width:74px;height:74px;flex:none">' +
+      '<div style="min-width:0"><h3>Take us with you</h3><p style="color:#4a3f33">Scan for the full website</p></div></a>' +
+
+    '<div class="m-foot">Rideekanda Forest Monastery · Udasgiriya, Matale</div>' +
+  '</div>';
+  }
+}
+  </script>
+  <script>
+/* ──────────────────────────────────────────────────────────────
    Rideekanda visitor kiosk.
 
    The layout is a 1080×1920 artboard scaled to whatever screen it
@@ -1194,12 +1698,22 @@ function view(V, H) {
   }
 
   /* ── render ─────────────────────────────────────────────────── */
+  // Under 700px the page is a phone, and gets its own layout rather than a
+  // wall panel shrunk to a third of its size.
+  var MOBILE = window.matchMedia('(max-width: 699px)');
+  function isMobile() { return MOBILE.matches; }
+
   function render() {
     handlers = [];
     var V = renderVals();
-    stage.innerHTML = view(V, H);
+    var mobile = isMobile();
+    document.body.dataset.mode = mobile ? 'mobile' : 'kiosk';
+    stage.innerHTML = mobile ? viewMobile(V, H) : view(V, H);
     stage.__V = V;
   }
+  var onModeChange = function () { stage.dataset.front = 0; render(); };
+  if (MOBILE.addEventListener) MOBILE.addEventListener('change', onModeChange);
+  else if (MOBILE.addListener) MOBILE.addListener(onModeChange);
 
   // One listener for the whole artboard: each interactive element carries the
   // index of its handler in the table built during the last render.
@@ -1338,6 +1852,12 @@ function view(V, H) {
       var stage = document.getElementById('stage');
       var box = document.getElementById('fit');
       function fit() {
+        // The phone layout is ordinary flow; nothing to scale.
+        if (window.matchMedia('(max-width: 699px)').matches) {
+          stage.__w = null;
+          stage.style.width = stage.style.height = stage.style.transform = '';
+          return;
+        }
         var w = box.clientWidth, h = box.clientHeight;
         if (!w || !h) return;
         // The artboard is drawn 1080 wide. A kiosk panel shows it near 1:1,
@@ -1345,12 +1865,7 @@ function view(V, H) {
         // to be read from a few feet away — becomes unreadable in the hand.
         // Narrowing the artboard on a phone scales everything up; the layout
         // is fluid across its width, so the columns simply get narrower.
-        var compact = w < 700;
-        var BASE = compact ? 900 : 1080;
-        if (stage.hasAttribute('data-compact') !== compact) {
-          if (compact) stage.setAttribute('data-compact', ''); else stage.removeAttribute('data-compact');
-          stage.__w = null;                       // force the resize below
-        }
+        var BASE = 1080;
         // Never shrink past the design's own proportions; whichever axis has
         // room to spare simply gets a bigger artboard.
         var s = Math.min(w / BASE, h / (BASE * 16 / 9));
