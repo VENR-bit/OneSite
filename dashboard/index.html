@@ -145,7 +145,7 @@ function view(V, H) {
   <!-- Hero -->
   <div style="height: 440px; position: relative; flex-shrink: 0; margin: 0 48px; border-radius: 28px; overflow: hidden">
     ${(slides || []).map((sl, sl_i) => `
-      <img class="slide" src="${sl.src}" alt="Rideekanda Forest Monastery — photo from the gallery" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: ${sl.op}; transform: scale(${sl.scale})">
+      <img class="slide" data-layer="${sl_i}" ${sl.src ? `src="${sl.src}"` : ""} decoding="async" alt="${sl_i === 0 ? "Rideekanda Forest Monastery — photo from the gallery" : ""}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: ${sl.op}; transform: scale(${sl.scale})">
     `).join("")}
     <div style="position: absolute; right: 24px; bottom: 24px; display: flex; align-items: center; gap: 8px; background: rgba(31,26,20,0.88); color: #F3ECE1; border-radius: 999px; padding: 8px 16px; font-size: 14px">
       <svg width="16" height="16" viewBox="0 0 32 32" fill="none" stroke="#C4996A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="6" width="24" height="20" rx="3"></rect><circle cx="11" cy="12" r="2"></circle><path d="M4 22l7-6 5 4 4-3 8 6"></path></svg>
@@ -347,7 +347,7 @@ function view(V, H) {
           ${(cur.hasPhotos) ? `
             <div style="flex-shrink: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
               ${(cur.photos || []).map((ph, ph_i) => `
-                <img src="${ph}" alt="Photo from the Rideekanda gallery" style="width: 100%; height: 170px; object-fit: cover; border-radius: 14px; background: #2b241c">
+                <img loading="lazy" decoding="async" src="${ph}" alt="Photo from the Rideekanda gallery" style="width: 100%; height: 170px; object-fit: cover; border-radius: 14px; background: #2b241c">
               `).join("")}
             </div>
           ` : ""}
@@ -356,7 +356,7 @@ function view(V, H) {
               ${(videos || []).map((v, v_i) => `
                 <a class="tile" href="${v.href}" style="text-decoration: none; color: #F3ECE1; background: #2b241c; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
                   <span style="position: relative; display: block">
-                    <img src="${v.thumb}" alt="${v.title}" style="display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #3C2517">
+                    <img loading="lazy" decoding="async" src="${v.thumb}" alt="${v.title}" style="display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #3C2517">
                     <span style="position: absolute; left: 50%; top: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 999px; background: rgba(31,26,20,0.82); display: flex; align-items: center; justify-content: center">
                       <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="#F3ECE1"></path></svg>
                     </span>
@@ -417,7 +417,7 @@ function view(V, H) {
           <div style="font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: #B8A994">Latest from rideekanda.com · tap a story to read</div>
           ${(news || []).map((n, n_i) => `
             <button class="tile" data-h="${H(n.pick)}" style="flex-shrink: 0; border-radius: 22px; padding: 16px; background: #2b241c; display: flex; gap: 22px; align-items: stretch">
-              <img src="${n.img}" alt="${n.title}" style="width: 240px; height: 168px; object-fit: cover; border-radius: 14px; flex-shrink: 0">
+              <img loading="lazy" decoding="async" src="${n.img}" alt="${n.title}" style="width: 240px; height: 168px; object-fit: cover; border-radius: 14px; flex-shrink: 0">
               <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; justify-content: center">
                 <span style="display: flex; gap: 10px; align-items: center; font-size: 14px; color: #B8A994">
                   <span style="background: #C49A6D; color: #1f1a14; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; font-size: 12px">${n.type}</span>
@@ -504,7 +504,7 @@ function view(V, H) {
             <div style="flex-shrink: 0; display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px">
               ${(thumbs || []).map((t, t_i) => `
                 <button data-h="${H(t.pick)}" aria-label="Show photo ${t.num}" style="flex-shrink: 0; width: 120px; height: 84px; padding: 0; border-radius: 12px; overflow: hidden; outline: ${t.ring}; outline-offset: -3px; opacity: ${t.op}">
-                  <img src="${t.src}" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block">
+                  <img loading="lazy" decoding="async" src="${t.src}" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block">
                 </button>
               `).join("")}
             </div>
@@ -1076,7 +1076,9 @@ function view(V, H) {
       cur.showPage    = pageView;
       cur.showPreview = !pageView && cur.hasPreview;
       cur.showLib     = !pageView && cur.isLib;
-      cur.showNews    = !pageView && cur.isNews;
+      // While a story is open it covers the list, so there is no reason to
+      // keep sixteen more photographs decoded behind it.
+      cur.showNews    = !pageView && cur.isNews && state.post == null;
       cur.tabPageBg = pageView ? '#C49A6D' : 'transparent';
       cur.tabPageFg = pageView ? '#1f1a14' : '#F3ECE1';
       cur.tabPageSel = pageView ? 'true' : 'false';
@@ -1117,14 +1119,20 @@ function view(V, H) {
       : { ico: WX_ICONS.cloud, temp: '–', cond: 'Loading…', feels: '–', hum: '–', wind: '–',
           rain: '–', sunrise: '–', sunset: '–', hourly: [], days: [], updated: '—' };
 
-    var ph = (NEWS[state.post == null ? 0 : state.post] || {}).photos || [];
+    var pn0 = NEWS[state.post == null ? 0 : state.post] || {};
+    var ph = pn0.photos || [];
     var pn = ph.length || 1;
     var pk = Math.min(state.photo || 0, pn - 1);
 
     return {
-      slides: SLIDES.map(function (src, i) {
-        return { src: src, op: i === state.slide ? 1 : 0, scale: i === state.slide ? 1.08 : 1 };
-      }),
+      // Only two <img> ever exist. Mobile Safari decodes every image in the
+      // DOM, and one element per photo cost well over a hundred megabytes —
+      // enough for iOS to kill the tab. The slideshow swaps the src on
+      // whichever layer is hidden and crossfades to it.
+      slides: [
+        { src: SLIDES[state.slide] || '', op: 1, scale: 1.08 },
+        { src: '', op: 0, scale: 1 }
+      ],
       slideNum: state.slide + 1, slideCount: SLIDES.length || 1,
       open: open, cls: cls, lib: lib, lcls: lcls,
       close: function () { setState({ cur: null }); },
@@ -1157,7 +1165,8 @@ function view(V, H) {
       prevPhoto: function () { setState({ photo: (pk - 1 + pn) % pn, touched: Date.now() }); },
       nextPhoto: function () { setState({ photo: (pk + 1) % pn, touched: Date.now() }); },
       thumbs: ph.map(function (src, i) {
-        return { src: src, num: i + 1, ring: i === pk ? '3px solid #C49A6D' : 'none',
+        return { src: (pn0.thumbs && pn0.thumbs[i]) || src, num: i + 1,
+                 ring: i === pk ? '3px solid #C49A6D' : 'none',
                  op: i === pk ? 1 : 0.6,
                  pick: function () { setState({ photo: i, touched: Date.now() }); } };
       }),
@@ -1211,14 +1220,23 @@ function view(V, H) {
     var n = SLIDES.length, next = Math.floor(Math.random() * n);
     if (next === state.slide) next = (next + 1 + Math.floor(Math.random() * (n - 1))) % n;
     state.slide = next;
-    // Nudge the images directly rather than re-rendering, so the cross-fade runs.
     var imgs = stage.querySelectorAll('.slide');
-    for (var i = 0; i < imgs.length; i++) {
-      imgs[i].style.opacity = i === next ? 1 : 0;
-      imgs[i].style.transform = 'scale(' + (i === next ? 1.08 : 1) + ')';
-    }
-    var c = stage.querySelector('[data-slide-count]');
-    if (c) c.textContent = (next + 1) + ' / ' + n;
+    if (imgs.length < 2) return;
+    var front = +(stage.dataset.front || 0), back = 1 - front;
+    var img = imgs[back];
+    img.src = SLIDES[next];
+    // Fade only once the new photo has actually decoded, or the swap flashes.
+    var show = function () {
+      img.style.opacity = 1;
+      img.style.transform = 'scale(1.08)';
+      imgs[front].style.opacity = 0;
+      imgs[front].style.transform = 'scale(1)';
+      stage.dataset.front = back;
+      var c = stage.querySelector('[data-slide-count]');
+      if (c) c.textContent = (next + 1) + ' / ' + n;
+    };
+    if (img.decode) img.decode().then(show).catch(show);
+    else img.onload = show;
   }, SLIDE_SECONDS * 1000);
 
   /* ── live content ───────────────────────────────────────────── */
@@ -1231,7 +1249,12 @@ function view(V, H) {
       var all = list.map(function (p) { return '../gallery/' + p.src; });
       SLIDES = all.slice(0, 30);
       state.slide = Math.floor(Math.random() * SLIDES.length);
-      if (PREVIEW.gallery) PREVIEW.gallery.photos = all.slice(0, 9);
+      // The nine-up grid is small on screen; take the manifest's thumbnails.
+      if (PREVIEW.gallery) {
+        PREVIEW.gallery.photos = list.slice(0, 9).map(function (p) {
+          return '../gallery/' + (p.thumb || p.src);
+        });
+      }
       render();
     })
     .catch(function () { render(); });
@@ -1243,13 +1266,19 @@ function view(V, H) {
     s.onload = function () {
       var posts = window.NEWS_POSTS || [];
       NEWS = posts.map(function (p) {
-        var imgs = (p.images && p.images.length ? p.images : (p.image ? [p.image] : []))
-          .map(function (f) { return '../news-and-events/assets/' + f; });
+        var files = (p.images && p.images.length ? p.images : (p.image ? [p.image] : []));
+        var imgs  = files.map(function (f) { return '../news-and-events/assets/' + f; });
+        // 1600px originals cost ~8 MB of decoded memory each. Cards and the
+        // thumbnail strip take the 400px copies; only the photo actually on
+        // display loads full size.
+        var thumbs = files.map(function (f) {
+          return '../news-and-events/assets/thumbs/' + f.replace(/\.[^.]+$/, '.jpg');
+        });
         return {
           title: p.title, type: p.type || 'News',
           date: p.when || p.date || '',
           excerpt: p.excerpt || '', body: p.body || p.excerpt || '',
-          img: imgs[0] || '', photos: imgs
+          img: thumbs[0] || imgs[0] || '', photos: imgs, thumbs: thumbs
         };
       });
       render();
