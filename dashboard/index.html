@@ -227,8 +227,11 @@
     @media (max-width: 379px) { .m-logo { display: none; } }
 
     /* hero --------------------------------------------------- */
+    /* The cap only bites on a short screen — a phone held sideways — where a
+       16:10 band would otherwise fill most of the view before anything else. */
     .m-hero { position: relative; margin: 14px 0; border-radius: 18px;
-              overflow: hidden; aspect-ratio: 16 / 10; background: var(--card); }
+              overflow: hidden; aspect-ratio: 16 / 10; max-height: 44vh;
+              background: var(--card); }
     .m-hero img { position: absolute; inset: 0; width: 100%; height: 100%;
                   object-fit: cover; }
     .m-hero-tag { position: absolute; right: 10px; bottom: 10px; display: flex;
@@ -239,16 +242,18 @@
     /* weather + date, as a pair of cards under the hero ------ */
     .m-status { display: grid; grid-template-columns: 1fr 1fr; gap: 11px;
                 margin-bottom: 14px; }
-    .m-stat { display: flex; flex-direction: column; gap: 7px; padding: 13px 15px;
+    .m-stat { display: flex; flex-direction: column; align-items: center;
+              justify-content: center; gap: 7px; padding: 13px 15px;
               border-radius: 18px; background: var(--card); border: 1px solid var(--line);
-              color: var(--ink); text-align: left; }
+              color: var(--ink); text-align: center; }
     .m-stat:active { transform: scale(.975); }
-    .m-stat-head { display: flex; align-items: baseline; gap: 7px; font-size: 11px;
+    .m-stat-head { display: flex; align-items: baseline; justify-content: center;
+                   gap: 7px; font-size: 11px;
                    letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink);
                    font-weight: 600; }
     .m-stat-head i { font-style: normal; font-size: 11px; letter-spacing: 0;
                      text-transform: none; color: var(--muted); }
-    .m-stat-main { display: flex; align-items: center; gap: 9px; }
+    .m-stat-main { display: flex; align-items: center; justify-content: center; gap: 9px; }
     .m-stat-main .ico { width: 30px; height: 30px; color: var(--accent-ink); flex: none; }
     .m-stat-main b { font-size: 29px; font-weight: 500; line-height: 1;
                      font-variant-numeric: tabular-nums; }
@@ -275,20 +280,20 @@
        photo cards and the plain ones come out identical. */
     .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px;
               grid-auto-rows: 1fr; }
-    .m-tile { display: flex; flex-direction: column; justify-content: space-between;
-              gap: 14px; min-height: 112px; padding: 15px; border-radius: 18px;
-              background: var(--card); color: var(--ink); text-decoration: none;
-              text-align: left; }
+    .m-tile { display: flex; flex-direction: column; align-items: center;
+              justify-content: center; gap: 12px; min-height: 112px; padding: 15px;
+              border-radius: 18px; background: var(--card); color: var(--ink);
+              text-decoration: none; text-align: center; }
     .m-tile:active { transform: scale(.975); }
     /* The tiles run 140-180px tall but hold only ~70px of text, so a small
        glyph left them looking hollow. */
-    .m-tile svg { width: 46px; height: 46px; stroke: var(--accent-ink); stroke-width: 1.3; }
+    .m-tile svg { width: 54px; height: 54px; stroke: var(--accent-ink); stroke-width: 1.8; }
     .m-tile b { display: block; font-family: 'Cormorant Garamond', serif;
                 font-size: 21px; font-weight: 600; line-height: 1.1; }
     .m-tile span { display: block; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
     .m-tile.photo { padding: 0; overflow: hidden; }
     .m-tile.photo img { width: 100%; height: 76px; object-fit: cover; display: block; }
-    .m-tile.photo .m-tile-foot { padding: 11px 14px 13px; }
+    .m-tile.photo .m-tile-foot { padding: 11px 14px 13px; text-align: center; width: 100%; }
 
     .m-sect { font-size: 11.5px; letter-spacing: .15em; text-transform: uppercase;
               color: var(--accent-ink); font-weight: 600; margin: 20px 0 9px; }
@@ -313,6 +318,26 @@
     .m-libgrid .libcard { min-height: 98px; padding: 14px 10px; }
     .m-libgrid .libcard:last-child { grid-column: 1 / -1; min-height: 72px; }
 
+
+    /* Landscape and desktop: the same layout, given more room. Ten tiles go
+       two-up on a phone and five-up once there is width for it, so neither
+       arrangement leaves a half-empty row. */
+    @media (min-width: 700px) {
+      .m-wrap, .m-head-row, .m-sheet-in { max-width: 1120px; }
+      .m-grid    { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 13px; }
+      .m-libgrid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      .m-libgrid .libcard:last-child { grid-column: auto; min-height: 98px; }
+      .m-hero    { aspect-ratio: 24 / 9; }
+      .m-head    { padding-left: 24px; padding-right: 24px; }
+      .m-wrap    { padding-left: 24px; padding-right: 24px; }
+      .m-name b  { font-size: 22px; }
+      .m-tile b  { font-size: 19px; }
+      .m-tile svg { width: 50px; height: 50px; }
+    }
+    @media (min-width: 1100px) {
+      /* wide enough that a 24:9 hero would dominate; make it a band */
+      .m-hero { aspect-ratio: 32 / 9; }
+    }
     /* sheets ------------------------------------------------- */
     .m-sheet { position: fixed; inset: 0; z-index: 60; background: var(--bg);
                overflow-y: auto; -webkit-overflow-scrolling: touch;
@@ -474,7 +499,7 @@ function view(V, H) {
     `).join("")}
     <div style="position: absolute; right: 24px; bottom: 24px; display: flex; align-items: center; gap: 8px; background: rgba(31,26,20,0.88); color: var(--invert-ink); border-radius: 999px; padding: 8px 16px; font-size: 14px">
       <svg width="16" height="16" viewBox="0 0 32 32" fill="none" stroke="var(--accent-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="6" width="24" height="20" rx="3"></rect><circle cx="11" cy="12" r="2"></circle><path d="M4 22l7-6 5 4 4-3 8 6"></path></svg>
-      From our gallery · <span data-slide-count>${slideNum} / ${slideCount}</span>
+      <span data-slide-count>${slideNum} / ${slideCount}</span>
     </div>
     
   </div>
@@ -559,8 +584,8 @@ function view(V, H) {
     <a class="tile" href="../donate/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: var(--ink); grid-column: 3; grid-row: 3; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: var(--t-dana)">
       <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 12c-1.5-3-6-3-6 .5 0 3 6 6.5 6 6.5s6-3.5 6-6.5c0-3.5-4.5-3.5-6-.5z"></path><path d="M3 20l5 6h10l7-5a2 2 0 0 0-2.4-3.2L18 21h-5"></path></svg>
       <div style="display: flex; flex-direction: column; gap: 4px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Dāna</div>
-        <div class="si" style="font-size: 16px">පරිත්‍යාග&nbsp;· Donate</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Donate/Dāna</div>
+        <div class="si" style="font-size: 16px">පරිත්‍යාග</div>
       </div>
     </a>
 
@@ -608,7 +633,7 @@ function view(V, H) {
 
     <!-- Libraries -->
     <button class="tile ${cls.news}" data-h="${H(open.news)}" style="grid-column: 3; grid-row: 4; background: var(--t-news); color: var(--paper-ink); border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="stroke: var(--ink)"><path d="M6 13v6h4l8 5V8l-8 5z"></path><path d="M22 11a6 6 0 0 1 0 10"></path><path d="M25 8a10 10 0 0 1 0 16"></path></svg>
+      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="stroke: var(--ink)"><path d="M5 7h15v19H8a3 3 0 0 1-3-3z"></path><path d="M20 13h7v10a3 3 0 0 1-3 3"></path><path d="M9 12h7"></path><path d="M9 16h7"></path><path d="M9 20h5"></path></svg>
       <div style="display: flex; flex-direction: column; gap: 4px">
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1; color: var(--ink)">News &amp; Events</div>
         <div class="si" style="font-size: 16px; color: var(--ink)">පුවත් සහ සිදුවීම්</div>
@@ -1049,7 +1074,7 @@ function viewMobile(V, H) {
     dana:'<path d="M16 12c-1.5-3-6-3-6 .5 0 3 6 6.5 6 6.5s6-3.5 6-6.5c0-3.5-4.5-3.5-6-.5z"/><path d="M3 20l5 6h10l7-5a2 2 0 0 0-2.4-3.2L18 21h-5"/>',
     gallery:'<rect x="4" y="6" width="24" height="20" rx="3"/><circle cx="11" cy="12" r="2"/><path d="M4 22l7-6 5 4 4-3 8 6"/>',
     videos:'<rect x="4" y="7" width="24" height="18" rx="4"/><path d="M14 12l6 4-6 4z"/>',
-    news:'<path d="M6 13v6h4l8 5V8l-8 5z"/><path d="M22 11a6 6 0 0 1 0 10"/><path d="M25 8a10 10 0 0 1 0 16"/>',
+    news:'<path d="M5 7h15v19H8a3 3 0 0 1-3-3z"/><path d="M20 13h7v10a3 3 0 0 1-3 3"/><path d="M9 12h7"/><path d="M9 16h7"/><path d="M9 20h5"/>',
     projects:'<path d="M4 27h24"/><path d="M7 27V15l9-7 9 7v12"/><path d="M13 27v-7h6v7"/>',
     reviews:'<path d="M6 8h20v13H13l-6 5v-5H6z"/><path d="M11 13h10"/><path d="M11 17h6"/>',
     libraries:'<path d="M5 6h7a4 4 0 0 1 4 4v16a3 3 0 0 0-3-3H5z"/><path d="M27 6h-7a4 4 0 0 0-4 4v16a3 3 0 0 1 3-3h8z"/>'
@@ -1273,7 +1298,7 @@ function viewMobile(V, H) {
         return '<img class="slide" data-layer="' + i + '"' + (sl.src ? ' src="' + sl.src + '"' : '') +
                ' decoding="async" alt="" style="opacity:' + sl.op + ';transform:scale(' + sl.scale + ')">';
       }).join('') +
-      '<div class="m-hero-tag">From our gallery · <span data-slide-count>' + slideNum + ' / ' + slideCount + '</span></div>' +
+      '<div class="m-hero-tag"><span data-slide-count>' + slideNum + ' / ' + slideCount + '</span></div>' +
     '</div>' +
 
     '<div class="m-status">' +
@@ -1310,7 +1335,7 @@ function viewMobile(V, H) {
         '<div class="m-tile-foot"><b>The Monastery</b><span class="si">ආරණ්‍ය පිළිබඳ</span></div></a>' +
       tile({ i: 'book', en: 'Book Your Stay', si: 'නවාතැන වෙන් කරන්න', href: '../book-your-stay/' }) +
       tile({ i: 'contact', en: 'Contact', si: 'සම්බන්ධ වන්න', href: '../contact/' }) +
-      tile({ i: 'dana', en: 'Dāna', si: 'පරිත්‍යාග · Donate', href: '../donate/' }) +
+      tile({ i: 'dana', en: 'Donate/Dāna', si: 'පරිත්‍යාග', href: '../donate/' }) +
       tile({ i: 'gallery', en: 'Gallery', si: 'ඡායාරූප', href: '../gallery/' }) +
       tile({ i: 'videos', en: 'Video Gallery', si: 'වීඩියෝ', href: '../videos/' }) +
       tile({ i: 'news', en: 'News & Events', si: 'පුවත් සහ සිදුවීම්', on: open.news }) +
@@ -1812,9 +1837,10 @@ function viewMobile(V, H) {
   }
 
   /* ── render ─────────────────────────────────────────────────── */
-  // Under 700px the page is a phone, and gets its own layout rather than a
-  // wall panel shrunk to a third of its size.
-  var MOBILE = window.matchMedia('(max-width: 699px)');
+  // The 1080x1920 artboard only suits a tall portrait screen: the monastery's
+  // wall panel, or a tablet held upright. A phone, a phone turned sideways and
+  // a desktop all get the flow layout instead, which reflows to their width.
+  var MOBILE = window.matchMedia('(max-width: 699px), (orientation: landscape)');
   function isMobile() { return MOBILE.matches; }
 
   function render() {
@@ -1966,8 +1992,8 @@ function viewMobile(V, H) {
       var stage = document.getElementById('stage');
       var box = document.getElementById('fit');
       function fit() {
-        // The phone layout is ordinary flow; nothing to scale.
-        if (window.matchMedia('(max-width: 699px)').matches) {
+        // The flow layout is ordinary document flow; nothing to scale.
+        if (window.matchMedia('(max-width: 699px), (orientation: landscape)').matches) {
           stage.__w = null;
           stage.style.width = stage.style.height = stage.style.transform = '';
           return;

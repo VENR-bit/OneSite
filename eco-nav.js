@@ -52,7 +52,12 @@
       // this timer. Each of those iframes exists only while actively playing
       // (injected on press, removed on close), so if one is on the page, defer
       // the return instead of navigating away mid-listen.
-      if (document.querySelector('iframe[src*="drive.google.com"], iframe[src*="youtube"], iframe[src*="youtu.be"]')) { reset(); return; }
+      if (document.querySelector('iframe[src*="drive.google.com"], iframe[src*="youtube"], iframe[src*="youtu.be"], iframe[src*="vimeo"]')) { reset(); return; }
+      // Belt and braces for anything played natively rather than in a frame.
+      var media = document.querySelectorAll("audio, video");
+      for (var i = 0; i < media.length; i++) {
+        if (!media[i].paused && !media[i].ended) { reset(); return; }
+      }
       location.href = DASH;
     }
     function reset() { last = Date.now(); clearTimeout(timer); timer = setTimeout(go, IDLE_MS); }
