@@ -96,58 +96,25 @@
     :root[data-theme="paper"] .lotus-night { display: none; }
     :root[data-theme="paper"] .lotus-paper { display: block; }
 
-    /* the press flash inverts, so it needs the opposite surface */
-    :root[data-theme="paper"] .tile.pressed,
-    :root[data-theme="paper"] a.tile:active,
-    :root[data-theme="paper"] .chip.pressed,
-    :root[data-theme="paper"] .chip:active { background: var(--t-sel) !important; }
   </style>
   <style>
     /* ─────────────────────────────────────────────────────────
-       The kiosk is drawn at a fixed 1080 × 1920 and then scaled
-       to whatever screen it lands on, so the monastery's vertical
-       panel, a landscape TV and a phone all show the same design.
+       One layout, in ordinary flow, reflowed from a phone up to a
+       desktop. Nothing is drawn at a fixed size and scaled.
        ───────────────────────────────────────────────────────── */
-    html, body { margin: 0; height: 100%; background: var(--bg); overflow: hidden;
-                 overscroll-behavior: none; -webkit-text-size-adjust: 100%; }
-    /* The site's body face. The kiosk artboard sets its own on the root, but
-       the phone layout is ordinary flow and inherits from here. */
+    html, body { margin: 0; background: var(--bg); overscroll-behavior-y: none;
+                 -webkit-text-size-adjust: 100%; }
     body { font-family: 'Spectral', Georgia, serif; color: var(--ink); }
     /* Inset by the safe area: on iOS the page runs under the status bar, and
        anything beneath it is dimmed and blurred by the system. */
-    #fit   { position: fixed;
-             top:    env(safe-area-inset-top, 0px);
-             left:   env(safe-area-inset-left, 0px);
-             right:  env(safe-area-inset-right, 0px);
-             bottom: env(safe-area-inset-bottom, 0px);
-             overflow: hidden; }
-    /* The artboard is drawn at 1080 wide and then scaled. A screen taller
-       than 9:16 gets a taller artboard rather than a letterbox, so the grid
-       stretches to the bottom instead of leaving a gap. */
-    #stage { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+    #fit { padding: env(safe-area-inset-top,  0px) env(safe-area-inset-right, 0px)
+                   env(safe-area-inset-bottom,0px) env(safe-area-inset-left,  0px); }
 
     a { color: var(--accent-soft); }
     a:hover { color: var(--ink); }
     button { font: inherit; color: inherit; border: 0; margin: 0; cursor: pointer;
              text-align: left; background: none; -webkit-tap-highlight-color: transparent; }
     .si { font-family: 'Noto Serif Sinhala', Georgia, serif; }
-
-    .tile  { transition: transform .18s ease, filter .18s ease,
-                         background-color .25s ease, color .25s ease; }
-    .tile:active { transform: scale(.975); filter: brightness(1.08); }
-    .tile.pressed { background: var(--paper) !important; color: var(--paper-ink) !important;
-                    transform: scale(.96); box-shadow: 0 0 0 4px var(--accent); }
-    .tile.pressed *   { color: var(--paper-ink) !important; }
-    .tile.pressed svg { stroke: var(--paper-ink); }
-    a.tile:active     { background: var(--paper) !important; transform: scale(.97);
-                        box-shadow: 0 0 0 4px var(--accent); }
-    a.tile:active *   { color: var(--paper-ink) !important; }
-    a.tile:active svg { stroke: var(--paper-ink); }
-
-    .chip { transition: transform .18s ease, background-color .2s ease; }
-    .chip.pressed, .chip:active { background: var(--paper) !important; color: var(--paper-ink) !important;
-                                  transform: scale(.95); }
-    .chip.pressed * { color: var(--paper-ink) !important; }
 
     /* A long cross-fade leaves the two photos visibly ghosted over each
        other; .8s reads as a change rather than a double exposure. The slow
@@ -157,46 +124,21 @@
     .libtile { transition: background-color .25s ease, color .25s ease, transform .18s ease; }
     .libtile:active { transform: scale(.98); }
 
-    @keyframes panelIn { from { opacity: 0; transform: translateY(48px) } to { opacity: 1; transform: none } }
-    .panel-in { animation: panelIn .5s cubic-bezier(.2,.7,.2,1) both; }
     @keyframes segPulse { 0%, 100% { opacity: 1 } 50% { opacity: .6 } }
     .seg-now { animation: segPulse 2.4s ease-in-out infinite; }
 
     @media (prefers-reduced-motion: reduce) {
-      .slide, .tile, .chip, .libtile { transition: none; }
-      .panel-in { animation: none; }
+      .slide, .libtile { transition: none; }
       .seg-now  { animation: none; }
     }
 
-    /* On a phone the artboard is drawn 900 wide instead of 1080, which makes
-       everything ~17% larger on screen. Two pieces need a trim to still fit
-       the narrower canvas: the monastery's full name, and the library chips,
-       which would otherwise wrap onto a third row and spill out of the card. */
-    #stage[data-compact] .hdr-bar   { padding: 24px 30px !important; gap: 14px !important; }
-    #stage[data-compact] .hdr-logo  { height: 46px !important; }
-    #stage[data-compact] .hdr-title { font-size: 26px !important; white-space: nowrap; }
-    #stage[data-compact] .chip      { min-height: 44px !important;
-                                      padding: 3px 11px !important;
-                                      font-size: 14px !important; }
-    #stage[data-compact] .chip span { font-size: 11px !important; }
-
 
     /* ─────────────────────────────────────────────────────────
-       Phone layout. The kiosk artboard is a fixed 1080 × 1920
-       scaled to the screen, which is right for a wall panel and
-       wrong in the hand. Below 700px the page switches to this
-       instead: ordinary flow, real type sizes, one thumb's reach.
+       The layout itself: real type sizes, one thumb's reach on a
+       phone, widening into columns on a landscape screen and a
+       desktop.
        ───────────────────────────────────────────────────────── */
-    html:has(body[data-mode="mobile"]) { height: auto; overflow: visible; }
-    body[data-mode="mobile"] { height: auto; overflow: visible;
-                               overscroll-behavior-y: none; }
-    body[data-mode="mobile"] #fit   { position: static; inset: auto; overflow: visible; }
-    body[data-mode="mobile"] #stage { position: static; width: auto !important;
-                                      height: auto !important; transform: none !important; }
-
-    .m { display: none; }
-    body[data-mode="mobile"] .m { display: block; }
-    body[data-mode="mobile"] .k { display: none !important; }
+    .k { display: none !important; }
 
     .m-wrap { max-width: 640px; margin: 0 auto;
               padding: 0 14px calc(28px + env(safe-area-inset-bottom, 0px)); }
@@ -346,8 +288,10 @@
       .m-tile svg { width: 50px; height: 50px; }
     }
     @media (min-width: 1100px) {
-      /* wide enough that a 24:9 hero would dominate; make it a band */
-      .m-hero { aspect-ratio: 32 / 9; }
+      /* On a desktop the photo is the thing worth looking at, so it gets a
+         true 5:3 frame rather than the landscape band — which means dropping
+         the short-screen cap that would otherwise crop it back. */
+      .m-hero { aspect-ratio: 5 / 3; max-height: none; }
     }
     /* sheets ------------------------------------------------- */
     .m-sheet { position: fixed; inset: 0; z-index: 60; background: var(--bg);
@@ -471,603 +415,6 @@ var PAGE_SHOTS = {"home": "kiosk/496c42755a37c313ba8d6e20f5bde4cd.jpg", "monaste
 var PROJECTS = {"road": {"feat": "kiosk/18eb3bdaf665fd0d4a0aa9a2eea0d973.jpg", "title": "Road Project", "si": "මාර්ග ව්‍යාපෘතිය", "path": "projects/road-project/", "shot": "kiosk/a6bfa2bf4c958eb9b4dbd51fee322f9e.jpg", "qr": "kiosk/18ac2901e7481e59f7d81f2648dfb6d8.svg"}, "herbal": {"feat": "kiosk/4359d6d65ae2368ac70bac547ffb875e.jpg", "title": "Herbal Plant Planting", "si": "ඖෂධ පැළ රෝපණය", "path": "projects/herbal-plants/", "shot": "kiosk/fd1aee520e6c78e5ec899dc4f593fb8b.jpg", "qr": "kiosk/ddb6c40ab513522ff4df8dd699259970.svg"}, "threestory": {"feat": "kiosk/fe126df92dfc0add690bbd2a9d8a721f.jpg", "title": "ThreeStory Building", "si": "තෙමහල් ගොඩනැගිල්ල", "path": "projects/threestory/", "shot": "kiosk/c3162af0b9e17ee735783e83fb7bf2d1.jpg", "qr": "kiosk/fab5b5f0a98f2a11e073ea1cc6cf9a84.svg"}, "cafe": {"feat": "kiosk/d12464643a8efb6506dd72833cbfd0c6.jpg", "title": "Library Café", "si": "පුස්තකාල කැෆේ", "path": "projects/library-cafe/", "shot": "kiosk/1bd83207ff2b28cd74d57f3d02d9329d.jpg", "qr": "kiosk/e2e81c7459290820c6fb8a2ec86bc401.svg"}, "requirements": {"feat": "kiosk/2f95533381810ea22f408cebab30013d.jpg", "title": "Monastery Requirements", "si": "ආරණ්‍ය අවශ්‍යතා", "path": "requirements/", "shot": "kiosk/bf6c45b4292a7061930a6a045c03133d.jpg", "qr": "kiosk/7a1aedb9521f5d38b9879de8e722640a.svg"}};
 var VIDEOS = [{"title": "Wisdom in Silence @ Rideekanda Forest Monastery, Sri Lanka", "date": "April 2025", "href": "https://www.youtube.com/watch?v=toTmlQMYw-A", "thumb": "kiosk/1a8d42835a77041912acc4c0ca7b48eb.jpg"}, {"title": "Galpaya Rock: Stunning 360° FPV Footage", "date": "October 2024", "href": "https://www.youtube.com/watch?v=N71im0iGVEg", "thumb": "kiosk/ad035e0f95eba5e5f6d65fbbcb5df93f.jpg"}, {"title": "Aerial Serenity @Rideekanda Forest Monastery", "date": "June 2024", "href": "https://www.youtube.com/watch?v=pD2NX1HZ_EU", "thumb": "kiosk/2c4365fa7cb0f47021b82c2f4c40ed20.jpg"}, {"title": "පැවදි පුහුණු වැඩසටහන @ රිදීකන්ද ආරණ්‍යය සේනාසනය, උඩස්ගිරිය, මාතලේ.", "date": "July 2023", "href": "https://www.youtube.com/watch?v=Xo7lm4k5OZM", "thumb": "kiosk/e9a7762a12d1de20f7bd707fd4745589.jpg"}, {"title": "තාවකාලික පැවදි පුහුණු වැඩසටහන (4 වන වැඩසටහන) | Ordination Program @RideekandaForestMonastery", "date": "May 2023", "href": "https://www.youtube.com/watch?v=EiKJyo710bU", "thumb": "kiosk/be4df52cc2b025743195da4086477294.jpg"}, {"title": "Jungle Alms Round: An Insight into Buddhist Monastic Life @ Rideekanda Forest Monastery", "date": "May 2023", "href": "https://www.youtube.com/watch?v=BsF73dsqGSY", "thumb": "kiosk/5cc8e26e5f95b00463d34bfc7b6a68d6.jpg"}, {"title": "Escape to Peace & Serenity @ Rideekanda Forest Monastery | Meditation Retreat", "date": "March 2023", "href": "https://www.youtube.com/watch?v=qjIoTPK-OEk", "thumb": "kiosk/a209f8d3ba203963e65a7bd797a9c122.jpg"}, {"title": "තාවකාලික පැවදි පුහුණු වැඩසටහන | රිදීකන්ද ආරණ්‍යය | Temporary Ordination in Sri Lanka", "date": "November 2022", "href": "https://www.youtube.com/watch?v=5UQYjPuh5ZY", "thumb": "kiosk/d2e9bfcbb641926629e0d594c1eb674d.jpg"}, {"title": "ආර්ය මාර්ගයේ පළමු පියවර | EPISODE 01 @ Rideekanda Forest Monastery, Matale, Sri Lanka | (ANIMATION)", "date": "February 2022", "href": "https://www.youtube.com/watch?v=7IHbpZW8z6k", "thumb": "kiosk/099221005351d2c9d261811b92feb715.jpg"}, {"title": "Almsgiving for the Mahanayaka of the Asgiriya Chapter of Siyam Nikaya.", "date": "October 2021", "href": "https://www.youtube.com/watch?v=OgulC1xjCzY", "thumb": "kiosk/a86108a9b0fcc5e865cc031ebaa612fe.jpg"}, {"title": "Almsgiving @ Rideekanda Forest Monastery, Matale, Sri Lanka", "date": "October 2021", "href": "https://www.youtube.com/watch?v=RJ21wWbDYNk", "thumb": "kiosk/398ae69cb0162db701d86a81d4658781.jpg"}, {"title": "Monsoon Season @ Rideekanda Forest Monastery, Matale, Sri Lanka", "date": "October 2021", "href": "https://www.youtube.com/watch?v=yj9V0RJ5BUQ", "thumb": "kiosk/1c7494cfbea39f5cc2a1324ca8db0d45.jpg"}, {"title": "Maha Piritha chanting with Sinhala and Pāli Subtitles | මහ පිරිත (තුන් සුත්‍රය) සිංහල තේරුම් සහිතව", "date": "September 2021", "href": "https://www.youtube.com/watch?v=M-CaiTAlR6Y", "thumb": "kiosk/ae2ba4a1befa5383a9e6c41bdd05c404.jpg"}, {"title": "Ancient Buddhist Tradition of Making Monk's Robe | අතීත ශාසනික සම්ප්‍රදානුකූලව සකසන පඬු චීවරය | 4K", "date": "August 2021", "href": "https://www.youtube.com/watch?v=z_fitdBVhis", "thumb": "kiosk/08b34764c7f851993121f601d2a50de9.jpg"}, {"title": "පොහොය දිනයේ සිල් සමාදන් වූ ඔබගේ දවස ගතකල යුත්තේ කෙසේද? | Important Facts on Poya Day", "date": "June 2020", "href": "https://www.youtube.com/watch?v=ryBuHI2blms", "thumb": "kiosk/4d2b7d7d676def95c2437b874839eaa4.jpg"}];
 var EXPLORE = [{"title": "Explore the Monastery", "items": [{"en": "Home", "si": "මුල් පිටුව", "href": "../"}, {"en": "Monastery", "si": "ආරණ්‍ය සේනාසනය", "href": "../monastery/"}, {"en": "Retreat Program", "si": "භාවනා වැඩසටහන", "href": "../retreat-center/"}, {"en": "Book Your Stay", "si": "වෙන් කරවා ගැනීම", "href": "../book-your-stay/"}, {"en": "Reviews", "si": "ඇගයීම්", "href": "../reviews/"}, {"en": "News & Events", "si": "ප්‍රවෘත්ති සහ සිදුවීම්", "href": "../news-and-events/"}, {"en": "Gallery", "si": "ඡායාරූප", "href": "../gallery/"}, {"en": "Video Gallery", "si": "වීඩියෝ", "href": "../videos/"}, {"en": "Donate", "si": "පරිත්‍යාග", "href": "../donate/"}, {"en": "Contact", "si": "සම්බන්ධ වන්න", "href": "../contact/"}]}, {"title": "Projects", "items": [{"en": "All Projects", "si": "ව්‍යාපෘති", "href": "../projects/"}, {"en": "Road Project", "si": "මාර්ග ව්‍යාපෘතිය", "href": "../projects/road-project/"}, {"en": "Herbal Planting", "si": "ඖෂධ පැළ රෝපණය", "href": "../projects/herbal-plants/"}, {"en": "ThreeStory Building", "si": "තෙමහල් ගොඩනැගිල්ල", "href": "../projects/threestory/"}, {"en": "Monastery Requirements", "si": "ආරණ්‍ය අවශ්‍යතා", "href": "../requirements/"}, {"en": "Library Café", "si": "පුස්තකාල කැෆේ", "href": "../projects/library-cafe/"}]}, {"title": "Libraries", "items": [{"en": "E-Book Library", "si": "ඊ-පොත් පුස්තකාලය", "href": "../ebooks/"}, {"en": "Dhamma Talks (English)", "si": "ධර්ම දේශනා (ඉංග්‍රීසි)", "href": "../dhamma-talks/"}, {"en": "Dhamma Talks (Sinhala)", "si": "ධර්ම දේශනා (සිංහල)", "href": "../dhamma-talks/si/"}, {"en": "Audio Library", "si": "ශ්‍රව්‍ය පුස්තකාලය", "href": "../audio-library/"}, {"en": "Retreat Documents", "si": "වැඩසටහන් ලේඛන", "href": "../retreat-docs/"}]}, {"title": "Dashboard", "items": [{"en": "Dashboard", "si": "උපකරණ පුවරුව", "href": "../dashboard/"}]}];
-  </script>
-  <script>
-function view(V, H) {
-  with (V) {
-    return `
-<div style="width: 100%; height: 100%; position: relative; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); color: var(--ink); font-family: 'Spectral', Georgia, serif">
-
-  <!-- Header -->
-  <div class="hdr-bar" style="height: 136px; box-sizing: border-box; padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-shrink: 0">
-    <div style="display: flex; align-items: center; gap: 20px">
-      <button class="tile" data-h="${H(openExplore)}" aria-label="Explore Rideekanda" style="height: 60px; padding: 0 24px 0 16px; border-radius: 999px; background: var(--paper); color: var(--paper-ink); border: 1px solid var(--accent); display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; flex-shrink: 0">
-        <img src="kiosk/lotus-dark.png" alt="" style="height: 26px; width: auto">
-        Explore
-      </button>
-      <img class="hdr-logo lotus-night" src="kiosk/7f193d9120a7243f62e2c416768bb75d.png" alt="Rideekanda lotus logo" style="height: 60px; width: auto"><img class="hdr-logo lotus-paper" src="kiosk/lotus-dark.png" alt="Rideekanda lotus logo" style="height: 60px; width: auto">
-      <div style="display: flex; flex-direction: column; gap: 2px">
-        <div class="hdr-title" style="font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; line-height: 1">Rideekanda Forest Monastery</div>
-        <div class="si" style="font-size: 17px; color: var(--muted)">රිදීකන්ද ආරණ්‍ය සේනාසනය · Udasgiriya, Matale</div>
-      </div>
-    </div>
-    <div style="display: flex; align-items: center; gap: 14px; flex-shrink: 0">
-    <button class="tile" data-h="${H(openWx)}" aria-label="Weather report: ${wx.temp} degrees, ${wx.cond}" style="width: 78px; height: 72px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; flex-shrink: 0">
-      <span aria-hidden="true" style="display:inline-block;width:32px;height:32px;color:var(--accent-ink)">${wx.ico}</span>
-      <span style="font-size: 18px; font-weight: 600; line-height: 1; color: var(--ink)">${wx.temp}°</span>
-    </button>
-    <button class="tile" data-h="${H(openCal)}" aria-label="Monastery calendar" aria-haspopup="dialog" style="background: transparent; padding: 0; border-radius: 16px; display: flex; flex-direction: column; align-items: flex-end; gap: 2px">
-      <span style="font-size: 44px; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1">${clock}</span>
-      <span style="font-size: 15px; color: var(--muted); white-space: nowrap; border-bottom: 1px dotted var(--line-soft); padding-bottom: 1px">${dateLabel}</span>
-    </button>
-    </div>
-  </div>
-
-  <!-- Hero -->
-  <div style="height: 440px; position: relative; flex-shrink: 0; margin: 0 48px; border-radius: 28px; overflow: hidden">
-    ${(slides || []).map((sl, sl_i) => `
-      <img class="slide" data-layer="${sl_i}" ${sl.src ? `src="${sl.src}"` : ""} decoding="async" alt="${sl_i === 0 ? "Rideekanda Forest Monastery — photo from the gallery" : ""}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: ${sl.op}; transform: scale(${sl.scale})">
-    `).join("")}
-    <div style="position: absolute; right: 24px; bottom: 24px; display: flex; align-items: center; gap: 8px; background: rgba(31,26,20,0.88); color: var(--invert-ink); border-radius: 999px; padding: 8px 16px; font-size: 14px">
-      <svg width="16" height="16" viewBox="0 0 32 32" fill="none" stroke="var(--accent-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="6" width="24" height="20" rx="3"></rect><circle cx="11" cy="12" r="2"></circle><path d="M4 22l7-6 5 4 4-3 8 6"></path></svg>
-      <span data-slide-count>${slideNum} / ${slideCount}</span>
-    </div>
-    
-  </div>
-
-  <!-- Now strip -->
-  <div style="margin: 32px 48px 18px; display: flex; align-items: center; gap: 12px; font-size: 18px; color: var(--muted); flex-shrink: 0">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11V5a1.5 1.5 0 0 1 3 0v5"></path><path d="M12 10V9a1.5 1.5 0 0 1 3 0v2"></path><path d="M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.5a6 6 0 0 1-4.9-2.5L4.3 15a1.5 1.5 0 0 1 2.4-1.8L9 15.5"></path></svg>
-    Touch a card to explore
-  </div><div style="margin: 24px 48px 0; border-radius: 24px; padding: 24px 32px; display: flex; flex-direction: column; gap: 16px; flex-shrink: 0; background-color: var(--card); margin-bottom: 15px; margin-top: 5px">
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: -6px">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
-      <span style="font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 600; line-height: 1; color: var(--ink)">Daily Routine</span>
-      <span class="si" style="font-size: 16px; color: var(--muted)">දෛනික චර්යාව</span>
-    </div>
-    <button class="tile" data-h="${H(openRoutine)}" aria-label="Show the full daily routine" style="width: 100%; background: transparent; padding: 0; min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
-      <span style="display: flex; align-items: baseline; gap: 18px">
-        <span style="font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted)">Now on retreat</span>
-        <span style="font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 600; line-height: 1">${nowLabel}</span>
-      </span>
-      <span style="display: flex; align-items: center; gap: 14px; font-size: 17px; color: var(--muted)">
-        Next: ${nextLabel} at ${nextTime}
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
-      </span>
-    </button>
-    <div style="display: flex; gap: 6px">
-      ${(timeline || []).map((seg, seg_i) => `
-        <button class="tile" data-h="${H(seg.pick)}" aria-label="${seg.aria}" style="flex: 1; height: 44px; padding: 0; background: transparent; display: flex; align-items: center">
-          <span class="${seg.cls}" style="display: block; width: 100%; height: ${seg.h}; border-radius: 999px; background: ${seg.bg}; box-shadow: ${seg.ring}"></span>
-        </button>
-      `).join("")}
-    </div>
-    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: var(--muted)">
-      <span>5:30 Wake</span>
-      
-      <span>22:00 Rest</span>
-    </div>
-  </div>
-
-  <!-- Prompt -->
-  
-
-  <!-- Grid -->
-  <div style="flex: 1; min-height: 0; margin: 0 48px 48px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(6, minmax(0, 1fr)); gap: 18px">
-
-    <a class="tile" href="../retreat-center/" style="text-decoration: none; box-sizing: border-box; text-align: left; grid-column: 1 / span 2; grid-row: 1 / span 2; background: var(--accent-soft); color: var(--paper-ink); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; background-color: var(--t-hero)">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%">
-        <svg width="44" height="44" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="stroke: var(--ink); width: 88px; height: 88px"><circle cx="16" cy="7" r="3"></circle><path d="M16 11c-3 0-5 2.5-5 6v2"></path><path d="M16 11c3 0 5 2.5 5 6v2"></path><path d="M5 24c3-3 7-4 11-4s8 1 11 4"></path><path d="M8 27h16"></path></svg>
-        <span style="font-size: 15px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; background: var(--invert); color: var(--invert-ink); padding: 8px 14px; border-radius: 999px">7-day residential</span>
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 10px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 600; line-height: 0.95; color: var(--ink)">Retreat Program</div>
-        <div class="si" style="font-size: 19px; color: var(--ink)">භාවනා වැඩසටහන</div>
-        <div style="font-size: 18px; line-height: 1.45; max-width: 520px; color: var(--ink)">Concentration and Vipassanā for men and women, lay and monastic.</div>
-      </div>
-    </a>
-
-    <a class="tile" href="../monastery/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: var(--ink); grid-column: 3; grid-row: 1 / span 2; border-radius: 24px; padding: 0; overflow: hidden; display: flex; flex-direction: column; background-color: var(--t-dark)">
-      <img src="kiosk/0ff4e629338a98ba7d200d775764ed8c.jpg" alt="Teacher and retreat participants at the monastery sign" style="width: 100%; height: 52%; object-fit: cover; object-position: 55% 50%">
-      <div style="flex: 1; padding: 24px 26px; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; line-height: 1">The Monastery</div>
-        <div class="si" style="font-size: 17px; color: var(--ink)">ආරණ්‍ය&nbsp;පිළිබඳ</div>
-        <div style="font-size: 15px; color: var(--ink); padding-top: 4px">History, teachers &amp; visiting</div>
-      </div>
-    </a>
-
-    <a class="tile" href="../book-your-stay/" style="text-decoration: none; box-sizing: border-box; text-align: left; grid-column: 1; grid-row: 3; color: var(--ink); border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: var(--t-book)">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="var(--ink)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="7" width="22" height="20" rx="3"></rect><path d="M5 13h22"></path><path d="M11 4v5"></path><path d="M21 4v5"></path><path d="M12 20l3 3 5-6"></path></svg>
-      <div style="display: flex; flex-direction: column; gap: 4px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1; color: var(--ink)">Book Your Stay</div>
-        <div class="si" style="font-size: 16px; color: var(--ink)">ඔබේ නවාතැන වෙන් කරන්න</div>
-      </div>
-    </a>
-
-    <a class="tile" href="../contact/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: var(--ink); grid-column: 2; grid-row: 3; background: var(--t-contact); border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 28s-9-8.2-9-15a9 9 0 0 1 18 0c0 6.8-9 15-9 15z"></path><circle cx="16" cy="13" r="3.2"></circle></svg>
-      <div style="display: flex; flex-direction: column; gap: 4px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Contact</div>
-        <div class="si" style="font-size: 16px; color: var(--ink)">සම්බන්ධ වන්න</div>
-      </div>
-    </a>
-
-    <a class="tile" href="../donate/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: var(--ink); grid-column: 3; grid-row: 3; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: var(--t-dana)">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 12c-1.5-3-6-3-6 .5 0 3 6 6.5 6 6.5s6-3.5 6-6.5c0-3.5-4.5-3.5-6-.5z"></path><path d="M3 20l5 6h10l7-5a2 2 0 0 0-2.4-3.2L18 21h-5"></path></svg>
-      <div style="display: flex; flex-direction: column; gap: 4px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Donate/Dāna</div>
-        <div class="si" style="font-size: 16px">පරිත්‍යාග</div>
-      </div>
-    </a>
-
-    <a class="tile" href="../gallery/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: var(--ink); grid-column: 1; grid-row: 4; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: var(--t-gallery)">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="6" width="24" height="20" rx="3"></rect><circle cx="11" cy="12" r="2"></circle><path d="M4 22l7-6 5 4 4-3 8 6"></path></svg>
-      <div style="display: flex; flex-direction: column; gap: 4px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Gallery</div>
-        <div class="si" style="font-size: 16px; color: var(--ink)">ඡායාරූප</div>
-      </div>
-    </a>
-
-    <a class="tile" href="../videos/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: var(--ink); grid-column: 2; grid-row: 4; background: var(--t-videos); border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="7" width="24" height="18" rx="4"></rect><path d="M14 12l6 4-6 4z"></path></svg>
-      <div style="display: flex; flex-direction: column; gap: 4px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Video Gallery</div>
-        <div class="si" style="font-size: 16px; color: var(--ink)">වීඩියෝ</div>
-      </div>
-    </a>
-
-    
-
-    
-
-    <button class="tile ${cls.projects}" data-h="${H(open.projects)}" style="grid-column: 1; grid-row: 5; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: var(--card)">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 27h24"></path><path d="M7 27V15l9-7 9 7v12"></path><path d="M13 27v-7h6v7"></path></svg>
-      <div style="display: flex; flex-direction: column; gap: 4px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Projects</div>
-        <div class="si" style="font-size: 16px; color: var(--ink)">ව්‍යාපෘති</div>
-      </div>
-    </button><a class="tile" href="../reviews/" style="text-decoration: none; box-sizing: border-box; text-align: left; color: var(--ink); grid-column: 2; grid-row: 5; border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; background-color: var(--t-reviews)">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h20v13H13l-6 5v-5H6z"></path><path d="M11 13h10"></path><path d="M11 17h6"></path></svg>
-      <div style="display: flex; flex-direction: column; gap: 4px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">Reviews</div>
-        <div class="si" style="font-size: 16px; color: var(--ink)">අදහස්</div>
-      </div>
-    </a>
-
-    <a class="tile" href="../" style="text-decoration: none; box-sizing: border-box; text-align: left; grid-column: 3; grid-row: 5; background: var(--paper); color: var(--paper-ink); border-radius: 24px; padding: 18px 20px; display: flex; align-items: center; gap: 14px">
-      <img src="kiosk/ec2ea202af236ed9ad148ee9fb0af97a.svg" alt="QR code for www.rideekanda.com" style="width: 104px; height: 104px; flex-shrink: 0">
-      <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; line-height: 1">Take us with you</div>
-        <div style="font-size: 14px; line-height: 1.35; color: var(--paper-muted)">Scan for the full website</div>
-      </div>
-    </a>
-
-    <!-- Libraries -->
-    <button class="tile ${cls.news}" data-h="${H(open.news)}" style="grid-column: 3; grid-row: 4; background: var(--t-news); color: var(--paper-ink); border-radius: 24px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="stroke: var(--ink)"><path d="M5 7h15v19H8a3 3 0 0 1-3-3z"></path><path d="M20 13h7v10a3 3 0 0 1-3 3"></path><path d="M9 12h7"></path><path d="M9 16h7"></path><path d="M9 20h5"></path></svg>
-      <div style="display: flex; flex-direction: column; gap: 4px">
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1; color: var(--ink)">News &amp; Events</div>
-        <div class="si" style="font-size: 16px; color: var(--ink)">පුවත් සහ සිදුවීම්</div>
-      </div>
-    </button><div class="tile" style="grid-column: 1 / span 3; grid-row: 6; border-radius: 24px; padding: 14px 22px 16px; display: flex; flex-direction: column; gap: 10px; background-color: var(--card)">
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-shrink: 0">
-        <div style="display: flex; align-items: baseline; gap: 12px">
-          <span style="font-size: 15px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-ink); font-weight: 600">Libraries</span>
-          <span class="si" style="font-size: 15px; color: var(--muted)">පුස්තකාල</span>
-        </div>
-        <button class="tile" data-h="${H(open.libraries)}" style="height: 40px; padding: 0 18px; border-radius: 999px; background: var(--card-2); border: 1px solid var(--line); color: var(--ink); font-size: 15px; font-weight: 500; display: flex; align-items: center; gap: 8px">
-          Scan a code
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-        </button>
-      </div>
-      <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px">
-        <a class="libcard" href="../ebooks/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h6a3 3 0 0 1 3 3v11a2.5 2.5 0 0 0-2.5-2.5H4z"/><path d="M20 5h-6a3 3 0 0 0-3 3v11a2.5 2.5 0 0 1 2.5-2.5H20z"/></svg><span class="en">E-Book Library</span><span class="sub si">ඊ-පොත් පුස්තකාලය</span></a>
-        <a class="libcard" href="../audio-library/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13.5" width="4" height="7" rx="2"/><rect x="17.5" y="13.5" width="4" height="7" rx="2"/></svg><span class="en">Audio Library</span><span class="sub si">ශ්‍රව්‍ය පුස්තකාලය</span></a>
-        <a class="libcard" href="../dhamma-talks/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v10H10l-5 4v-4H4z"/><path d="M8 10h8"/><path d="M8 13h5"/></svg><span class="en">Dhamma Talks</span><span class="sub si">ධර්ම දේශනා · English</span></a>
-        <a class="libcard" href="../dhamma-talks/si/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h13v9H9l-4 3.5V14H3z"/><path d="M19 9h2v10l-3-2.5h-6"/></svg><span class="en">ධර්ම දේශනා</span><span class="sub si">Dhamma Talks · සිංහල</span></a>
-        <a class="libcard" href="../retreat-docs/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5"/><path d="M9 13h7"/><path d="M9 17h5"/></svg><span class="en">Retreat Documents</span><span class="sub si">වැඩසටහන් ලේඛන</span></a>
-      </div>
-    </div>
-  </div>
-
-  <!-- DETAIL PANEL (covers everything below the header) -->
-  ${(hasCur) ? `
-    <div class="panel-in" style="position: absolute; left: 0; right: 0; top: 136px; bottom: 0; background: var(--bg); box-sizing: border-box; padding: 24px 48px 48px; display: flex; flex-direction: column; gap: 36px">
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px">
-        <button data-h="${H(close)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: var(--card); display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
-          All pages
-        </button>
-        <div style="font-size: 16px; color: var(--muted); text-align: right">Returns to the start after ${idleSeconds} s without a touch</div>
-      </div>
-
-      <div style="display: flex; flex-direction: column; gap: 12px">
-        <div style="font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-ink); font-weight: 500">${cur.kicker}</div>
-        <h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 96px; font-weight: 600; line-height: 0.95">${cur.title}</h2>
-        <div class="si" style="font-size: 26px; color: var(--muted)">${cur.si}</div>
-      </div>
-      <p style="margin: 0; font-size: 26px; line-height: 1.5">${cur.summary}</p>
-      <div role="tablist" aria-label="View" style="display: flex; gap: 8px; background: var(--card); padding: 6px; border-radius: 999px; align-self: flex-start; margin-top: -8px">
-        <button role="tab" aria-selected="${cur.tabSumSel}" data-h="${H(showSummary)}" style="height: 56px; padding: 0 26px; border-radius: 999px; font-size: 18px; font-weight: 600; background: ${cur.tabSumBg}; color: ${cur.tabSumFg}; display: flex; align-items: center; gap: 10px">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h10"></path></svg>
-          Summary
-        </button>
-        <button role="tab" aria-selected="${cur.tabPageSel}" data-h="${H(showPage)}" style="height: 56px; padding: 0 26px; border-radius: 999px; font-size: 18px; font-weight: 600; background: ${cur.tabPageBg}; color: ${cur.tabPageFg}; display: flex; align-items: center; gap: 10px">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 8h8"></path><path d="M8 12h8"></path><path d="M8 16h5"></path></svg>
-          Page preview
-        </button>
-      </div>
-      ${(cur.showPage) ? `
-        <div style="flex: 1; min-height: 0; overflow-y: auto; border-radius: 24px; background: var(--paper); border: 1px solid var(--line)">
-          <div style="position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 10px; padding: 12px 18px; background: var(--card); color: var(--muted); font-size: 15px">
-            <span style="width: 10px; height: 10px; border-radius: 5px; background: var(--accent)"></span>
-            ${cur.urlShort} · scroll to explore the page
-          </div>
-          <img src="${cur.shot}" alt="Preview of the ${cur.title} page on rideekanda.com" style="display: block; width: 100%; height: auto">
-        </div>
-      ` : ""}
-      ${(cur.showPreview) ? `
-        <div style="flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 12px; margin-top: -8px">
-          ${(cur.hasPhotos) ? `
-            <div style="flex-shrink: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
-              ${(cur.photos || []).map((ph, ph_i) => `
-                <img loading="lazy" decoding="async" src="${ph}" alt="Photo from the Rideekanda gallery" style="width: 100%; height: 170px; object-fit: cover; border-radius: 14px; background: var(--card)">
-              `).join("")}
-            </div>
-          ` : ""}
-          ${(cur.hasVideos) ? `
-            <div style="flex: 1; min-height: 0; overflow-y: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-content: start; padding-right: 6px">
-              ${(videos || []).map((v, v_i) => `
-                <a class="tile" href="${v.href}" style="text-decoration: none; color: var(--ink); background: var(--card); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
-                  <span style="position: relative; display: block">
-                    <img loading="lazy" decoding="async" src="${v.thumb}" alt="${v.title}" style="display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--t-shade)">
-                    <span style="position: absolute; left: 50%; top: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 999px; background: rgba(31,26,20,0.82); display: flex; align-items: center; justify-content: center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="var(--ink)"></path></svg>
-                    </span>
-                  </span>
-                  <span style="padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px">
-                    <span class="si" style="font-size: 16px; font-weight: 500; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">${v.title}</span>
-                    <span style="font-size: 13px; color: var(--muted)">${v.date} · YouTube</span>
-                  </span>
-                </a>
-              `).join("")}
-            </div>
-          ` : ""}
-          ${(cur.sections || []).map((sec, sec_i) => `
-            ${(sec.isLink) ? `
-              <a class="tile" href="${sec.href}" style="text-decoration: none; box-sizing: border-box; flex: 1 1 0; min-height: 0; max-height: 220px; overflow: hidden; width: 100%; border-radius: 20px; padding: 12px 26px 12px 12px; display: flex; align-items: stretch; gap: 22px; background-color: var(--card-2)">
-                <img src="${sec.feat}" alt="${sec.h}" style="width: 220px; flex-shrink: 0; object-fit: cover; border-radius: 14px; background: var(--t-shade)">
-                <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 6px">
-                  <span style="font-family: 'Cormorant Garamond', serif; font-size: 29px; font-weight: 600; line-height: 1.05; color: var(--ink)">${sec.h}</span>
-                  <span style="font-size: 18px; line-height: 1.45; color: var(--ink); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">${sec.t}</span>
-                </span>
-                <span style="flex-shrink: 0; align-self: center; width: 56px; height: 56px; border-radius: 999px; background: var(--accent); display: flex; align-items: center; justify-content: center">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--paper-ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M8 7h9v9"></path></svg>
-                </span>
-              </a>
-            ` : ""}
-            ${(sec.isText) ? `
-              <a class="tile" href="${sec.href}" style="text-decoration: none; box-sizing: border-box; flex: 1 1 0; min-height: 0; max-height: 220px; overflow: hidden; width: 100%; background: var(--card); border-radius: 20px; padding: 16px 26px; display: flex; align-items: center; gap: 22px">
-                <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
-                  <span style="font-family: 'Cormorant Garamond', serif; font-size: 29px; font-weight: 600; line-height: 1.05; color: var(--ink)">${sec.h}</span>
-                  <span style="font-size: 18px; line-height: 1.45; color: var(--ink-dim); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">${sec.t}</span>
-                </span>
-                <span style="flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--accent-ink); font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase">
-                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 8h8"></path><path d="M8 12h8"></path><path d="M8 16h5"></path></svg>
-                  Open page
-                </span>
-              </a>
-            ` : ""}
-          `).join("")}
-        </div>
-      ` : ""}
-      ${(cur.showLib) ? `
-        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: -12px">
-          ${(cur.libs || []).map((l, l_i) => `
-            <a class="libtile" href="${l.url}" data-h="${H(l.pick)}" style="text-decoration: none; box-sizing: border-box; min-height: 84px; border-radius: 20px; padding: 14px 26px; background: ${l.bg}; color: ${l.fg}; display: flex; align-items: center; gap: 24px">
-              <span style="flex: 1; display: flex; flex-direction: column; gap: 4px">
-                <span style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; line-height: 1">${l.en}</span>
-                <span style="font-size: 17px; opacity: 0.85">${l.desc}</span>
-              </span>
-              <span class="si" style="font-size: 18px; opacity: 0.85; text-align: right">${l.si}</span>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; opacity: 0.85"><path d="M7 17L17 7"></path><path d="M8 7h9v9"></path></svg>
-            </a>
-          `).join("")}
-        </div>
-      ` : ""}
-
-      ${(cur.showNews) ? `
-        <div style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; margin-top: -12px; padding-right: 6px">
-          <div style="font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted)">Latest from rideekanda.com · tap a story to read</div>
-          ${(news || []).map((n, n_i) => `
-            <button class="tile" data-h="${H(n.pick)}" style="flex-shrink: 0; border-radius: 22px; padding: 16px; background: var(--card); display: flex; gap: 22px; align-items: stretch">
-              <img loading="lazy" decoding="async" src="${n.img}" alt="${n.title}" style="width: 240px; height: 168px; object-fit: cover; border-radius: 14px; flex-shrink: 0">
-              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; justify-content: center">
-                <span style="display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--muted)">
-                  <span style="background: var(--accent-soft); color: var(--paper-ink); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; font-size: 12px">${n.type}</span>
-                  ${n.date}
-                </span>
-                <span style="font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 600; line-height: 1.05">${n.title}</span>
-                <span style="font-size: 16px; line-height: 1.45; color: var(--ink-dim); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">${n.excerpt}</span>
-              </span>
-            </button>
-          `).join("")}
-        </div>
-      ` : ""}
-      <div style="margin-top: auto; display: flex; gap: 16px; align-items: stretch; flex-shrink: 0">
-        <div style="flex: 1; background: var(--paper); color: var(--paper-ink); border-radius: 20px; padding: 14px 18px; display: flex; align-items: center; gap: 18px">
-          <img src="${cur.qr}" alt="QR code for ${cur.url}" style="width: 128px; height: 128px; flex-shrink: 0">
-          <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
-            <div style="font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; line-height: 1.05">Scan to continue on your phone</div>
-            <div style="font-size: 15px; color: var(--paper-muted); word-break: break-all">${cur.urlShort}</div>
-          </div>
-        </div>
-        <div style="width: 280px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px">
-          ${(cur.hasWa) ? `
-            <div style="flex: 1; background: var(--card); border-radius: 18px; padding: 10px 14px; display: flex; align-items: center; gap: 12px">
-              <img src="kiosk/de9312e3e759a1a887ae75434f8b01ad.svg" alt="QR code to message on WhatsApp" style="width: 64px; height: 64px; border-radius: 6px">
-              <div style="display: flex; flex-direction: column; gap: 4px">
-                <div style="font-size: 18px; font-weight: 600">WhatsApp us</div>
-                <div style="font-size: 15px; color: var(--muted)">+94 74 225 2980</div>
-              </div>
-            </div>
-          ` : ""}
-          <a href="${cur.url}" style="height: 56px; border-radius: 999px; border: 1.5px solid var(--accent); color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 18px; font-weight: 500; text-decoration: none; margin-top: auto">
-            Open the full page
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
-          </a>
-        </div>
-      </div>
-      ${(hasProj) ? `
-        <div class="panel-in" style="position: absolute; inset: 0; z-index: 2; background: var(--bg); box-sizing: border-box; padding: 24px 48px 48px; display: flex; flex-direction: column; gap: 22px">
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px">
-            <button data-h="${H(closeProj)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: var(--card); display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
-              Back to Projects
-            </button>
-            <span style="font-size: 16px; color: var(--muted)">${proj.urlShort}</span>
-          </div>
-          <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px">
-            <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
-              <div style="font-size: 17px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-ink); font-weight: 500">Project</div>
-              <h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 72px; font-weight: 600; line-height: 0.95">${proj.title}</h2>
-              <div class="si" style="font-size: 24px; color: var(--muted)">${proj.si}</div>
-            </div>
-            <div style="flex-shrink: 0; background: var(--paper); color: var(--paper-ink); border-radius: 22px; padding: 14px 18px; display: flex; align-items: center; gap: 14px">
-              <img src="${proj.qr}" alt="QR code for the ${proj.title} page" style="width: 120px; height: 120px">
-              <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; line-height: 1.05; width: 130px">Scan to open on your phone</div>
-            </div>
-          </div>
-          <div style="flex: 1; min-height: 0; overflow-y: auto; border-radius: 24px; background: var(--paper); border: 1px solid var(--line)">
-            <img src="${proj.shot}" alt="Preview of the ${proj.title} page on rideekanda.com" style="display: block; width: 100%; height: auto">
-          </div>
-        </div>
-      ` : ""}
-      ${(hasPost) ? `
-        <div class="panel-in" style="position: absolute; inset: 0; background: var(--bg); box-sizing: border-box; padding: 24px 48px 48px; display: flex; flex-direction: column; gap: 24px">
-          <div style="display: flex; align-items: center; justify-content: space-between">
-            <button data-h="${H(closePost)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: var(--card); display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
-              Back to News &amp; Events
-            </button>
-            <span style="background: var(--accent-soft); color: var(--paper-ink); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 14px; border-radius: 999px; font-size: 14px">${post.type} · ${post.date}</span>
-          </div>
-          <div style="position: relative; flex-shrink: 0">
-            <img src="${photo}" alt="${post.title} — photo ${photoNum} of ${photoCount}" style="display: block; width: 100%; height: 600px; object-fit: cover; border-radius: 24px; background: var(--card)">
-            ${(multiPhoto) ? `
-              <button data-h="${H(prevPhoto)}" aria-label="Previous photo" style="position: absolute; left: 18px; top: 50%; margin-top: -32px; width: 64px; height: 64px; border-radius: 999px; background: rgba(31,26,20,0.85); display: flex; align-items: center; justify-content: center">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
-              </button>
-              <button data-h="${H(nextPhoto)}" aria-label="Next photo" style="position: absolute; right: 18px; top: 50%; margin-top: -32px; width: 64px; height: 64px; border-radius: 999px; background: rgba(31,26,20,0.85); display: flex; align-items: center; justify-content: center">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
-              </button>
-              <span style="position: absolute; right: 18px; bottom: 18px; background: rgba(31,26,20,0.88); color: var(--ink); font-size: 15px; padding: 6px 14px; border-radius: 999px">${photoNum} / ${photoCount}</span>
-            ` : ""}
-          </div>
-          ${(multiPhoto) ? `
-            <div style="flex-shrink: 0; display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px">
-              ${(thumbs || []).map((t, t_i) => `
-                <button data-h="${H(t.pick)}" aria-label="Show photo ${t.num}" style="flex-shrink: 0; width: 120px; height: 84px; padding: 0; border-radius: 12px; overflow: hidden; outline: ${t.ring}; outline-offset: -3px; opacity: ${t.op}">
-                  <img loading="lazy" decoding="async" src="${t.src}" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block">
-                </button>
-              `).join("")}
-            </div>
-          ` : ""}
-          <h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 60px; font-weight: 600; line-height: 1">${post.title}</h2>
-          <div style="flex: 1; min-height: 0; overflow-y: auto; font-size: 22px; line-height: 1.6; white-space: pre-line; color: var(--ink-dim); padding-right: 8px">${post.body}</div>
-        </div>
-      ` : ""}
-    </div>
-  ` : ""}
-  <!-- ROUTINE PANEL -->
-  ${(hasRoutine) ? `
-    <div class="panel-in" style="position: absolute; left: 0; right: 0; top: 136px; bottom: 0; background: var(--bg); box-sizing: border-box; padding: 24px 48px 48px; display: flex; flex-direction: column; gap: 28px">
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px">
-        <button data-h="${H(closeRoutine)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: var(--card); display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
-          Back
-        </button>
-        <div style="font-size: 16px; color: var(--muted); text-align: right">Returns to the start after ${idleSeconds} s without a touch</div>
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 10px">
-        <div style="font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-ink); font-weight: 500">7-day residential retreat</div>
-        <h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 88px; font-weight: 600; line-height: 0.95">The daily routine</h2>
-        <div class="si" style="font-size: 24px; color: var(--muted)">දෛනික චර්යාව</div>
-      </div>
-      <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px">
-        ${(routine || []).map((r, r_i) => `
-          <button data-h="${H(r.pick)}" style="flex: 1; min-height: 72px; border-radius: 20px; padding: 0 28px; background: ${r.bg}; color: ${r.fg}; display: flex; align-items: center; gap: 28px">
-            <span style="width: 220px; flex-shrink: 0; font-size: 24px; font-weight: 500; font-variant-numeric: tabular-nums">${r.range}</span>
-            <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
-              <span style="font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; line-height: 1">${r.label}</span>
-              <span class="si" style="font-size: 17px; line-height: 1.2; opacity: 0.8">${r.si}</span>
-            </span>
-            ${(r.isNow) ? `
-              <span style="font-size: 14px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; background: var(--accent-soft); color: var(--paper-ink); padding: 6px 12px; border-radius: 999px">Now</span>
-            ` : ""}
-            <span style="width: 110px; text-align: right; font-size: 17px; opacity: 0.8">${r.dur}</span>
-          </button>
-        `).join("")}
-      </div>
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-top: 4px">
-        <div style="font-size: 18px; line-height: 1.45; color: var(--muted); max-width: 560px">Vegetarian meals — breakfast and lunch, with a light evening soup or porridge.</div>
-        <a class="tile" href="../retreat-center/" style="text-decoration: none; box-sizing: border-box; height: 68px; padding: 0 28px; border-radius: 999px; background: var(--accent-soft); color: var(--paper-ink); font-size: 20px; font-weight: 600; display: flex; align-items: center; gap: 10px; flex-shrink: 0">
-          About the retreat
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M8 7h9v9"></path></svg>
-        </a>
-      </div>
-    </div>
-  ` : ""}
-  <!-- EXPLORE MENU -->
-  ${(hasExplore) ? `
-    <div class="panel-in" role="dialog" aria-modal="true" aria-label="Explore Rideekanda" style="position: absolute; inset: 0; z-index: 10; background: var(--bg); box-sizing: border-box; padding: 40px 48px 48px; display: flex; flex-direction: column; gap: 26px; overflow-y: auto">
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px">
-        <div style="display: flex; align-items: center; gap: 18px">
-          <img src="kiosk/ccdfd77b7b5333a5414270ab6eee73c5.png" alt="" style="height: 56px; width: auto">
-          <div style="display: flex; flex-direction: column; gap: 4px">
-            <div style="font-family: 'Cormorant Garamond', serif; font-size: 52px; font-weight: 600; line-height: 1">Rideekanda</div>
-            <div class="si" style="font-size: 20px; color: var(--muted)">රිදීකන්ද ආරණ්‍ය සේනාසනය</div>
-          </div>
-        </div>
-        <button data-h="${H(closeExplore)}" aria-label="Close menu" style="width: 72px; height: 72px; border-radius: 999px; background: var(--card); display: flex; align-items: center; justify-content: center">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
-        </button>
-      </div>
-      ${(explore || []).map((grp, grp_i) => `
-        <div style="display: flex; flex-direction: column; gap: 14px; flex-shrink: 0">
-          <div style="font-size: 16px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-ink); font-weight: 600">${grp.title}</div>
-          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
-            ${(grp.items || []).map((it, it_i) => `
-              <a class="tile" href="${it.href}" style="text-decoration: none; box-sizing: border-box; min-height: 88px; padding: 14px 20px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); color: var(--ink); display: flex; flex-direction: column; justify-content: center; gap: 4px">
-                <span style="font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; line-height: 1.05">${it.en}</span>
-                <span class="si" style="font-size: 15px; color: var(--muted)">${it.si}</span>
-              </a>
-            `).join("")}
-          </div>
-        </div>
-      `).join("")}
-      <div style="margin-top: auto; padding-top: 8px; font-size: 15px; color: var(--muted); text-align: center">Rideekanda Forest Monastery · Matale, Sri Lanka</div>
-    </div>
-  ` : ""}
-  <!-- WEATHER PANEL -->
-  ${(hasWx) ? `
-    <div style="position: absolute; inset: 0; z-index: 11; background: rgba(15,12,9,0.72); display: flex; align-items: flex-start; justify-content: center; padding-top: 150px">
-      <div class="panel-in" role="dialog" aria-modal="true" aria-label="Weather report" style="position: relative; width: 760px; box-sizing: border-box; background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 36px 40px 30px; display: flex; flex-direction: column; gap: 22px; text-align: center; color: var(--ink)">
-        <button data-h="${H(closeWx)}" aria-label="Close weather report" style="position: absolute; top: 18px; right: 18px; width: 60px; height: 60px; border-radius: 999px; background: var(--card-2); display: flex; align-items: center; justify-content: center">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
-        </button>
-        <div style="display: flex; flex-direction: column; gap: 4px">
-          <div style="font-size: 14px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-ink); font-weight: 600">Weather · <span class="si" style="letter-spacing: 0; text-transform: none">කාලගුණය</span></div>
-          <div style="font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 600; line-height: 1.1">Rideekanda · Matale</div>
-        </div>
-        <div style="display: flex; align-items: center; justify-content: center; gap: 22px">
-          <span aria-hidden="true" style="display:inline-block;width:96px;height:96px;color:var(--accent-ink)">${wx.ico}</span>
-          <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px">
-            <div style="font-size: 84px; font-weight: 300; line-height: 1">${wx.temp}<span style="font-size: 30px; color: var(--muted); vertical-align: top">°C</span></div>
-            <div style="font-size: 22px; color: var(--ink-dim)">${wx.cond}</div>
-          </div>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 28px; text-align: left">
-          <div style="display: flex; justify-content: space-between; font-size: 20px; border-bottom: 1px solid var(--line); padding-bottom: 8px"><span style="color: var(--muted)">Feels like</span><b>${wx.feels}</b></div>
-          <div style="display: flex; justify-content: space-between; font-size: 20px; border-bottom: 1px solid var(--line); padding-bottom: 8px"><span style="color: var(--muted)">Humidity</span><b>${wx.hum}</b></div>
-          <div style="display: flex; justify-content: space-between; font-size: 20px; border-bottom: 1px solid var(--line); padding-bottom: 8px"><span style="color: var(--muted)">Wind</span><b>${wx.wind}</b></div>
-          <div style="display: flex; justify-content: space-between; font-size: 20px; border-bottom: 1px solid var(--line); padding-bottom: 8px"><span style="color: var(--muted)">Rain</span><b>${wx.rain}</b></div>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: var(--card-2)">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v5M5.6 10.6 4.2 9.2M18.4 10.6l1.4-1.4M3 18h18M8 18a4 4 0 0 1 8 0"></path><path d="m9 6 3-3 3 3"></path></svg>
-            <span style="font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted)">Sunrise</span>
-            <b style="font-size: 22px">${wx.sunrise}</b>
-          </div>
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: var(--card-2)">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V3M5.6 10.6 4.2 9.2M18.4 10.6l1.4-1.4M3 18h18M8 18a4 4 0 0 1 8 0"></path><path d="m9 5 3 3 3-3"></path></svg>
-            <span style="font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted)">Sunset</span>
-            <b style="font-size: 22px">${wx.sunset}</b>
-          </div>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 10px">
-          <div style="font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); text-align: left">Hourly · today</div>
-          <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px">
-            ${(wx.hourly || []).map((h, h_i) => `
-              <div style="flex: 0 0 auto; min-width: 62px; padding: 10px 4px; border-radius: 14px; background: ${h.bg}; display: flex; flex-direction: column; align-items: center; gap: 6px">
-                <span style="font-size: 13px; color: ${h.tc}; font-weight: ${h.fw}; white-space: nowrap">${h.t}</span>
-                <span aria-hidden="true" style="display:inline-block;width:28px;height:28px;color:var(--accent-ink)">${h.ico}</span>
-                <span style="font-size: 17px; font-weight: ${h.fw}">${h.temp}</span>
-              </div>
-            `).join("")}
-          </div>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 10px">
-          <div style="font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); text-align: left">Next 5 days</div>
-          <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; border-top: 1px solid var(--line); padding-top: 14px">
-            ${(wx.days || []).map((dd, dd_i) => `
-              <div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
-                <span style="font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted)">${dd.d}</span>
-                <span aria-hidden="true" style="display:inline-block;width:36px;height:36px;color:var(--accent-ink)">${dd.ico}</span>
-                <span style="font-size: 20px; line-height: 1.1">${dd.hi}<span style="display: block; font-size: 16px; color: var(--muted)">${dd.lo}</span></span>
-              </div>
-            `).join("")}
-          </div>
-        </div>
-        <a class="tile" href="https://www.msn.com/en-us/weather/maps/precipitation/in-Rideekanda,Central-Province?loc=eyJsIjoiUmlkZWVrYW5kYSIsInIiOiJDZW50cmFsIFByb3ZpbmNlIiwiYyI6IlNyaSBMYW5rYSIsImkiOiJMSyIsImciOiJlbi11cyIsIngiOiI4MC41NjAyIiwieSI6IjcuNTM0OCJ9&amp;weadegreetype=C&amp;zoom=14" style="text-decoration: none; height: 58px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 16px; letter-spacing: 0.1em; text-transform: uppercase">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15.5a4 4 0 0 1 1.1-7.8 5.5 5.5 0 0 1 10.6-1.2A4.2 4.2 0 0 1 20 10.6"></path><path d="M8 19.5l-.7 1.4M12 19.5l-.7 1.4M16 19.5l-.7 1.4M20 14.5a3.5 3.5 0 0 0-3.5-3.5H15"></path></svg>
-          Rain radar on MSN
-        </a>
-        <div style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted)">Updated ${wx.updated} · open-meteo</div>
-      </div>
-    </div>
-  ` : ""}
-  ${(hasCal) ? `
-    <div style="position: absolute; inset: 0; z-index: 11; background: rgba(15,12,9,0.72); display: flex; align-items: flex-start; justify-content: center; padding-top: 150px">
-      <div class="panel-in" role="dialog" aria-modal="true" aria-label="Monastery calendar" style="position: relative; width: 760px; box-sizing: border-box; background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 36px 40px 30px; display: flex; flex-direction: column; gap: 20px; color: var(--ink)">
-        <button data-h="${H(closeCal)}" aria-label="Close the calendar" style="position: absolute; top: 18px; right: 18px; width: 60px; height: 60px; border-radius: 999px; background: var(--card-2); display: flex; align-items: center; justify-content: center">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
-        </button>
-
-      <div style="display: flex; flex-direction: column; gap: 4px; text-align: center">
-        <div style="font-size: 14px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-ink); font-weight: 600">Poya days, holidays &amp; retreats</div>
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 600; line-height: 1.1">Calendar · <span class="si" style="font-size: 30px">දින දර්ශනය</span></div>
-      </div>
-
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 18px">
-        <button data-h="${H(cal.prev)}" aria-label="Previous month" style="width: 68px; height: 68px; border-radius: 999px; background: var(--card); display: flex; align-items: center; justify-content: center">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
-        </button>
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 600; line-height: 1">${cal.title}</div>
-        <button data-h="${H(cal.next)}" aria-label="Next month" style="width: 68px; height: 68px; border-radius: 999px; background: var(--card); display: flex; align-items: center; justify-content: center">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
-        </button>
-      </div>
-
-      <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; font-size: 16px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-align: center">
-        <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
-      </div>
-
-      <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-auto-rows: 84px; gap: 8px">
-        ${(cal.cells || []).map((c, c_i) => `
-          <button ${c.day ? `data-h="${H(c.pick)}"` : ""} ${c.day ? "" : "disabled"} aria-label="${c.aria}" style="border-radius: 16px; padding: 6px; background: ${c.bg}; outline: ${c.ring}; outline-offset: -2px; opacity: ${c.op}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px">
-            <span style="font-size: 26px; font-weight: ${c.fw}; font-variant-numeric: tabular-nums; color: var(--ink)">${c.day}</span>
-            <span style="display: flex; gap: 4px; height: 8px">
-              ${(c.dots || []).map((d, d_i) => `<i style="width: 8px; height: 8px; border-radius: 999px; background: ${d}"></i>`).join("")}
-            </span>
-          </button>
-        `).join("")}
-      </div>
-
-      <div style="min-height: 64px; border-radius: 18px; background: var(--card); padding: 14px 24px; display: flex; align-items: center; font-size: 20px; line-height: 1.4; color: var(--ink)">${cal.detail}</div>
-
-      <div style="display: flex; gap: 28px; align-items: center; font-size: 16px; color: var(--muted)">
-        <span style="display: flex; align-items: center; gap: 8px"><i style="width: 10px; height: 10px; border-radius: 999px; background: #d9a521; display: inline-block"></i> Poya day</span>
-        <span style="display: flex; align-items: center; gap: 8px"><i style="width: 10px; height: 10px; border-radius: 999px; background: #c0552f; display: inline-block"></i> Public holiday</span>
-        <span style="display: flex; align-items: center; gap: 8px"><i style="width: 10px; height: 10px; border-radius: 999px; background: #4a9d5b; display: inline-block"></i> Retreat</span>
-      </div>
-      </div>
-    </div>
-  ` : ""}
-</div>
-`;
-  }
-}
   </script>
   <script>
 /* ──────────────────────────────────────────────────────────────
@@ -1848,23 +1195,14 @@ function viewMobile(V, H) {
   }
 
   /* ── render ─────────────────────────────────────────────────── */
-  // The 1080x1920 artboard only suits a tall portrait screen: the monastery's
-  // wall panel, or a tablet held upright. A phone, a phone turned sideways and
-  // a desktop all get the flow layout instead, which reflows to their width.
-  var MOBILE = window.matchMedia('(max-width: 699px), (orientation: landscape)');
-  function isMobile() { return MOBILE.matches; }
+  // One layout, reflowed to whatever width it is given.
 
   function render() {
     handlers = [];
     var V = renderVals();
-    var mobile = isMobile();
-    document.body.dataset.mode = mobile ? 'mobile' : 'kiosk';
-    stage.innerHTML = mobile ? viewMobile(V, H) : view(V, H);
+    stage.innerHTML = viewMobile(V, H);
     stage.__V = V;
   }
-  var onModeChange = function () { stage.dataset.front = 0; render(); };
-  if (MOBILE.addEventListener) MOBILE.addEventListener('change', onModeChange);
-  else if (MOBILE.addListener) MOBILE.addListener(onModeChange);
 
   // One listener for the whole artboard: each interactive element carries the
   // index of its handler in the table built during the last render.
@@ -1997,53 +1335,6 @@ function viewMobile(V, H) {
 })();
   </script>
 
-  <script>
-    /* Scale the artboard to the screen, inside the safe area. */
-    (function () {
-      var stage = document.getElementById('stage');
-      var box = document.getElementById('fit');
-      function fit() {
-        // The flow layout is ordinary document flow; nothing to scale.
-        if (window.matchMedia('(max-width: 699px), (orientation: landscape)').matches) {
-          stage.__w = null;
-          stage.style.width = stage.style.height = stage.style.transform = '';
-          return;
-        }
-        var w = box.clientWidth, h = box.clientHeight;
-        if (!w || !h) return;
-        // The artboard is drawn 1080 wide. A kiosk panel shows it near 1:1,
-        // but a phone would shrink it to about a third and the type — sized
-        // to be read from a few feet away — becomes unreadable in the hand.
-        // Narrowing the artboard on a phone scales everything up; the layout
-        // is fluid across its width, so the columns simply get narrower.
-        var BASE = 1080;
-        // Never shrink past the design's own proportions; whichever axis has
-        // room to spare simply gets a bigger artboard.
-        var s = Math.min(w / BASE, h / (BASE * 16 / 9));
-        var sw = w / s, sh = h / s;
-        if (stage.__w === sw && stage.__h === sh) return;   // nothing moved
-        stage.__w = sw; stage.__h = sh;
-        stage.style.width  = sw + 'px';
-        stage.style.height = sh + 'px';
-        stage.style.transform = 'scale(' + s + ')';
-      }
-      fit();
-      // iOS resizes this box when its URL bar slides in or out, and does not
-      // reliably fire `resize` for it. Left unobserved, the artboard keeps a
-      // stale height and the bottom row of tiles is clipped away.
-      if (window.ResizeObserver) new ResizeObserver(fit).observe(box);
-      window.addEventListener('resize', fit);
-      window.addEventListener('orientationchange', fit);
-      window.addEventListener('pageshow', fit);
-      if (window.visualViewport) {
-        window.visualViewport.addEventListener('resize', fit);
-        window.visualViewport.addEventListener('scroll', fit);
-      }
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
-      // Belt and braces for the first couple of seconds, while Safari settles.
-      [100, 300, 600, 1200, 2500].forEach(function (t) { setTimeout(fit, t); });
-    })();
-  </script>
 
   <!-- eco-theme: the same day/night toggle the rest of the site uses -->
   <link rel="stylesheet" href="../eco-theme.css?v=3">
