@@ -1278,7 +1278,7 @@ function viewMobile(V, H) {
 
   // Hero slideshow and the gallery preview grid come from the gallery's own
   // manifest, so new photographs appear here without touching this page.
-  fetch('../gallery/photos/manifest.json')
+  fetch('../gallery/photos/manifest.json?v=8')
     .then(function (r) { return r.json(); })
     .then(function (list) {
       var all = list.map(function (p) { return '../gallery/' + p.src; });
