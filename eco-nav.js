@@ -43,6 +43,7 @@
     if (!isKiosk) return;                                        // installed kiosk only
     if (location.pathname.indexOf("/dashboard") !== -1) return;  // already on the dashboard
     var IDLE_MS = 120000;                                        // 2 minutes of no interaction
+    var READER_IDLE_MS = 300000;                                 // 5 while a document is open
     var DASH = ROOT + "dashboard/";
     var timer, last = Date.now();
     function go() {
@@ -60,8 +61,19 @@
       }
       // Reading is passive: the e-book and retreat-document readers can sit
       // untouched for minutes on one page. Both mark themselves .reader.open
-      // while a document is up, and clear it on close.
-      if (document.querySelector(".reader.open")) { reset(); return; }
+      // while a document is up, and clear it on close. Rather than defer for
+      // as long as it stays open — which would strand the kiosk on a book
+      // somebody walked away from — give reading a longer window and then
+      // return as usual. `last` is only moved by a real interaction, so this
+      // measures genuine idle time, not time since the last check.
+      if (document.querySelector(".reader.open")) {
+        var idle = Date.now() - last;
+        if (idle < READER_IDLE_MS) {
+          clearTimeout(timer);
+          timer = setTimeout(go, READER_IDLE_MS - idle);
+          return;
+        }
+      }
       location.href = DASH;
     }
     function reset() { last = Date.now(); clearTimeout(timer); timer = setTimeout(go, IDLE_MS); }
