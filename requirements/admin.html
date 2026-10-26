@@ -8,8 +8,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&family=Noto+Sans+Sinhala:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=20" />
 <script>
-  document.documentElement.setAttribute("data-theme", localStorage.getItem("rk-theme") || "saffron");
-  document.documentElement.setAttribute("data-mode", localStorage.getItem("rk-mode") || "day");
+  // The public site's day/night toggle owns "rk-theme" and writes light/dark
+  // into it, so this app keeps its palette under its own "rq-" keys. An older
+  // choice is carried over once, but only when it really is a palette name.
+  var RQ_THEMES = ["saffron", "claret", "indigo", "ochre", "sage"];
+  var RQ_MODES  = ["day", "night"];
+  function rqPref(key, legacyKey, valid, fallback) {
+    try {
+      var v = localStorage.getItem(key);
+      if (valid.indexOf(v) >= 0) return v;
+      var old = localStorage.getItem(legacyKey);
+      v = valid.indexOf(old) >= 0 ? old : fallback;
+      localStorage.setItem(key, v);
+      return v;
+    } catch (e) { return fallback; }
+  }
+  document.documentElement.setAttribute("data-theme", rqPref("rq-theme", "rk-theme", RQ_THEMES, "saffron"));
+  document.documentElement.setAttribute("data-mode",  rqPref("rq-mode",  "rk-mode",  RQ_MODES,  "day"));
 </script>
 </head>
 <body>

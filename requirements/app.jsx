@@ -200,8 +200,8 @@ function App() {
   const [sort, setSort] = useState("urgent");
   const [search, setSearch] = useState("");
   const [pledgeFor, setPledgeFor] = useState(null);
-  const [theme, setTheme] = useState(localStorage.getItem("rk-theme") || "saffron");
-  const [mode, setMode] = useState(localStorage.getItem("rk-mode") || "day");
+  const [theme, setTheme] = useState(localStorage.getItem("rq-theme") || "saffron");
+  const [mode, setMode] = useState(localStorage.getItem("rq-mode") || "day");
   const [tweaksOpen, setTweaksOpen] = useState(false);
 
   useEffect(() => {
@@ -213,11 +213,11 @@ function App() {
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("rk-theme", theme);
+    localStorage.setItem("rq-theme", theme);
   }, [theme]);
   useEffect(() => {
     document.documentElement.setAttribute("data-mode", mode);
-    localStorage.setItem("rk-mode", mode);
+    localStorage.setItem("rq-mode", mode);
   }, [mode]);
 
   useEffect(() => {
