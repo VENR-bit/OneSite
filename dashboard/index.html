@@ -48,29 +48,33 @@
        and the toggle it injects lets anyone override it.
        ───────────────────────────────────────────────────────── */
     :root, :root[data-theme="night"] {
-      --bg:#1f1a14; --bg-deep:#16120d; --card:#2a241c; --card-2:#342c22;
+      /* One tonal scale, stepping up from the background in its own hue,
+         so the cards read as the page rather than as patches on it. */
+      --bg:#1f1a14; --bg-deep:#16120d; --card:#29221a; --card-2:#31291f;
       --ink:#f3ecdb; --ink-dim:#d8ccb4; --muted:#a6977c;
-      --line:#3a3025; --line-soft:#5c4f3c;
+      --line:#3a3025; --line-soft:#4b4031;
       --accent:#c79a5c; --accent-ink:#c79a5c; --accent-soft:#e0b76a;
       --paper:#f3ecdb; --paper-ink:#1f1a14; --paper-muted:#5c5141;
       --invert:#1f1a14; --invert-ink:#f3ecdb;
-      --t-hero:#654b2e;  --t-book:#7b6248;  --t-dana:#624d3f;   --t-contact:#5a4b43;
-      --t-gallery:#6a594a; --t-videos:#726659; --t-news:#75635a; --t-reviews:#6b5342;
-      --t-chip:#574738;  --t-sel:#603b17;   --t-dark:#332415;   --t-shade:#3c2517;
-      --t-seg:#2a231b;   --t-seg-done:#a97d51;
+      --t-hero:#534330;  --t-book:#463929;  --t-dana:#463929;   --t-contact:#29221a;
+      --t-gallery:#2e261d; --t-videos:#31291f; --t-news:#3a3024; --t-reviews:#342b21;
+      --t-chip:#3a3024;  --t-sel:#604e38;   --t-dark:#2b231a;   --t-shade:#241e17;
+      --t-seg:#2a2219;   --t-seg-done:#8a6f4e;
       color-scheme: dark;
     }
     :root[data-theme="paper"] {
-      --bg:#f4ede0; --bg-deep:#ece3d1; --card:#fdfbf6; --card-2:#f6f0e4;
+      /* The same idea on paper: plain surfaces lift toward white as the
+         rest of the site does, and the feature tiles warm gently down. */
+      --bg:#f4ede0; --bg-deep:#ece3d1; --card:#fbf6ec; --card-2:#f7f0e2;
       --ink:#1f1a14; --ink-dim:#463d31; --muted:#645a4a;
       --line:#e6dcc6; --line-soft:#d8cbb2;
       --accent:#a3763c; --accent-ink:#7f5726; --accent-soft:#c79a5c;
       --paper:#fdfbf6; --paper-ink:#1f1a14; --paper-muted:#5c5141;
       --invert:#2a241c; --invert-ink:#f3ecdb;
-      --t-hero:#e3d2b6;  --t-book:#ead9c0;  --t-dana:#e8d6c0;   --t-contact:#e9dfd2;
-      --t-gallery:#ebe0ce; --t-videos:#ece4d8; --t-news:#eddfd3; --t-reviews:#e9dcc8;
-      --t-chip:#e6d9c4;  --t-sel:#ecdcc0;   --t-dark:#e7dcc8;   --t-shade:#e2d6c2;
-      --t-seg:#e0d6c4;   --t-seg-done:#c9a97c;
+      --t-hero:#e4d3b4;  --t-book:#ecdfc8;  --t-dana:#ecdfc8;   --t-contact:#fbf6ec;
+      --t-gallery:#f8f2e6; --t-videos:#f7f0e2; --t-news:#f2e9d9; --t-reviews:#f5ecdd;
+      --t-chip:#f2e9d9;  --t-sel:#dcc69d;   --t-dark:#f9f3e8;   --t-shade:#f1e8d8;
+      --t-seg:#e9e0cf;   --t-seg-done:#c8ab7e;
       color-scheme: light;
     }
     /* the press flash inverts, so it needs the opposite surface */
