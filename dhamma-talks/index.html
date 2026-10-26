@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <script>(function(){try{var m=localStorage.getItem("rk-theme");if(m!=="light"&&m!=="dark"&&m!=="auto")m="auto";var h=new Date().getHours();var t=(m==="auto")?((h>=6&&h<18)?"light":"dark"):m;var r=document.documentElement;r.setAttribute("data-theme",t);r.setAttribute("data-theme-mode",m);}catch(e){}})();</script>
+  <script>(function(){try{var m=localStorage.getItem("rk-theme"),u=+localStorage.getItem("rk-theme-until");if((m!=="light"&&m!=="dark")||!u||Date.now()>=u){m="auto";localStorage.removeItem("rk-theme");localStorage.removeItem("rk-theme-until");}var h=new Date().getHours();var day=(m==="auto")?(h>=6&&h<18):(m==="light");var t=day?"light":"dark";var r=document.documentElement;r.setAttribute("data-theme",t);r.setAttribute("data-theme-mode",m);}catch(e){}})();</script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Dhamma Talks — Rideekanda Forest Monastery</title>
@@ -56,6 +56,6 @@
   <script id="eco-footer" src="../eco-footer.js?v=5" data-root="../" defer></script>
   <!-- eco-theme -->
   <link rel="stylesheet" href="../eco-theme.css?v=3">
-  <script src="../eco-theme.js?v=3" defer></script>
+  <script src="../eco-theme.js?v=4" defer></script>
 </body>
 </html>
