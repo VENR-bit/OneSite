@@ -72,12 +72,6 @@
 "h": 440
 },
 {
-"src": "photos/photo-007.jpg?v=2",
-"thumb": "photos/thumbs/photo-007.jpg?v=2",
-"w": 964,
-"h": 1280
-},
-{
 "src": "photos/photo-011.jpg?v=2",
 "thumb": "photos/thumbs/photo-011.jpg?v=2",
 "w": 964,
@@ -90,26 +84,8 @@
 "h": 964
 },
 {
-"src": "photos/photo-013.jpg?v=2",
-"thumb": "photos/thumbs/photo-013.jpg?v=2",
-"w": 1280,
-"h": 964
-},
-{
-"src": "photos/photo-014.jpg?v=2",
-"thumb": "photos/thumbs/photo-014.jpg?v=2",
-"w": 1280,
-"h": 964
-},
-{
 "src": "photos/photo-015.jpg?v=2",
 "thumb": "photos/thumbs/photo-015.jpg?v=2",
-"w": 1280,
-"h": 964
-},
-{
-"src": "photos/photo-017.jpg?v=2",
-"thumb": "photos/thumbs/photo-017.jpg?v=2",
 "w": 1280,
 "h": 964
 },
