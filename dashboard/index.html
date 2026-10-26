@@ -287,13 +287,10 @@
     .m-tile:active { transform: scale(.975); }
     /* The tiles run 140-180px tall but hold only ~70px of text, so a small
        glyph left them looking hollow. */
-    .m-tile svg { width: 54px; height: 54px; stroke: var(--accent-ink); stroke-width: 1.8; }
+    .m-tile svg { width: 54px; height: 54px; stroke: var(--accent-ink); stroke-width: 1.1; }
     .m-tile b { display: block; font-family: 'Cormorant Garamond', serif;
                 font-size: 21px; font-weight: 600; line-height: 1.1; }
     .m-tile span { display: block; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
-    .m-tile.photo { padding: 0; overflow: hidden; }
-    .m-tile.photo img { width: 100%; height: 76px; object-fit: cover; display: block; }
-    .m-tile.photo .m-tile-foot { padding: 11px 14px 13px; text-align: center; width: 100%; }
 
     .m-sect { font-size: 11.5px; letter-spacing: .15em; text-transform: uppercase;
               color: var(--accent-ink); font-weight: 600; margin: 20px 0 9px; }
@@ -1077,7 +1074,8 @@ function viewMobile(V, H) {
     news:'<path d="M5 7h15v19H8a3 3 0 0 1-3-3z"/><path d="M20 13h7v10a3 3 0 0 1-3 3"/><path d="M9 12h7"/><path d="M9 16h7"/><path d="M9 20h5"/>',
     projects:'<path d="M4 27h24"/><path d="M7 27V15l9-7 9 7v12"/><path d="M13 27v-7h6v7"/>',
     reviews:'<path d="M6 8h20v13H13l-6 5v-5H6z"/><path d="M11 13h10"/><path d="M11 17h6"/>',
-    libraries:'<path d="M5 6h7a4 4 0 0 1 4 4v16a3 3 0 0 0-3-3H5z"/><path d="M27 6h-7a4 4 0 0 0-4 4v16a3 3 0 0 1 3-3h8z"/>'
+    libraries:'<path d="M5 6h7a4 4 0 0 1 4 4v16a3 3 0 0 0-3-3H5z"/><path d="M27 6h-7a4 4 0 0 0-4 4v16a3 3 0 0 1 3-3h8z"/>',
+    monastery:'<path d="M16 3v4"/><path d="M10 14a6 6 0 0 1 12 0"/><path d="M7 14h18"/><path d="M9 14v10"/><path d="M23 14v10"/><path d="M14 24v-5h4v5"/><path d="M4 27h24"/>'
   };
   var S32 = function (d, cls) {
     return '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" ' +
@@ -1327,12 +1325,8 @@ function viewMobile(V, H) {
     '</button>' +
 
     '<div class="m-grid">' +
-      '<a class="m-tile photo" href="../retreat-center/">' +
-        '<img loading="lazy" decoding="async" src="kiosk/retreat-practice.jpg" alt="">' +
-        '<div class="m-tile-foot"><b>Retreat Program</b><span class="si">භාවනා වැඩසටහන</span></div></a>' +
-      '<a class="m-tile photo" href="../monastery/">' +
-        '<img loading="lazy" decoding="async" src="kiosk/0ff4e629338a98ba7d200d775764ed8c.jpg" alt="">' +
-        '<div class="m-tile-foot"><b>The Monastery</b><span class="si">ආරණ්‍ය පිළිබඳ</span></div></a>' +
+      tile({ i: 'retreat',   en: 'Retreat Program', si: 'භාවනා වැඩසටහන', href: '../retreat-center/' }) +
+      tile({ i: 'monastery', en: 'The Monastery',   si: 'ආරණ්‍ය පිළිබඳ',  href: '../monastery/' }) +
       tile({ i: 'book', en: 'Book Your Stay', si: 'නවාතැන වෙන් කරන්න', href: '../book-your-stay/' }) +
       tile({ i: 'contact', en: 'Contact', si: 'සම්බන්ධ වන්න', href: '../contact/' }) +
       tile({ i: 'dana', en: 'Donate/Dāna', si: 'පරිත්‍යාග', href: '../donate/' }) +
@@ -1357,9 +1351,9 @@ function viewMobile(V, H) {
       '<a class="libcard" href="../retreat-docs/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5"/><path d="M9 13h7"/><path d="M9 17h5"/></svg><span class="en">Retreat Documents</span><span class="sub si">වැඩසටහන් ලේඛන</span></a>' +
     '</div>' +
 
-    '<a class="m-card" href="../" style="display:flex;align-items:center;gap:14px;background:var(--paper);color:var(--paper-ink);margin-top:16px">' +
-      '<img src="kiosk/ec2ea202af236ed9ad148ee9fb0af97a.svg" alt="QR code for www.rideekanda.com" style="width:74px;height:74px;flex:none">' +
-      '<div style="min-width:0"><h3>Take us with you</h3><p style="color:var(--paper-muted)">Scan for the full website</p></div></a>' +
+    '<a class="m-card" href="../" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;background:var(--paper);color:var(--paper-ink);margin-top:16px;padding:18px 16px">' +
+      '<img src="kiosk/ec2ea202af236ed9ad148ee9fb0af97a.svg" alt="QR code for the Rideekanda website" style="width:104px;height:104px;flex:none">' +
+      '<div><h3>Take us with you</h3><p style="color:var(--paper-muted)">Scan for the full website</p></div></a>' +
 
     '<div class="m-foot">Rideekanda Forest Monastery · Udasgiriya, Matale</div>' +
   '</div>';
