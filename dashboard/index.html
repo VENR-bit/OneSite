@@ -332,6 +332,24 @@
     .m-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 19px;
                  font-weight: 600; margin: 0 0 4px; line-height: 1.15; }
     .m-card p { margin: 0; font-size: 13.5px; line-height: 1.45; color: var(--ink-dim); }
+
+    /* "Take us with you": the QR and its label read as one object, side by
+       side and centred in the slab, rather than stacked down the middle of a
+       card that is far wider than either of them. */
+    .m-takeus { display: flex; flex-direction: row; align-items: center;
+                justify-content: center; gap: 18px; text-align: left;
+                background: var(--paper); color: var(--paper-ink);
+                margin-top: 16px; padding: 18px 16px; }
+    .m-takeus img { width: 104px; height: 104px; flex: none; }
+    .m-takeus h3 { margin: 0; }
+    .m-takeus .si { font-size: 15px; line-height: 1.5; color: var(--paper-ink);
+                    margin: 1px 0 6px; }
+    .m-takeus p.m-takeus-sub { font-size: 12.5px; color: var(--paper-muted); }
+    .m-takeus p.m-takeus-sub.si { font-size: 12.5px; margin: 1px 0 0; }
+    /* On the narrowest phones the label has nowhere to go beside the code. */
+    @media (max-width: 359px) {
+      .m-takeus { flex-direction: column; text-align: center; gap: 12px; }
+    }
     .m-row { display: flex; gap: 12px; align-items: stretch; }
     .m-row img { width: 104px; height: 78px; object-fit: cover; border-radius: 11px;
                  flex: none; }
@@ -713,9 +731,12 @@ function viewMobile(V, H) {
       '<a class="libcard" href="../retreat-docs/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5"/><path d="M9 13h7"/><path d="M9 17h5"/></svg><span class="en">Retreat Documents</span><span class="sub si">වැඩසටහන් ලේඛන</span></a>' +
     '</div>' +
 
-    '<a class="m-card" href="../" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;background:var(--paper);color:var(--paper-ink);margin-top:16px;padding:18px 16px">' +
-      '<img src="kiosk/ec2ea202af236ed9ad148ee9fb0af97a.svg" alt="QR code for the Rideekanda website" style="width:104px;height:104px;flex:none">' +
-      '<div><h3>Take us with you</h3><p style="color:var(--paper-muted)">Scan for the full website</p></div></a>' +
+    '<a class="m-card m-takeus" href="../">' +
+      '<img src="kiosk/ec2ea202af236ed9ad148ee9fb0af97a.svg" alt="QR code for the Rideekanda website">' +
+      '<div><h3>Take us with you</h3>' +
+        '<p class="si">අප ඔබ සමඟ රැගෙන යන්න</p>' +
+        '<p class="m-takeus-sub">Scan for the full website</p>' +
+        '<p class="m-takeus-sub si">සම්පූර්ණ වෙබ් අඩවිය ස්කෑන් කරන්න</p></div></a>' +
 
     '<div class="m-foot">Rideekanda Forest Monastery · Udasgiriya, Matale</div>' +
   '</div>';
