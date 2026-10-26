@@ -288,10 +288,8 @@
       .m-tile svg { width: 50px; height: 50px; }
     }
     @media (min-width: 1100px) {
-      /* On a desktop the photo is the thing worth looking at, so it gets a
-         true 5:3 frame rather than the landscape band — which means dropping
-         the short-screen cap that would otherwise crop it back. */
-      .m-hero { aspect-ratio: 5 / 3; max-height: none; }
+      /* wide enough that a 24:9 hero would dominate; make it a band */
+      .m-hero { aspect-ratio: 32 / 9; }
     }
     /* sheets ------------------------------------------------- */
     .m-sheet { position: fixed; inset: 0; z-index: 60; background: var(--bg);
