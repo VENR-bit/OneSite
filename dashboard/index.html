@@ -130,7 +130,10 @@
                                   transform: scale(.95); }
     .chip.pressed * { color: var(--paper-ink) !important; }
 
-    .slide { transition: opacity 1.8s ease, transform 12s ease-out;
+    /* A long cross-fade leaves the two photos visibly ghosted over each
+       other; .8s reads as a change rather than a double exposure. The slow
+       scale is the Ken Burns drift and stays long. */
+    .slide { transition: opacity .8s ease, transform 12s ease-out;
              will-change: opacity, transform; }
     .libtile { transition: background-color .25s ease, color .25s ease, transform .18s ease; }
     .libtile:active { transform: scale(.98); }
