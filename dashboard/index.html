@@ -271,7 +271,10 @@
     .m-bars i { flex: 1; height: 7px; border-radius: 999px; }
 
     /* tiles -------------------------------------------------- */
-    .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+    /* grid-auto-rows: 1fr keeps every row the height of the tallest, so the
+       photo cards and the plain ones come out identical. */
+    .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px;
+              grid-auto-rows: 1fr; }
     .m-tile { display: flex; flex-direction: column; justify-content: space-between;
               gap: 14px; min-height: 112px; padding: 15px; border-radius: 18px;
               background: var(--card); color: var(--ink); text-decoration: none;
@@ -283,19 +286,7 @@
     .m-tile b { display: block; font-family: 'Cormorant Garamond', serif;
                 font-size: 21px; font-weight: 600; line-height: 1.1; }
     .m-tile span { display: block; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
-    .m-tile.wide { grid-column: 1 / -1; }
-    .m-tile.hero-tile { background: var(--t-hero); min-height: 150px; }
-    .m-tile.hero-tile svg { width: 62px; height: 62px; stroke: var(--ink); }
-    .m-tile.hero-tile b { font-size: 27px; }
-    .m-tile.hero-tile span { color: var(--ink-dim); }
-    /* the inverted badge sits inside a tile, so it must out-specify
-       .m-tile.hero-tile span, which is (0,2,1) */
-    .m-tile.hero-tile .m-badge,
-    .m-tile .m-badge { color: var(--invert-ink); }
-    .m-badge { align-self: flex-start; font-size: 10.5px; font-weight: 600;
-               letter-spacing: .09em; text-transform: uppercase; background: var(--invert);
-               color: var(--invert-ink); padding: 5px 10px; border-radius: 999px; }
-    .m-tile.photo { padding: 0; overflow: hidden; min-height: 132px; }
+    .m-tile.photo { padding: 0; overflow: hidden; }
     .m-tile.photo img { width: 100%; height: 76px; object-fit: cover; display: block; }
     .m-tile.photo .m-tile-foot { padding: 11px 14px 13px; }
 
@@ -1263,8 +1254,7 @@ function viewMobile(V, H) {
     var tag = o.href ? 'a' : 'button';
     var attrs = o.href ? ' href="' + o.href + '"' : ' data-h="' + H(o.on) + '"';
     return '<' + tag + ' class="m-tile ' + (o.cls || '') + '"' + attrs + '>' +
-      (o.badge ? '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">' + S32(ico[o.i]) + '<span class="m-badge">' + o.badge + '</span></div>'
-               : S32(ico[o.i])) +
+      S32(ico[o.i]) +
       '<div><b>' + o.en + '</b><span class="si">' + o.si + '</span></div></' + tag + '>';
   };
 
@@ -1312,7 +1302,9 @@ function viewMobile(V, H) {
     '</button>' +
 
     '<div class="m-grid">' +
-      tile({ cls: 'hero-tile wide', i: 'retreat', en: 'Retreat Program', si: 'භාවනා වැඩසටහන', href: '../retreat-center/', badge: '7-day residential' }) +
+      '<a class="m-tile photo" href="../retreat-center/">' +
+        '<img loading="lazy" decoding="async" src="kiosk/retreat-practice.jpg" alt="">' +
+        '<div class="m-tile-foot"><b>Retreat Program</b><span class="si">භාවනා වැඩසටහන</span></div></a>' +
       '<a class="m-tile photo" href="../monastery/">' +
         '<img loading="lazy" decoding="async" src="kiosk/0ff4e629338a98ba7d200d775764ed8c.jpg" alt="">' +
         '<div class="m-tile-foot"><b>The Monastery</b><span class="si">ආරණ්‍ය පිළිබඳ</span></div></a>' +
@@ -1323,7 +1315,7 @@ function viewMobile(V, H) {
       tile({ i: 'videos', en: 'Video Gallery', si: 'වීඩියෝ', href: '../videos/' }) +
       tile({ i: 'news', en: 'News & Events', si: 'පුවත් සහ සිදුවීම්', on: open.news }) +
       tile({ i: 'projects', en: 'Projects', si: 'ව්‍යාපෘති', on: open.projects }) +
-      tile({ cls: 'wide', i: 'reviews', en: 'Reviews', si: 'අදහස්', href: '../reviews/' }) +
+      tile({ i: 'reviews', en: 'Reviews', si: 'අදහස්', href: '../reviews/' }) +
     '</div>' +
 
     '<div class="m-sect-row">' +
