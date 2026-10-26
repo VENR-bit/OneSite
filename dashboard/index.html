@@ -189,10 +189,6 @@
               background: var(--card); }
     .m-hero img { position: absolute; inset: 0; width: 100%; height: 100%;
                   object-fit: cover; }
-    .m-hero-tag { position: absolute; right: 10px; bottom: 10px; display: flex;
-                  align-items: center; gap: 6px; background: rgba(31,26,20,.88);
-                  color: var(--invert-ink); border-radius: 999px; padding: 5px 11px;
-                  font-size: 11.5px; }
 
     /* weather + date, as a pair of cards under the hero ------ */
     .m-status { display: grid; grid-template-columns: 1fr 1fr; gap: 11px;
@@ -675,7 +671,6 @@ function viewMobile(V, H) {
         return '<img class="slide" data-layer="' + i + '"' + (sl.src ? ' src="' + sl.src + '"' : '') +
                ' decoding="async" alt="" style="opacity:' + sl.op + ';transform:scale(' + sl.scale + ')">';
       }).join('') +
-      '<div class="m-hero-tag"><span data-slide-count>' + slideNum + ' / ' + slideCount + '</span></div>' +
     '</div>' +
 
     '<div class="m-status">' +
@@ -1166,7 +1161,6 @@ function viewMobile(V, H) {
         { src: SLIDES[state.slide] || '', op: 1, scale: 1.08 },
         { src: '', op: 0, scale: 1 }
       ],
-      slideNum: state.slide + 1, slideCount: SLIDES.length || 1,
       open: open, cls: cls, lib: lib, lcls: lcls,
       close: function () { setState({ cur: null }); },
       cur: cur, hasCur: !!cur, videos: VIDEOS, explore: EXPLORE,
@@ -1267,8 +1261,6 @@ function viewMobile(V, H) {
       imgs[front].style.opacity = 0;
       imgs[front].style.transform = 'scale(1)';
       stage.dataset.front = back;
-      var c = stage.querySelector('[data-slide-count]');
-      if (c) c.textContent = (next + 1) + ' / ' + n;
     };
     if (img.decode) img.decode().then(show).catch(show);
     else img.onload = show;
