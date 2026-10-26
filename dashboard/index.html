@@ -288,12 +288,10 @@
       .m-tile svg { width: 50px; height: 50px; }
     }
     @media (min-width: 1100px) {
-      /* On a desktop the photo gets a true 5:3 frame rather than the
-         landscape band. At the full content width that would be 672px tall
-         and swallow the first screen, so the frame is narrowed and centred:
-         the ratio holds and the cards below stay above the fold. */
-      .m-hero { aspect-ratio: 5 / 3; max-height: none;
-                max-width: 820px; margin-left: auto; margin-right: auto; }
+      /* On a desktop the photo is the thing worth looking at, so it gets a
+         true 5:3 frame rather than the landscape band — which means dropping
+         the short-screen cap that would otherwise crop it back. */
+      .m-hero { aspect-ratio: 5 / 3; max-height: none; }
     }
     /* sheets ------------------------------------------------- */
     .m-sheet { position: fixed; inset: 0; z-index: 60; background: var(--bg);
