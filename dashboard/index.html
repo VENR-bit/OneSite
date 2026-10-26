@@ -77,6 +77,12 @@
       --t-seg:#e9e0cf;   --t-seg-done:#c8ab7e;
       color-scheme: light;
     }
+    /* The lotus mark comes in a light and a dark colourway; the page shows
+       whichever reads against the current background. */
+    .lotus-paper { display: none; }
+    :root[data-theme="paper"] .lotus-night { display: none; }
+    :root[data-theme="paper"] .lotus-paper { display: block; }
+
     /* the press flash inverts, so it needs the opposite surface */
     :root[data-theme="paper"] .tile.pressed,
     :root[data-theme="paper"] a.tile:active,
@@ -421,10 +427,10 @@ function view(V, H) {
   <div class="hdr-bar" style="height: 136px; box-sizing: border-box; padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-shrink: 0">
     <div style="display: flex; align-items: center; gap: 20px">
       <button class="tile" data-h="${H(openExplore)}" aria-label="Explore Rideekanda" style="height: 60px; padding: 0 24px 0 16px; border-radius: 999px; background: var(--paper); color: var(--paper-ink); border: 1px solid var(--accent); display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; flex-shrink: 0">
-        <img src="kiosk/ccdfd77b7b5333a5414270ab6eee73c5.png" alt="" style="height: 26px; width: auto">
+        <img src="kiosk/lotus-dark.png" alt="" style="height: 26px; width: auto">
         Explore
       </button>
-      <img class="hdr-logo" src="kiosk/7f193d9120a7243f62e2c416768bb75d.png" alt="Rideekanda lotus logo" style="height: 60px; width: auto">
+      <img class="hdr-logo lotus-night" src="kiosk/7f193d9120a7243f62e2c416768bb75d.png" alt="Rideekanda lotus logo" style="height: 60px; width: auto"><img class="hdr-logo lotus-paper" src="kiosk/lotus-dark.png" alt="Rideekanda lotus logo" style="height: 60px; width: auto">
       <div style="display: flex; flex-direction: column; gap: 2px">
         <div class="hdr-title" style="font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; line-height: 1">Rideekanda Forest Monastery</div>
         <div class="si" style="font-size: 17px; color: var(--muted)">රිදීකන්ද ආරණ්‍ය සේනාසනය · Udasgiriya, Matale</div>
@@ -597,11 +603,11 @@ function view(V, H) {
         </div>
       </button>
       <div style="flex: 1; min-width: 0; display: flex; flex-wrap: wrap; gap: 10px">
-        <button class="chip ${lcls.ebooks}" data-h="${H(lib.ebooks)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: var(--ink); font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: var(--t-chip)77">E-Book Library<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ඊ-පොත් පුස්තකාලය</span></button>
-        <button class="chip ${lcls.audio}" data-h="${H(lib.audio)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: var(--ink); font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: var(--t-chip)77">Audio Library<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ශ්‍රව්‍ය පුස්තකාලය</span></button>
-        <button class="chip ${lcls.talksEn}" data-h="${H(lib.talksEn)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: var(--ink); font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: var(--t-chip)77">Dhamma Talks · English<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ධර්ම දේශනා (ඉංග්‍රීසි)</span></button>
-        <button class="chip ${lcls.talksSi}" data-h="${H(lib.talksSi)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: var(--ink); font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: var(--t-chip)77">Dhamma Talks · Sinhala<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ධර්ම දේශනා (සිංහල)</span></button>
-        <button class="chip ${lcls.docs}" data-h="${H(lib.docs)}" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; color: var(--ink); font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15; background-color: var(--t-chip)77">Retreat Documents<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">වැඩසටහන් ලේඛන</span></button>
+        <a class="chip" href="../ebooks/" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; background: var(--t-chip); border: 1px solid var(--line); color: var(--ink); text-decoration: none; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15">E-Book Library<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ඊ-පොත් පුස්තකාලය</span></a>
+        <a class="chip" href="../audio-library/" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; background: var(--t-chip); border: 1px solid var(--line); color: var(--ink); text-decoration: none; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15">Audio Library<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ශ්‍රව්‍ය පුස්තකාලය</span></a>
+        <a class="chip" href="../dhamma-talks/" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; background: var(--t-chip); border: 1px solid var(--line); color: var(--ink); text-decoration: none; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15">Dhamma Talks · English<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ධර්ම දේශනා (ඉංග්‍රීසි)</span></a>
+        <a class="chip" href="../dhamma-talks/si/" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; background: var(--t-chip); border: 1px solid var(--line); color: var(--ink); text-decoration: none; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15">Dhamma Talks · Sinhala<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">ධර්ම දේශනා (සිංහල)</span></a>
+        <a class="chip" href="../retreat-docs/" style="min-height: 56px; padding: 6px 18px; border-radius: 999px; background: var(--t-chip); border: 1px solid var(--line); color: var(--ink); text-decoration: none; font-size: 16px; font-weight: 500; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; line-height: 1.15">Retreat Documents<span class="si" style="font-size: 13px; font-weight: 400; opacity: 0.85">වැඩසටහන් ලේඛන</span></a>
       </div>
     </div>
   </div>
@@ -954,19 +960,15 @@ function view(V, H) {
     </div>
   ` : ""}
   ${(hasCal) ? `
-    <div class="panel-in" role="dialog" aria-modal="true" aria-label="Monastery calendar" style="position: absolute; left: 0; right: 0; top: 136px; bottom: 0; z-index: 9; background: var(--bg); box-sizing: border-box; padding: 24px 48px 40px; display: flex; flex-direction: column; gap: 22px">
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px">
-        <button data-h="${H(closeCal)}" style="height: 68px; padding: 0 30px 0 22px; border-radius: 999px; background: var(--card); display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 500">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
-          Back
+    <div style="position: absolute; inset: 0; z-index: 11; background: rgba(15,12,9,0.72); display: flex; align-items: flex-start; justify-content: center; padding-top: 150px">
+      <div class="panel-in" role="dialog" aria-modal="true" aria-label="Monastery calendar" style="position: relative; width: 760px; box-sizing: border-box; background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 36px 40px 30px; display: flex; flex-direction: column; gap: 20px; color: var(--ink)">
+        <button data-h="${H(closeCal)}" aria-label="Close the calendar" style="position: absolute; top: 18px; right: 18px; width: 60px; height: 60px; border-radius: 999px; background: var(--card-2); display: flex; align-items: center; justify-content: center">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
         </button>
-        <div style="font-size: 16px; color: var(--muted); text-align: right">Returns to the start after ${idleSeconds} s without a touch</div>
-      </div>
 
-      <div style="display: flex; flex-direction: column; gap: 8px">
-        <div style="font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-ink); font-weight: 500">Poya days, holidays &amp; retreats</div>
-        <h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 72px; font-weight: 600; line-height: 0.95">Calendar</h2>
-        <div class="si" style="font-size: 22px; color: var(--muted)">දින දර්ශනය</div>
+      <div style="display: flex; flex-direction: column; gap: 4px; text-align: center">
+        <div style="font-size: 14px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-ink); font-weight: 600">Poya days, holidays &amp; retreats</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 600; line-height: 1.1">Calendar · <span class="si" style="font-size: 30px">දින දර්ශනය</span></div>
       </div>
 
       <div style="display: flex; align-items: center; justify-content: space-between; gap: 18px">
@@ -983,7 +985,7 @@ function view(V, H) {
         <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
       </div>
 
-      <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 8px">
+      <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-auto-rows: 84px; gap: 8px">
         ${(cal.cells || []).map((c, c_i) => `
           <button ${c.day ? `data-h="${H(c.pick)}"` : ""} ${c.day ? "" : "disabled"} aria-label="${c.aria}" style="border-radius: 16px; padding: 6px; background: ${c.bg}; outline: ${c.ring}; outline-offset: -2px; opacity: ${c.op}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px">
             <span style="font-size: 26px; font-weight: ${c.fw}; font-variant-numeric: tabular-nums; color: var(--ink)">${c.day}</span>
@@ -1000,6 +1002,7 @@ function view(V, H) {
         <span style="display: flex; align-items: center; gap: 8px"><i style="width: 10px; height: 10px; border-radius: 999px; background: #d9a521; display: inline-block"></i> Poya day</span>
         <span style="display: flex; align-items: center; gap: 8px"><i style="width: 10px; height: 10px; border-radius: 999px; background: #c0552f; display: inline-block"></i> Public holiday</span>
         <span style="display: flex; align-items: center; gap: 8px"><i style="width: 10px; height: 10px; border-radius: 999px; background: #4a9d5b; display: inline-block"></i> Retreat</span>
+      </div>
       </div>
     </div>
   ` : ""}
@@ -1238,7 +1241,7 @@ function viewMobile(V, H) {
   '<div class="m-head"><div class="m-head-row">' +
     '<button class="m-pill" data-h="' + H(openExplore) + '" aria-label="Explore Rideekanda">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>' +
-    '<img class="m-logo" src="kiosk/7f193d9120a7243f62e2c416768bb75d.png" alt="">' +
+    '<img class="m-logo lotus-night" src="kiosk/7f193d9120a7243f62e2c416768bb75d.png" alt=""><img class="m-logo lotus-paper" src="kiosk/lotus-dark.png" alt="">' +
     '<div class="m-name"><b>Rideekanda Forest Monastery</b>' +
       '<span class="si">රිදීකන්ද ආරණ්‍ය සේනාසනය · Udasgiriya, Matale</span></div>' +
   '</div></div>' +
