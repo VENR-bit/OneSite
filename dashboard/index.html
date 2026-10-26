@@ -338,13 +338,12 @@
        card that is far wider than either of them. */
     .m-takeus { display: flex; flex-direction: row; align-items: center;
                 justify-content: center; gap: 18px; text-align: left;
-                background: var(--paper); color: var(--paper-ink);
                 margin-top: 16px; padding: 18px 16px; }
-    .m-takeus img { width: 104px; height: 104px; flex: none; }
-    .m-takeus h3 { margin: 0; }
-    .m-takeus .si { font-size: 15px; line-height: 1.5; color: var(--paper-ink);
-                    margin: 1px 0 6px; }
-    .m-takeus p.m-takeus-sub { font-size: 12.5px; color: var(--paper-muted); }
+    /* The code carries its own white ground — it has to, to stay scannable —
+       so only its corners need softening against the card. */
+    .m-takeus img { width: 104px; height: 104px; flex: none; border-radius: 8px; }
+    .m-takeus h3 { margin: 0 0 3px; }
+    .m-takeus p.m-takeus-sub { font-size: 12.5px; color: var(--muted); }
     .m-takeus p.m-takeus-sub.si { font-size: 12.5px; margin: 1px 0 0; }
     /* On the narrowest phones the label has nowhere to go beside the code. */
     @media (max-width: 359px) {
@@ -734,7 +733,6 @@ function viewMobile(V, H) {
     '<a class="m-card m-takeus" href="../">' +
       '<img src="kiosk/ec2ea202af236ed9ad148ee9fb0af97a.svg" alt="QR code for the Rideekanda website">' +
       '<div><h3>Take us with you</h3>' +
-        '<p class="si">අප ඔබ සමඟ රැගෙන යන්න</p>' +
         '<p class="m-takeus-sub">Scan for the full website</p>' +
         '<p class="m-takeus-sub si">සම්පූර්ණ වෙබ් අඩවිය ස්කෑන් කරන්න</p></div></a>' +
 
