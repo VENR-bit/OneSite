@@ -9,6 +9,14 @@
   <link rel="icon" type="image/png" sizes="64x64" href="/app/favicon-64.png?v=3" />
   <link rel="icon" type="image/png" sizes="192x192" href="/app/icon-192.png?v=2" />
   <link rel="apple-touch-icon" href="/app/apple-touch-icon.png?v=2" />
+  <!-- Install to the Home Screen from here as well as from the dashboard.
+       The manifest's scope is "/" and its start_url is /dashboard/, so an
+       install begun on this page still opens the app at the dashboard. -->
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="Rideekanda" />
 <meta name="description" content="Rideekanda Forest Monastery — a Buddhist forest meditation monastery on a hillside in Matale, Sri Lanka. Residential retreats, the monastery, projects, news, and more." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -301,5 +309,14 @@
 <!-- eco-footer -->
   <link rel="stylesheet" href="eco-footer.css?v=4">
   <script id="eco-footer" src="eco-footer.js?v=5" data-root="" defer></script>
+  <script>
+    // An installable app needs a registered service worker on the page the
+    // install is offered from, not only on the dashboard.
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function () {});
+      });
+    }
+  </script>
 </body>
 </html>
