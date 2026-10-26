@@ -58,6 +58,10 @@
       for (var i = 0; i < media.length; i++) {
         if (!media[i].paused && !media[i].ended) { reset(); return; }
       }
+      // Reading is passive: the e-book and retreat-document readers can sit
+      // untouched for minutes on one page. Both mark themselves .reader.open
+      // while a document is up, and clear it on close.
+      if (document.querySelector(".reader.open")) { reset(); return; }
       location.href = DASH;
     }
     function reset() { last = Date.now(); clearTimeout(timer); timer = setTimeout(go, IDLE_MS); }
