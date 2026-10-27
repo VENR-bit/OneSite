@@ -222,6 +222,10 @@
                   gap: 10px; }
     .m-now-main b { font-family: 'Cormorant Garamond', serif; font-size: 25px;
                     font-weight: 600; line-height: 1.1; }
+    .m-now-main b i { font-family: 'Spectral', Georgia, serif; font-style: normal;
+                      font-size: 11px; font-weight: 600; letter-spacing: .14em;
+                      text-transform: uppercase; color: var(--accent-ink);
+                      margin-right: 9px; vertical-align: middle; }
     .m-now-main span { font-size: 12.5px; color: var(--ink-dim); text-align: right; }
     .m-bars { display: flex; gap: 3px; margin-top: 10px; }
     .m-bars i { flex: 1; height: 7px; border-radius: 999px; }
@@ -562,7 +566,7 @@ function viewMobile(V, H) {
     return '<div class="m-sheet">' + sheetBar('Back', closeRoutine) +
       '<div class="m-sheet-in">' +
         '<div class="m-kicker">7-day residential retreat</div>' +
-        '<h1 class="m-h1">The daily routine</h1><div class="m-si">දෛනික චර්යාව</div>' +
+        '<h1 class="m-h1">The daily routine</h1><div class="m-si">දින චරියාව</div>' +
         routine.map(function (r) {
           return '<button class="m-rt" data-h="' + H(r.pick) + '" style="background:' + r.bg + ';color:' + r.fg + '">' +
             '<time>' + esc(r.range) + '</time><div style="flex:1;min-width:0"><b>' + esc(r.label) + '</b>' +
@@ -690,8 +694,8 @@ function viewMobile(V, H) {
     '<button class="m-now" data-h="' + H(openRoutine) + '">' +
       '<div class="m-now-top">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:17px;height:17px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' +
-        '<b>Daily Routine</b><i class="si">දෛනික චර්යාව</i></div>' +
-      '<div class="m-now-main"><b>' + esc(nowLabel) + '</b>' +
+        '<b>Daily Routine</b><i class="si">දින චරියාව</i></div>' +
+      '<div class="m-now-main"><b><i>Now</i>' + esc(nowLabel) + '</b>' +
         '<span>Next: ' + esc(nextLabel) + '<br>' + nextTime + '</span></div>' +
       '<div class="m-bars">' + timeline.map(function (s) {
         return '<i class="' + s.cls + '" style="background:' + s.bg + '"></i>';
