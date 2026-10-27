@@ -416,6 +416,16 @@
     .m-days div { display: flex; flex-direction: column; align-items: center; gap: 4px;
                   font-size: 12px; }
     .m-days .ico { width: 28px; height: 28px; color: var(--accent-ink); }
+    /* Through to Microsoft's precipitation map, which cannot be embedded —
+       msn.com sends x-frame-options: sameorigin. Its loc parameter is base64
+       JSON holding the same coordinates the panel asks open-meteo for; move
+       one and move the other, or the map and the panel disagree. */
+    .m-wx-link { display: flex; align-items: center; justify-content: center;
+                 gap: 9px; margin-top: 14px; padding: 12px 16px;
+                 border-radius: 999px; background: var(--card);
+                 border: 1px solid var(--line); color: var(--ink);
+                 font-size: 13.5px; font-weight: 600; text-decoration: none; }
+    .m-wx-link svg { width: 18px; height: 18px; stroke: var(--accent-ink); }
     .m-ico svg { width: 100%; height: 100%; display: block; }
 
     /* inline weather glyphs */
@@ -629,6 +639,11 @@ function viewMobile(V, H) {
                    '<span>' + d.hi + '</span><span style="color:var(--muted)">' + d.lo + '</span></div>';
           }).join('') +
         '</div>' +
+        '<a class="m-wx-link" href="https://www.msn.com/en-us/weather/maps/precipitation/in-Rideekanda,Central-Province?loc=eyJsIjoiUmlkZWVrYW5kYSIsInIiOiJDZW50cmFsIFByb3ZpbmNlIiwiYyI6IlNyaSBMYW5rYSIsImkiOiJMSyIsImciOiJlbi11cyIsIngiOiI4MC41NjAyIiwieSI6IjcuNTM0OCJ9&amp;weadegreetype=C&amp;zoom=14" target="_blank" rel="noopener noreferrer">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+            '<path d="M4 15.5a4 4 0 0 1 1.1-7.8 5.5 5.5 0 0 1 10.6-1.2A4.2 4.2 0 0 1 20 10.6"/>' +
+            '<path d="M8 19.5l-.7 1.4M12 19.5l-.7 1.4M16 19.5l-.7 1.4M20 14.5a3.5 3.5 0 0 0-3.5-3.5H15"/>' +
+          '</svg>Rain radar on MSN</a>' +
         '<div class="m-foot">Updated ' + esc(wx.updated) + ' · open-meteo</div>' +
       '</div></div>';
   }
