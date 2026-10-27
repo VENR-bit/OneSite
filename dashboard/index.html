@@ -1276,8 +1276,9 @@ function viewMobile(V, H) {
 
   setInterval(function () {
     if (panelOpen() || SLIDES.length < 2) return;
-    var n = SLIDES.length, next = Math.floor(Math.random() * n);
-    if (next === state.slide) next = (next + 1 + Math.floor(Math.random() * (n - 1))) % n;
+    // Straight through the thirty most recent photographs, newest first, then
+    // round again — so a visitor watching the card sees each one in turn.
+    var n = SLIDES.length, next = (state.slide + 1) % n;
     state.slide = next;
     var imgs = stage.querySelectorAll('.slide');
     if (imgs.length < 2) return;
@@ -1304,8 +1305,9 @@ function viewMobile(V, H) {
     .then(function (r) { return r.json(); })
     .then(function (list) {
       var all = list.map(function (p) { return '../gallery/' + p.src; });
+      // The manifest is newest-first, so these are the 30 most recent.
       SLIDES = all.slice(0, 30);
-      state.slide = Math.floor(Math.random() * SLIDES.length);
+      state.slide = 0;
       // The nine-up grid is small on screen; take the manifest's thumbnails.
       if (PREVIEW.gallery) {
         PREVIEW.gallery.photos = list.slice(0, 9).map(function (p) {
