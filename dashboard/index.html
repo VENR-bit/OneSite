@@ -615,7 +615,7 @@ function viewMobile(V, H) {
         '</div>' +
         '<div class="m-sect">Hourly · today</div><div class="m-hours">' +
           wx.hourly.map(function (h) {
-            return '<div style="background:' + h.bg + '"><span style="color:' + h.tc + ';font-weight:' + h.fw + '">' + esc(h.t) + '</span>' +
+            return '<div' + (h.now ? ' data-now' : '') + ' style="background:' + h.bg + '"><span style="color:' + h.tc + ';font-weight:' + h.fw + '">' + esc(h.t) + '</span>' +
                    '<span class="ico m-ico">' + h.ico + '</span><span style="font-weight:' + h.fw + '">' + h.temp + '</span></div>';
           }).join('') +
         '</div>' +
@@ -1208,11 +1208,22 @@ function viewMobile(V, H) {
   /* ── render ─────────────────────────────────────────────────── */
   // One layout, reflowed to whatever width it is given.
 
+  // The hourly strip runs from midnight to midnight, so by evening "Now"
+  // would sit off the right-hand end of a row that opens at 00:00. Put it in
+  // the middle instead; scrollLeft clamps itself at either end of the day.
+  function centreHour() {
+    var row = stage.querySelector('.m-hours');
+    var now = row && row.querySelector('[data-now]');
+    if (!now) return;
+    row.scrollLeft = now.offsetLeft - (row.clientWidth - now.offsetWidth) / 2;
+  }
+
   function render() {
     handlers = [];
     var V = renderVals();
     stage.innerHTML = viewMobile(V, H);
     stage.__V = V;
+    centreHour();
   }
 
   // One listener for the whole artboard: each interactive element carries the
