@@ -1,5 +1,11 @@
 [
 {
+"src": "photos/photo-048.jpg?v=2",
+"thumb": "photos/thumbs/photo-048.jpg?v=2",
+"w": 1280,
+"h": 781
+},
+{
 "src": "photos/photo-103.jpg?v=2",
 "thumb": "photos/thumbs/photo-103.jpg?v=2",
 "w": 1280,
@@ -256,12 +262,6 @@
 "thumb": "photos/thumbs/photo-047.jpg?v=2",
 "w": 1280,
 "h": 964
-},
-{
-"src": "photos/photo-048.jpg?v=2",
-"thumb": "photos/thumbs/photo-048.jpg?v=2",
-"w": 1280,
-"h": 781
 },
 {
 "src": "photos/photo-049.jpg?v=2",
