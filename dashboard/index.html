@@ -777,6 +777,25 @@ function viewMobile(V, H) {
   var NEWS   = [];        // stories, from news-and-events/posts.js
   var WX     = null;      // live forecast, from open-meteo
 
+  // Where the slideshow had got to, kept across page loads so a refresh — or
+  // coming back from another page — resumes the loop instead of starting again
+  // at the first photograph. The stored moment lets it account for the time the
+  // page was away, so the round continues as though it had never stopped.
+  var SLIDE_KEY = 'rk-dash-slide';
+  function slideSave(i) {
+    try { localStorage.setItem(SLIDE_KEY, i + ':' + Date.now()); } catch (e) {}
+  }
+  function slideRestore(n) {
+    var raw = null;
+    try { raw = localStorage.getItem(SLIDE_KEY); } catch (e) {}
+    if (!raw || n < 1) return 0;
+    var p = raw.split(':'), i = parseInt(p[0], 10), t = parseInt(p[1], 10);
+    if (!isFinite(i) || i < 0) return 0;
+    var passed = isFinite(t) ? Math.floor((Date.now() - t) / (SLIDE_SECONDS * 1000)) : 0;
+    if (!(passed > 0)) passed = 0;
+    return (i + passed) % n;
+  }
+
   var state = {
     slide: 0, cur: null, view: 'summary', proj: null, libSel: null,
     post: null, photo: 0, routine: null, explore: false, wx: false,
@@ -1280,6 +1299,7 @@ function viewMobile(V, H) {
     // round again — so a visitor watching the card sees each one in turn.
     var n = SLIDES.length, next = (state.slide + 1) % n;
     state.slide = next;
+    slideSave(next);
     var imgs = stage.querySelectorAll('.slide');
     if (imgs.length < 2) return;
     var front = +(stage.dataset.front || 0), back = 1 - front;
@@ -1307,7 +1327,7 @@ function viewMobile(V, H) {
       var all = list.map(function (p) { return '../gallery/' + p.src; });
       // The manifest is newest-first, so these are the 30 most recent.
       SLIDES = all.slice(0, 30);
-      state.slide = 0;
+      state.slide = slideRestore(SLIDES.length);
       // The nine-up grid is small on screen; take the manifest's thumbnails.
       if (PREVIEW.gallery) {
         PREVIEW.gallery.photos = list.slice(0, 9).map(function (p) {
