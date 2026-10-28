@@ -139,10 +139,6 @@
   // Every page but the dashboard itself carries a pill in the bottom-right
   // corner that goes straight there. It is parked behind the day/night
   // toggle and slides out from under it once the page has settled.
-  var DASH_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
-    'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-    '<path d="M3.8 17.5a9 9 0 1 1 16.4 0"/><path d="M12 17l4-4.6"/></svg>';
-
   // The same Sun and Moon eco-theme.js draws, for the inert disc below.
   var SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M3.5 3.5l1.8 1.8M18.7 18.7l1.8 1.8M2 12h2.5M19.5 12H22M3.5 20.5l1.8-1.8M18.7 5.3l1.8-1.8"/></svg>';
   var MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.2A8 8 0 1 1 9.8 4 6.4 6.4 0 0 0 20 14.2z"/></svg>';
@@ -179,7 +175,6 @@
     pill.href = ROOT + "dashboard/";
     pill.title = "Dashboard · උපකරණ පුවරුව";
     pill.setAttribute("aria-label", "Open the dashboard");
-    pill.appendChild(el("span", "eco-dash-ico", DASH_ICO));
     pill.appendChild(el("span", "eco-dash-label", "Dashboard"));
     slot.appendChild(pill);
     document.body.appendChild(slot);
@@ -198,11 +193,10 @@
       slot.style.setProperty("--eco-dash-size", r.height + "px");
       slot.style.setProperty("--eco-dash-right", (doc.clientWidth - r.right) + "px");
       slot.style.setProperty("--eco-dash-bottom", (doc.clientHeight - r.bottom) + "px");
-      // Wear the toggle's own background and accent so the two read as one
-      // piece, but set the label against that background rather than copying
-      // the toggle's gold, which is for a 20px glyph, not 13px of text.
+      // Wear the toggle's own background so the two read as one piece, but set
+      // the label against that background rather than copying the toggle's
+      // gold, which is for a 20px glyph, not 13px of text.
       slot.style.setProperty("--eco-dash-bg", cs.backgroundColor);
-      slot.style.setProperty("--eco-dash-accent", cs.color);
       slot.style.setProperty("--eco-dash-ink", isPale(cs.backgroundColor) ? "#2b2620" : "#f3ecdb");
       return true;
     }

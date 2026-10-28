@@ -40,6 +40,16 @@
   box-shadow: 0 8px 22px -10px rgba(0,0,0,0.45);
   transition: transform .2s ease, background .3s ease, color .3s ease;
 }
+/* Pages that keep their surfaces under names of their own (the monastery and
+   retreat pages have no --card) fell back to the paper colour at night, which
+   left a pale disc on a dark page — and the Dashboard pill, which takes its
+   colours from this button, went pale with it. Give the fallback a night
+   value; where --card does exist this changes nothing. */
+:root[data-theme="dark"] .eco-theme-toggle,
+:root[data-theme="night"] .eco-theme-toggle {
+  background: color-mix(in srgb, var(--card, #2a241c) 82%, transparent);
+  color: var(--accent, #e0b76a);
+}
 .eco-theme-toggle:hover { transform: translateY(-2px); }
 .eco-theme-toggle svg { width: 20px; height: 20px; display: block; }
 @media print { .eco-theme-toggle { display: none; } }
