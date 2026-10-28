@@ -135,6 +135,102 @@
 
   function el(t, c, h) { var n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; }
 
+  // ── Dashboard button ────────────────────────────────────────
+  // Every page but the dashboard itself carries a pill in the bottom-right
+  // corner that goes straight there. It is parked behind the day/night
+  // toggle and slides out from under it once the page has settled.
+  var DASH_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+    'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M3.8 17.5a9 9 0 1 1 16.4 0"/><path d="M12 17l4-4.6"/></svg>';
+
+  // Perceived brightness of the toggle's background. Needed because the
+  // toggles differ from page to page — one stays pale at night — so the label
+  // colour cannot be read off the page's theme.
+  function isPale(c) {
+    var v, m = /rgba?\(([^)]+)\)/.exec(c);
+    if (m) v = m[1].split(/[,\s/]+/).map(parseFloat);
+    else {
+      // Browsers report a color-mix() result as color(srgb r g b / a), 0–1.
+      var k = /color\(srgb ([^)]+)\)/.exec(c);
+      if (!k) return true;
+      v = k[1].split(/[\s/]+/).map(function (n) { return parseFloat(n) * 255; });
+    }
+    return (v[0] * 0.299 + v[1] * 0.587 + v[2] * 0.114) > 150;
+  }
+
+  // The Explore menu carries its own Dashboard link, so the pill slips back
+  // behind the toggle while the menu is open and slides out again after.
+  function dashTuck(hide) {
+    var slot = document.querySelector(".eco-dash-slot");
+    if (slot) slot.classList.toggle("is-tucked", hide);
+  }
+
+  function dashButton() {
+    if (location.pathname.indexOf("/dashboard") !== -1) return;
+    if (document.querySelector(".eco-dash-slot")) return;
+
+    var slot = el("div", "eco-dash-slot");
+    var pill = document.createElement("a");
+    pill.className = "eco-dash";
+    pill.href = ROOT + "dashboard/";
+    pill.title = "Dashboard · උපකරණ පුවරුව";
+    pill.setAttribute("aria-label", "Open the dashboard");
+    pill.appendChild(el("span", "eco-dash-ico", DASH_ICO));
+    pill.appendChild(el("span", "eco-dash-label", "Dashboard"));
+    slot.appendChild(pill);
+    document.body.appendChild(slot);
+
+    // Measure the toggle rather than assume it: the shared one is 42px, the
+    // home page's own is 46px, and both move in on a narrow screen. Sitting
+    // one layer below it keeps the toggle clickable through the parked pill.
+    function place() {
+      var t = document.querySelector(".eco-theme-toggle, .theme-toggle");
+      if (!t) return false;
+      var r = t.getBoundingClientRect();
+      if (!r.width) return false;
+      var doc = document.documentElement, cs = getComputedStyle(t);
+      var z = parseInt(cs.zIndex, 10);
+      if (z) slot.style.zIndex = z - 1;
+      slot.style.setProperty("--eco-dash-size", r.height + "px");
+      slot.style.setProperty("--eco-dash-right", (doc.clientWidth - r.right) + "px");
+      slot.style.setProperty("--eco-dash-bottom", (doc.clientHeight - r.bottom) + "px");
+      // Wear the toggle's own background and accent so the two read as one
+      // piece, but set the label against that background rather than copying
+      // the toggle's gold, which is for a 20px glyph, not 13px of text.
+      slot.style.setProperty("--eco-dash-bg", cs.backgroundColor);
+      slot.style.setProperty("--eco-dash-accent", cs.color);
+      slot.style.setProperty("--eco-dash-ink", isPale(cs.backgroundColor) ? "#2b2620" : "#f3ecdb");
+      return true;
+    }
+
+    // eco-theme.js appends its toggle on DOMContentLoaded as well, and the two
+    // scripts are not in the same order on every page, so wait for it instead
+    // of assuming it is there. A page with no toggle keeps the slot's own
+    // corner offsets and the pill simply slides in from the edge.
+    var tries = 0;
+    (function waitForToggle() {
+      if (place()) { reveal(); return; }
+      if (++tries > 40) {
+        // No toggle on this page: drop the room kept for it so the pill reads
+        // as an ordinary one, and let it slide in from the edge instead.
+        slot.style.setProperty("--eco-dash-size", "7px");
+        reveal();
+        return;
+      }
+      setTimeout(waitForToggle, 50);
+    })();
+
+    function reveal() { setTimeout(function () { slot.classList.add("is-out"); }, 650); }
+
+    window.addEventListener("resize", place);
+    // Day/night can flip under the visitor — on a tap of the toggle, or on its
+    // own at 06:00 / 18:00 — and the pill's colour is copied, not computed.
+    if (window.MutationObserver) {
+      new MutationObserver(place).observe(document.documentElement,
+        { attributes: true, attributeFilter: ["data-theme"] });
+    }
+  }
+
   function buildLink(item) {
     var a = document.createElement("a");
     a.className = "eco-link" + (item.id === CURRENT ? " is-current" : "");
@@ -200,8 +296,8 @@
     wrap.appendChild(overlay);
     document.body.appendChild(wrap);
 
-    function open() { overlay.classList.add("is-open"); document.addEventListener("keydown", onKey); }
-    function shut() { overlay.classList.remove("is-open"); document.removeEventListener("keydown", onKey); }
+    function open() { overlay.classList.add("is-open"); dashTuck(true); document.addEventListener("keydown", onKey); }
+    function shut() { overlay.classList.remove("is-open"); dashTuck(false); document.removeEventListener("keydown", onKey); }
     function onKey(e) { if (e.key === "Escape") shut(); }
 
     launch.addEventListener("click", open);
@@ -209,6 +305,8 @@
     overlay.addEventListener("click", function (e) { if (e.target === overlay) shut(); });
   }
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", build);
-  else build();
+  function start() { build(); dashButton(); }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+  else start();
 })();

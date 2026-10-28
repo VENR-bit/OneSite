@@ -157,6 +157,62 @@ body.dark, html.dark, body.night, html.night, html[data-theme="dark"], body[data
   .eco-sec-label { margin: 14px 2px 6px; }
 }
 
+/* ── Dashboard button ──────────────────────────────────────
+   A pill in the bottom-right corner that takes a visitor back to the
+   dashboard. It is parked behind the day/night toggle and slides out
+   from under it a moment after the page settles. The slot is placed
+   from the toggle's own measurements (see eco-nav.js), because the
+   home page's toggle is a few pixels larger than the shared one, and
+   it clips on the right only — so the parked pill stays hidden while
+   the shadow still falls freely on the other three sides.
+   The pill wears the toggle's own background and ink, copied from it at
+   runtime (--eco-dash-bg / --eco-dash-ink). Taking both from the toggle
+   is what keeps the pair legible: the family --eco-* colours follow the
+   device's dark mode rather than the site's clock, and a page that
+   leaves --card unset has a toggle that stays pale at night while its
+   --ink turns light, which would put light text on a pale pill. */
+.eco-dash-slot {
+  position: fixed; z-index: 99400;
+  right: var(--eco-dash-right, 18px);
+  bottom: var(--eco-dash-bottom, 18px);
+  height: var(--eco-dash-size, 42px);
+  max-width: calc(100vw - 28px);
+  display: flex; justify-content: flex-end;
+  border-radius: 999px;
+  clip-path: inset(-60px 0 -60px -60px);
+  pointer-events: none;
+}
+.eco-dash {
+  display: inline-flex; align-items: center; gap: 9px;
+  height: 100%;
+  padding: 0 calc(var(--eco-dash-size, 42px) + 10px) 0 17px;
+  border-radius: 999px; white-space: nowrap; text-decoration: none;
+  font-family: 'Spectral', Georgia, serif;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+  color: var(--eco-dash-ink, var(--ink, #2b2620));
+  background: var(--eco-dash-bg, color-mix(in srgb, var(--card, #fffaf0) 86%, transparent));
+  border: 0;                       /* no stroke — the toggle has none either */
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  box-shadow: 0 10px 26px -14px rgba(0,0,0,0.5);
+  pointer-events: auto;
+  /* Parked fully to the right of the slot, whose edge is the toggle's own:
+     the pill is clipped away there, and the first stretch of its travel
+     passes behind the toggle, so it appears to grow out of it. */
+  transform: translateX(100%);
+  transition: transform .62s cubic-bezier(0.22, 1, 0.36, 1), color .25s ease;
+}
+.eco-dash-slot.is-out .eco-dash { transform: none; }
+.eco-dash-slot.is-tucked .eco-dash { transform: translateX(100%); }
+.eco-dash-slot.is-out .eco-dash:hover { transform: translateY(-2px); }
+.eco-dash .eco-dash-ico { width: 17px; height: 17px; flex: 0 0 auto; color: var(--eco-dash-accent, var(--accent, #a3763c)); }
+.eco-dash .eco-dash-ico svg { width: 100%; height: 100%; display: block; }
+/* The label waits for the pill to clear the toggle before it fades up. */
+.eco-dash .eco-dash-label { opacity: 0; transition: opacity .3s ease; }
+.eco-dash-slot.is-out .eco-dash .eco-dash-label { opacity: 1; transition-delay: .24s; }
+@media (max-width: 560px) { .eco-dash { font-size: 12px; padding-left: 15px; } }
+@media print { .eco-dash-slot { display: none; } }
+
 @media (prefers-reduced-motion: reduce) {
   .eco-launch, .eco-overlay, .eco-panel, .eco-link, .eco-close { transition: none; }
+  .eco-dash, .eco-dash .eco-dash-label { transition: none; }
 }
