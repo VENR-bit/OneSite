@@ -194,7 +194,7 @@ body.dark, html.dark, body.night, html.night, html[data-theme="dark"], body[data
   border: 0;                       /* no stroke — the toggle has none either */
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   box-shadow: 0 10px 26px -14px rgba(0,0,0,0.5);
-  pointer-events: auto;
+  pointer-events: auto; position: relative; z-index: 1;
   /* Parked fully to the right of the slot, whose edge is the toggle's own:
      the pill is clipped away there, and the first stretch of its travel
      passes behind the toggle, so it appears to grow out of it. */
@@ -209,6 +209,21 @@ body.dark, html.dark, body.night, html.night, html[data-theme="dark"], body[data
 /* The label waits for the pill to clear the toggle before it fades up. */
 .eco-dash .eco-dash-label { opacity: 0; transition: opacity .3s ease; }
 .eco-dash-slot.is-out .eco-dash .eco-dash-label { opacity: 1; transition-delay: .24s; }
+/* The drawn disc for pages with no day/night control (see eco-nav.js). It
+   matches .eco-theme-toggle, sits over the pill so the pill still slides out
+   from under it, and passes clicks through to the pill. */
+.eco-dash-mark {
+  position: absolute; right: 0; top: 0; z-index: 2;
+  width: var(--eco-dash-size, 42px); height: var(--eco-dash-size, 42px);
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; pointer-events: none;
+  color: var(--accent, #a3763c);
+  background: color-mix(in srgb, var(--card, #fffaf0) 82%, transparent);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  box-shadow: 0 8px 22px -10px rgba(0,0,0,0.45);
+}
+.eco-dash-mark svg { width: 20px; height: 20px; display: block; }
+
 @media (max-width: 560px) { .eco-dash { font-size: 12px; padding-left: 15px; } }
 @media print { .eco-dash-slot { display: none; } }
 

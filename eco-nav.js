@@ -143,6 +143,10 @@
     'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
     '<path d="M3.8 17.5a9 9 0 1 1 16.4 0"/><path d="M12 17l4-4.6"/></svg>';
 
+  // The same Sun and Moon eco-theme.js draws, for the inert disc below.
+  var SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M3.5 3.5l1.8 1.8M18.7 18.7l1.8 1.8M2 12h2.5M19.5 12H22M3.5 20.5l1.8-1.8M18.7 5.3l1.8-1.8"/></svg>';
+  var MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.2A8 8 0 1 1 9.8 4 6.4 6.4 0 0 0 20 14.2z"/></svg>';
+
   // Perceived brightness of the toggle's background. Needed because the
   // toggles differ from page to page — one stays pale at night — so the label
   // colour cannot be read off the page's theme.
@@ -205,20 +209,24 @@
 
     // eco-theme.js appends its toggle on DOMContentLoaded as well, and the two
     // scripts are not in the same order on every page, so wait for it instead
-    // of assuming it is there. A page with no toggle keeps the slot's own
-    // corner offsets and the pill simply slides in from the edge.
+    // of assuming it is there.
     var tries = 0;
     (function waitForToggle() {
       if (place()) { reveal(); return; }
-      if (++tries > 40) {
-        // No toggle on this page: drop the room kept for it so the pill reads
-        // as an ordinary one, and let it slide in from the edge instead.
-        slot.style.setProperty("--eco-dash-size", "7px");
-        reveal();
-        return;
-      }
+      if (++tries > 40) { capPill(); reveal(); return; }
       setTimeout(waitForToggle, 50);
     })();
+
+    // The project pages carry no day/night control, and without a disc at the
+    // corner the pill looks as though it has slid in from nowhere. Give those
+    // pages the same disc, drawn rather than wired: it takes no clicks of its
+    // own, so a tap on it reaches the pill underneath and opens the dashboard.
+    function capPill() {
+      var h = new Date().getHours();
+      var mark = el("span", "eco-dash-mark", (h >= 6 && h < 18) ? SUN : MOON);
+      mark.setAttribute("aria-hidden", "true");
+      slot.appendChild(mark);
+    }
 
     function reveal() { setTimeout(function () { slot.classList.add("is-out"); }, 650); }
 
