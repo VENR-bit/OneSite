@@ -197,7 +197,12 @@
       // the label against that background rather than copying the toggle's
       // gold, which is for a 20px glyph, not 13px of text.
       slot.style.setProperty("--eco-dash-bg", cs.backgroundColor);
-      slot.style.setProperty("--eco-dash-ink", isPale(cs.backgroundColor) ? "#2b2620" : "#f3ecdb");
+      var pale = isPale(cs.backgroundColor);
+      slot.style.setProperty("--eco-dash-ink", pale ? "#2b2620" : "#f3ecdb");
+      // And the hairline the toggle wears, so the ring runs unbroken from the
+      // disc round the pill: warm dark on paper, warm pale at night.
+      slot.style.setProperty("--eco-dash-line",
+        pale ? "rgba(43, 38, 32, 0.22)" : "rgba(255, 235, 200, 0.24)");
       return true;
     }
 
@@ -220,6 +225,11 @@
       var mark = el("span", "eco-dash-mark", (h >= 6 && h < 18) ? SUN : MOON);
       mark.setAttribute("aria-hidden", "true");
       slot.appendChild(mark);
+      // There is no toggle to copy the hairline from, so read the colour the
+      // pill itself came out as and ring it to suit.
+      if (!isPale(getComputedStyle(pill).backgroundColor)) {
+        slot.style.setProperty("--eco-dash-line", "rgba(255, 235, 200, 0.24)");
+      }
     }
 
     function reveal() { setTimeout(function () { slot.classList.add("is-out"); }, 650); }

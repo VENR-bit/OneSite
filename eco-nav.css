@@ -193,7 +193,11 @@ body.dark, html.dark, body.night, html.night, html[data-theme="dark"], body[data
   background: var(--eco-dash-bg, color-mix(in srgb, var(--card, #fffaf0) 86%, transparent));
   border: 0;                       /* no stroke — the toggle has none either */
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-  box-shadow: 0 10px 26px -14px rgba(0,0,0,0.5);
+  /* The toggle's hairline, continued round the pill. eco-nav.js sets
+     --eco-dash-line from the toggle's own colouring, so the two agree
+     whichever way the page's day/night choice has fallen. */
+  box-shadow: inset 0 0 0 1px var(--eco-dash-line, rgba(43, 38, 32, 0.22)),
+              0 10px 26px -14px rgba(0,0,0,0.5);
   pointer-events: auto; position: relative; z-index: 1;
   /* Parked fully to the right of the slot, whose edge is the toggle's own:
      the pill is clipped away there, and the first stretch of its travel
@@ -218,7 +222,8 @@ body.dark, html.dark, body.night, html.night, html[data-theme="dark"], body[data
   color: var(--accent, #a3763c);
   background: color-mix(in srgb, var(--card, #fffaf0) 82%, transparent);
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-  box-shadow: 0 8px 22px -10px rgba(0,0,0,0.45);
+  box-shadow: inset 0 0 0 1px var(--eco-dash-line, rgba(43, 38, 32, 0.22)),
+              0 8px 22px -10px rgba(0,0,0,0.45);
 }
 .eco-dash-mark svg { width: 20px; height: 20px; display: block; }
 
