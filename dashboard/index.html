@@ -1385,7 +1385,7 @@ function viewMobile(V, H) {
   // orbital dashboard read, so one edit still updates both.
   (function loadCalendar() {
     var el = document.createElement('script');
-    el.src = '../calendar-data.js';
+    el.src = '../calendar-data.js?v=30';
     el.onload = function () { CAL = window.RK_CALENDAR || null; render(); };
     document.head.appendChild(el);
   })();
